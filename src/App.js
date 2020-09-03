@@ -1,25 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {MuiThemeProvider, createMuiTheme,responsiveFontSizes} from "@material-ui/core/styles"
+import {CssBaseline,Paper} from "@material-ui/core"
+import Navigation from './components/navigation';
+
 
 function App() {
+  let theme = createMuiTheme({
+    palette:{
+      primary:{
+        main:'#fff',
+        dark:'#b2b2b2',
+        light:'#ffffff'
+      },
+      secondary:{
+        main:'#00A8C8',
+        dark:'#00758c',
+        light:'#33b9d3'
+      },
+      text:{
+        primary:"#707070",
+        secondary:'#000000',
+        hint:'#fff'
+      }
+    },
+  })
+      theme = responsiveFontSizes(theme)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MuiThemeProvider theme={theme}>
+      <Paper square>
+        <CssBaseline/>
+        <Navigation/>
+       
+      </Paper>
+    </MuiThemeProvider>
   );
 }
 

@@ -1,0 +1,105 @@
+$primary-color: #00A8C8;
+
+section{
+    min-height: 30vh;
+    background: #00000029;
+    // min-width: 10vw;
+    width: 60vw;
+    margin: 10rem auto 10rem 10rem;
+    position: relative;
+
+    .house-payment-details{
+        // border: 1px solid red;
+        width: 55%;
+        display: flex;
+        flex-direction: column;
+        // flex: 1;
+        padding-top: 3rem;
+        padding-bottom: 4rem;
+        padding-left: 3rem;
+        line-height: 1.4rem;
+
+        .total-left{
+            margin-left: auto;
+            color: #000;
+        } 
+        .location{
+            padding-bottom: 1rem;
+        }
+    
+        .charges{
+            display: flex;
+            // flex: 1;
+            flex-direction: column;      
+        }
+    
+        h1{
+            color: $primary-color;
+            font-size: 1.2rem;
+            padding-bottom: 1rem;
+        }
+    
+        h2{
+            color: #000;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+    
+        h3{
+            color:#000;
+            font-size: 1rem;
+        }
+    
+        small{
+            font-size: .7rem;
+        }
+        hr{
+            margin: 1rem 0;
+            // width: 100%;
+    
+        }
+    
+        .amounts{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            color: #707070;
+            font-size: 0.9rem;
+    
+        }
+    }
+
+    aside{
+        background: #011124;
+        position: absolute;
+        color: #fff;
+        top: 0;
+        right: 0;
+        width: 20vw;
+
+        .card-details{
+            width: 90%;
+            margin: auto;
+            margin-top: 5rem;
+        }
+
+        .payment-type {
+            display: flex;
+            justify-content: space-between;
+
+            p{
+                border: 2px solid #FFFFFF;
+                border-radius: 27px;
+                font-size: .7rem;
+                padding: .3rem;
+                width: 30%;
+            }
+        } 
+
+        form{
+            margin-top: 2.5rem;
+        }
+    }
+
+
+}

@@ -20,14 +20,14 @@ const styles = ()=>({
     },
     root:{
         borderRadius:16,
-        height:320,
+        height:340,
         position:'relative'
     },
     overlay:{
         position:'absolute',
         top:0,
         left:0,
-        height:'60%',
+        height:'65%',
         width:'100%',
         opacity: 0.35
     }
@@ -39,9 +39,9 @@ const Trending = ({classes, rating, color,name})=>{
                 <CardMedia image={image}
                         component="img"
                         alt="Contemplative Reptile"
-                        height="60%"
+                        height="65%"
                 />
-                <div style={{zIndex:34, position:'absolute',height:'54%', width:'98%', top:'3%', left:'1%'}}>
+                <div style={{zIndex:34, position:'absolute',height:'60%', width:'98%', top:'3%', left:'1%'}}>
                     <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#fff"/>
                     <div style={{position:'absolute', bottom:0}}>
                         <Rating

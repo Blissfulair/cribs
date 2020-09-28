@@ -101,9 +101,9 @@ const Footer = ({classes})=>{
                                 <Grid container>
                                     <Grid item xs={6} md={4}>
                                     <ul className={classes.social}>
-                                        <SocialIcon icon={<Facebook  htmlColor="#fff"/>} backgroundColor="#375FA5" href="https://wwww.facebook.com" />
-                                        <SocialIcon icon={<Twitter  htmlColor="#fff"/>} backgroundColor="#6FAEEB" href="https://wwww.facebook.com" />
-                                        <SocialIcon icon={<Instagram htmlColor="#375FA5"/>} backgroundColor="#FFFFFF" href="https://wwww.facebook.com" />
+                                        <SocialIcon backgroundColor="#375FA5" href="https://wwww.facebook.com"><Facebook  htmlColor="#fff"/></SocialIcon>
+                                        <SocialIcon backgroundColor="#6FAEEB" href="https://wwww.facebook.com"><Twitter  htmlColor="#fff"/></SocialIcon>
+                                        <SocialIcon backgroundColor="#FFFFFF" href="https://wwww.facebook.com"><Instagram htmlColor="#375FA5"/></SocialIcon>
                                     </ul>
                                     </Grid>
                                 </Grid>
@@ -114,7 +114,7 @@ const Footer = ({classes})=>{
                                            <Grid item xs={6}>
                                                 <AppLogo name="App" image={apple} href="https://wwww.play.google.com/store/apps/details?id=com.givismartatt" target="_blank" />
                                             </Grid>
-                                            <Grid xs={6}>
+                                            <Grid item xs={6}>
                                                 <AppLogo name="Play" image={play} href="https://wwww.play.google.com/store/apps/details?id=com.givismartatt" target="_blank" />
                                             </Grid>
                                         </Grid> 

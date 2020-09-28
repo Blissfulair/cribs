@@ -1,18 +1,14 @@
 import React from "react";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom"
-import Index from "../pages/index"
+import {BrowserRouter as Router} from "react-router-dom"
 import Footer from './footer';
 import Header from './header';
+import Root from "../routes/root";
 
 const Navigation =()=>{
     return(
         <Router>
             <Header/>
-            <Switch>
-                <Route path="/">
-                    <Index/>
-                </Route>
-            </Switch>
+                <Root/>
             <Footer/>
         </Router>
     )

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import bg from "../images/login_bg.png"
 import Paper from '@material-ui/core/Paper';
@@ -8,13 +8,16 @@ import Calendar from "@material-ui/icons/Today"
 import People from "@material-ui/icons/PeopleOutline"
 import Grid from "@material-ui/core/Grid"
 import Container from '@material-ui/core/Container';
-import {Link} from "react-router-dom"
+import {Link,withRouter} from "react-router-dom"
 import Stays from "../components/stays";
 import Trending from "../components/trending"
 import IconBox from "../components/iconBox";
 import trust from "../images/trust.svg"
 import jigsaw from "../images/jigsaw.svg"
 import focus from "../images/focus.svg"
+import Slide from "../components/slider";
+import Explore from "../components/explore";
+import { DatePicker } from "@material-ui/pickers";
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${bg})`,
@@ -87,55 +90,77 @@ const styles = theme =>({
 
         gridTemplateColumns:'repeat(4, 24%)',
         gridColumnGap:'1.333%'
+    },
+    link:{
+        color:'#707070',
+        textDecoration:'none',
+        marginLeft:8
     }
 })
 const Index = (props)=>{
     const {classes} = props
+    const [selectedDate, handleDateChange] = useState(new Date());
     return(
-        <>
-            <div className={classes.loginContainer} >
-                <Paper style={{backgroundColor:'#14adc5a8',minHeight:'350px', width:'40%'}}>
-                    <div className={classes.formContainer}>
-                        <form className={classes.form} noValidate autoComplete="off">
-                            <div className={classes.location}>
-                                <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
-                                <div style={{width:'100%',height:'90%'}}>
-                                    <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
-                                    <input placeholder="Search anyplace of your choice"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} />
+        <Grid container justify="center">
+            <Grid item className={classes.loginContainer} >
+                <Grid container justify="center">
+                    <Grid item xs={10} md={5}>
+                        <Paper style={{backgroundColor:'#14adc5a8',minHeight:'350px', width:'100%'}}>
+                        <div className={classes.formContainer}>
+                            <form className={classes.form} noValidate autoComplete="off">
+                                <div className={classes.location}>
+                                    <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
+                                    <div style={{width:'100%',height:'90%'}}>
+                                        <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
+                                        <input placeholder="Search anyplace of your choice"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className={classes.row1}>
-                                <div className={classes.checkIn}>
-                                    <Calendar htmlColor="#046FA7" fontSize="default"/>
+                                <div className={classes.row1}>
+                                    <div className={classes.checkIn}>
+                                        <label style={{cursor:'pointer',marginRight:10}} htmlFor="begin">
+                                            <Calendar htmlColor="#046FA7" fontSize="default"/>
+                                        </label>
+                                        <DatePicker
+                                        id="begin"
+                                        label="Check In"
+                                        format="dd/MM/yyyy"
+                                        value={selectedDate}
+                                        onChange={handleDateChange}
+                                        />
+                                    </div>
+                                    <div className={classes.checkIn}>
+                                        <label style={{cursor:'pointer',marginRight:10}} htmlFor="end">
+                                            <Calendar htmlColor="#046FA7" fontSize="default"/>
+                                        </label>
+                                        <DatePicker
+                                        id="end"
+                                        label="Check Out"
+                                        format="dd/MM/yyyy"
+                                        value={selectedDate}
+                                        onChange={handleDateChange}
+                                        />
+                                    </div>
                                 </div>
-                                <div className={classes.checkIn}>
-                                    <Calendar htmlColor="#046FA7" fontSize="default"/>
+                                
+                                <div className={classes.row1}>
+                                    <div className={classes.checkIn}>
+                                        <People htmlColor="#046FA7" fontSize="default" />
+                                    </div>
+                                    <div style={{width:'45%'}}>
+                                        <button onClick={()=>props.history.push('/search')} className={classes.btn}>Search</button>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            <div className={classes.row1}>
-                                <div className={classes.checkIn}>
-                                    <People htmlColor="#046FA7" fontSize="default" />
-                                </div>
-                                <div style={{width:'45%'}}>
-                                    <button className={classes.btn}>Search</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </Paper>
-            </div>
+                            </form>
+                        </div>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Grid>
             <Grid container justify="center" >
-                <Grid item xs={12} md={10} >
-            <Typography classes={{root:classes.title}} variant="h3">Where would you like to stay?</Typography>
+                <Grid item xs={11} md={10} >
+                <Typography classes={{root:classes.title}} variant="h3">Where would you like to stay?</Typography>
                 <Grid  container spacing={2}>
-                    {/* <div className={classes.stays}>
-                        <Stays/>
-                        <Stays/>
-                        <Stays/>
-                        <Stays/>
-                    </div> */}
                     <Grid item xs={12} sm={6} md={3} lg={3} >
                     <Stays color={'#DF6C08'}/>
                     </Grid>
@@ -150,55 +175,58 @@ const Index = (props)=>{
                     </Grid>
                 </Grid>
                 <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
-                <Grid  container spacing={2}>
-                    <Grid item xs={12} sm={6} md={3} lg={3} >
-                        <Trending name="one" color="#00C1C8"/>
+                <div style={{marginBottom:10}}>
+                    <Grid  container spacing={2}>
+                        <Grid item xs={12} sm={6} md={3} lg={3} >
+                            <Trending name="one" color="#00C1C8"/>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3} lg={3}>
+                            <Trending name="two" color="#08191A"/>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3} lg={3}>
+                            <Trending name="three" color="#EE2B72"/>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3} lg={3}>
+                            <Trending name="four" rating={2} color="#C8BB00"/>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                        <Trending name="two" color="#08191A"/>
+                </div>
+                <Link className={classes.link} to={'/'}>See more</Link>
+
+                <div style={{marginTop:50}}>
+                    <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
+                    <Grid style={{position:'relative'}}  container >
+                        <Slide content={[1,2,3,4]}/>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                        <Trending name="three" color="#EE2B72"/>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                        <Trending name="four" rating={2} color="#C8BB00"/>
-                    </Grid>
-                </Grid>
-                <Link to={'/'}>See more</Link>
+                </div>
+                <Link className={classes.link} to={'/'}>See more</Link>
 
                 <Typography variant="h4" classes={{root:classes.title}} style={{marginTop:90}} align="center">Reasons to Explore With Us</Typography>
                 <Container >
-                    <Grid container style={{width:'90%', margin:'auto'}}  spacing={8}>
-                        <Grid item xs={12}  sm={12} md={4}>
+                    <Grid container  justify="center" >
+                        <Grid item  xs={12} sm={10} md={10}>
+                            <Grid container justify="center" spacing={8}>
+                            <Grid item xs={12}  sm={4} md={4}>
                             <IconBox image={trust} name="Reliable"/>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4}>
+                        <Grid item xs={12} sm={4} md={4}>
                             <IconBox image={focus} name="Fast"/>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4}>
+                        <Grid item xs={12} sm={4} md={4}>
                             <IconBox image={jigsaw} name="Convenient"/>
+                        </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Container>
 
                 <Typography variant="h4" classes={{root:classes.title}}>Explore Cribs by City</Typography>
-                <Grid  container spacing={2}>
-                    <Grid item xs={12} sm={6} md={3} lg={3} >
-                    <Stays color={'#E8E8E8'}/>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays color={'#E8E8E8'}/>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays color="#E8E8E8"/>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays color="#E8E8E8"/>
-                    </Grid>
+                <Grid style={{position:'relative'}} container>
+                    <Explore content={[{name:'Lagos City', description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Abuja City', description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Kano City', description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'}]}/>
                 </Grid>
                 </Grid>
             </Grid>
-        </>
+        </Grid>
     )
 }
-export default withStyles(styles)(Index);
+export default withRouter(withStyles(styles)(Index));

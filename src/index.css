@@ -56,3 +56,20 @@
   background:#00A8C8 !important;
   box-shadow: 0px 3px 6px #00000029;
 }
+.MuiOutlinedInput-notchedOutline,
+.PrivateNotchedOutline-root-29 .MuiOutlinedInput-notchedOutline{
+  border:none !important
+}
+.MuiFormLabel-root.Mui-focused,
+.MuiFormLabel-root{
+  color:#00A8C8 !important;
+
+}
+.single .MuiInputLabel-outlined.MuiInputLabel-shrink{
+  transform: translate(14px, 8px) scale(0.75) !important;
+}
+.single #check-in,
+.single #check-out{
+  font-size: 13px;
+  padding-top: 25px;
+}

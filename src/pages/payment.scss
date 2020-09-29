@@ -1,12 +1,17 @@
 $primary-color: #00A8C8;
 
+::placeholder{
+    color: #fff !important;
+}
+
 section{
     min-height: 30vh;
     background: #00000029;
     // min-width: 10vw;
-    width: 60vw;
+    width: 50vw;
     margin: 10rem auto 10rem 10rem;
     position: relative;
+    user-select: none;
 
     .house-payment-details{
         // border: 1px solid red;
@@ -17,7 +22,7 @@ section{
         padding-top: 3rem;
         padding-bottom: 4rem;
         padding-left: 3rem;
-        line-height: 1.4rem;
+        line-height: 1.6rem;
 
         .total-left{
             margin-left: auto;
@@ -73,9 +78,10 @@ section{
         background: #011124;
         position: absolute;
         color: #fff;
-        top: 0;
-        right: 0;
-        width: 20vw;
+        top: 1.9rem;
+        right: -7rem;
+        width: 25vw;
+        border-radius: 10px;
 
         .card-details{
             width: 90%;
@@ -93,11 +99,39 @@ section{
                 font-size: .7rem;
                 padding: .3rem;
                 width: 30%;
+                text-align: center;
+
+                &.active{
+                    background: #fff;
+                    color: #011124;
+                }
             }
         } 
 
         form{
             margin-top: 2.5rem;
+
+            .expire{
+                display: flex;
+            }
+
+            .card-name, .date-expire{
+                margin-bottom: 1.5rem;
+            }
+
+            .MuiButtonBase-root{
+                background: #00A8C8;
+                color: #fff;
+                width: 14vw;
+                margin-bottom: 2.5rem;
+                margin-left: 4.5vw;
+                margin-top: 1.5rem;
+
+                &:hover{
+                    background: #00A8C8;
+                }
+                // style={{background:'#00A8C8', color: '#fff', width: '14vw', marginBottom: '2.5rem', marginLeft:'auto',marginRight:'auto'}
+            }
         }
     }
 

@@ -66,7 +66,7 @@ const Payment = () => {
 				<aside>
 					<div className="card-details">
 						<div className="payment-type">
-							<p>Card</p>
+							<p className='active'>Card</p>
 							<p>Paystack</p>
 							<p>Paypal</p>
 						</div>
@@ -74,7 +74,7 @@ const Payment = () => {
 						<form>
 							<div className="card-name">
 								<p>Name on Card</p>
-								<TextField placeholder="Richard Belfast" />
+								<TextField placeholder="Richard Belfast"  />
 							</div>
 							<div className="card-name">
 								<p>Card Number</p>
@@ -82,6 +82,7 @@ const Payment = () => {
 									type="password"
 									inputProps={{
 										maxLength: cardNumberLimit,
+										
 									}}
 								/>
 							</div>
@@ -125,7 +126,7 @@ const Payment = () => {
 								</div>
 							</div>
 
-                            <Button style={{background:'#00A8C8'}}>Pay</Button>
+                            <Button>Pay</Button>
 						</form>
 
 						{/* </div> */}

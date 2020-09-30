@@ -4,6 +4,12 @@ $primary-color: #00A8C8;
     color: #fff !important;
 }
 
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 section{
     min-height: 30vh;
     background: #00000029;
@@ -78,7 +84,7 @@ section{
         background: #011124;
         position: absolute;
         color: #fff;
-        top: 1.9rem;
+        top: 2.4rem;
         right: -7rem;
         width: 25vw;
         border-radius: 10px;
@@ -86,7 +92,7 @@ section{
         .card-details{
             width: 90%;
             margin: auto;
-            margin-top: 5rem;
+            margin-top: 3.5rem;
         }
 
         .payment-type {
@@ -109,14 +115,29 @@ section{
         } 
 
         form{
-            margin-top: 2.5rem;
+            margin-top: 2.2rem;
 
             .expire{
                 display: flex;
+                justify-content: center;
             }
 
-            .card-name, .date-expire{
-                margin-bottom: 1.5rem;
+            .picker{
+                display: flex;
+                align-items:center  ;
+                // justify-content: center;
+            }
+            .card-name{
+                margin-bottom: 1rem;
+            }  
+
+            .MuiInput-underline:after{
+                transform: scaleX(1) !important;
+            }
+
+            .MuiFormLabel-root{
+                color: #fff !important;
+                font-size: 0.7rem !important;
             }
 
             .MuiButtonBase-root{

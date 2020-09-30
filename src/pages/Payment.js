@@ -1,15 +1,17 @@
 import { Button, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { KeyboardArrowDown } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
+import { DatePicker, InlineDatePicker } from '@material-ui/pickers';
 import React, { useState } from 'react';
 import './payment.scss';
 
-
-
 const Payment = () => {
+
     const cvvNumberLimit = 3;
     const cardNumberLimit = 19;
 
-    const [month, setMonth] = useState('');
+	const [month, setMonth] = useState(''); // month the card will expire
+	const [selectedDate, handleDateChange] = useState(new Date()); // Year the card expires 
 
     return (
 			<section>
@@ -66,7 +68,7 @@ const Payment = () => {
 				<aside>
 					<div className="card-details">
 						<div className="payment-type">
-							<p className='active'>Card</p>
+							<p className="active">Card</p>
 							<p>Paystack</p>
 							<p>Paypal</p>
 						</div>
@@ -74,15 +76,15 @@ const Payment = () => {
 						<form>
 							<div className="card-name">
 								<p>Name on Card</p>
-								<TextField placeholder="Richard Belfast"  />
+								<TextField placeholder="Richard Belfast" fullWidth />
 							</div>
 							<div className="card-name">
 								<p>Card Number</p>
 								<TextField
 									type="password"
+									fullWidth
 									inputProps={{
 										maxLength: cardNumberLimit,
-										
 									}}
 								/>
 							</div>
@@ -90,32 +92,52 @@ const Payment = () => {
 							<div className="expire">
 								<div className="date-expire">
 									<p>Expiration Date</p>
-									<span>
-										<InputLabel id="demo-simple-select-label">MM</InputLabel>
-										<Select
-											labelId="demo-simple-select-label"
-											id="demo-simple-select"
-											value={month}
-											onChange={(e) => {
-												setMonth(e.target.value);
-											}}
-										>
-											<MenuItem value={1}>January</MenuItem>
-											<MenuItem value={2}>February</MenuItem>
-											<MenuItem value={3}>March</MenuItem>
-											<MenuItem value={4}>April</MenuItem>
-											<MenuItem value={5}>May</MenuItem>
-											<MenuItem value={6}>June</MenuItem>
-											<MenuItem value={7}>July</MenuItem>
-											<MenuItem value={8}>August</MenuItem>
-											<MenuItem value={9}>September</MenuItem>
-											<MenuItem value={10}>October</MenuItem>
-											<MenuItem value={11}>November</MenuItem>
-											<MenuItem value={12}>December</MenuItem>
-										</Select>
-									</span>
+									<div className="picker">
+										<span>
+											<InputLabel id="demo-simple-select-label">MM</InputLabel>
+											<Select
+												labelId="demo-simple-select-label"
+												id="demo-simple-select"
+												value={month}
+												onChange={(e) => {
+													setMonth(e.target.value);
+												}}
+											>
+												<MenuItem value={1}>January</MenuItem>
+												<MenuItem value={2}>February</MenuItem>
+												<MenuItem value={3}>March</MenuItem>
+												<MenuItem value={4}>April</MenuItem>
+												<MenuItem value={5}>May</MenuItem>
+												<MenuItem value={6}>June</MenuItem>
+												<MenuItem value={7}>July</MenuItem>
+												<MenuItem value={8}>August</MenuItem>
+												<MenuItem value={9}>September</MenuItem>
+												<MenuItem value={10}>October</MenuItem>
+												<MenuItem value={11}>November</MenuItem>
+												<MenuItem value={12}>December</MenuItem>
+											</Select>
+										</span>
+										<span>
+											<DatePicker
+												views={["year"]}
+												label="YYYY"
+												value={selectedDate}
+												onChange={handleDateChange}
+												animateYearScrolling
+											/>
+										</span>
+										<div>
+											<p>CVV</p>
+											<TextField
+												type="password"
+												inputProps={{
+													maxLength: cvvNumberLimit,
+												}}
+											/>
+										</div>
+									</div>
 								</div>
-								<div className="cvv">
+								{/* <div className="cvv">
 									<p>CVV</p>
 									<TextField
 										type="password"
@@ -123,10 +145,10 @@ const Payment = () => {
 											maxLength: cvvNumberLimit,
 										}}
 									/>
-								</div>
+								</div> */}
 							</div>
 
-                            <Button>Pay</Button>
+							<Button>Pay</Button>
 						</form>
 
 						{/* </div> */}

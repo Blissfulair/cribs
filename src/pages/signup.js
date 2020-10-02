@@ -150,7 +150,7 @@ class SignUp extends React.Component{
                                         <TwitterIcon/>
                                     </a>
                                 </div>
-                                <p>Don't have an account? <Link to="/signup">Signup here</Link></p>
+                                <p>Don't have an account? <Link to="/login">Sign in here</Link></p>
                             </form>
                         </div>
                     </div>

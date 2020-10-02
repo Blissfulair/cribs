@@ -88,7 +88,7 @@ const Header = (props)=>{
                                 <Button style={{fontSize:'12px', textTransform:'capitalize',color:'#fff'}} >Host Accommodation</Button>
                             </div>
                             <div className={classes.menuItems}>
-                                <Link color="textPrimary" to="/">Signup</Link>
+                                <Link color="textPrimary" to="/register">Signup</Link>
                             </div>
                         </div>
                     </Grid>

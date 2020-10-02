@@ -43,7 +43,7 @@ export default function SideBar({toggleDrawer,state}) {
                 <ListItemText primary={<p style={{color:'#046FA7'}}>Host Accommodation</p>} />
             </ListItem>
         </Link>
-        <Link to={'/login'}>
+        <Link to={'/register'}>
         <ListItem button>
            
                 <ListItemIcon> <LockOutlinedIcon htmlColor="#046FA7" /></ListItemIcon>

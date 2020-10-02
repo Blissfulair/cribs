@@ -48,11 +48,11 @@ class SignUp extends React.Component{
             if(this.state.remember === 'on')
                 this.setState({remember:true})
             this.setState({err:''})
-            const body = {
-                email: this.state.username,
-                password:this.state.password,
-                remember:this.state.remember
-            }
+            // const body = {
+            //     email: this.state.username,
+            //     password:this.state.password,
+            //     remember:this.state.remember
+            // }
             // if(handleLogin(body))
             // {
             //     this.setState({username:'',password:''})

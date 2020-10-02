@@ -17,7 +17,7 @@ import {
     DialogContentText,
     DialogTitle,
     Box,
-    LinearProgress
+    LinearProgress,
 } from '@material-ui/core';
 import image from "../images/login_bg.png"
 import DetailSlide from "../components/detailSlide";
@@ -38,6 +38,7 @@ import SmokeFreeIcon from '@material-ui/icons/SmokeFree';
 import { DatePicker } from "@material-ui/pickers";
 // import { MapContainer } from "../components/map";
 import Review from "../components/review"
+import {Link} from "react-router-dom"
 const styles = theme =>({
     container:{
         paddingTop:140
@@ -433,9 +434,11 @@ const Single = ({classes})=>{
                                                         </Dialog>
                                                     </Grid>
                                                 </Grid>
+                                                <Link to="/payment">
                                                 <Button style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="contained" disableElevation>
                                                     Reserve Now
                                                 </Button>
+                                                </Link>
                                                 <Divider style={{marginTop:15, height:3, backgroundColor:'#DCDCDC'}}/>
                                                 <Typography variant="h6" style={{textAlign:'center', color:'#000000'}} >Speak to the Host</Typography>
                                                 <Grid container style={{marginTop:10,marginBottom:5}}>

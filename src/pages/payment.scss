@@ -1,3 +1,5 @@
+@import 'config';
+
 $primary-color: #00A8C8;
 
 .house-payment-details{
@@ -86,7 +88,7 @@ section{
         background: #011124;
         position: absolute;
         color: #fff;
-        top: 2.4rem;
+        top: 2.1rem;
         right: -7rem;
         width: 25vw;
         border-radius: 10px;
@@ -160,3 +162,5 @@ section{
 
 
 }
+
+@import 'mobilePayment';

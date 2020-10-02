@@ -4,7 +4,7 @@ import {withStyles} from "@material-ui/core/styles"
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Calendar from "@material-ui/icons/Today"
 import People from "@material-ui/icons/PeopleOutline"
-import Grid from "@material-ui/core/Grid"
+import {Grid, TextField} from "@material-ui/core"
 import { DatePicker } from "@material-ui/pickers";
 const styles = theme =>({
 
@@ -128,6 +128,7 @@ const SearchForm = (props)=>{
                     <div className={classes.row1}>
                         <div className={classes.checkIn}>
                             <People htmlColor="#046FA7" fontSize="default" />
+                            <TextField className="single" label="Guest"/>
                         </div>
                     </div>
                     <div className={classes.row2}>

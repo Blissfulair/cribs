@@ -39,7 +39,7 @@ const DetailSlide = ({content})=>{
                     >
                     {content.map((new_deal,index)=>{
                     return (
-                        <img style={{width:'100%', height:400}} src={image} alt=""/>
+                        <img key={index} style={{width:'100%', height:400}} src={image} alt=""/>
                     )
                     })
                     }

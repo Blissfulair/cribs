@@ -4,6 +4,7 @@ import '@brainhubeu/react-carousel/lib/style.css';
 import Trending from "./trending"
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
+import {Link} from "react-router-dom"
 const Slide = ({content})=>{
     return(
         <>
@@ -40,7 +41,9 @@ const Slide = ({content})=>{
                     >
                     {content.map((new_deal,index)=>{
                     return (
-                        <Trending name={`rating${index}`} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />
+                        <Link to="/single">
+                            <Trending name={`rating${index}`} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
+                        </Link>
                     )
                     })
                     }

@@ -1,5 +1,5 @@
 .label{
-    padding-top: 140px;
+    padding-top: 90px;
 }
 .signup{
     display: grid;
@@ -247,8 +247,7 @@ input[type=checkbox]{
     .form button,
     .form .social-signup{
         margin-top: 40px;
-        width: 60%;
-        margin-left: 20%;
+        width: 100%;
         /* font-family: "Poppins-Medium" */
     }
     .social-signup .col{

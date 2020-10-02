@@ -177,10 +177,19 @@ const Index = (props)=>{
                 <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
                 <div style={{marginBottom:10}}>
                     <Grid  container spacing={2}>
-                        <Grid item xs={12} sm={6} md={3} lg={3} >
-                            <Trending name="one" color="#00C1C8"/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
+                        {
+                            [1,1,1,1].map((val, i)=>{
+                                return(
+                                    <Grid item xs={12} sm={6} md={3} lg={3} >
+                                        <Link to="/single">
+                                            <Trending name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
+                                        </Link>
+                                    </Grid>
+                                )
+                            })
+                        }
+                        {/* <Grid item xs={12} sm={6} md={3} lg={3}>
+
                             <Trending name="two" color="#08191A"/>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3} lg={3}>
@@ -188,7 +197,7 @@ const Index = (props)=>{
                         </Grid>
                         <Grid item xs={12} sm={6} md={3} lg={3}>
                             <Trending name="four" rating={2} color="#C8BB00"/>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </div>
                 <Link className={classes.link} to={'/'}>See more</Link>

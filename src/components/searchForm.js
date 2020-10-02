@@ -81,7 +81,7 @@ const styles = theme =>({
 const SearchForm = (props)=>{
     const {classes} = props
     const [locationF, setLocationF]=useState(false)
-    const [checkIn, setCheckIn]=useState(false)
+    // const [checkIn, setCheckIn]=useState(false)
     const [selectedDate, handleDateChange] = useState(new Date());
     return(
         <Grid container>

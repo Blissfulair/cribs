@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import CurrentLocation from './currentLocation';
 
-const mapStyles = {
-  height: 400
-};
+// const mapStyles = {
+//   height: 400
+// };
 
 export class MapContainer extends Component {
 state = {

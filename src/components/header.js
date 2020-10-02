@@ -69,7 +69,7 @@ const Header = (props)=>{
                         <SideBar state={state} toggleDrawer={toggleDrawer}/>
                         <div className={classes.menu}>
                             <div>
-                                <Button onClick={toggleDrawer} style={{color:'#046FA7'}} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                                <Button  style={{color:'#046FA7'}} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                                     EN
                                 </Button>
                                 <Menu

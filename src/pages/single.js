@@ -36,7 +36,7 @@ import Rating from '@material-ui/lab/Rating';
 import Calendar from "@material-ui/icons/Today"
 import SmokeFreeIcon from '@material-ui/icons/SmokeFree';
 import { DatePicker } from "@material-ui/pickers";
-import { MapContainer } from "../components/map";
+// import { MapContainer } from "../components/map";
 import Review from "../components/review"
 const styles = theme =>({
     container:{

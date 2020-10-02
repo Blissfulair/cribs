@@ -5,11 +5,15 @@ import Index from "../pages/index"
 import  Search from "../pages/search";
 import Single from "../pages/single";
 import Login from "../pages/login";
+import SignUp from "../pages/signup";
 const Root = ()=>{
     return(
         <Switch>
             <Route path='/payment' >
                 <Payment/>
+            </Route>
+            <Route path='/register' >
+                <SignUp/>
             </Route>
             <Route path="/search">
                 <Search/>

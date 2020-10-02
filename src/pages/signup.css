@@ -83,7 +83,7 @@
 }
 .signup label{
     margin:0 5px;
-    font-family: 'Montserrat-SemiBold';
+    /* font-family: 'Montserrat-SemiBold'; */
     font-size: 15px;
     color:var(--dark-border)
 }
@@ -95,7 +95,7 @@
     border: none;
     width: 93%;
     padding: 12px 13px;
-    font-family: 'Montserrat-Medium';
+    /* font-family: 'Montserrat-Medium'; */
     font-size: 15px;
     color:var(--dark-border);
     position: relative;
@@ -133,21 +133,21 @@ input[type=checkbox]{
 }
 .signup label[for=renter],
 .signup label[for=renting]{
-    font-family: 'Montserrat-SemiBold';
+    /* font-family: 'Montserrat-SemiBold'; */
     font-size: 12px;
 }
 .signup .rememberme{
     margin-left: 10px;
 }
 .signup label[for=terms]{
-    font-family: 'Montserrat-Medium';
+    /* font-family: 'Montserrat-Medium'; */
     font-size: 12px; 
     margin-left: 18px;   
     cursor: pointer;
 }
 .signup label[for=terms] a{
     color: #046FA7;
-    font-family: 'Montserrat-SemiBold';
+    /* font-family: 'Montserrat-SemiBold'; */
 }
 .btn-signup{
     width: 100%;
@@ -157,7 +157,7 @@ input[type=checkbox]{
     text-align: center;
     background: #00A8C8;
     padding: 14px 0;
-    font-family: 'Montserrat-Medium';
+    /* font-family: 'Montserrat-Medium'; */
     font-size: 15px;
     color: var(--white);
     cursor: pointer;
@@ -184,7 +184,7 @@ input[type=checkbox]{
 .form p{
     text-align: center;
     margin-top: 15px;
-    font-family: 'Montserrat-Medium';
+    /* font-family: 'Montserrat-Medium'; */
     font-size: 12px;
     color: var(--dark-border)
 }
@@ -249,7 +249,7 @@ input[type=checkbox]{
         margin-top: 40px;
         width: 60%;
         margin-left: 20%;
-        font-family: "Poppins-Medium"
+        /* font-family: "Poppins-Medium" */
     }
     .social-signup .col{
         border-radius: 9px;
@@ -260,14 +260,14 @@ input[type=checkbox]{
         border-radius: 0;
     }
     .signup label{
-        font-family: "Poppins-Medium";
+        /* font-family: "Poppins-Medium"; */
         color: #090202;
     }
     .signup .form-group::after{
         height: 2px;
     }
     .form form input[type=text], .form form input[type=password], .form form input[type=email]{
-        font-family: "Poppins"
+        /* font-family: "Poppins" */
     }
     .correct input{
         color: #355584 !important;
@@ -280,29 +280,29 @@ input[type=checkbox]{
     }
     .signup label[for=terms]{
         color: #090202;
-        font-family: "Poppins"
+        /* font-family: "Poppins" */
     }
     .signup label[for=terms] a{
-        font-family: "Poppins-Bold";
+        /* font-family: "Poppins-Bold"; */
         color: #0F478F;
     }
     .form p{
-        font-family: "Poppins-Medium";
+        /* font-family: "Poppins-Medium"; */
         color: #090202;
     }
     .form p a{
-        font-family: "Poppins-SemiBold";
+        /* font-family: "Poppins-SemiBold"; */
         color: #0F478F;
     }
     .signup .info .inner-items{
         width:75%
     }
     .signup .info .inner-items .title1 h3{
-        font-family: "Poppins-Bold";
+        /* font-family: "Poppins-Bold"; */
         font-size: 25px;
     }
     .info .inner-items .title2 h2{
-        font-family: "Poppins-Bold";
+        /* font-family: "Poppins-Bold"; */
         font-size: 30px;
         margin-left: 35px;
     }

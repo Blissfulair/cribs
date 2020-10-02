@@ -4,12 +4,12 @@
 }
 .signin > h2,
 .signin > p{
-    font-family: 'Montserrat-Bold';
+    /* font-family: 'Montserrat-Bold'; */
     font-size: 30px !important;
     color: #046FA7;
     text-align: center;
 }
-.signin > ul{
+.signin  ul{
     list-style: none;
     display: flex;
     margin:0 auto;
@@ -18,13 +18,9 @@
     margin-top: 30px;
     margin-bottom: 10px;
 }
-.signin >ul>.line{
-    height: 20px;
-    width: 1px;
-    background-color: #707070;
-}
+
 .signin > p{
-    font-family: 'Montserrat-Medium';
+    /* font-family: 'Montserrat-Medium'; */
     font-size: 16px;
     margin-top: 10px;
 }
@@ -66,14 +62,14 @@ label[for=rememberme]{
     margin: 4px 0 30px 0;
 }
 .signin .form-check{
-    display: grid;
-    grid-template-columns: 5% 40% 55%;
+    display: flex;
+    justify-content: space-between;
     
 }
 .signin .form-check label,
 .signin .form-check a{
     color: #ACA9A9;
-    font-family: 'Montserrat-Medium';
+    /* font-family: 'Montserrat-Medium'; */
     font-size: 13px;
     cursor: pointer;
 }
@@ -89,7 +85,7 @@ label[for=rememberme]{
     .signin > h2, .signin > p{
         text-align: left;
     }
-    .signin button{
+    .signin .btn-signup{
         margin-top: 40px;
     }
     .form-groups,

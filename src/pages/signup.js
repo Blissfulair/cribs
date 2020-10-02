@@ -18,7 +18,7 @@ const styles = ()=>({
         borderColor:'#DCDCDC'
     }
 })
-class Login extends React.Component{
+class SignUp extends React.Component{
 
     constructor(props){
         super(props)
@@ -86,27 +86,34 @@ class Login extends React.Component{
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div className="signin">
-                        <p>Sign in to get started</p>
-                        <ul>
-                            <li >
-                                <Button classes={{root:this.props.classes.label}} onClick={this.toggleLogin}>
-                                    <span style={{color:!this.state.type?'#00ADCB':'#DCDCDC'}}>Renting</span>
-                                </Button>
-                            </li>
-                            <li className="line"></li>
-                            <li>
-                                <Button classes={{root:this.props.classes.label}}  onClick={this.toggleLogin}>
-                                    <span style={{color:this.state.type?'#00ADCB':'#DCDCDC'}}>
-                                    Hosting
-                                    </span>
-                                </Button>
-                            </li>
-                        </ul>
+                        <p>Create an Account</p>
+                        <span className="subtitle">Let's get you all set up so you can begin finding your next best spot</span>
+
                         <div className="form">
                         <p className="error">{this.state.err}</p>
                             <form onSubmit={event=>{
                                 this.onSubmit(event)
                             }} method="post">
+                            <ul style={{width:'100%'}}>
+                                <li style={{marginRight:10}} >
+                                    <label htmlFor="firstname">First Name</label>
+                                    <div style={{marginBottom:10}} className="form-groups">
+                                        <div className="input">
+                                            <input type="text" name="firstname" onChange={this.changeHandler} placeholder="Your firstname" id="firstname" />
+                                        </div>
+                                        <span className="icon-checkmark"></span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <label htmlFor="lastname">Last Name</label>
+                                    <div className="form-groups" style={{marginBottom:10}}>
+                                        <div className="input">
+                                            <input type="text" name="lastname" onChange={this.changeHandler} placeholder="Your lastname" id="lastname" />
+                                        </div>
+                                        <span className="icon-checkmark"></span>
+                                    </div>
+                                </li>
+                            </ul>
                                 <label htmlFor="username">Email</label>
                                 <div className="form-groups">
                                     <div className="input">
@@ -152,4 +159,4 @@ class Login extends React.Component{
         );
     }
 }
-export default withStyles(styles)(Login);
+export default withStyles(styles)(SignUp);

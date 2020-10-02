@@ -1,0 +1,51 @@
+// @media(max-width:968px){
+//     section{
+//         // min-width: 10vw;
+//         width: 100%;
+//         margin: 10rem 0;
+//         user-select: none;
+
+//         .house-payment-details{
+//             width: 70%;
+//             margin: auto;
+//             padding-left: 0;
+//         }
+    
+//     }
+// }
+
+// Widescreens
+@include mediaXL {
+
+}
+
+// iPad devices
+@include mediaLg {
+    section{
+        width: 55vw;
+        margin-right: 0;
+        margin-left: 7rem;
+
+        .house-payment-details{
+            width: 62%;
+            padding-left: 0;
+            margin-left: 2.5rem;
+
+        }
+
+        aside{
+            width: 30vw;
+            right: -10rem;
+        }
+    }
+}
+
+// Tablets and small Laptops
+@include mediaMd {
+  
+}
+
+// Smartphones
+@include mediaSm {
+
+}

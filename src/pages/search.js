@@ -41,7 +41,7 @@ const Search = ({classes,history})=>{
     return(
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
-                    <div className={classes.container}>
+                    <div id="search-page" className={classes.container}>
                         <Grid container justify="flex-start" style={{position:'relative'}} spacing={3}>
                             <Grid item xs={12} md={6}>
                                 <Grid container justify="space-between">

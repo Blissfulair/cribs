@@ -1,0 +1,58 @@
+@import 'config.scss';
+
+@include mediaLg{
+    .search-forms{
+        display:flex;
+        justify-content:space-between;
+        align-items:center
+    }
+    .header-search-form{
+        display: flex !important;
+    }
+    .single-page-search{
+        display: none;
+    }
+}
+@include mediaXL{
+    .search-forms{
+        display:flex;
+        justify-content:space-between;
+        align-items:center
+    }
+    .header-search-form{
+        display: flex !important;
+    }
+    .single-page-search{
+        display: none;
+    }
+}
+@include mediaSm{
+    .search-forms{
+        display:grid;
+        grid-template-columns: 45% 45%;
+        justify-content: space-between;
+        align-items:center;
+        margin: 80px 10px 40px;
+        &> div{
+            width:100%;
+            margin:10px 0;
+        }
+        &>:first-child{
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+    }
+    .header-search-form{
+        display: none !important;
+    }
+    .single-page-search{
+        display: block;
+    }
+    .top-drawer-filter{
+            flex-wrap: wrap;
+        margin: 0 10px 20px;
+    }
+    #search-page{
+        padding-top:80px
+    }
+}

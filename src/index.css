@@ -121,6 +121,9 @@ svg{
     display: none !important;
   }
   .mobile-menu{
-    display: block !important;
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
   }
 }

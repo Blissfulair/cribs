@@ -3,7 +3,7 @@ import { Button, InputLabel, MenuItem, Select, TextField } from '@material-ui/co
 // import { makeStyles } from '@material-ui/core/styles';
 import { DatePicker } from '@material-ui/pickers';
 import React, { useState } from 'react';
-import './payment.scss';
+import './../scss/payment.scss';
 
 const Payment = () => {
 

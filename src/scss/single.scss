@@ -1,0 +1,64 @@
+@import "config.scss";
+
+@include mediaLg{
+    #slideTop,#slideBottom{
+        height: 200px;
+    }
+    #slide-cover{
+        height: 400px;
+    }
+    .single-map{ 
+        height:400px; 
+        width: 500px; 
+        position:absolute; 
+        left:-200px; 
+        top:100px; 
+    }
+}
+@include mediaXL{
+    #slideTop,#slideBottom{
+        height: 200px;
+    }
+    #slide-cover{
+        height: 400px;
+    }
+    .single-map{ 
+        height:400px; 
+        width: 500px; 
+        position:absolute; 
+        left:-200px; 
+        top:100px; 
+    }
+}
+@include mediaXL{
+    #slideTop,#slideBottom{
+        height: 200px;
+    }
+    #slide-cover,#slide-cover-img{
+        height: 400px;
+    }
+    .single-map{ 
+        height:400px; 
+        width: 500px; 
+        position:absolute; 
+        left:-200px; 
+        top:100px; 
+    }
+}
+@include mediaSm{
+    #slideTop,#slideBottom{
+        height: 140px;
+    }
+    #slide-cover,#slide-cover-img{
+        height: 280px;
+    }  
+    .single-map{ 
+        height:300px; 
+        width: 100%; 
+        position: relative;
+        margin-top: 60px;
+    }
+    #singlepage{
+        padding-top: 80px !important;
+    }
+}

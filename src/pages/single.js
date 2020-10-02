@@ -36,9 +36,10 @@ import Rating from '@material-ui/lab/Rating';
 import Calendar from "@material-ui/icons/Today"
 import SmokeFreeIcon from '@material-ui/icons/SmokeFree';
 import { DatePicker } from "@material-ui/pickers";
-// import { MapContainer } from "../components/map";
+import  MapContainer  from "../components/map";
 import Review from "../components/review"
 import {Link} from "react-router-dom"
+import './../scss/single.scss'
 const styles = theme =>({
     container:{
         paddingTop:140
@@ -161,18 +162,18 @@ const Single = ({classes})=>{
     return(
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
-                    <div className={classes.container}>
+                    <div id="singlepage" className={classes.container}>
                         <Grid container justify="flex-start" style={{position:'relative'}} spacing={3}>
                             <Grid item xs={12} md={8}>
                                 <Grid container>
                                     <Grid item xs={4}>
-                                        <div className={classes.background} style={{ height:200, backgroundImage:`url(${image})`}}>
+                                        <div className={classes.background} id="slideTop" style={{ backgroundImage:`url(${image})`}}>
                                             <div className={classes.overlay}></div>
                                         </div>
-                                        <div className={classes.background} style={{ height:200, backgroundImage:`url(${image})`}}></div>
+                                        <div className={classes.background} id="slideBottom" style={{ backgroundImage:`url(${image})`}}></div>
                                     </Grid>
                                     <Grid item xs={8}>
-                                        <div className={classes.background} style={{height:400}}>
+                                        <div className={classes.background} id="slide-cover">
                                             <div className={classes.overlay1}></div>
                                             <DetailSlide content={[1,1,1,1]}/>
                                         </div>
@@ -200,7 +201,7 @@ const Single = ({classes})=>{
                                 </Tabs>
                                 <Box p={3}>
                                     <Typography style={{marginBottom:30}} variant="h4" id="overview">Mary's Garden</Typography>
-                                    <Grid container>
+                                    <Grid container spacing={2}>
                                         <Grid item xs={5}>
                                             <div className={classes.position} > 
                                             <BusinessIcon htmlColor="#00A8C8" fontSize="large"/>
@@ -456,10 +457,10 @@ const Single = ({classes})=>{
                                 </Paper>
                             </Grid>
                             <Grid container id="location" justify="flex-end">
-                                <Grid item xs={10}>
+                                <Grid item xs={12} md={10}>
                                     <Paper elevation={0} style={{borderRadius:0, backgroundColor:"#ECECEC", position:'relative', minHeight:1000}}>
-                                        <div style={{ height:400, width: 500, position:'absolute', left:-200, top:100, backgroundColor:'black'}}>
-                                            {/* <MapContainer/> */}
+                                        <div className="single-map">
+                                            <MapContainer/>
                                         </div>
                                         <Grid container spacing={3} justify="center">
                                             <Grid item xs={5}>

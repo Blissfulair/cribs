@@ -6,13 +6,9 @@ import Calendar from "@material-ui/icons/Today"
 import People from "@material-ui/icons/PeopleOutline"
 import {Grid, TextField} from "@material-ui/core"
 import { DatePicker } from "@material-ui/pickers";
+import "../scss/header.scss"
 const styles = theme =>({
 
-    form:{
-        display:'flex',
-        justifyContent:'space-between',
-        alignItems:'center'
-    },
     location:{
         height:'50px',
         width:'25%',
@@ -87,7 +83,7 @@ const SearchForm = (props)=>{
         <Grid container>
             <Grid item xs={false} md={1}/>
             <Grid item xs={12} md={9}>
-                <form className={classes.form} noValidate={false} autoComplete="off">
+                <form className='search-forms' noValidate={false} autoComplete="off">
                     <div className={classes.location} style={{borderColor:locationF?'#00A3C5':'#DCDCDC'}}>
                         <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
                         <div style={{width:'100%',height:'90%'}}>

@@ -35,11 +35,12 @@ const DetailSlide = ({content})=>{
                         <ArrowRightIcon htmlColor="#fff"/>
                     </div>
                     }
+                    autoPlay={5000}
                     addArrowClickHandler
                     >
                     {content.map((new_deal,index)=>{
                     return (
-                        <img key={index} style={{width:'100%', height:400}} src={image} alt=""/>
+                        <img key={index} style={{width:'100%'}} id="slide-cover-img" src={image} alt=""/>
                     )
                     })
                     }

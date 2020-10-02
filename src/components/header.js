@@ -11,6 +11,9 @@ import SearchForm from "../components/searchForm"
 import {withStyles} from "@material-ui/core/styles"
 import MenuIcon from '@material-ui/icons/Menu';
 import SideBar from "./drawer"
+import SearchIcon from '@material-ui/icons/Search';
+import "./../scss/header.scss"
+import TopDrawer from "./topDrawer";
 
 const styles = theme=>({
     container:{
@@ -38,6 +41,7 @@ const Header = (props)=>{
         const [anchorEl, setAnchorEl] = useState(null)
         const [state, setState] = useState({
             left: false,
+            top:false
           });
 
         const handleClick = (event) => {
@@ -60,13 +64,17 @@ const Header = (props)=>{
     return(
         <AppBar position="fixed"  color="primary">
             <Toolbar style={{padding:0}}>
-                <Button className="mobile-menu" onClick={toggleDrawer('left',true)}><MenuIcon /></Button>
+                <div className="mobile-menu">
+                    <Button  onClick={toggleDrawer('left',true)}><MenuIcon /></Button>
+                    <Button onClick={toggleDrawer('top',true)}><SearchIcon /></Button>
+                </div>
                 <Grid className="header" container alignItems="center" justify="center">
                     <Grid item xs={10} className={classes.container}>
                         <Link className={classes.brand} to={'/'}>
                             <Typography style={{color:'#707070'}} variant="h4">{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME:'React App'}</Typography>
                         </Link>
                         <SideBar state={state} toggleDrawer={toggleDrawer}/>
+                        <TopDrawer classes={classes} location={props.location.pathname} state={state} toggleDrawer={toggleDrawer}/>
                         <div className={classes.menu}>
                             <div>
                                 <Button  style={{color:'#046FA7'}} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
@@ -97,12 +105,12 @@ const Header = (props)=>{
             {
                 props.location.pathname === '/search' || props.location.pathname ==='/single'?
                 <>
-                    <Toolbar style={{padding:0, backgroundColor:'#f1f1f1'}}>
+                    <Toolbar className="header-search-form" style={{padding:0, backgroundColor:'#f1f1f1'}}>
                         <SearchForm/>
                     </Toolbar>
                     {
                         props.location.pathname === '/search'?
-                        <Toolbar style={{padding:0, backgroundColor:'#fff'}}>
+                        <Toolbar className="header-search-form" style={{padding:0, backgroundColor:'#fff'}}>
                         <Grid container>
                             <Grid item xs={false} md={1}/>
                             <Grid item xs={12} md={5}>

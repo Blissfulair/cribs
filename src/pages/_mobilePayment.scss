@@ -48,4 +48,35 @@
 // Smartphones
 @include mediaSm {
 
+    section{
+        width: 100%;
+        margin-left: 0;
+        margin-top: 3rem;
+        position: unset;
+
+        .house-payment-details{
+            width: 80%;
+            padding-left: 0;
+            // margin-left: 1.5rem;
+            margin: auto;
+            min-height: 40vh;
+            // margin-bottom: 10rem;
+        }
+
+        aside{
+            position: unset;
+            width: 100%;
+            padding-top: 2rem;
+            margin-bottom: 0;
+            padding-bottom: 0;
+
+            form{
+                .MuiButtonBase-root{
+                   width: 90%;
+                }
+            }
+
+        }
+    }
+
 }

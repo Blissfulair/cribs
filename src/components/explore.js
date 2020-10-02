@@ -5,12 +5,19 @@ import City from "./city"
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 const Explore = ({content})=>{
+    let slides = 3
+    if(window){
+        const width = window.innerWidth
+        if(width <767){
+            slides = 1
+        }
+    }
     return(
         <>
             
             {content.length > 0?(
                 <Carousel
-                    slidesPerPage={3}
+                    slidesPerPage={slides}
                     slidesPerScroll={1}
                     infinite
                     autoPlay={2500}

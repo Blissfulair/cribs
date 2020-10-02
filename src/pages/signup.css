@@ -91,11 +91,10 @@
 .form form input[type=password],
 .form form input[type=email]{
     display: block;
-    margin-top: 8px;
     outline: 0;
     border: none;
     width: 93%;
-    padding: 12px 5px;
+    padding: 12px 13px;
     font-family: 'Montserrat-Medium';
     font-size: 15px;
     color:var(--dark-border);
@@ -156,9 +155,8 @@ input[type=checkbox]{
     outline: 0;
     border: none;
     text-align: center;
-    background: #0D5B9B;
-    border-radius: 30px;
-    padding: 10px 0;
+    background: #00A8C8;
+    padding: 14px 0;
     font-family: 'Montserrat-Medium';
     font-size: 15px;
     color: var(--white);

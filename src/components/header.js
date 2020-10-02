@@ -9,6 +9,8 @@ import {Link, withRouter} from "react-router-dom";
 import SyncAltIcon from '@material-ui/icons/SyncAlt';
 import SearchForm from "../components/searchForm"
 import {withStyles} from "@material-ui/core/styles"
+import MenuIcon from '@material-ui/icons/Menu';
+import SideBar from "./drawer"
 
 const styles = theme=>({
     container:{
@@ -31,8 +33,12 @@ const styles = theme=>({
         color:'#979797'
     }
 })
+
 const Header = (props)=>{
-        const [anchorEl, setAnchorEl] = useState(null);
+        const [anchorEl, setAnchorEl] = useState(null)
+        const [state, setState] = useState({
+            left: false,
+          });
 
         const handleClick = (event) => {
             setAnchorEl(event.currentTarget);
@@ -42,19 +48,28 @@ const Header = (props)=>{
         setAnchorEl(null);
         };
 
+        
+        const toggleDrawer = (anchor, open) => (event) => {
+            if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+              return;
+            }
+        
+            setState({ ...state, [anchor]: open });
+          };
         const {classes} = props
-        console.log(props.location)
     return(
         <AppBar position="fixed"  color="primary">
             <Toolbar style={{padding:0}}>
-                <Grid container alignItems="center" justify="center">
+                <Button className="mobile-menu" onClick={toggleDrawer('left',true)}><MenuIcon /></Button>
+                <Grid className="header" container alignItems="center" justify="center">
                     <Grid item xs={10} className={classes.container}>
                         <Link className={classes.brand} to={'/'}>
-                            <Typography style={{color:'#707070'}} variant="h4">CRIB NG</Typography>
+                            <Typography style={{color:'#707070'}} variant="h4">{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME:'React App'}</Typography>
                         </Link>
+                        <SideBar state={state} toggleDrawer={toggleDrawer}/>
                         <div className={classes.menu}>
                             <div>
-                                <Button style={{color:'#046FA7'}} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                                <Button onClick={toggleDrawer} style={{color:'#046FA7'}} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                                     EN
                                 </Button>
                                 <Menu

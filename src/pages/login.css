@@ -1,14 +1,27 @@
 .signin{
     width: 30%;
     margin: 0 auto;
-    margin-bottom: -200px;
 }
 .signin > h2,
 .signin > p{
     font-family: 'Montserrat-Bold';
-    font-size: 30px;
+    font-size: 30px !important;
     color: #046FA7;
     text-align: center;
+}
+.signin > ul{
+    list-style: none;
+    display: flex;
+    margin:0 auto;
+    width: 80%;
+    justify-content: space-evenly;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+.signin >ul>.line{
+    height: 20px;
+    width: 1px;
+    background-color: #707070;
 }
 .signin > p{
     font-family: 'Montserrat-Medium';
@@ -19,10 +32,7 @@
     border: 2px solid #EFEFEF;
     border-radius: 5px;
     width: 100%;
-    display: grid;
-    grid-template-columns: 10% 80% 10%;
-    align-items: center;
-    justify-content: center;
+    margin:10px 0 17px
 }
 .form-groups span[class^="icon-"]{
     font-size: 20px;
@@ -73,7 +83,7 @@ label[for=rememberme]{
 }
 @media (max-width:767px){
     .signin{
-        width: 100%;
+        width: 90%;
         margin-bottom: 0;
     }
     .signin > h2, .signin > p{

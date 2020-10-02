@@ -101,7 +101,7 @@ const Index = (props)=>{
     const {classes} = props
     const [selectedDate, handleDateChange] = useState(new Date());
     return(
-        <Grid container justify="center">
+        <Grid className="home" container justify="center">
             <Grid item className={classes.loginContainer} >
                 <Grid container justify="center">
                     <Grid item xs={10} md={5}>

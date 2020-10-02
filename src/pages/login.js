@@ -2,7 +2,15 @@ import React from "react";
 import "./signup.css"
 import "./login.css"
 import {Link} from "react-router-dom"
+import FacebookIcon from '@material-ui/icons/Facebook';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import { Button ,withStyles } from "@material-ui/core";
 
+const styles = ()=>({
+    label:{
+        textTransform:'capitalize'
+    }
+})
 class Login extends React.Component{
 
     constructor(props){
@@ -12,7 +20,8 @@ class Login extends React.Component{
             password:'',
             remember:false,
             err:'',
-            token:''
+            token:'',
+            type:false
         }
     }
 
@@ -60,6 +69,9 @@ class Login extends React.Component{
         }
     }
 
+    toggleLogin = ()=>{
+        this.setState({type: !this.state.type})
+    }
 
     render(){
         return (
@@ -68,6 +80,21 @@ class Login extends React.Component{
                 <div className="header-wrap">
                     <div className="signin">
                         <p>Sign in to get started</p>
+                        <ul>
+                            <li >
+                                <Button classes={{root:this.props.classes.label}} onClick={this.toggleLogin}>
+                                    <span style={{color:!this.state.type?'#00ADCB':'#DCDCDC'}}>Renting</span>
+                                </Button>
+                            </li>
+                            <li className="line"></li>
+                            <li>
+                                <Button classes={{root:this.props.classes.label}}  onClick={this.toggleLogin}>
+                                    <span style={{color:this.state.type?'#00ADCB':'#DCDCDC'}}>
+                                    Hosting
+                                    </span>
+                                </Button>
+                            </li>
+                        </ul>
                         <div className="form">
                         <p className="error">{this.state.err}</p>
                             <form onSubmit={event=>{
@@ -93,13 +120,13 @@ class Login extends React.Component{
                                             <input type="checkbox" name="remember" onChange={this.changeHandler} id="rememberme" />
                                             <span className="checkmark"></span>
                                     </label>
-                                    <label htmlFor="rememberme">Remember Me?</label>
+                                    <label htmlFor="rememberme">keep me logged me</label>
                                     <Link to="/forgot">Forgot Password?</Link>
                                 </div>
                                 <button className="btn-signup">Login</button>
                                 <div className="social-signup">
                                     <a href="https://www.facebook.com" className="col">
-                                        <span className="icon-facebook-login"></span>
+                                        <FacebookIcon/>
                                     </a>
                                     <a href="https://www.plus.google.com" className="col">
                                         <div>
@@ -107,7 +134,7 @@ class Login extends React.Component{
                                         </div>
                                     </a>
                                     <a href="https://www.twitter.com" className="col">
-                                        <span className="icon-twitter-login"></span>
+                                        <TwitterIcon/>
                                     </a>
                                 </div>
                                 <p>Don't have an account? <Link to="/signup">Signup here</Link></p>
@@ -119,4 +146,4 @@ class Login extends React.Component{
         );
     }
 }
-export default Login;
+export default withStyles(styles)(Login);

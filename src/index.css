@@ -2,6 +2,19 @@
   padding:0;
   margin:0;
 }
+:root {
+  --bg-blue: #0f478f;
+  --white: #ffffff;
+  --text-blue: #0e5296;
+  --btn-yellow: #ffd70e;
+  --shadow: #00000029;
+  --dark-border: #707070;
+  --dash-border: #FCFCFC;
+  --light-border: #cfcfcf;
+  --border-hover: #1480ec;
+  --red: #c50000;
+  --black: #000;
+}
 .MuiGrid-spacing-xs-2{
   width:100% !important;
   padding:0 !important;
@@ -67,6 +80,10 @@
 }
 .single .MuiInputLabel-outlined.MuiInputLabel-shrink{
   transform: translate(14px, 8px) scale(0.75) !important;
+  white-space: nowrap;
+}
+.home .MuiInputLabel-animated.MuiInputLabel-shrink{
+  white-space: nowrap !important;
 }
 .single #check-in,
 .single #check-out{
@@ -81,4 +98,29 @@
 }
 a{
   text-decoration: none;
+}
+.mobile-menu{
+  display: none !important;
+}
+.a{fill:#fbbb00;}.b{fill:#518ef8;}.c{fill:#28b446;}.d{fill:#f14336;}
+svg{
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-self: center;
+  justify-self: center;
+}
+@media(max-width:767px){
+  #end,#begin{
+    font-size: 12px;
+  }
+  label[for=begin],label[for=end]{
+    margin-right: 5px !important;
+  }
+  .header{
+    display: none !important;
+  }
+  .mobile-menu{
+    display: block !important;
+  }
 }

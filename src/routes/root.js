@@ -1,5 +1,6 @@
 import React from "react";
 import {Route,Switch} from "react-router-dom"
+import Payment from "../pages/Payment";
 import Index from "../pages/index"
 import  Search from "../pages/search";
 import Single from "../pages/single";
@@ -7,6 +8,9 @@ import Login from "../pages/login";
 const Root = ()=>{
     return(
         <Switch>
+            <Route path='/payment' >
+                <Payment/>
+            </Route>
             <Route path="/search">
                 <Search/>
             </Route>
@@ -19,6 +23,7 @@ const Root = ()=>{
             <Route path="/">
                 <Index/>
             </Route>
+            
         </Switch>
     )
 }

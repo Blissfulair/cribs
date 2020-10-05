@@ -4,13 +4,9 @@
 }
 .table-head .table-title{
     display: grid;
-    grid-template-columns: 11.5% 19.5% 23.7% 19.5% 16.8% 9%;
-    justify-content: center;
     align-items: center;
 }
-.table-head .table-title li:first-child{
-    margin-left: 15px;
-}
+
 .table-head .table-title li{
     font-family: 'Roboto-Bold';
     font-size: 14px;

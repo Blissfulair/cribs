@@ -1,5 +1,7 @@
 @import 'config.scss';
-
+.dashboard-mobile-menu{
+    display: flex !important;
+}
 @include mediaLg{
     .search-forms{
         display:flex;
@@ -54,5 +56,8 @@
     }
     #search-page{
         padding-top:80px
+    }
+    .dashboard-mobile-menu{
+        display: none !important;
     }
 }

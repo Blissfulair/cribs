@@ -4,9 +4,14 @@ import "./login.css"
 import {Link} from "react-router-dom"
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import {withStyles } from "@material-ui/core";
+import {withStyles,Snackbar, Slide } from "@material-ui/core";
+import {Alert} from "@material-ui/lab"
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import AppContext from "../state/context";
+import Activity from "../components/activity"
+import firebase from "../components/firebase"
+
 
 const styles = ()=>({
     label:{
@@ -18,13 +23,19 @@ const styles = ()=>({
         borderColor:'#DCDCDC'
     }
 })
+const TransitionUp=(props)=>{
+    return <Slide {...props} direction="down" />;
+  }
 class SignUp extends React.Component{
 
+    static contextType = AppContext
     constructor(props){
         super(props)
         this.state = {
-            username:'',
+            firstname:'',
             password:'',
+            email:'',
+            lastname:'',
             remember:false,
             err:'',
             token:'',
@@ -37,22 +48,48 @@ class SignUp extends React.Component{
         const name = e.target.name;
         this.setState({[name]:e.target.value})
         }
-
+        handleClick = (Transition) => () => {
+            this.setState({transition:Transition, open:true})
+            };
+        handleCloseSnackBar = (event,reason) => {
+            if (reason === 'clickaway') {
+                return;
+              }
+            this.setState({open:false})
+            };
     onSubmit =(event)=>{
         event.preventDefault()
-        if(this.state.username === '')
-            this.setState({err:'Username or Email is required'})
+        if(this.state.firstname === '')
+        this.setState({err:'Firstname is required'})
+        else if(this.state.lastname === '')
+        this.setState({err:'Lastname is required'})
+        else if(this.state.email === '')
+            this.setState({err:'Email is required'})
         else if(this.state.password === '')
             this.setState({err:"Password is required"})
         else{
             if(this.state.remember === 'on')
                 this.setState({remember:true})
-            this.setState({err:''})
-            // const body = {
-            //     email: this.state.username,
-            //     password:this.state.password,
-            //     remember:this.state.remember
-            // }
+            this.setState({err:'',loading:true})
+            const body = {
+                email: this.state.email,
+                password:this.state.password,
+                firstname:this.state.firstname,
+                lastname:this.state.lastname,
+                type:false,
+                loading:false,
+                transition:undefined,
+                open:false
+            }
+            firebase.register(body)
+            .then(()=>{
+                this.setState({loading:false})
+            })
+            .catch((err=>{
+                this.setState({loading:false,
+                    err:err.message
+                })
+            }))
             // if(handleLogin(body))
             // {
             //     this.setState({username:'',password:''})
@@ -83,6 +120,7 @@ class SignUp extends React.Component{
     render(){
         return (
             <>
+            <Activity loading={this.state.loading} />
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div className="signin">
@@ -90,7 +128,19 @@ class SignUp extends React.Component{
                         <span className="subtitle">Let's get you all set up so you can begin finding your next best spot</span>
 
                         <div className="form">
-                        <p className="error">{this.state.err}</p>
+                        {
+                                this.state.err&&
+                                <Snackbar
+                                open={this.state.open}
+                                onClose={this.handleCloseSnackBar}
+                                TransitionComponent={this.state.transition}
+                                anchorOrigin={{vertical:'top',horizontal:'right'}}
+                                autoHideDuration={5000}
+                                key={this.state.transition ? this.state.transition.name : ''}
+                                >
+                                    <Alert variant="filled" severity="error">{this.state.err}</Alert>
+                                </Snackbar>
+                            }
                             <form onSubmit={event=>{
                                 this.onSubmit(event)
                             }} method="post">
@@ -117,7 +167,7 @@ class SignUp extends React.Component{
                                 <label htmlFor="username">Email</label>
                                 <div className="form-groups">
                                     <div className="input">
-                                        <input type="text" name="username" onChange={this.changeHandler} placeholder="name@email.com" id="username" />
+                                        <input type="text" name="email" onChange={this.changeHandler} placeholder="name@email.com" id="username" />
                                     </div>
                                     <span className="icon-checkmark"></span>
                                 </div>
@@ -131,12 +181,15 @@ class SignUp extends React.Component{
                                 </div>
                                 <div className="form-check">
                                     <FormControlLabel
-                                            control={<Checkbox id="remember" onChange={()=>this.setState({remember: !this.state.remember})} classes={{root:this.props.classes.check}} name="remember"/>}
-                                            label="keep me logged me"
+                                            control={<Checkbox id="renting" onChange={()=>this.setState({remember: !this.state.remember})} classes={{root:this.props.classes.check}} name="remember"/>}
+                                            label="Renting"
                                         />
-                                    <Link to="/forgot">Forgot Password?</Link>
+                                    <FormControlLabel
+                                            control={<Checkbox id="hosting" onChange={()=>this.setState({remember: !this.state.remember})} classes={{root:this.props.classes.check}} name="remember"/>}
+                                            label="Hosting"
+                                        />
                                 </div>
-                                <button className="btn-signup">Login</button>
+                                <button onClick={this.handleClick(TransitionUp)} className="btn-signup">Login</button>
                                 <div className="social-signup">
                                     <a href="https://www.facebook.com" className="col">
                                         <FacebookIcon/>

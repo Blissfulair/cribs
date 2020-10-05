@@ -4,9 +4,12 @@ import "./login.css"
 import {Link} from "react-router-dom"
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import { Button ,withStyles } from "@material-ui/core";
+import { Button ,withStyles,Snackbar, Slide } from "@material-ui/core";
+import {Alert} from "@material-ui/lab"
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import firebase from "../components/firebase"
+import Activity from "../components/activity"
 
 const styles = ()=>({
     label:{
@@ -18,6 +21,9 @@ const styles = ()=>({
         borderColor:'#DCDCDC'
     }
 })
+const TransitionUp=(props)=>{
+    return <Slide {...props} direction="down" />;
+  }
 class Login extends React.Component{
 
     constructor(props){
@@ -28,7 +34,10 @@ class Login extends React.Component{
             remember:false,
             err:'',
             token:'',
-            type:false
+            type:false,
+            loading:false,
+            transition:undefined,
+            open:false
         }
     }
 
@@ -37,27 +46,42 @@ class Login extends React.Component{
         const name = e.target.name;
         this.setState({[name]:e.target.value})
         }
-
+    handleClick = (Transition) => () => {
+        this.setState({transition:Transition, open:true})
+        };
+    handleCloseSnackBar = (event,reason) => {
+        if (reason === 'clickaway') {
+            return;
+          }
+        this.setState({open:false})
+        };
+    
     onSubmit =(event)=>{
         event.preventDefault()
         if(this.state.username === '')
-            this.setState({err:'Username or Email is required'})
+            this.setState({err:'Email is required'})
         else if(this.state.password === '')
             this.setState({err:"Password is required"})
         else{
             if(this.state.remember === 'on')
                 this.setState({remember:true})
-            this.setState({err:''})
-            // const body = {
-            //     email: this.state.username,
-            //     password:this.state.password,
-            //     remember:this.state.remember
-            // }
-            // if(handleLogin(body))
-            // {
-            //     this.setState({username:'',password:''})
-            //     event.target.reset();
-            // }
+            this.setState({err:'',loading:true})
+            const body = {
+                email: this.state.username,
+                password:this.state.password,
+                remember:this.state.remember
+            }
+            firebase.login(body)
+            .then(()=>{
+                this.setState({loading:false})
+            })
+            .catch((err)=>[
+                this.setState({
+                    loading:false, 
+                    err:err.code==='auth/network-request-failed'?'Please check your network connection and try again.':
+                    err.code
+                })
+            ])
             
         }
 
@@ -83,6 +107,7 @@ class Login extends React.Component{
     render(){
         return (
             <>
+                <Activity loading={this.state.loading} />
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div className="signin">
@@ -103,7 +128,20 @@ class Login extends React.Component{
                             </li>
                         </ul>
                         <div className="form">
-                        <p className="error">{this.state.err}</p>
+                            {
+                                this.state.err&&
+                                <Snackbar
+                                open={this.state.open}
+                                onClose={this.handleCloseSnackBar}
+                                TransitionComponent={this.state.transition}
+                                anchorOrigin={{vertical:'top',horizontal:'right'}}
+                                autoHideDuration={5000}
+                                key={this.state.transition ? this.state.transition.name : ''}
+                                >
+                                    <Alert variant="filled" severity="error">{this.state.err}</Alert>
+                                </Snackbar>
+                            }
+                        {/* <p className="error">{this.state.err}</p> */}
                             <form onSubmit={event=>{
                                 this.onSubmit(event)
                             }} method="post">
@@ -129,7 +167,7 @@ class Login extends React.Component{
                                         />
                                     <Link to="/forgot">Forgot Password?</Link>
                                 </div>
-                                <button className="btn-signup">Login</button>
+                                <button onClick={this.handleClick(TransitionUp)} className="btn-signup">Login</button>
                                 <div className="social-signup">
                                     <a href="https://www.facebook.com" className="col">
                                         <FacebookIcon/>

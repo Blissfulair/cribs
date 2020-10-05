@@ -50,7 +50,7 @@ const styles = (theme)=>({
 })
 const Footer = ({classes})=>{
     return(
-        <Paper classes={{root:classes.container}} square>
+        <Paper className="footer" classes={{root:classes.container}} square>
             <Grid container classes={{root:classes.inner}}>
                 <Grid item xs={false} md={1}/>
                 <Grid item xs={12} md={10}>

@@ -188,16 +188,6 @@ const Index = (props)=>{
                                 )
                             })
                         }
-                        {/* <Grid item xs={12} sm={6} md={3} lg={3}>
-
-                            <Trending name="two" color="#08191A"/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
-                            <Trending name="three" color="#EE2B72"/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
-                            <Trending name="four" rating={2} color="#C8BB00"/>
-                        </Grid> */}
                     </Grid>
                 </div>
                 <Link className={classes.link} to={'/'}>See more</Link>

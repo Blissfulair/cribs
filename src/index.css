@@ -5,7 +5,7 @@
 :root {
   --bg-blue: #0f478f;
   --white: #ffffff;
-  --text-blue: #0e5296;
+  --text-blue: #00A8C8;
   --btn-yellow: #ffd70e;
   --shadow: #00000029;
   --dark-border: #707070;
@@ -109,6 +109,22 @@ svg{
   display: flex;
   align-self: center;
   justify-self: center;
+}
+.MuiSwitch-thumb{
+  background-color: var(--text-blue) !important;
+}
+.test {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 5px solid transparent;
+  background-size: 100% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient(white, white), 
+                    linear-gradient(30deg, #046FA7 30%, #00A8C8 30%);
+  background-origin: content-box, border-box;
+  background-clip: content-box, border-box;
+  transform: rotate(150deg);
 }
 @media(max-width:767px){
   #end,#begin{

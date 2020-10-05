@@ -1,0 +1,191 @@
+.table-head{
+    width: 100%;
+    margin-bottom: 12px;
+}
+.table-head .table-title{
+    display: grid;
+    grid-template-columns: 11.5% 19.5% 23.7% 19.5% 16.8% 9%;
+    justify-content: center;
+    align-items: center;
+}
+.table-head .table-title li:first-child{
+    margin-left: 15px;
+}
+.table-head .table-title li{
+    font-family: 'Roboto-Bold';
+    font-size: 14px;
+    color: var(--text-blue);
+}
+.property-bod{
+    margin-top: 0;
+    height: 380px !important;
+}
+.inbox-body table td a,
+.inbox-body table td{
+    font-family: 'Poppins-Medium' !important;
+    font-size: 13px !important;
+    color: var(--text-blue) !important;
+}
+.inbox-body table tr td:last-child a,
+.inbox-body table tr td:last-child span{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.inbox-body table tr.new td:last-child span{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.inbox-body table tr td:last-child a span[class*='icon-']::before,
+.inbox-body table tr td:last-child span[class*='icon-']::before{
+    font-size: 17px;
+    color: #ACA9A9;
+}
+.property-filter{
+    margin: 15px 0;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 27% 11% 13% 34%;
+    grid-column-gap: 5%;
+}
+.sort{
+    border-radius: 20px;
+    width:100%;
+    border-collapse: collapse;
+    border:1px solid var(--text-blue)
+}
+.sort select{
+    color: var(--text-blue);
+}
+select,
+.property-filter a{
+    background: transparent;
+    border: none;
+    width: 100%;
+    padding: 5px 0 5px 10px;
+    outline: 0;
+    font-size: 13px;
+    cursor: pointer;
+}
+.add-property a{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    right: 50px;
+    color: #ACA9A9;
+}
+.add-icon{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: -45px;
+    border-radius: 50%;
+    background: var(--text-blue);
+}
+.add-icon::after{
+    position: absolute;
+    content: '+';
+    font-size: 30px;
+    left: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    color:var(--white)
+}
+.action{
+    border: 1px solid #EFEFEF;
+    display: grid;
+    grid-template-columns: 90% 10%;
+}
+.action select{
+    color: #ACA9A9;
+}
+.action span{
+    width: 100%;
+    height: 100%;
+    background: var(--text-blue);
+    position: relative;
+}
+.action span::after{
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 30%;
+    height: 9px;
+    width: 9px;
+    background: var(--white);
+    border-top-left-radius: 100%;    
+    transform: rotate(45deg) translate(-50%, -50%);
+}
+@media (max-width:767px){
+    .property-bod{
+        height: auto !important;
+    }
+    .inbox-head{
+        position: relative;
+    }
+    .action{
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 120px;
+        height:36px;
+        grid-template-columns: 65% 35%;
+        box-shadow: 0px 3px 6px #0F134842;
+        border-width: 0;
+        border-radius: 40px;
+    }
+    .action select{
+        border-radius: 40px 0 0 40px;
+        color: #355584;
+        font-family: "Poppins-Medium";
+        padding-left: 20%;
+        width: 80%;
+    }
+    .action span{
+        border-radius: 0 40px 40px 0;
+        background: #0F4174
+    } 
+    .property-filter{
+        grid-template-columns: 25% 27% 38%;
+        margin-top: 35px;
+        margin-bottom: 35px;
+    }
+    .sort{
+        border-width: 0;
+        box-shadow: 0px 3px 6px #0F134842;
+    }
+    .sort select{
+        color: var(--black);
+        font-family: "Poppins-Light";
+        font-size: 11px;
+    }
+    .add-property a{
+        color: transparent
+    }
+    .add-icon::after{
+        font-size: 32px;
+    }
+    .add-icon{
+        height: 40px;
+        width: 40px;
+        box-shadow: 0px 5px 12px #090202A6;
+        background: #355584
+    }
+    .table-head .table-title{
+        display: none;
+    }
+    .action span::after{
+        border-width: 0 2px 2px 0;
+        border-style: solid;
+        border-color: var(--white);
+        background: none
+    }
+    .inbox-title h4{
+        color: #355584;
+        font-family: "Poppins-SemiBold"
+    }
+}

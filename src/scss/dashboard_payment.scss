@@ -19,10 +19,8 @@
 
         & > div{
             flex: auto;
-            border-right-color:#DCDCDC;
-            border-right-width: 1px;
-            border-right-style: solid;
-
+            border-right: 1px solid #DCDCDC;
+            
             .dashboard__amount{
                 padding-top: .5rem;
             }
@@ -58,3 +56,6 @@
         }
     }
 }
+
+
+@import 'mobileDashboardPayment';

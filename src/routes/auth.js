@@ -3,6 +3,7 @@ import {Route,Switch,withRouter} from "react-router-dom"
 import Dashboard from "../pages/app/dashboard";
 import Properties from "../pages/app/properties";
 import AddProperty from "../pages/app/addProperty";
+import DashboardPayment from "../pages/app/DashboardPayment";
 const Auth = ({history, location})=>{
     const path = location.pathname;
 useEffect(()=>{
@@ -24,6 +25,9 @@ useEffect(()=>{
             </Route>
             <Route path='/app/add-property' >
                 <AddProperty/>
+            </Route>
+            <Route path='/app/payments' >
+                <DashboardPayment/>
             </Route>
             
         </Switch>

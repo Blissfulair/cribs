@@ -6,12 +6,61 @@
 }
 
 .calendar__details{
+
+    .select__property{
+
+        label{
+            display: block;
+            font-size: 1.2rem;
+            color: #707070;
+            padding: 0.8rem 0;
+        }
+        select#property{
+            width: 15rem;
+            border: 1px solid #DCDCDC;
+            min-height: 2rem;
+            color: #A1A1A1;
+            font-size: 1.1rem;
+            padding: 0.5rem 0 0.5rem 0.3rem;
+        }
+    }
+
     
     .availability{
+        margin-top: 2.5rem;
         width: 15rem;
-        height: 25rem;
+        height: 20rem;
         box-shadow: 0px 0px 6px #00000029;
         border-radius: 5px;
         background: #ffffff;
+        color: #707070;
+        padding-left: 0.8rem;
+
+        h4{
+            padding: 0.4rem 0;
+        }
+
+        .availability__switch{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.1rem;
+        }
+
+        .amount{
+            background: #ffffff;
+            display: inline-block;
+            padding: 0.1rem 0.5rem;
+            border: 1px solid #DCDCDC;
+            margin-right: 0.2rem;
+        }
+
+        .button__book{
+            background: $primary-color;
+            border-radius: 36px;
+            color: #fff;
+            width: 90%;
+            margin-top: 1.8rem;
+        }
     }
 }

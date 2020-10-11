@@ -45,7 +45,16 @@ const DashboardCalendar = () => {
 
             <div className="calendar__details">
                 <div className="select__property">
-                    <FormControl variant='filled' >
+                    {/* <h3>Select Property</h3>
+                     */}
+                     <label for='property'>Select Property</label>
+                    <select name="property" id="property">
+                        <option value="Mary's Garden">Mary's Garden</option>
+                        <option value="Peter's Garden">Peter's Garden</option>
+                        <option value="John's Garden">John's Garden</option>
+                        <option value="audi">Audi</option>
+                    </select>
+                    {/* <FormControl variant='filled' >
                         <InputLabel id="demo-simple-select-label">Select Property</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -57,29 +66,34 @@ const DashboardCalendar = () => {
                             <MenuItem value={20}>Peter's Garden</MenuItem>
                             <MenuItem value={30}>John's Garden</MenuItem>
                         </Select>
-                    </FormControl>
+                    </FormControl> */}
                     <div className="availability">
+
                         <div className="availability__switch">
-                            <h4>Availability</h4>
+                            <h3>Availability</h3>
                             <FormControlLabel
                                 control={<Switch checked={available} onChange={handleAvailable} />}
-                                
+
                             />
                         </div>
+
                         <div className="room">
                             <h4>Room</h4>
-                            <input type="number" name="" min='1' step='1' id=""/>
+                            <input type="number" name="" min='1' step='1' id="" />
                         </div>
+
                         <div className="guests">
                             <h4>Guests</h4>
-                            <input type="number" min='0' step='1'/>
+                            <input type="number" min='0' step='1' />
                         </div>
+
                         <div className="price">
                             <h4>Price</h4>
                             <div className="amount">2000</div>
                             <span>/night</span>
                         </div>
-                        <Button>Book</Button>
+                        <Button className='button__book'>Book</Button>
+
                     </div>
 
                 </div>

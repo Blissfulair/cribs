@@ -1,0 +1,17 @@
+@import 'config';
+
+.calendar__heading{
+    color: $primary-color;
+    margin-top: 120px;
+}
+
+.calendar__details{
+    
+    .availability{
+        width: 15rem;
+        height: 25rem;
+        box-shadow: 0px 0px 6px #00000029;
+        border-radius: 5px;
+        background: #ffffff;
+    }
+}

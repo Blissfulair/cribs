@@ -6,8 +6,11 @@
 }
 
 .calendar__details{
+    display: flex;
+    align-items: center;
 
     .select__property{
+        margin-right: 10rem;
 
         label{
             display: block;
@@ -64,3 +67,5 @@
         }
     }
 }
+
+@import 'mobileDashboardCalendar';

@@ -9,6 +9,7 @@ import Switch from '@material-ui/core/Switch';
 import { Button } from '@material-ui/core';
 import Calendar from 'react-calendar';
 
+
 import 'react-calendar/dist/Calendar.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,14 +25,26 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardCalendar = () => {
 
-    const [property, setProperty] = useState('');
+    const [properties, setProperties] = useState([
+        {
+            name: "Mary's Garden",
+        },
+        {
+            name: "Peter's Garden",
+        },
+        {
+            name: "John's Garden",
+        },
+    ]);
+
 
     const [available, setAvailable] = useState(true);
 
     const [bookingDate, setBookingDate] = useState(new Date());
 
-    const handleChange = (event) => {
-        setProperty(event.target.value);
+    const handlePropertyChange = (event) => {
+        console.log(event.target.value)
+
     };
 
     const handleAvailable = () => {
@@ -53,12 +66,11 @@ const DashboardCalendar = () => {
                 <div className="select__property">
                     {/* <h3>Select Property</h3>
                      */}
-                    <label for='property'>Select Property</label>
-                    <select name="property" id="property">
-                        <option value="Mary's Garden">Mary's Garden</option>
-                        <option value="Peter's Garden">Peter's Garden</option>
-                        <option value="John's Garden">John's Garden</option>
-                        <option value="audi">Audi</option>
+                    <label for='properties'>Select Property</label>
+                    <select name="properties" id="property" onChange={handlePropertyChange}>
+                        {properties.map((property, index)=>{
+                            return <option key={index} value={property.name} >{property.name}</option>
+                        })}
                     </select>
 
                     <div className="availability">

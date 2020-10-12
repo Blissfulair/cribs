@@ -13,7 +13,7 @@ useEffect(()=>{
     else{
         history.push('/app/dashboard')
     }
-},[history,path])
+},[path])
     return(
         <Switch>
             <Route path='/app/dashboard' >

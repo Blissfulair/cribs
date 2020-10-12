@@ -112,7 +112,7 @@ class Dashboard extends React.Component{
                     <Grid container style={{paddingTop:120}}>
                         <Grid item xs={12} md={11} >
                             <Grid container  justify="space-between">
-                                <Grid item xs={12} md={3}>
+                                <Grid item xs={11} md={3}>
                                     <Paper classes={{root:classes.user}}>
                                         <div className={classes.userInner}>
                                             <Avatar className={classes.avater} src={image} alt="user"/>

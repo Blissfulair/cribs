@@ -20,7 +20,7 @@ textarea,
 select,
 .property-group .property-group-inner input::placeholder{
     color: #ACA9A9;
-    font-family: 'Poppins-Medium';
+    /* font-family: 'Poppins-Medium'; */
     font-size: 13px;
 }
 .property-form p,
@@ -29,7 +29,7 @@ select,
 }
 .property-group > label,
 .property-group h3{
-    font-family: 'Roboto-Bold';
+    /* font-family: 'Roboto-Bold'; */
     font-size: 18px;
     color: var(--text-blue);
     margin-bottom: 10px;
@@ -87,7 +87,7 @@ select,
 }
 .property-group >input[type=text]{
     font-size: 18px;
-    font-family: 'Poppins-Medium';
+    /* font-family: 'Poppins-Medium'; */
 }
 .property-group > input[type=text]::placeholder{
     color: #DBDBDB;
@@ -286,7 +286,7 @@ textarea::-webkit-scrollbar{
     user-select: none;
     padding: 10px 30px;
     font-size: 13px;
-    font-family: 'Roboto-Medium';
+    /* font-family: 'Roboto-Medium'; */
     color: var(--white);
     border-radius: 23px;
     background: var(--text-blue);
@@ -299,14 +299,14 @@ textarea::-webkit-scrollbar{
     }
     .property-group > label, .property-group h3{
         color: #090202;
-        font-family: "Poppins-SemiBold"
+        /* font-family: "Poppins-SemiBold" */
     }
     .property-group> input[type=text], textarea{
         border: none;
         border-radius: 40px;
         box-shadow: 0px 3px 6px #0F134842;
         color: #CFCFCF;
-        font-family: "Poppins-Light";
+        /* font-family: "Poppins-Light"; */
         font-size: 16px;
     }
     textarea{
@@ -343,7 +343,7 @@ textarea::-webkit-scrollbar{
     }
     .property-group-inner .col label, .property-group-inner1 .col label, .property-group-inner2 .col label{
         color: #355584;
-        font-family: "Poppins-Medium"
+        /* font-family: "Poppins-Medium" */
     }
     .property-group-inner2{
         grid-auto-flow: row;

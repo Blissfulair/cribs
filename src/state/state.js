@@ -7,6 +7,7 @@ const GlobalState= ()=>{
         userData:null,
         initializing:true,
         properties:[],
+        property:null,
         myProperties:[]
     }
 
@@ -45,6 +46,11 @@ const GlobalState= ()=>{
                     ...prevState,
                     properties:action.payload.properties
                 }
+            case 'GET_PROPERTY':
+                return{
+                    ...prevState,
+                    property:action.payload.property
+                }
             case 'GET_MY_PROPERTIES':
                 return{
                     ...prevState,
@@ -77,6 +83,12 @@ const GlobalState= ()=>{
                     props.push({id:doc.id, ...doc.data()})
                 })
                 dispatch({type:'GET_MY_PROPERTIES', payload:{myProperties:props}})
+            })
+        },
+        getPropertyById:(id)=>{
+            firebase.getPropertyById(id)
+            .then(property=>{
+                dispatch({type:'GET_PROPERTY', payload:{property}}) 
             })
         },
         state

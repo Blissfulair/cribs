@@ -32,7 +32,7 @@ const Root = ({location,history})=>{
             <Route path="/search">
                 <Search/>
             </Route>
-            <Route path="/single">
+            <Route path="/crib/:id">
                 <Single/>
             </Route>
             <Route path="/login">

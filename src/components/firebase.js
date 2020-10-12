@@ -2,7 +2,6 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
-import firestore from 'firebase/firebase'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -73,8 +72,8 @@ const firebaseConfig = {
                 guest:data.guest,
                 type:data.type,
                 house:data.house,
-                createdAt:firestore.FieldValue.serverTimestamp(),
-                updatedAt:firestore.FieldValue.serverTimestamp()
+                createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     
             })
             for(let i= 0; i<data.images.length; i++){
@@ -99,6 +98,11 @@ const firebaseConfig = {
 
     login = async(data)=>{
         return await this.auth.signInWithEmailAndPassword(data.email, data.password);
+    }
+
+    getPropertyById = async(id)=>{
+        const property = await (await this.firestore.collection(this.tables.PROPERTIES).doc(id).get()).data();
+        return property 
     }
 }
 export default new Firebase();

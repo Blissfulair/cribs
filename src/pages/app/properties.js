@@ -140,30 +140,36 @@ class Properties extends React.Component{
                                 <TableBody>
                                 {
                                 properties.length>0?
-                                properties.map((property, i) => (
-                                    <StyledTableRow classes={{root:classes.trRoot}} key={i}>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} component="th" scope="row">
-                                        {property.name}
-                                    </StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="left">{this.str_length(property.description, 30)}</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.amount}</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.createdAt}</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.updatedAt}</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="center">
-                                        <Switch name={property.uid} checked={property.availability}/>
-                                    </StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="center">
-                                        <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>
-                                            <IconButton>
-                                                <EditIcon/>
-                                            </IconButton>
-                                           <IconButton>
-                                                <DeleteIcon/>
-                                           </IconButton>
-                                        </div>
-                                    </StyledTableCell>
-                                    </StyledTableRow>
-                                ))
+                                properties.map((property, i) =>{
+                                        const update = new Date(property.updatedAt.seconds*1000);
+                                        const created = new Date(property.createdAt.seconds*1000);
+                                        const updatedAt = update.getDate()+'/'+(update.getMonth()+1)+'/'+update.getFullYear() 
+                                        const createdAt = created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
+                                    return(
+                                        <StyledTableRow classes={{root:classes.trRoot}} key={i}>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} component="th" scope="row">
+                                            {property.name}
+                                        </StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{this.str_length(property.description, 30)}</StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.amount}</StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{createdAt}</StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{updatedAt}</StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="center">
+                                            <Switch name={property.id} checked={property.availability}/>
+                                        </StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="center">
+                                            <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>
+                                                <IconButton>
+                                                    <EditIcon/>
+                                                </IconButton>
+                                               <IconButton>
+                                                    <DeleteIcon/>
+                                               </IconButton>
+                                            </div>
+                                        </StyledTableCell>
+                                        </StyledTableRow>
+                                    )
+                                })
                                 :
                                 <Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">No Properties uploaded yet</Typography>
                             }

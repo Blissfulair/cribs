@@ -188,9 +188,10 @@ const Index = (props)=>{
                                 <Grid  container spacing={2}>
                                     {
                                         state.properties.map((property, i)=>{
+                                            console.log(property)
                                             return(
                                                 <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                    <Link to="/single">
+                                                    <Link to={`/crib/${property.id}`}>
                                                         <Trending details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
                                                     </Link>
                                                 </Grid>

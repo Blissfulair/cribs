@@ -20,6 +20,7 @@ import {
 import AddIcon from "@material-ui/icons/Add"
 import EditIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AppContext from "../../state/context"
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -66,6 +67,7 @@ const styles = (theme)=>({
 })
 
 class Properties extends React.Component{
+    static contextType = AppContext
     constructor(prop){
         super(prop)
         this.state ={
@@ -74,6 +76,8 @@ class Properties extends React.Component{
         }
     }
     componentDidMount(){
+        this.context.getMyProperties();
+
     }
 
     changeHandler =e=>{
@@ -85,8 +89,21 @@ class Properties extends React.Component{
         //console.log(properties)
         // this.setState({[n.target.name]: this.state.property.push(n.target.dataset[n.target.name])})
     }
+    str_length = (str, length, ending)=> {
+        if (length == null) {
+          length = 100;
+        }
+        if (ending == null) {
+          ending = '...';
+        }
+        if (str.length > length) {
+          return str.substring(0, length - ending.length) + ending;
+        } else {
+          return str;
+        }
+      };
     render(){
-        const {properties} = this.state;
+        const properties = this.context.state.myProperties
         const {classes} = this.props
 
         return (
@@ -113,6 +130,7 @@ class Properties extends React.Component{
                                 <TableRow>
                                     <StyledTableCell classes={{root:classes.tdHead}}>Property Title</StyledTableCell>
                                     <StyledTableCell classes={{root:classes.tdHead}} align="left">Property Description</StyledTableCell>
+                                    <StyledTableCell classes={{root:classes.tdHead}} align="left">Amount</StyledTableCell>
                                     <StyledTableCell classes={{root:classes.tdHead}} align="left">Date Added</StyledTableCell>
                                     <StyledTableCell classes={{root:classes.tdHead}} align="left">Updated</StyledTableCell>
                                     <StyledTableCell classes={{root:classes.tdHead}} align="center">Availability</StyledTableCell>
@@ -122,30 +140,36 @@ class Properties extends React.Component{
                                 <TableBody>
                                 {
                                 properties.length>0?
-                                properties.map((property, i) => (
-                                    <StyledTableRow classes={{root:classes.trRoot}} key={i}>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} component="th" scope="row">
-                                        {property.title}
-                                    </StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.description}</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.price}</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.createdAt}</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.updatedAt}</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="center">
-                                        <Switch name={property.uid}/>
-                                    </StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdRoot}} align="center">
-                                        <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>
-                                            <IconButton>
-                                                <EditIcon/>
-                                            </IconButton>
-                                           <IconButton>
-                                                <DeleteIcon/>
-                                           </IconButton>
-                                        </div>
-                                    </StyledTableCell>
-                                    </StyledTableRow>
-                                ))
+                                properties.map((property, i) =>{
+                                        const update = new Date(property.updatedAt.seconds*1000);
+                                        const created = new Date(property.createdAt.seconds*1000);
+                                        const updatedAt = update.getDate()+'/'+(update.getMonth()+1)+'/'+update.getFullYear() 
+                                        const createdAt = created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
+                                    return(
+                                        <StyledTableRow classes={{root:classes.trRoot}} key={i}>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} component="th" scope="row">
+                                            {property.name}
+                                        </StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{this.str_length(property.description, 30)}</StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.amount}</StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{createdAt}</StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{updatedAt}</StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="center">
+                                            <Switch name={property.id} checked={property.availability}/>
+                                        </StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="center">
+                                            <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>
+                                                <IconButton>
+                                                    <EditIcon/>
+                                                </IconButton>
+                                               <IconButton>
+                                                    <DeleteIcon/>
+                                               </IconButton>
+                                            </div>
+                                        </StyledTableCell>
+                                        </StyledTableRow>
+                                    )
+                                })
                                 :
                                 <Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">No Properties uploaded yet</Typography>
                             }

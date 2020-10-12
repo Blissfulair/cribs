@@ -3,7 +3,6 @@ import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
-import image from "../images/login_bg.png"
 const DetailSlide = ({content})=>{
     return(
         <>
@@ -38,7 +37,7 @@ const DetailSlide = ({content})=>{
                     autoPlay={5000}
                     addArrowClickHandler
                     >
-                    {content.map((new_deal,index)=>{
+                    {content.map((image,index)=>{
                     return (
                         <img key={index} style={{width:'100%'}} id="slide-cover-img" src={image} alt=""/>
                     )

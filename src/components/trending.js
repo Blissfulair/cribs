@@ -32,11 +32,11 @@ const styles = ()=>({
         opacity: 0.35
     }
 })
-const Trending = ({classes, rating, color,name})=>{
+const Trending = ({classes, rating, color,name, details})=>{
     return(
         <Card elevation={3} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.root}}>
-                <CardMedia image={image}
+                <CardMedia image={details.images[0]}
                         component="img"
                         alt="Contemplative Reptile"
                         height="65%"
@@ -59,10 +59,10 @@ const Trending = ({classes, rating, color,name})=>{
                 <div className={classes.overlay} style={{backgroundColor:color}}>
                 </div>
                 <CardContent>
-                    <Typography className={classes.para} style={{fontWeight:'bold'}} variant="h5">Ikeja, Lagos, Ng</Typography>
-                    <Typography color="textPrimary" className={classes.para} variant="subtitle1" component="p">Mary's Garden</Typography>
-                    <Typography className={classes.para1} variant="subtitle2" component="p">Sleeps 10 - 4 BR - 3 BA</Typography>
-                    <Typography className={classes.para} style={{fontWeight:'bold',display:'inline', marginRight:10}} variant="h6">‎₦2000</Typography>
+                    <Typography className={classes.para} style={{fontWeight:'bold'}} variant="h5">{details.title}</Typography>
+                    <Typography color="textPrimary" className={classes.para} variant="subtitle1" component="p">{details.name}</Typography>
+                    <Typography className={classes.para1} variant="subtitle2" component="p">Sleeps 10 - {details.bedroom} BR - {details.bathroom} BA</Typography>
+                    <Typography className={classes.para} style={{fontWeight:'bold',display:'inline', marginRight:10}} variant="h6">‎₦{details.amount}</Typography>
                     <span>
                         avg/night
                     </span>

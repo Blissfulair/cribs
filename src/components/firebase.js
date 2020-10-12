@@ -21,7 +21,7 @@ const firebaseConfig = {
         this.storage = this.app.storage()
         this.tables = {
             PROPERTIES :'properties',
-            USERS:'user',
+            USERS:'users',
             TRANSACTIONS:'transactions'
         }
     }
@@ -38,30 +38,58 @@ const firebaseConfig = {
         
       return data
     }
-    getHostProperties = async(uid=null)=>{
+    getHostProperties = async()=>{
         let properties = null
-        properties = await this.firestore.collection(this.tables.PROPERTIES).where('hostId', '==', uid).orderBy('createdAt', 'desc').get();
+        properties = await this.firestore.collection(this.tables.PROPERTIES).limit(4).get();
         return properties;
     }
+    getMyProperties = async(hostId)=>{
+        let properties = null
+        properties = await this.firestore.collection(this.tables.PROPERTIES).where('hostId', '==', hostId).get();
+        return properties; 
+    }
     storeProperty = async(data)=>{
-        let images = []
-        data.images.forEach((image,i)=>{
-            this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId).child(image.files[i].name).put(image.files[i].file)
-            .then(()=>{
-                this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId).getDownloadURL()
-                .then(url=>{
-                    images.push(url)
-                })
+         let images = []
+           const post = await this.firestore.collection(this.tables.PROPERTIES).add({
+                hostId:data.hostId,
+                name:data.name,
+                description:data.description,
+                images:images,
+                amount:data.amount,
+                bedroom:data.bedroom,
+                discount:data.discount,
+                smoke:data.smoke,
+                availability:true,
+                wifi:data.wifi,
+                parking:data.parking,
+                cable:data.cable,
+                bathroom:data.bathroom,
+                kitchen:data.kitchen,
+                inside:data.inside,
+                around:data.around,
+                reviews:[],
+                address:data.address,
+                guest:data.guest,
+                type:data.type,
+                house:data.house,
+                createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    
             })
-        })
-       const property = await this.firestore.collection(this.tables.PROPERTIES).add({
-            hostId:data.hostId,
-            name:data.name,
-            description:data.description,
-            images:images,
-            amount:data.amount
-        })
-        return property.get()
+            for(let i= 0; i<data.images.length; i++){
+                console.log(data.images[i])
+                this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+post.id).child(data.images[i].name).put(data.images[i])
+                .then(()=>{
+                    this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+post.id).child(data.images[i].name).getDownloadURL()
+                    .then(async (url)=>{
+                        images.push(url)
+                        await this.firestore.collection(this.tables.PROPERTIES).doc(post.id).update({images:images})
+                    })
+                })
+            }
+
+
+        // return property.get()
     }
 
     logout=async()=>{
@@ -70,6 +98,11 @@ const firebaseConfig = {
 
     login = async(data)=>{
         return await this.auth.signInWithEmailAndPassword(data.email, data.password);
+    }
+
+    getPropertyById = async(id)=>{
+        const property = await (await this.firestore.collection(this.tables.PROPERTIES).doc(id).get()).data();
+        return property 
     }
 }
 export default new Firebase();

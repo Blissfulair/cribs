@@ -5,10 +5,15 @@ const GlobalState= ()=>{
     const initialState={
         user:null,
         userData:null,
-        initializing:true
+        initializing:true,
+        properties:[],
+        property:null,
+        myProperties:[]
     }
 
     useEffect(()=>{
+
+
         firebase.auth.onAuthStateChanged((user)=>{
             dispatch({type:'SET_STATE', payload:{initializing:false}})
             if(user){
@@ -36,6 +41,21 @@ const GlobalState= ()=>{
                     ...prevState,
                     initializing:action.payload.initializing
                 }
+            case 'GET_PROPERTIES':
+                return{
+                    ...prevState,
+                    properties:action.payload.properties
+                }
+            case 'GET_PROPERTY':
+                return{
+                    ...prevState,
+                    property:action.payload.property
+                }
+            case 'GET_MY_PROPERTIES':
+                return{
+                    ...prevState,
+                    myProperties:action.payload.myProperties
+                }
             default:
                 return prevState
         }
@@ -44,6 +64,32 @@ const GlobalState= ()=>{
     const globals=  useMemo(()=>({
         register:(formData)=>{
            firebase.register(formData)
+        },
+        getProperties:()=>{
+            let props =[]
+            firebase.getHostProperties()
+            .then(properties=>{
+                properties.docs.forEach(doc=>{
+                    props.push({id:doc.id, ...doc.data()})
+                })
+                dispatch({type:'GET_PROPERTIES', payload:{properties:props}})
+            })
+        },
+        getMyProperties:()=>{
+            let props =[]
+            firebase.getMyProperties(state.user.uid)
+            .then(properties=>{
+                properties.docs.forEach(doc=>{
+                    props.push({id:doc.id, ...doc.data()})
+                })
+                dispatch({type:'GET_MY_PROPERTIES', payload:{myProperties:props}})
+            })
+        },
+        getPropertyById:(id)=>{
+            firebase.getPropertyById(id)
+            .then(property=>{
+                dispatch({type:'GET_PROPERTY', payload:{property}}) 
+            })
         },
         state
     }),[state])

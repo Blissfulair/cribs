@@ -181,7 +181,7 @@ const Header = (props)=>{
                     </Grid>
                 </Toolbar>
                 {
-                    props.location.pathname === '/search' || props.location.pathname ==='/single'?
+                    props.location.pathname.includes('search') || props.location.pathname.includes('crib')?
                     <>
                         <Toolbar className="header-search-form" style={{padding:0, backgroundColor:'#f1f1f1'}}>
                             <SearchForm/>

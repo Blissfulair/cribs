@@ -5,11 +5,14 @@ import "./add-property.css"
 import image from  "../../images/login_bg.png"
 
 import Backend from "./layout"
+import AppContext from "../../state/context";
+import firebase from "../../components/firebase"
 
 
 let images =[]
 let other_images =[]
 class AddProperty extends React.Component{
+    static contextType = AppContext
     constructor(props){
         super(props)
         this.state ={
@@ -17,23 +20,21 @@ class AddProperty extends React.Component{
             cities:[],
             title:'',
             description:'',
-            state:'',
-            city:'',
-            locality:'',
+            house:'',
             address:'',
-            category:0,
-            furnished:'Any',
             price:'',
             bedroom:1,
-            toilet:1,
             discount:0,
             bathroom:0,
-            parking:0,
-            swimming_pool:0,
-            smoking:0,
-            running_water:0,
+            parking:false,
+            wifi:false,
+            smoking:false,
+            cable:false,
             jaccuzi:0,
-            kitchen:0,
+            kitchen:false,
+            inside:'',
+            around:'',
+            guest:0,
             featured_image:null,
             type:'house',
             other_images:[],
@@ -123,35 +124,35 @@ class AddProperty extends React.Component{
     onSubmit=(event)=>{
         event.preventDefault();
         if(this.state.title === '' || this.state.description === '' || this.state.state === ''
-            || this.state.city === '' || this.state.locality === '' || this.state.price === '' || this.state.featured_image === null)
+           || this.state.price === '' || this.state.featured_image === null)
             return false
-
-
-        let formData = new FormData();
-        formData.append('title',this.state.title)
-        formData.append('description',this.state.description)
-        formData.append('state',this.state.state)
-        formData.append('city',this.state.city)
-        formData.append('locality',this.state.locality)
-        formData.append('address',this.state.address)
-        formData.append('category',this.state.category)
-        formData.append('furnished',this.state.furnished)
-        formData.append('price',this.state.price)
-        formData.append('bedroom',this.state.bedroom)
-        formData.append('toilet',this.state.toilet)
-        formData.append('bathroom',this.state.bathroom)
-        formData.append('parking',this.state.parking)
-        formData.append('swimming_pool',this.state.swimming_pool)
-        formData.append('smoking',this.state.smoking)
-        formData.append('jaccuzi',this.state.jaccuzi)
-        formData.append('kitchen',this.state.kitchen)
-        formData.append('type',this.state.type)
-        formData.append('discount',this.state.discount)
-        formData.append('running_water',this.state.running_water)
-        formData.append('featured_image',this.state.featured_image)
-        for(let i =0; i<other_images.length; i++){
-            formData.append('other_images[]', other_images[i])
-        }
+const body = {
+    hostId:this.context.state.user.uid,
+    name:this.state.title,
+    description:this.state.description,
+    images:[this.state.featured_image, ...other_images],
+    amount:this.state.price,
+    bedroom:this.state.bedroom,
+    discount:this.state.discount,
+    smoke:this.state.smoking,
+    wifi:this.state.wifi,
+    parking:this.state.parking,
+    cable:this.state.cable,
+    bathroom:this.state.bathroom,
+    kitchen:this.state.kitchen,
+    inside:this.state.inside,
+    around:this.state.around,
+    address:this.state.address,
+    guest:this.state.guest,
+    type:this.state.type,
+    house:this.state.house,
+}
+firebase.storeProperty(body)
+.then(re=>{
+})
+        // for(let i =0; i<other_images.length; i++){
+        //     formData.append('other_images[]', other_images[i])
+        // }
     //     const token = isBrowser()?(localStorage.getItem('QRuser')?JSON.parse(localStorage.getItem('QRuser')).token:''):''
     //     const headers = {
     //      'Accept': 'application/json',
@@ -210,7 +211,7 @@ class AddProperty extends React.Component{
                             <div className="property-group">
                                 <h3>Property Informaion</h3>
                                 <div className="property-group-inner">
-                                    <div className="col">
+                                    {/* <div className="col">
                                         <label htmlFor="state">State</label>
                                         <div className="input">
                                             <select name="state" onBlur={this.changeHandler}  id="state">
@@ -225,8 +226,8 @@ class AddProperty extends React.Component{
                                                 <div className="angle"></div>
                                             </span>
                                         </div>
-                                    </div>
-                                    <div className="col">
+                                    </div> */}
+                                    {/* <div className="col">
                                         <label htmlFor="city">City</label>
                                         <div className="input">
                                             <select name="city" onBlur={this.changeHandler}  id="city">
@@ -241,7 +242,7 @@ class AddProperty extends React.Component{
                                                 <div className="angle"></div>
                                             </span>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="col">
                                         <label htmlFor="cat">Address</label>
                                         <div className="input">
@@ -252,7 +253,7 @@ class AddProperty extends React.Component{
                                 </div>
 
                                 <div className="property-group-inner">
-                                    <div className="col">
+                                    {/* <div className="col">
                                         <label htmlFor="type">Locality</label>
                                         <div className="input">
                                             <select name="locality" onBlur={this.changeHandler}  id="type">
@@ -262,8 +263,8 @@ class AddProperty extends React.Component{
                                             </select>
                                             <span><div className="angle"></div></span>
                                         </div>
-                                    </div>
-                                    <div className="col">
+                                    </div> */}
+                                    {/* <div className="col">
                                         <label htmlFor="furnished">Furnished</label>
                                         <div className="input">
                                             <select onBlur={this.changeHandler}  name="furnished" id="furnished">
@@ -271,7 +272,7 @@ class AddProperty extends React.Component{
                                             </select>
                                             <span><div className="angle"></div></span>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className="col">
                                         <label htmlFor="price">Price</label>
                                         <div className="input">
@@ -305,7 +306,7 @@ class AddProperty extends React.Component{
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div>
-                                    <div className="col">
+                                    {/* <div className="col">
                                         <label htmlFor="toilet">Toilet</label>
                                         
                                         <div className="input">
@@ -314,8 +315,8 @@ class AddProperty extends React.Component{
                                             </select>
                                             <span><div className="angle"></div></span>
                                         </div>
-                                    </div>
-                                    <div className="col">
+                                    </div> */}
+                                    {/* <div className="col">
                                         <label htmlFor="packing">Parking</label>
                                         <div className="input">
                                             <select name="parking" onBlur={this.changeHandler}  id="packing">
@@ -323,37 +324,37 @@ class AddProperty extends React.Component{
                                             </select>
                                             <span><div className="angle"></div></span>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
 
                                 <div className="property-group-inner2">
                                     <div className="col">
                                         <label className="rememberme">
-                                                <input type="checkbox" onChange={this.changeHandler}  name="swimming_pool" id="pool" />
+                                                <input type="checkbox" onChange={this.changeHandler}  name="wifi" id="pool" />
                                                 <span className="checkmark"></span>
                                         </label>
-                                        <label htmlFor="pool">Swimming Pool</label>
+                                        <label htmlFor="pool">Wifi</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                                <input type="checkbox" onChange={this.changeHandler}  name="smoking" id="smoking" />
+                                                <input type="checkbox" onChange={this.changeHandler}  name="parking" id="smoking" />
                                                 <span className="checkmark"></span>
                                         </label>
-                                        <label htmlFor="smoking">Smoking Allowed</label>
+                                        <label htmlFor="smoking">parking</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                                <input type="checkbox" onChange={this.changeHandler}  name="jaccuzi" id="jaccuzi" />
+                                                <input type="checkbox" onChange={this.changeHandler}  name="smoke" id="jaccuzi" />
                                                 <span className="checkmark"></span>
                                         </label>
-                                        <label htmlFor="jaccuzi">Jaccuzi</label>
+                                        <label htmlFor="jaccuzi">Smoke Alarm</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                            <input type="checkbox" onChange={this.changeHandler}  name="running_water" id="water" />
+                                            <input type="checkbox" onChange={this.changeHandler}  name="cable" id="water" />
                                             <span className="checkmark"></span>
                                         </label>
-                                        <label htmlFor="water">Running Water</label>
+                                        <label htmlFor="water">Cable Tv</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">

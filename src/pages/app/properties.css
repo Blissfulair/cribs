@@ -8,7 +8,7 @@
 }
 
 .table-head .table-title li{
-    font-family: 'Roboto-Bold';
+    /* font-family: 'Roboto-Bold'; */
     font-size: 14px;
     color: var(--text-blue);
 }
@@ -18,7 +18,7 @@
 }
 .inbox-body table td a,
 .inbox-body table td{
-    font-family: 'Poppins-Medium' !important;
+    /* font-family: 'Poppins-Medium' !important; */
     font-size: 13px !important;
     color: var(--text-blue) !important;
 }
@@ -137,7 +137,7 @@ select,
     .action select{
         border-radius: 40px 0 0 40px;
         color: #355584;
-        font-family: "Poppins-Medium";
+        /* font-family: "Poppins-Medium"; */
         padding-left: 20%;
         width: 80%;
     }
@@ -156,7 +156,7 @@ select,
     }
     .sort select{
         color: var(--black);
-        font-family: "Poppins-Light";
+        /* font-family: "Poppins-Light"; */
         font-size: 11px;
     }
     .add-property a{
@@ -182,6 +182,6 @@ select,
     }
     .inbox-title h4{
         color: #355584;
-        font-family: "Poppins-SemiBold"
+        /* font-family: "Poppins-SemiBold" */
     }
 }

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState,useContext,useEffect} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import bg from "../images/login_bg.png"
 import Paper from '@material-ui/core/Paper';
@@ -18,6 +18,7 @@ import focus from "../images/focus.svg"
 import Slide from "../components/slider";
 import Explore from "../components/explore";
 import { DatePicker } from "@material-ui/pickers";
+import AppContext from "../state/context";
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${bg})`,
@@ -99,6 +100,10 @@ const styles = theme =>({
 })
 const Index = (props)=>{
     const {classes} = props
+    const {state,getProperties} = useContext(AppContext)
+    useEffect(()=>{
+        getProperties()
+    },[])
     const [selectedDate, handleDateChange] = useState(new Date());
     return(
         <Grid className="home" container justify="center">
@@ -174,31 +179,40 @@ const Index = (props)=>{
                     <Stays color="#000000"/>
                     </Grid>
                 </Grid>
-                <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
-                <div style={{marginBottom:10}}>
-                    <Grid  container spacing={2}>
-                        {
-                            [1,1,1,1].map((val, i)=>{
-                                return(
-                                    <Grid item xs={12} sm={6} md={3} lg={3} >
-                                        <Link to="/single">
-                                            <Trending name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
-                                        </Link>
-                                    </Grid>
-                                )
-                            })
-                        }
-                    </Grid>
-                </div>
-                <Link className={classes.link} to={'/'}>See more</Link>
 
-                <div style={{marginTop:50}}>
-                    <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
-                    <Grid style={{position:'relative'}}  container >
-                        <Slide content={[1,2,3,4]}/>
-                    </Grid>
-                </div>
-                <Link className={classes.link} to={'/'}>See more</Link>
+                    {
+                        state.properties.length>0?
+                        <>
+                            <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
+                            <div style={{marginBottom:10}}>
+                                <Grid  container spacing={2}>
+                                    {
+                                        state.properties.map((property, i)=>{
+                                            console.log(property)
+                                            return(
+                                                <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Link to={`/crib/${property.id}`}>
+                                                        <Trending details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
+                                                    </Link>
+                                                </Grid>
+                                            )
+                                        })
+                                    }
+                                </Grid>
+                            </div>
+                            <Link className={classes.link} to={'/'}>See more</Link>
+
+                            
+                            <div style={{marginTop:50}}>
+                                <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
+                                <Grid style={{position:'relative'}}  container >
+                                    <Slide content={state.properties}/>
+                                </Grid>
+                            </div>
+                            <Link className={classes.link} to={'/'}>See more</Link>
+                        </>
+                        :''
+                    }
 
                 <Typography variant="h4" classes={{root:classes.title}} style={{marginTop:90}} align="center">Reasons to Explore With Us</Typography>
                 <Container >

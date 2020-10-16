@@ -2,7 +2,6 @@ import React from "react";
 import {Link} from 'react-router-dom';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grow from '@material-ui/core/Grow';
-import image from "../logo.svg"
 import {withStyles} from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
 import "./stays.css"
@@ -32,12 +31,12 @@ const Stays = (props)=>{
         <Link className="card-link" to={'/'}>
             <Grow in={true} disableStrictModeCompat>
             <div className={classes.card}>
-                <CardMedia className={classes.media} image={image}/>
+                <CardMedia className={classes.media} image={props.image}/>
                 <div style={{backgroundColor:props.color}} className={classes.overlay}>
                     <div style={{position:'absolute',bottom:10,display:'flex',justifyContent:'center', width:'100%'}}>
                         <div>
-                            <Typography style={{textAlign:'center', color:'#fff', fontSize:'30px'}} variant="h5">Houses</Typography>
-                            <Typography style={{textAlign:'center', color:'#fff', fontSize:'18px'}} variant="subtitle1" component="p">1000+ Availbale</Typography>
+                            <Typography style={{textAlign:'center', color:'#fff', fontSize:'31px', fontWeight:'bold'}} variant="h5">{props.title}</Typography>
+                            <Typography style={{textAlign:'center', color:'#fff', fontSize:'18px', fontWeight:'bold'}} variant="subtitle1" component="p">{props.available}+ Availbale</Typography>
                         </div>
                     </div>
                 </div>

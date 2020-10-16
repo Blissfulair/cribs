@@ -20,6 +20,10 @@ import Explore from "../components/explore";
 import { DatePicker } from "@material-ui/pickers";
 import AppContext from "../state/context";
 import { Button } from "@material-ui/core";
+import house from "../images/house.png"
+import bangalow from "../images/bangalow.png"
+import condos from "../images/condos.png"
+import cottage from "../images/cottage.png"
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${bg})`,
@@ -102,7 +106,7 @@ const styles = theme =>({
 })
 const Index = (props)=>{
     const {classes} = props
-    const {state,getProperties, setSearch,searchProperties, results} = useContext(AppContext)
+    const {state,getProperties, setSearch,searchProperties} = useContext(AppContext)
     const [data, setData]=useState({
         location:'',
         checkIn:new Date(),
@@ -126,10 +130,7 @@ const Index = (props)=>{
     const onSubmit = (e)=>{
         e.preventDefault();
         setSearch(data);
-        searchProperties(data.location)
-        if(results.length){
-            props.history.push('/search')
-        }
+        searchProperties(data.location, '','',3,props.history)
     }
     return(
         <Grid className="home" container justify="center">
@@ -195,16 +196,16 @@ const Index = (props)=>{
                 <Typography classes={{root:classes.title}} variant="h3">Where would you like to stay?</Typography>
                 <Grid  container spacing={2}>
                     <Grid item xs={12} sm={6} md={3} lg={3} >
-                    <Stays color={'#DF6C08'}/>
+                    <Stays title="House" image={house} available={1000} color={'#DF6C08'}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays color={'#FFFFFF'}/>
+                    <Stays title="Bungalows" image={bangalow} available={1000}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays color="#DF0808"/>
+                    <Stays title="Condos" image={condos} available={1000} color="#DF0808"/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays color="#000000"/>
+                    <Stays title="Cottages" image={cottage} available={1000} color="#000000"/>
                     </Grid>
                 </Grid>
 

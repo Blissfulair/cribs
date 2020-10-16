@@ -4,11 +4,11 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import image from "../images/login_bg.png"
 import {withStyles} from "@material-ui/core/styles"
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Rating from '@material-ui/lab/Rating';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import {Link} from "react-router-dom"
 
 const styles = ()=>({
     para:{
@@ -43,12 +43,13 @@ const styles = ()=>({
         left: 0
     }
 })
-const Search = ({classes, rating, color,name,props})=>{
+const Search = ({classes, content, rating, color,name,props})=>{
     return(
+    <Link to={`/crib/${content.id}`}>
         <Card elevation={3} style={{margin:'15px 0'}} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.root}} onClick={()=>props.push('/single')}>
                 <div className={classes.media}>
-                    <CardMedia image={image}
+                    <CardMedia image={content.images[0]}
                             component="img"
                             alt="Contemplative Reptile"
                             height="100%"
@@ -61,9 +62,9 @@ const Search = ({classes, rating, color,name,props})=>{
                 </div>
                 <div>
                     <CardContent style={{position:'absolute',left:'45%', top:0}}>
-                        <Typography className={classes.para} style={{fontWeight:'bold'}} variant="h5">Ikot, Calabar, Ng</Typography>
-                        <Typography  className={classes.para} variant="subtitle1" component="p">Mary's Garden</Typography>
-                        <Typography className={classes.para1} style={{marginBottom:30}}  variant="subtitle2" component="p">3 Guests | 3 Bedrooms | 3 beds | 2 Baths</Typography>
+                        <Typography className={classes.para} style={{fontWeight:'bold'}} variant="h5">{content.address}, {content.state}, Ng</Typography>
+                        <Typography  className={classes.para} variant="subtitle1" component="p">{content.name}</Typography>
+                        <Typography className={classes.para1} style={{marginBottom:30}}  variant="subtitle2" component="p">{content.guest} Guests | {content.bedroom} Bedrooms | {content.bedroom} beds | {content.bathroom} Baths</Typography>
                         <Typography className={classes.para1} variant="subtitle2" component="p">Excellent 4.7/5 Good for families</Typography>
                         <Typography>
                             <Rating
@@ -78,7 +79,7 @@ const Search = ({classes, rating, color,name,props})=>{
                                 />
                         </Typography>
                         
-                        <Typography className={classes.para} style={{fontWeight:'bold',display:'inline', marginRight:10}} variant="h6">‎₦2000</Typography>
+                        <Typography className={classes.para} style={{fontWeight:'bold',display:'inline', marginRight:10}} variant="h6">‎₦{content.amount}</Typography>
                         <span style={{color:'#000000'}}>
                             avg/night
                         </span>
@@ -86,6 +87,7 @@ const Search = ({classes, rating, color,name,props})=>{
                 </div>
             </CardActionArea>
         </Card>
+    </Link>
     )
 }
 export default withStyles(styles)(Search)

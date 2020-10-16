@@ -122,8 +122,8 @@ const firebaseConfig = {
         //    const dat= results.filter(result=>result.address.toLowerCase().includes(location.toLowerCase()))
         //    console.log(dat)
         // })
-        await this.firestore.collection(this.tables.PROPERTIES)
-        .where('keywords', 'array-contains', location.toLowerCase())
+        return await this.firestore.collection(this.tables.PROPERTIES)
+        .where('keywords','array-contains', location.toLowerCase())
         .get()
 
        

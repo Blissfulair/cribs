@@ -2,43 +2,52 @@ import React, { useState } from 'react';
 import Layout from './layout';
 import '../../scss/dashboard_calendar.scss';
 
-import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormGroup from '@material-ui/core/FormGroup';
+
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import Switch from '@material-ui/core/Switch';
 import { Button } from '@material-ui/core';
+import Calendar from 'react-calendar';
 
-const useStyles = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-}));
+
+import 'react-calendar/dist/Calendar.css';
+
 
 
 const DashboardCalendar = () => {
 
-    const [property, setProperty] = useState('');
+    const [properties, ] = useState([
+        {
+            name: "Mary's Garden",
+        },
+        {
+            name: "Peter's Garden",
+        },
+        {
+            name: "John's Garden",
+        },
+    ]);
+
 
     const [available, setAvailable] = useState(true);
 
-    const handleChange = (event) => {
-        setProperty(event.target.value);
+    const [bookingDate, setBookingDate] = useState(new Date());
+
+    const handlePropertyChange = (event) => {
+        console.log(event.target.value)
+
     };
 
     const handleAvailable = () => {
         setAvailable(!available);
     }
 
+    const handleCalendar = () => {
+        setBookingDate(bookingDate);
+    }
+
     return (
         <Layout>
+
             <div className="calendar__heading">
                 <h1>Calendar</h1>
             </div>
@@ -47,26 +56,13 @@ const DashboardCalendar = () => {
                 <div className="select__property">
                     {/* <h3>Select Property</h3>
                      */}
-                     <label for='property'>Select Property</label>
-                    <select name="property" id="property">
-                        <option value="Mary's Garden">Mary's Garden</option>
-                        <option value="Peter's Garden">Peter's Garden</option>
-                        <option value="John's Garden">John's Garden</option>
-                        <option value="audi">Audi</option>
+                    <label for='properties'>Select Property</label>
+                    <select name="properties" id="property" onChange={handlePropertyChange}>
+                        {properties.map((property, index)=>{
+                            return <option key={index} value={property.name} >{property.name}</option>
+                        })}
                     </select>
-                    {/* <FormControl variant='filled' >
-                        <InputLabel id="demo-simple-select-label">Select Property</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={property}
-                            onChange={handleChange}
-                        >
-                            <MenuItem value={10}>Mary's Garden</MenuItem>
-                            <MenuItem value={20}>Peter's Garden</MenuItem>
-                            <MenuItem value={30}>John's Garden</MenuItem>
-                        </Select>
-                    </FormControl> */}
+
                     <div className="availability">
 
                         <div className="availability__switch">
@@ -79,12 +75,12 @@ const DashboardCalendar = () => {
 
                         <div className="room">
                             <h4>Room</h4>
-                            <input type="number" name="" min='1' step='1' id="" />
+                            <input type="number" placeholder='0' min='1' step='1' id="" />
                         </div>
 
                         <div className="guests">
                             <h4>Guests</h4>
-                            <input type="number" min='0' step='1' />
+                            <input type="number" placeholder='0' min='0' step='1' />
                         </div>
 
                         <div className="price">
@@ -99,9 +95,14 @@ const DashboardCalendar = () => {
                 </div>
 
                 <div className="actual__calendar">
+                    <Calendar
+                        onChange={handleCalendar}
+                        value={bookingDate}
 
+                    />
                 </div>
             </div>
+
         </Layout>
     );
 }

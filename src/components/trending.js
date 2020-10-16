@@ -4,7 +4,6 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import image from "../images/login_bg.png"
 import {withStyles} from "@material-ui/core/styles"
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Rating from '@material-ui/lab/Rating';
@@ -21,6 +20,7 @@ const styles = ()=>({
     root:{
         borderRadius:16,
         height:340,
+        minWidth:265,
         position:'relative'
     },
     overlay:{

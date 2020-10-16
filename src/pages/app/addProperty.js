@@ -180,7 +180,6 @@ firebase.storeProperty(body)
     //     }
     }
     render(){
-        const {states,cities} =this.state
         return (
             <>
                 <Backend>

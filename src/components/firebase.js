@@ -49,6 +49,15 @@ const firebaseConfig = {
         return properties; 
     }
     storeProperty = async(data)=>{
+        let searchIndex = [];
+        const string = data.address.toLowerCase().split(' ');
+        string.forEach(word=>{
+            let newWord = ''
+            for(let i=0;i<word.length; i++){
+                newWord +=word.charAt(i)
+                searchIndex.push(newWord)
+            }
+        })
          let images = []
            const post = await this.firestore.collection(this.tables.PROPERTIES).add({
                 hostId:data.hostId,
@@ -73,7 +82,8 @@ const firebaseConfig = {
                 type:data.type,
                 house:data.house,
                 createdAt:firebase.firestore.FieldValue.serverTimestamp(),
-                updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+                updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+                keywords:searchIndex
     
             })
             for(let i= 0; i<data.images.length; i++){
@@ -103,6 +113,20 @@ const firebaseConfig = {
     getPropertyById = async(id)=>{
         const property = await (await this.firestore.collection(this.tables.PROPERTIES).doc(id).get()).data();
         return property 
+    }
+    searchProperties = async (location, checkIn, checkOut, guest=0)=>{
+        // this.firestore.collection(this.tables.PROPERTIES)
+        // .get()
+        // .then(docs=>{
+        //     docs.forEach(doc=>results.push({id:doc.id, ...doc.data()}))
+        //    const dat= results.filter(result=>result.address.toLowerCase().includes(location.toLowerCase()))
+        //    console.log(dat)
+        // })
+        await this.firestore.collection(this.tables.PROPERTIES)
+        .where('keywords', 'array-contains', location.toLowerCase())
+        .get()
+
+       
     }
 }
 export default new Firebase();

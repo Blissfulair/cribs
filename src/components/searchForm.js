@@ -4,7 +4,7 @@ import {withStyles} from "@material-ui/core/styles"
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Calendar from "@material-ui/icons/Today"
 import People from "@material-ui/icons/PeopleOutline"
-import {Grid, TextField} from "@material-ui/core"
+import {Grid, TextField, Button} from "@material-ui/core"
 import { DatePicker } from "@material-ui/pickers";
 import "../scss/header.scss"
 const styles = theme =>({
@@ -61,7 +61,8 @@ const styles = theme =>({
         display:'flex',
         borderRadius:'25px',
         justifyContent:'center',
-        outline:0
+        outline:0,
+        textTransform:'capitalize'
     },
     title:{
         margin:'40px 0 20px 0',
@@ -129,7 +130,7 @@ const SearchForm = (props)=>{
                     </div>
                     <div className={classes.row2}>
                         <div>
-                            <button className={classes.btn}>Search</button>
+                            <Button className={classes.btn}>Search</Button>
                         </div>
                     </div>
                 </form>

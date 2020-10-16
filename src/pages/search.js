@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import {Select, FormControl,Grid,MenuItem, Typography,Paper} from '@material-ui/core';
 import Searchs from "../components/search"
@@ -34,6 +34,7 @@ const styles = theme =>({
 })
 const Search = ({classes,history})=>{
     const [age, setAge] = React.useState('');
+    // const {results} = 
 
     const handleChange = (event) => {
       setAge(event.target.value);

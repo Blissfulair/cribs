@@ -41,6 +41,7 @@ import Review from "../components/review"
 import {Link, withRouter} from "react-router-dom"
 import './../scss/single.scss'
 import AppContext from "../state/context";
+import Splash from "../components/splash";
 const styles = theme =>({
     container:{
         paddingTop:140
@@ -160,15 +161,17 @@ const Single = ({classes, location})=>{
       setOpen(false);
     };
     const data = [1,3,4,5]
+    const [property, setProperty]=useState(null)
 
     const {getPropertyById, state} = useContext(AppContext)
     useEffect(()=>{
         const id = location.pathname.split('crib')[1]
         getPropertyById(id)
-    }, [location])
+        setProperty(state.property)
+    }, [location.pathname, state])
 
-    if(!state.property)
-    return null
+    if(!Boolean(property))
+    return <Splash/>
     return(
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
@@ -177,15 +180,15 @@ const Single = ({classes, location})=>{
                             <Grid item xs={12} md={8}>
                                 <Grid container>
                                     <Grid item xs={4}>
-                                        <div className={classes.background} id="slideTop" style={{ backgroundImage:`url(${state.property.images[0]})`}}>
+                                        <div className={classes.background} id="slideTop" style={{ backgroundImage:`url(${property.images[0]})`}}>
                                             <div className={classes.overlay}></div>
                                         </div>
-                                        <div className={classes.background} id="slideBottom" style={{ backgroundImage:`url(${state.property.images[1]})`}}></div>
+                                        <div className={classes.background} id="slideBottom" style={{ backgroundImage:`url(${property.images[1]})`}}></div>
                                     </Grid>
                                     <Grid item xs={8}>
                                         <div className={classes.background} id="slide-cover">
                                             <div className={classes.overlay1}></div>
-                                            <DetailSlide content={state.property.images}/>
+                                            <DetailSlide content={property.images}/>
                                         </div>
                                     </Grid>
                                 </Grid>
@@ -210,7 +213,7 @@ const Single = ({classes, location})=>{
                                    </a>
                                 </Tabs>
                                 <Box p={3}>
-                                    <Typography style={{marginBottom:30}} variant="h4" id="overview">{state.property.name}</Typography>
+                                    <Typography style={{marginBottom:30}} variant="h4" id="overview">{property.name}</Typography>
                                     <Grid container spacing={2}>
                                         <Grid item xs={5}>
                                             <div className={classes.position} > 
@@ -219,24 +222,24 @@ const Single = ({classes, location})=>{
                                             </div>
                                             <div className={classes.position}>
                                                 <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">{state.property.bedroom} Bedrooms</Typography>
+                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bedroom} Bedrooms</Typography>
                                             </div>
                                         </Grid>
                                         <Grid item xs={7}>
                                             <div className={classes.position}>
                                                 <PeopleOutlineIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">{state.property.guest} Guests</Typography>
+                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.guest} Guests</Typography>
                                             </div>
                                             <div className={classes.position}>
                                                 <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">{state.property.bathroom} Bathroms</Typography>
+                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bathroom} Bathroms</Typography>
                                             </div>
                                         </Grid>
                                     </Grid>
                                     <Divider/>
                                     <Typography variant="subtitle1" component="p" style={{margin:'15px 0', fontSize:15, wordWrap:'break-word'}}>
                                         {
-                                            state.property.description
+                                            property.description
                                         }
                                     </Typography>
                                     
@@ -246,29 +249,29 @@ const Single = ({classes, location})=>{
                                     <Grid container>
 
                                         <Grid item xs={5}>
-                                            <div className={classes.position} style={{textDecoration:state.property.kitchen?'none':'line-through'}} > 
+                                            <div className={classes.position} style={{textDecoration:property.kitchen?'none':'line-through'}} > 
                                             <KitchenIcon htmlColor="#00A8C8" fontSize="large"/>
                                             <Typography className={classes.textTitle}  variant="subtitle1" component="p">Kitchen</Typography>
                                             </div>
-                                            <div className={classes.position} style={{textDecoration:state.property.wifi?'none':'line-through'}}>
+                                            <div className={classes.position} style={{textDecoration:property.wifi?'none':'line-through'}}>
                                                 <WifiIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">WiFi</Typography>
                                             </div>
-                                            <div className={classes.position} style={{textDecoration:state.property.smoke?'none':'line-through'}}>
+                                            <div className={classes.position} style={{textDecoration:property.smoke?'none':'line-through'}}>
                                                 <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Smoke Alarm</Typography>
                                             </div>
                                         </Grid>
                                         <Grid item xs={7}>
-                                            <div className={classes.position} style={{textDecoration:state.property.parking?'none':'line-through'}}>
+                                            <div className={classes.position} style={{textDecoration:property.parking?'none':'line-through'}}>
                                                 <LocalParkingIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Free parking on premises</Typography>
                                             </div>
-                                            <div className={classes.position} style={{textDecoration:state.property.cable?'none':'line-through'}}>
+                                            <div className={classes.position} style={{textDecoration:property.cable?'none':'line-through'}}>
                                                 <TvIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Cable TV</Typography>
                                             </div>
-                                            <div className={classes.position} style={{textDecoration:state.property.smoke?'none':'line-through'}}>
+                                            <div className={classes.position} style={{textDecoration:property.smoke?'none':'line-through'}}>
                                                 <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Carbon Monoxide alarm</Typography>
                                             </div>
@@ -340,10 +343,10 @@ const Single = ({classes, location})=>{
                                             <Grid style={{marginTop:10}} container>
                                                 <Grid item xs={9}>
                                                     <div>
-                                                        <Typography style={{color:'#00A8C8', fontWeight:'bold',display:'inline-flex'}} variant="h5">‎₦{state.property.amount}</Typography> avg/night
+                                                        <Typography style={{color:'#00A8C8', fontWeight:'bold',display:'inline-flex'}} variant="h5">‎₦{property.amount}</Typography> avg/night
                                                     </div>
                                                     <Typography variant="subtitle2" style={{fontSize:12, marginTop:15}} component="p">
-                                                        {state.property.guest} Guests | {state.property.bedroom} Bedrooms | {state.property.bedroom} beds | {state.property.bathroom} Baths
+                                                        {property.guest} Guests | {property.bedroom} Bedrooms | {property.bedroom} beds | {property.bathroom} Baths
                                                     </Typography>
                                                     <Typography style={{fontSize:12}} variant="subtitle2" component="p">
                                                         Excellent 4.7/5 Good for families
@@ -422,7 +425,7 @@ const Single = ({classes, location})=>{
                                                         <Typography variant="caption" component="p">Includes taxes and fees</Typography>
                                                     </Grid>
                                                     <Grid item xs={4}>
-                                                        <Typography variant="h5" style={{color:'#FF9C07',textAlign:'right',fontWeight:'bold'}}>₦{state.property.amount}</Typography>
+                                                        <Typography variant="h5" style={{color:'#FF9C07',textAlign:'right',fontWeight:'bold'}}>₦{property.amount}</Typography>
                                                         <Typography variant="caption" style={{cursor:'pointer'}} component="p" onClick={handleClickOpen}>view details</Typography>
                                                         <Dialog
                                                             open={open}

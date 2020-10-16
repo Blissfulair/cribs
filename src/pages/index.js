@@ -19,6 +19,7 @@ import Slide from "../components/slider";
 import Explore from "../components/explore";
 import { DatePicker } from "@material-ui/pickers";
 import AppContext from "../state/context";
+import { Button } from "@material-ui/core";
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${bg})`,
@@ -80,7 +81,8 @@ const styles = theme =>({
         display:'flex',
         borderRadius:'25px',
         justifyContent:'center',
-        outline:0
+        outline:0,
+        textTransform:'capitalize'
     },
     title:{
         margin:'40px 0 20px 0',
@@ -100,11 +102,35 @@ const styles = theme =>({
 })
 const Index = (props)=>{
     const {classes} = props
-    const {state,getProperties} = useContext(AppContext)
+    const {state,getProperties, setSearch,searchProperties, results} = useContext(AppContext)
+    const [data, setData]=useState({
+        location:'',
+        checkIn:new Date(),
+        checkOut:new Date()
+    })
     useEffect(()=>{
         getProperties()
+        setData({
+            location:state.searchQuery?state.searchQuery.location:'',
+            checkIn:state.searchQuery?state.searchQuery.checkIn:new Date(),
+            checkOut:state.searchQuery?state.searchQuery.checkOut:new Date()
+        })
     },[])
-    const [selectedDate, handleDateChange] = useState(new Date());
+
+    const changeHandler=(e)=>{
+        setData({
+            ...data,
+            [e.target.name]:e.target.value
+        })
+    }
+    const onSubmit = (e)=>{
+        e.preventDefault();
+        setSearch(data);
+        searchProperties(data.location)
+        if(results.length){
+            props.history.push('/search')
+        }
+    }
     return(
         <Grid className="home" container justify="center">
             <Grid item className={classes.loginContainer} >
@@ -112,12 +138,12 @@ const Index = (props)=>{
                     <Grid item xs={10} md={5}>
                         <Paper style={{backgroundColor:'#14adc5a8',minHeight:'350px', width:'100%'}}>
                         <div className={classes.formContainer}>
-                            <form className={classes.form} noValidate autoComplete="off">
+                            <form onSubmit={onSubmit} className={classes.form} noValidate autoComplete="off">
                                 <div className={classes.location}>
                                     <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
                                     <div style={{width:'100%',height:'90%'}}>
                                         <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
-                                        <input placeholder="Search anyplace of your choice"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} />
+                                        <input value={data.location} onChange={changeHandler} name="location" placeholder="Search anyplace of your choice"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} />
                                     </div>
                                 </div>
 
@@ -130,8 +156,9 @@ const Index = (props)=>{
                                         id="begin"
                                         label="Check In"
                                         format="dd/MM/yyyy"
-                                        value={selectedDate}
-                                        onChange={handleDateChange}
+                                        name="checkIn"
+                                        value={data.checkIn}
+                                        onChange={(e)=>{setData({...data, checkIn:e})}}
                                         />
                                     </div>
                                     <div className={classes.checkIn}>
@@ -142,8 +169,9 @@ const Index = (props)=>{
                                         id="end"
                                         label="Check Out"
                                         format="dd/MM/yyyy"
-                                        value={selectedDate}
-                                        onChange={handleDateChange}
+                                        name="checkOut"
+                                        value={data.checkOut}
+                                        onChange={(e)=>{setData({...data, checkOut:e})}}
                                         />
                                     </div>
                                 </div>
@@ -153,7 +181,7 @@ const Index = (props)=>{
                                         <People htmlColor="#046FA7" fontSize="default" />
                                     </div>
                                     <div style={{width:'45%'}}>
-                                        <button onClick={()=>props.history.push('/search')} className={classes.btn}>Search</button>
+                                        <Button type="submit" className={classes.btn}>Search</Button>
                                     </div>
                                 </div>
                             </form>
@@ -188,7 +216,6 @@ const Index = (props)=>{
                                 <Grid  container spacing={2}>
                                     {
                                         state.properties.map((property, i)=>{
-                                            console.log(property)
                                             return(
                                                 <Grid item xs={12} sm={6} md={3} lg={3} >
                                                     <Link to={`/crib/${property.id}`}>

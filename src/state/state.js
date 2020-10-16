@@ -8,7 +8,9 @@ const GlobalState= ()=>{
         initializing:true,
         properties:[],
         property:null,
-        myProperties:[]
+        myProperties:[],
+        results:[],
+        searchQuery:null
     }
 
     useEffect(()=>{
@@ -41,6 +43,11 @@ const GlobalState= ()=>{
                     ...prevState,
                     initializing:action.payload.initializing
                 }
+            case 'SET_SEARCH':
+                return{
+                    ...prevState,
+                    searchQuery:action.payload.searchQuery
+                }
             case 'GET_PROPERTIES':
                 return{
                     ...prevState,
@@ -50,6 +57,11 @@ const GlobalState= ()=>{
                 return{
                     ...prevState,
                     property:action.payload.property
+                }
+            case 'GET_RESULTS':
+                return{
+                    ...prevState,
+                    results:action.payload.results
                 }
             case 'GET_MY_PROPERTIES':
                 return{
@@ -89,6 +101,20 @@ const GlobalState= ()=>{
             firebase.getPropertyById(id)
             .then(property=>{
                 dispatch({type:'GET_PROPERTY', payload:{property}}) 
+            })
+        },
+        setSearch:(search)=>{
+            dispatch({type:'SET_SEARCH', payload:{searchQuery:search}}) 
+        },
+        searchProperties:(location, checkIn, checkOut, guest)=>{
+            firebase.searchProperties(location, checkIn, checkOut, guest)
+            .then(docs=>{
+                let results = []
+                docs.forEach(doc=>{
+                    results.push(doc)
+                    dispatch({type:'GET_RESULTS', payload:{results:results}})
+                })
+
             })
         },
         state

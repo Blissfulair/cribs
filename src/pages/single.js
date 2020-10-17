@@ -164,11 +164,12 @@ const Single = ({classes, location})=>{
     const [property, setProperty]=useState(null)
 
     const {getPropertyById, state} = useContext(AppContext)
+
     useEffect(()=>{
         const id = location.pathname.split('crib')[1]
         getPropertyById(id)
         setProperty(state.property)
-    }, [location.pathname, state])
+    }, [getPropertyById,location.pathname,state.property])
 
     if(!Boolean(property))
     return <Splash/>

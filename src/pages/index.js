@@ -106,20 +106,21 @@ const styles = theme =>({
 })
 const Index = (props)=>{
     const {classes} = props
-    const {state,getProperties, setSearch,searchProperties} = useContext(AppContext)
+    const context = useContext(AppContext)
     const [data, setData]=useState({
         location:'',
         checkIn:new Date(),
         checkOut:new Date()
     })
     useEffect(()=>{
-        getProperties()
+        context.getProperties()
+        console.log('here')
         setData({
-            location:state.searchQuery?state.searchQuery.location:'',
-            checkIn:state.searchQuery?state.searchQuery.checkIn:new Date(),
-            checkOut:state.searchQuery?state.searchQuery.checkOut:new Date()
+            location:context.state.searchQuery?context.state.searchQuery.location:'',
+            checkIn:context.state.searchQuery?context.state.searchQuery.checkIn:new Date(),
+            checkOut:context.state.searchQuery?context.state.searchQuery.checkOut:new Date()
         })
-    },[])
+    },[context])
 
     const changeHandler=(e)=>{
         setData({
@@ -129,8 +130,8 @@ const Index = (props)=>{
     }
     const onSubmit = (e)=>{
         e.preventDefault();
-        setSearch(data);
-        searchProperties(data.location, '','',3,props.history)
+        context.setSearch(data);
+        context.searchProperties(data.location, '','',3,props.history)
     }
     return(
         <Grid className="home" container justify="center">
@@ -210,13 +211,13 @@ const Index = (props)=>{
                 </Grid>
 
                     {
-                        state.properties.length>0?
+                        context.state.properties.length>0?
                         <>
                             <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
                             <div style={{marginBottom:10}}>
                                 <Grid  container spacing={2}>
                                     {
-                                        state.properties.map((property, i)=>{
+                                        context.state.properties.map((property, i)=>{
                                             return(
                                                 <Grid item xs={12} sm={6} md={3} lg={3} >
                                                     <Link to={`/crib/${property.id}`}>
@@ -234,7 +235,7 @@ const Index = (props)=>{
                             <div style={{marginTop:50}}>
                                 <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
                                 <Grid style={{position:'relative'}}  container >
-                                    <Slide content={state.properties}/>
+                                    <Slide content={context.state.properties}/>
                                 </Grid>
                             </div>
                             <Link className={classes.link} to={'/'}>See more</Link>

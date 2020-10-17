@@ -60,7 +60,7 @@ const Search = ({classes,history})=>{
         onLoadSearch(data)
 
         setIsLoading(false)
-    },[])
+    },[history.location.search,setSearch,onLoadSearch])
     console.log(state)
     if(isLoading)
         return <Splash />

@@ -37,6 +37,9 @@ const firebaseConfig = {
     storeData = async(data,user)=>{
         await this.firestore.collection(this.tables.USERS).doc(user.uid).set({firstname:data.firstname,lastname:data.lastname,email:data.email,role:data.role})
     }
+    makeHost = async(user)=>{
+        await this.firestore.collection(this.tables.USERS).doc(user.uid).update({role:2})
+    }
     getUserDetails = async(uid)=>{
         const data = (await this.firestore.collection(this.tables.USERS).doc(uid).get()).data()
       return data

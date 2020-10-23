@@ -30,7 +30,6 @@ const GlobalState= ()=>{
             try{
                 firebase.getUserDetails(user.uid)
                 .then(userData=>{
-                    console.log(userData)
                     dispatch({type:'RETRIVE_USER', payload:{user,userData}})
                     if(userData.role === 0)
                     dispatch({type:'GET_DASHBOARD', payload:{dashboard:true}})
@@ -198,6 +197,16 @@ const GlobalState= ()=>{
         },
         chooseDashboard:()=>{
             dispatch({type:'GET_DASHBOARD', payload:{dashboard:!state.dashboard}})
+        },
+        makeHost:async()=>{
+            await firebase.makeHost(state.user)
+            .then(async()=>{
+               await firebase.getUserDetails(state.user.uid)
+                .then(user=>{
+                    dispatch({type:'RETRIVE_USER', payload:{user:state.user,userData:user}})
+                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                })
+            })
         },
         state
     }),[state])

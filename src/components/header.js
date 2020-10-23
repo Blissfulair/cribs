@@ -56,6 +56,7 @@ const styles = theme=>({
 
 
 const Header = (props)=>{
+    const context = useContext(AppContext)
         const [state, setState] = useState({
             left: false,
             top:false
@@ -66,6 +67,7 @@ const Header = (props)=>{
         const logoutRef = React.useRef(null);
         const prevOpen = React.useRef(logout);
         const [lang, setLang]= useState('en')
+        const [loading, setLoading] = useState(false)
         const toggleLogout = () => {
             setLogout((prevOpen) => !prevOpen);
           };
@@ -83,6 +85,16 @@ const Header = (props)=>{
         setLang(e.target.value);
         };
 
+        const becomeHost = ()=>{
+            setLoading(true)
+            context.makeHost()
+            .then(()=>{
+                setLoading(false)
+            })
+            .catch((e)=>{
+                setLoading(false)
+            })
+        }
         
         const toggleDrawer = (anchor, open) => (event) => {
             if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -92,7 +104,7 @@ const Header = (props)=>{
             setState({ ...state, [anchor]: open });
           };
         const {classes} = props
-        const context = useContext(AppContext)
+  
     return(
         <>
             {
@@ -121,7 +133,12 @@ const Header = (props)=>{
                                                     </Grid>
                                                     <Grid item className={!context.state.dashboard?classes.inactive:classes.active}>Renting</Grid>
                                                     </Grid>
-                                                    :''
+                                                    :
+                                                    <Grid container>
+                                                        <Button onClick={becomeHost} style={{textTransform:'lowercase', color:'#375FA5'}} variant="text">
+                                                            {loading?'please wait a minute...':`Become a ${context.state.dashboard?'host':'renter'} on Crib`}
+                                                        </Button>
+                                                    </Grid>
                                                 }
                                             </Typography>
                                             <IconButton

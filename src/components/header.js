@@ -15,7 +15,6 @@ import "./../scss/header.scss"
 import TopDrawer from "./topDrawer";
 import Switch from '@material-ui/core/Switch';
 import Avatar from '@material-ui/core/Avatar';
-import image from '../images/login_bg.png'
 import LogoutModal from "./logout";
 import AppContext from "../state/context";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -148,7 +147,12 @@ const Header = (props)=>{
                                             onClick={toggleLogout}
                                             style={{marginLeft:40}}
                                             >
-                                                <Avatar style={{ width:25,height:25}} src={image} alt="jone doe"/>
+                                            {
+                                                context.state.user.photoURL?
+                                                <Avatar style={{ width:25,height:25}} src={context.state.user.photoURL} alt="user"/>
+                                                :
+                                                <Avatar style={{ width:25,height:25}}  alt="">{context.state.userData.firstname.charAt(0)+context.state.userData.lastname.charAt(0)}</Avatar>
+                                            }
                                             </IconButton>
                                             <LogoutModal logout={logout} logoutRef={logoutRef} setLogout={setLogout} />
                                         </Grid>

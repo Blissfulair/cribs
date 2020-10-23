@@ -78,7 +78,7 @@ class Setting extends React.Component{
                                         <input type={this.state.old_secure?"password":"text"} id="old" name="old" />
                                         <IconButton onClick={()=>this.setState({old_secure:!this.state.old_secure})}  className="eye">
                                             {
-                                                this.state.old_secure?
+                                                !this.state.old_secure?
                                                 <VisibilityOffIcon/>
                                                 :
                                                 <VisibilityIcon />
@@ -93,7 +93,7 @@ class Setting extends React.Component{
                                         <input type={this.state.password_secure?"password":"text"} id="new" name="password" />
                                         <IconButton onClick={()=>this.setState({password_secure:!this.state.password_secure})} className="eye">
                                             {
-                                                this.state.password_secure?
+                                                !this.state.password_secure?
                                                 <VisibilityOffIcon/>
                                                 :
                                                 <VisibilityIcon />
@@ -107,7 +107,7 @@ class Setting extends React.Component{
                                     <input type={this.state.confirm_secure?"password":"text"} id="confirm" name="confirm_pass" />
                                     <IconButton onClick={()=>this.setState({confirm_secure:!this.state.confirm_secure})} className="eye">
                                         {
-                                                this.state.confirm_secure?
+                                                !this.state.confirm_secure?
                                                 <VisibilityOffIcon/>
                                                 :
                                                 <VisibilityIcon />

@@ -115,7 +115,8 @@ class Index extends Component{
         this.state={
             location:'',
             checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+            checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            guest:0
          }
     }
     // useEffect(()=>{
@@ -141,7 +142,7 @@ class Index extends Component{
      onSubmit = (e)=>{
         e.preventDefault();
         this.context.setSearch(this.state);
-        this.context.searchProperties(this.state.location, this.state.checkIn,this.state.checkOut,3,this.props.history)
+        this.context.searchProperties(this.state.location, this.state.checkIn,this.state.checkOut,this.state.guest,this.props.history)
     }
     render(){
         const {classes}=this.props
@@ -194,7 +195,7 @@ class Index extends Component{
                                 <div className={classes.row1}>
                                     <div className={classes.checkIn}>
                                         <People htmlColor="#046FA7" fontSize="default" />
-                                        <TextField className="home-guest single" label="Guest"/>
+                                        <TextField onChange={this.changeHandler} name="guest" className="home-guest single" label="Guest"/>
                                     </div>
                                     <div style={{width:'45%'}}>
                                         <Button type="submit" className={classes.btn}>Search</Button>

@@ -18,6 +18,7 @@ import Avatar from '@material-ui/core/Avatar';
 import image from '../images/login_bg.png'
 import LogoutModal from "./logout";
 import AppContext from "../state/context";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const styles = theme=>({
     container:{
@@ -175,6 +176,8 @@ const Header = (props)=>{
                                       onChange={handleChange}
                                     inputProps={{ 'aria-label': 'lang' }}
                                     displayEmpty="EN"
+                                    IconComponent={ExpandMoreIcon}
+                                    classes={{selectMenu:{color:'#046FA7'}}}
                                     >
                                         
                                     <MenuItem value="en">
@@ -188,7 +191,7 @@ const Header = (props)=>{
                                     <Button style={{fontSize:'12px', textTransform:'capitalize',color:'#fff'}} >Host Accommodation</Button>
                                 </div>
                                 <div className={classes.menuItems}>
-                                    <Link color="textPrimary" to="/register">Signup</Link>
+                                    <Link color="textPrimary" style={{color:'#000000', fontWeight:'bold'}} to="/register">Signup</Link>
                                 </div>
                             </div>
                         </Grid>

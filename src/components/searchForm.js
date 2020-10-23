@@ -81,7 +81,7 @@ const SearchForm = (props)=>{
         location:state.searchQuery?state.searchQuery.location:'',
         checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
         checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-        guest:''
+        guest:state.searchQuery?state.searchQuery.guest:''
     })
   
     // const [checkIn, setCheckIn]=useState(false)
@@ -95,7 +95,7 @@ const SearchForm = (props)=>{
             location:state.searchQuery?state.searchQuery.location:'',
             checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            guest:''
+            guest:state.searchQuery?state.searchQuery.guest:''
         })
     },[state.searchQuery])
     return(
@@ -144,7 +144,7 @@ const SearchForm = (props)=>{
                     <div className={classes.row1}>
                         <div className={classes.checkIn} style={{borderColor:guestF?'#00A3C5':'#DCDCDC'}}>
                             <People htmlColor="#046FA7" fontSize="default" />
-                            <TextField onFocus={()=>setGuestF(true)} onBlur={()=>setGuestF(false)} onChange={(e)=>setData({...data, guest:e.target.value})} className="single home-guest" label="Guest"/>
+                            <TextField onFocus={()=>setGuestF(true)} value={data.guest} onBlur={()=>setGuestF(false)} onChange={(e)=>setData({...data, guest:e.target.value})} className="single home-guest" label="Guest"/>
                         </div>
                     </div>
                     <div className={classes.row2}>

@@ -7,6 +7,10 @@ import Explore from "../components/explore";
 import  MapContainer  from "../components/map";
 import {withRouter} from "react-router-dom"
 import Context from "../state/context"
+import benin from "../images/benin.jpeg"
+import abuja from "../images/abuja.jpg"
+import lagos from "../images/lagos.jpg"
+import kano from "../images/kano.jpeg"
 const styles = theme =>({
     container:{
         paddingTop:200
@@ -161,7 +165,7 @@ class Search extends Component{
                         </Grid>
                         <Typography variant="h4" classes={{root:classes.title}}>Explore Cribs by City</Typography>
                         <Grid style={{position:'relative'}} container>
-                            <Explore content={[{name:'Lagos City', description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Abuja City', description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Kano City', description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'}]}/>
+                        <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'}]}/>
                         </Grid>
                     </div>
                 </Grid>

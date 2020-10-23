@@ -156,7 +156,7 @@ class Index extends Component{
                                 <div className={classes.location}>
                                     <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
                                     <div style={{width:'100%',height:'90%'}}>
-                                    <TextField className="home-location single" name="location" classes={{root:{width:'100%'}}} label="Location" placeholder="Search anyplace e.g Lagos"/>
+                                    <TextField className="home-location single" name="location" classes={{root:{width:'100%'}}} label="Location" value={this.state.location} onChange={this.changeHandler} placeholder="Search anyplace e.g Lagos"/>
                                         {/* <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
                                         <input value={this.state.location} onChange={this.changeHandler} name="location" placeholder="Search anyplace e.g Lagos"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} /> */}
                                     </div>

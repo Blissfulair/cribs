@@ -106,7 +106,7 @@ const SearchForm = (props)=>{
                     <div className={classes.location} style={{borderColor:locationF?'#00A3C5':'#DCDCDC'}}>
                         <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
                         <div style={{width:'100%',height:'90%'}}>
-                        <TextField className="home-location single" name="location" classes={{root:{width:'100%'}}} label="Location" onFocus={()=>setLocationF(true)} onChange={(e)=>setData({...data, location:e.target.value})} onBlur={()=>setLocationF(false)} placeholder="Search anyplace e.g Lagos"/>
+                        <TextField className="home-location single" name="location" classes={{root:{width:'100%'}}} value={data.location}  label="Location" onFocus={()=>setLocationF(true)} onChange={(e)=>setData({...data, location:e.target.value})} onBlur={()=>setLocationF(false)} placeholder="Search anyplace e.g Lagos"/>
                             {/* <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
                             <input value={data.location} onFocus={()=>setLocationF(true)} onChange={(e)=>setData({...data, location:e.target.value})} onBlur={()=>setLocationF(false)}  placeholder="Search anyplace of your choice"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} /> */}
                         </div>

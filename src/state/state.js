@@ -27,9 +27,7 @@ const GlobalState= ()=>{
 
         getProperties()
         firebase.auth.onAuthStateChanged((user)=>{
-            dispatch({type:'SET_STATE', payload:{initializing:false}})
-            if(user){
-
+            try{
                 firebase.getUserDetails(user.uid)
                 .then(userData=>{
                     console.log(userData)
@@ -40,13 +38,22 @@ const GlobalState= ()=>{
                     dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
                     else if(userData.role ===2)
                     dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                    dispatch({type:'SET_STATE', payload:{initializing:false}})
                     
                 })
-                dispatch({type:'RETRIVE_USER', payload:{user}})
             }
-            else{
+            catch(e){
                 dispatch({type:'RETRIVE_USER', payload:{user:null, userData:null}})
+                dispatch({type:'SET_STATE', payload:{initializing:false}})
             }
+            // if(user){
+
+
+            //     dispatch({type:'RETRIVE_USER', payload:{user}})
+            // }
+            // else{
+            //     dispatch({type:'RETRIVE_USER', payload:{user:null, userData:null}})
+            // }
         })
     },[])
     const reducer = (prevState, action)=>{
@@ -175,8 +182,8 @@ const GlobalState= ()=>{
 
             })
         },
-        onLoadSearch:(data)=>{
-            firebase.searchProperties(data.location, data.checkIn, data.checkOut, data.guest)
+        onLoadSearch:async(data)=>{
+            await firebase.searchProperties(data.location, data.checkIn, data.checkOut, data.guest)
             .then(docs=>{
                 let results = []
                 docs.forEach(doc=>{

@@ -114,7 +114,7 @@ const SearchForm = (props)=>{
             loading&&
             <Splash/>
         }
-        <Grid container>
+        <Grid container style={{zIndex:22}}>
             <Grid item xs={false} md={1}/>
             <Grid item xs={12} md={9}>
                 <form onSubmit={onSubmit} className='search-forms' autoComplete="off">

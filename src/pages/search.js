@@ -64,12 +64,21 @@ class Search extends Component{
             }
             this.context.setSearch(data)
             this.context.onLoadSearch(data)
-    
-            this.setState({
-                isLoading:false,
-                checkOut:checkOut,
-                checkIn:checkin
+            .then(()=>{
+                this.setState({
+                    isLoading:false,
+                    checkOut:checkOut,
+                    checkIn:checkin
+                })
             })
+            .catch((er)=>{
+                this.setState({
+                    isLoading:false,
+                    checkOut:checkOut,
+                    checkIn:checkin
+                })
+            })
+    
     }
     componentDidUpdate(prevProps){
         if(prevProps.history.location !== this.props.history.location){
@@ -87,11 +96,19 @@ class Search extends Component{
                 }
                 this.context.setSearch(data)
                 this.context.onLoadSearch(data)
-        
-                this.setState({
-                    isLoading:false,
-                    checkOut:checkOut,
-                    checkIn:checkin
+                .then(()=>{
+                    this.setState({
+                        isLoading:false,
+                        checkOut:checkOut,
+                        checkIn:checkin
+                    })
+                })
+                .catch((er)=>{
+                    this.setState({
+                        isLoading:false,
+                        checkOut:checkOut,
+                        checkIn:checkin
+                    })
                 })
         }
     }
@@ -104,10 +121,13 @@ class Search extends Component{
     render(){
     const {classes} = this.props
     const {state} = this.context
-    if(this.state.isLoading)
-        return <Splash />
+
     return(
         <>
+            {
+                this.state.isLoading&&
+                    <Splash />
+            }
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
                     <div id="search-page" className={classes.container}>

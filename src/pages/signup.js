@@ -206,7 +206,7 @@ class SignUp extends React.Component{
                                             label="Hosting"
                                         />
                                 </div>
-                                <button onClick={this.handleClick(TransitionUp)} className="btn-signup">Login</button>
+                                <button onClick={this.handleClick(TransitionUp)} className="btn-signup">Sign Up</button>
                                 <div className="social-signup">
                                     <a href="https://www.facebook.com" className="col">
                                         <FacebookIcon/>

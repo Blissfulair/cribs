@@ -1,7 +1,7 @@
 import React from "react";
 import "./signup.css"
 import "./login.css"
-import {Link} from "react-router-dom"
+import {Link, withRouter} from "react-router-dom"
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import {withStyles,Snackbar, Slide } from "@material-ui/core";
@@ -10,7 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppContext from "../state/context";
 import Activity from "../components/activity"
-import firebase from "../components/firebase"
+// import firebase from "../components/firebase"
 
 
 const styles = ()=>({
@@ -39,11 +39,26 @@ class SignUp extends React.Component{
             remember:false,
             err:'',
             token:'',
-            type:false
+            type:false,
+            role:0,
+            renting:false,
+            hosting:false
         }
     }
 
 
+    setRenting=(e)=>{
+        if(e.target.checked)
+        this.setState({role:0, renting:true, hosting:false})
+        else
+        this.setState({renting:false})
+    }
+    setHosting=(e)=>{
+        if(e.target.checked)
+        this.setState({role:1, hosting:true, renting:false})
+        else
+        this.setState({role:0, hosting:false})
+    }
     changeHandler = (e)=>{
         const name = e.target.name;
         this.setState({[name]:e.target.value})
@@ -79,11 +94,13 @@ class SignUp extends React.Component{
                 type:false,
                 loading:false,
                 transition:undefined,
-                open:false
+                open:false,
+                role:this.state.role
             }
-            firebase.register(body)
+            this.context.register(body)
             .then(()=>{
                 this.setState({loading:false})
+                this.props.history.push('/app/dashboard')
             })
             .catch((err=>{
                 this.setState({loading:false,
@@ -181,11 +198,11 @@ class SignUp extends React.Component{
                                 </div>
                                 <div className="form-check">
                                     <FormControlLabel
-                                            control={<Checkbox id="renting" onChange={()=>this.setState({remember: !this.state.remember})} classes={{root:this.props.classes.check}} name="remember"/>}
+                                            control={<Checkbox id="renting" onChange={(e)=>{this.setState({remember: !this.state.remember}); this.setRenting(e)}} checked={this.state.renting} classes={{root:this.props.classes.check}} name="role"/>}
                                             label="Renting"
                                         />
                                     <FormControlLabel
-                                            control={<Checkbox id="hosting" onChange={()=>this.setState({remember: !this.state.remember})} classes={{root:this.props.classes.check}} name="remember"/>}
+                                            control={<Checkbox id="hosting" onChange={(e)=>{this.setState({remember: !this.state.remember}); this.setHosting(e)}} checked={this.state.hosting} classes={{root:this.props.classes.check}} name="role"/>}
                                             label="Hosting"
                                         />
                                 </div>
@@ -212,4 +229,4 @@ class SignUp extends React.Component{
         );
     }
 }
-export default withStyles(styles)(SignUp);
+export default withRouter(withStyles(styles)(SignUp));

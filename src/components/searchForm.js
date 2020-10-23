@@ -1,5 +1,5 @@
 
-import React,{useState,useContext} from "react";
+import React,{useState,useContext, useEffect} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Calendar from "@material-ui/icons/Today"
@@ -55,13 +55,8 @@ const styles = theme =>({
         alignItems:'center',
     },
     btn:{
-        backgroundColor:'#00A8C8',
         color:'#fff',
-        border:'1px solid #00A3C5',
-        width:'100%',
-        height:'50px',
-        display:'flex',
-        borderRadius:'25px',
+        padding:'10px 48px',
         justifyContent:'center',
         outline:0,
         textTransform:'capitalize'
@@ -80,19 +75,29 @@ const styles = theme =>({
 const SearchForm = (props)=>{
     const {classes} = props
     const [locationF, setLocationF]=useState(false)
+    const [guestF, setGuestF]=useState(false)
+    const {searchProperties,setSearch,state}=useContext(AppContext)
     const [data, setData]=useState({
-        location:'',
-        checkIn:new Date(),
-        checkOut:new Date(),
+        location:state.searchQuery?state.searchQuery.location:'',
+        checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
         guest:''
     })
-    const {searchProperties,setSearch}=useContext(AppContext)
+  
     // const [checkIn, setCheckIn]=useState(false)
     const onSubmit =(e)=>{
         e.preventDefault()
         setSearch(data);
-        searchProperties(data.location, '','',3,props.history)
+        searchProperties(data.location, data.checkIn,data.checkOut,3,props.history)
     }
+    useEffect(()=>{
+        setData({
+            location:state.searchQuery?state.searchQuery.location:'',
+            checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            guest:''
+        })
+    },[state.searchQuery])
     return(
         <Grid container>
             <Grid item xs={false} md={1}/>
@@ -101,8 +106,9 @@ const SearchForm = (props)=>{
                     <div className={classes.location} style={{borderColor:locationF?'#00A3C5':'#DCDCDC'}}>
                         <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
                         <div style={{width:'100%',height:'90%'}}>
-                            <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
-                            <input onFocus={()=>setLocationF(true)} onChange={(e)=>setData({...data, location:e.target.value})} onBlur={()=>setLocationF(false)}  placeholder="Search anyplace of your choice"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} />
+                        <TextField className="home-location single" name="location" classes={{root:{width:'100%'}}} label="Location" onFocus={()=>setLocationF(true)} onChange={(e)=>setData({...data, location:e.target.value})} onBlur={()=>setLocationF(false)} placeholder="Search anyplace e.g Lagos"/>
+                            {/* <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
+                            <input value={data.location} onFocus={()=>setLocationF(true)} onChange={(e)=>setData({...data, location:e.target.value})} onBlur={()=>setLocationF(false)}  placeholder="Search anyplace of your choice"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} /> */}
                         </div>
                     </div>
 
@@ -136,14 +142,14 @@ const SearchForm = (props)=>{
                         </div>
                     </div>
                     <div className={classes.row1}>
-                        <div className={classes.checkIn}>
+                        <div className={classes.checkIn} style={{borderColor:guestF?'#00A3C5':'#DCDCDC'}}>
                             <People htmlColor="#046FA7" fontSize="default" />
-                            <TextField onChange={(e)=>setData({...data, guest:e.target.value})} className="single" label="Guest"/>
+                            <TextField onFocus={()=>setGuestF(true)} onBlur={()=>setGuestF(false)} onChange={(e)=>setData({...data, guest:e.target.value})} className="single home-guest" label="Guest"/>
                         </div>
                     </div>
                     <div className={classes.row2}>
                         <div>
-                            <Button type="submit" className={classes.btn}>Search</Button>
+                            <Button type="submit"  className={classes.btn}>Search</Button>
                         </div>
                     </div>
                 </form>

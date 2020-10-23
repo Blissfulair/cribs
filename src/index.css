@@ -15,6 +15,68 @@
   --red: #c50000;
   --black: #000;
 }
+.react-calendar{
+  border: none !important;
+  min-width: 400px !important;
+}
+.react-calendar__viewContainer{
+  background-color: #FBFBFB;
+  box-shadow: 0px 0px 3px #00000029;
+border-radius: 2px;
+  min-height: 300px;
+  padding: 20px;
+}
+.react-calendar__tile.react-calendar__month-view__days__day{
+  margin: 7px 2%;
+  border: 1px solid #CBCBCB;
+  background: #fff;
+  flex-basis: 10.2857% !important;
+    max-width: 10.2857% !important;
+}
+.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__tile--now{
+  background: #00A8C8 !important;
+  border: 2px solid #046FA7 !important;
+}
+.react-calendar__tile.react-calendar__month-view__days__day{
+  color: #000000;
+}
+.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__month-view__days__day--neighboringMonth{
+  color: #AFAFAF;
+}
+.react-calendar__month-view__weekdays{
+  text-transform: capitalize !important;
+}
+.react-calendar__month-view__weekdays abbr{
+  text-decoration: none;
+}
+.react-calendar__tile.react-calendar__month-view__days__day.react-calendar__tile--hasActive{
+  background: #DCDCDC !important;
+  color: #fff !important;
+}
+.react-calendar__navigation button:first-child,
+.react-calendar__navigation button:last-child{
+  display: none !important;
+}
+.react-calendar__navigation button:nth-child(2),
+.react-calendar__navigation button:nth-child(4),
+.react-calendar__navigation button:nth-child(2):enabled:hover,
+.react-calendar__navigation button:nth-child(4):enabled:hover, 
+.react-calendar__navigation button:nth-child(2):enabled:focus,
+.react-calendar__navigation button:nth-child(4):enabled:focus{
+  background-color: #00A8C8 !important;
+  border-radius: 17px;
+  width: 65px !important;
+  height: 35px !important;
+  color: #fff;
+}
+.react-calendar__navigation button:nth-child(3):enabled:hover,
+.react-calendar__navigation button:nth-child(3):enabled:focus{
+  background: none !important;
+}
+.react-calendar__navigation__label__labelText{
+  font-size: 23px;
+  color: #707070;
+}
 .MuiGrid-spacing-xs-2{
   width:100% !important;
   padding:0 !important;
@@ -78,6 +140,12 @@
   color:#00A8C8 !important;
 
 }
+.home-location .MuiFormLabel-root.MuiInputLabel-shrink,
+.home-guest .MuiFormLabel-root.MuiInputLabel-shrink{
+  color:#000000 !important;
+  font-weight: bold;
+
+}
 .single .MuiInputLabel-outlined.MuiInputLabel-shrink{
   transform: translate(14px, 8px) scale(0.75) !important;
   white-space: nowrap;
@@ -96,6 +164,36 @@
 .single label + .MuiInput-formControl {
   margin-top: -6px !important;
 }
+.home-guest .MuiInputLabel-shrink {
+  transform: translate(0, -3.5px) scale(0.75) !important;
+}
+.home-location .MuiInputLabel-shrink {
+  transform: translate(0, 2.5px) scale(0.75) !important;
+  color:gray
+}
+.home-location .MuiInputLabel-formControl {
+  transform: translate(0, 15px) scale(1);
+  color:gray
+}
+.MuiInput-underline::before {
+  border-bottom: none !important;
+}
+.home-guest .MuiInputLabel-formControl {
+  transform: translate(0, 10px) scale(1);
+}
+.home-guest .MuiInputBase-input{
+  padding-top: 17px ;
+}
+.home-location.MuiFormControl-root{
+  width: 90% !important;
+}
+.home-location .MuiInputBase-input{
+  padding-top: 26px !important;
+  font-size: 14px;
+}
+/* .home-guest .MuiInputLabel-animated {
+  transform: translate(0, 11px) scale(1) !important;
+} */
 a{
   text-decoration: none;
 }
@@ -129,6 +227,11 @@ svg{
 .MuiPaper-elevation1{
   box-shadow: 0px 3px 6px #00000029 !important;
 }
+.MuiNativeSelect-select:focus,
+.MuiSelect-select.MuiSelect-select{
+  background: none !important;
+}
+
 @media(max-width:767px){
   #end,#begin{
     font-size: 12px;

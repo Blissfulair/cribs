@@ -22,7 +22,7 @@ import EditIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AppContext from "../../state/context"
 
-const StyledTableCell = withStyles((theme) => ({
+export const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: theme.palette.common.white,
     },
@@ -31,7 +31,7 @@ const StyledTableCell = withStyles((theme) => ({
     },
   }))(TableCell);
   
-  const StyledTableRow = withStyles((theme) => ({
+  export const StyledTableRow = withStyles((theme) => ({
     root: {
       '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
@@ -41,7 +41,7 @@ const StyledTableCell = withStyles((theme) => ({
   
 
 
-const styles = (theme)=>({
+export const styles = (theme)=>({
     container:{
         paddingTop:120
     },
@@ -159,9 +159,11 @@ class Properties extends React.Component{
                                         </StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="center">
                                             <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>
-                                                <IconButton>
-                                                    <EditIcon/>
-                                                </IconButton>
+                                                <Link to={`/app/edit-property/${property.id}`}>
+                                                    <IconButton>
+                                                        <EditIcon/>
+                                                    </IconButton>
+                                                </Link>
                                                <IconButton>
                                                     <DeleteIcon/>
                                                </IconButton>

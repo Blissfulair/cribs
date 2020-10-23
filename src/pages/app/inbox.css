@@ -8,7 +8,7 @@
 }
 .inbox-title h4{
     font-size: 20px;
-    font-family: 'Roboto-Bold';
+    /* font-family: 'Roboto-Bold'; */
     color: var(--text-blue);
 }
 .inbox-icons{
@@ -16,9 +16,9 @@
     align-items: center;
 }
 .inbox-menu{
-    display: grid;
+    display: flex;
     width: 100%;
-    grid-template-columns: 20% 20% 60%;
+    justify-content: flex-end;
     align-items: center;
 }
 .inbox-menu li{
@@ -26,12 +26,10 @@
     align-items: center;
     justify-content: flex-end;
 }
-.inbox-menu li span[class*="icon-"]{
-    font-size: 20px;
-    cursor: pointer;
-    position: relative;
-    transition: all 200ms ease-in-out;
+.inbox-men li:first-child{
+    margin-right: 40px;
 }
+
 .inbox-menu li span[class*="icon-"]:hover::after{
     height: 34px;
     width: 34px;
@@ -53,8 +51,7 @@
     height: 450px;
     width: 100%;
     background: var(--white);
-    box-shadow: 0px 3px 6px var(--shadow);
-    border-radius: 9px;
+    border: 1px solid #DCDCDC;
     overflow: auto;
 }
 .inbox-body::-webkit-scrollbar{

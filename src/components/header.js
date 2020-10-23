@@ -1,9 +1,8 @@
-import React, {useState} from "react"
+import React, {useState, useContext} from "react"
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import {MenuItem, Grid,IconButton} from '@material-ui/core';
-import Menu from '@material-ui/core/Menu';
+import {MenuItem, Grid,IconButton, Select} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import {Link, withRouter} from "react-router-dom";
 import SyncAltIcon from '@material-ui/icons/SyncAlt';
@@ -18,6 +17,7 @@ import Switch from '@material-ui/core/Switch';
 import Avatar from '@material-ui/core/Avatar';
 import image from '../images/login_bg.png'
 import LogoutModal from "./logout";
+import AppContext from "../state/context";
 
 const styles = theme=>({
     container:{
@@ -55,7 +55,6 @@ const styles = theme=>({
 
 
 const Header = (props)=>{
-        const [anchorEl, setAnchorEl] = useState(null)
         const [state, setState] = useState({
             left: false,
             top:false
@@ -65,6 +64,7 @@ const Header = (props)=>{
         const [logout, setLogout] = React.useState(false);
         const logoutRef = React.useRef(null);
         const prevOpen = React.useRef(logout);
+        const [lang, setLang]= useState('en')
         const toggleLogout = () => {
             setLogout((prevOpen) => !prevOpen);
           };
@@ -77,14 +77,9 @@ const Header = (props)=>{
         
             prevOpen.current = logout;
           }, [logout]);
-
-        const [dashboard, setDashboard] = useState(false)
-        const handleClick = (event) => {
-            setAnchorEl(event.currentTarget);
-        };
     
-        const handleClose = () => {
-        setAnchorEl(null);
+        const handleChange = (e) => {
+        setLang(e.target.value);
         };
 
         
@@ -96,6 +91,7 @@ const Header = (props)=>{
             setState({ ...state, [anchor]: open });
           };
         const {classes} = props
+        const context = useContext(AppContext)
     return(
         <>
             {
@@ -114,13 +110,18 @@ const Header = (props)=>{
                                     <Grid item  xs={5} lg={4}> 
                                         <Grid container alignItems="center" justify="flex-end">
                                             <Typography className="dashboard-mobile-menu" component="div">
-                                                <Grid component="label" container alignItems="center" spacing={1}>
-                                                    <Grid item className={dashboard?classes.active:classes.inactive}>Hosting</Grid>
+                                                {
+                                                    context.state.userData&&
+                                                    context.state.userData.role===2?
+                                                    <Grid component="label" container alignItems="center" spacing={1}>
+                                                    <Grid item className={!context.state.dashboard?classes.active:classes.inactive}>Hosting</Grid>
                                                     <Grid item>
-                                                        <Switch checked={!dashboard} onChange={()=>{setDashboard(!dashboard)}} name="checkedC" />
+                                                        <Switch checked={context.state.dashboard} onChange={()=>{context.chooseDashboard()}} name="checkedC" />
                                                     </Grid>
-                                                    <Grid item className={dashboard?classes.inactive:classes.active}>Renting</Grid>
+                                                    <Grid item className={!context.state.dashboard?classes.inactive:classes.active}>Renting</Grid>
                                                     </Grid>
+                                                    :''
+                                                }
                                             </Typography>
                                             <IconButton
                                             ref={logoutRef}
@@ -155,7 +156,7 @@ const Header = (props)=>{
                             <TopDrawer classes={classes} location={props.location.pathname} state={state} toggleDrawer={toggleDrawer}/>
                             <div className={classes.menu}>
                                 <div>
-                                    <Button  style={{color:'#046FA7'}} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                                    {/* <Button  style={{color:'#046FA7'}} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                                         EN
                                     </Button>
                                     <Menu
@@ -168,7 +169,20 @@ const Header = (props)=>{
                                         <MenuItem onClick={handleClose}>Profile</MenuItem>
                                         <MenuItem onClick={handleClose}>My account</MenuItem>
                                         <MenuItem onClick={handleClose}>Logout</MenuItem>
-                                    </Menu>
+                                    </Menu> */}
+                                    <Select
+                                      value={lang}
+                                      onChange={handleChange}
+                                    inputProps={{ 'aria-label': 'lang' }}
+                                    displayEmpty="EN"
+                                    >
+                                        
+                                    <MenuItem value="en">
+                                        EN
+                                    </MenuItem>
+                                    <MenuItem value='fr'>FR</MenuItem>
+                                    <MenuItem value='ge'>GE</MenuItem>
+                                    </Select>
                                 </div>
                                 <div className={classes.menuItems} style={{backgroundColor:'#EB4F1E', borderRadius:'10px'}}>
                                     <Button style={{fontSize:'12px', textTransform:'capitalize',color:'#fff'}} >Host Accommodation</Button>

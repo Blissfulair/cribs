@@ -9,13 +9,14 @@ import Backend from "./layout"
 import AppContext from "../../state/context";
 import Activity from '../../components/activity'
 import firebase from "../../components/firebase"
+import {withRouter} from "react-router-dom"
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
 let images =[]
 let other_images =[]
-class AddProperty extends React.Component{
+class EditProperty extends React.Component{
     static contextType = AppContext
     constructor(props){
         super(props)
@@ -52,6 +53,34 @@ class AddProperty extends React.Component{
 
     componentDidMount(){
         document.querySelector('#properties').setAttribute('class', 'is-active')
+        const id = this.props.location.pathname.split('edit-property')[1]
+        firebase.getPropertyById(id)
+        .then(property=>{
+            this.setState({
+                state:property.state,
+                city:property.city,
+                title:property.name,
+                description:property.description,
+                house:property.house,
+                address:property.address,
+                price:property.amount,
+                bedroom:property.bedroom,
+                bathroom:property.bathroom,
+                parking:property.parking,
+                wifi:property.wifi,
+                smoking:property.smoke,
+                cable:property.cable,
+                jaccuzi:0,
+                kitchen:property.kitchen,
+                inside:property.inside,
+                around:property.around,
+                guest:property.guest,
+                featured_image:property.images[0],
+                type:property.type,
+                other_images:property.images,
+            })
+            other_images.push(property.images)
+        })
 
     }
 
@@ -155,7 +184,6 @@ const body = {
     images:[ ...other_images,this.state.featured_image],
     amount:this.state.price,
     bedroom:this.state.bedroom,
-    discount:this.state.discount,
     smoke:this.state.smoking,
     wifi:this.state.wifi,
     parking:this.state.parking,
@@ -218,11 +246,11 @@ firebase.storeProperty(body)
         return (
             <>
                 <Backend>
-                    <Activity loading={true}/>
+                    <Activity loading={this.state.isLoading}/>
                     <div className="inbox">
                         <div className="inbox-head dashboard-mt">
                             <div className="inbox-title">
-                                <h4>Add Property</h4>
+                                <h4>Edit Property</h4>
                             </div>
                         </div>
 
@@ -262,7 +290,7 @@ firebase.storeProperty(body)
                                     <div className="col">
                                         <label htmlFor="state">State</label>
                                         <div className="input">
-                                            <select name="state" onBlur={this.changeHandler}  id="state">
+                                            <select name="state"  onBlur={this.changeHandler}  id="state">
                                                 <option value="">Select State</option>
                                                 <option value="edo">Edo</option>
                                             </select>
@@ -494,4 +522,4 @@ firebase.storeProperty(body)
         )
     }
 }
-export default AddProperty;
+export default withRouter(EditProperty);

@@ -5,7 +5,11 @@
     margin-top: 120px;
     user-select: none;
 
-
+    .paypal{
+        // font-size: 1.6rem;
+        font-stretch: expanded;
+        color: #283593;
+    }
     &Table{
         margin-top: 1rem;
         display: flex;
@@ -20,9 +24,12 @@
         & > div{
             flex: auto;
             border-right: 1px solid #DCDCDC;
-            
+            &:last-child{
+                border: none !important;
+            }
             .dashboard__amount{
                 padding-top: .5rem;
+                font-size: 1.2rem;
             }
         }
     }
@@ -51,8 +58,27 @@
             display: flex;
             align-items: center;
             margin-right: 2rem;
-            padding: .3rem .3rem;
+            .MuiInputBase-root{
+                padding-right: 0.8rem;
+            }
+            .MuiNativeSelect-icon{
+                color: #00A8C8;
+            }
+            select{
+                padding: .3rem 2rem .3rem .8rem;
+                font-size: .89rem;
+                color: #00A8C8;
+            }
 
+        }
+    }
+    .payment-table{
+        background: #FCFBFB;
+        .MuiTable-root{
+            background: #FCFBFB !important;
+            td, th, p{
+                color: #00A8C8 !important;
+            }
         }
     }
 }

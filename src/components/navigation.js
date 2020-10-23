@@ -13,15 +13,18 @@ const Navigation =()=>{
     return(
         <Router>
             {
-                state.initializing?
+                state.initializing && state.userData === undefined?
                 <Splash/>
                 :
                 <>
                     <Header/>
                         <ScrollTop>
-                            {
-                                !state.user?<Root/>:<Auth/>
+                        {
+                                state.userData?<Auth/>
+                                :
+                                <Root user={state.userData}/>
                             }
+
                         </ScrollTop>
                     <Footer/>
                 </>

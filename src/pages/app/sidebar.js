@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {NavLink} from "react-router-dom";
 import "./sidebar.css";
 import PropTypes from "prop-types"
@@ -10,15 +10,20 @@ import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceW
 import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
+import AppContext from "../../state/context";
 let toggle = false;
 const Sidebar = ()=>{
+    const {state} =useContext(AppContext)
     return(
         <>
             <div className="sidebar">
                 <div className="sidebar-menu">
                     <ul className="s-menu">
                         <NavLink onClick={Sidebar.active} activeClassName="is-active" to="/app/dashboard"><li><DashboardOutlinedIcon/> Dashboard</li></NavLink>
-                        <NavLink onClick={Sidebar.active} activeClassName="is-active"  id="properties" to="/app/property"><li><HomeOutlinedIcon/> Property </li></NavLink>
+                            {
+                                !state.dashboard&&
+                                <NavLink onClick={Sidebar.active} activeClassName="is-active"  id="properties" to="/app/property"><li><HomeOutlinedIcon/> Property </li></NavLink>
+                            }
                         
                             <NavLink onClick={Sidebar.active}  activeClassName="is-active"  id="inboxes" to="/app/inbox">
                             <li>
@@ -31,8 +36,13 @@ const Sidebar = ()=>{
 
                         
                         <NavLink  onClick={Sidebar.active}  activeClassName="is-active" to="/app/calendar"><li><EventOutlinedIcon/>Calendar</li></NavLink>
-                        <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/payments"><li><AccountBalanceWalletOutlinedIcon/>Payments</li></NavLink>
-                        <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/reviews"><li><AccountTreeOutlinedIcon/>Reviews</li></NavLink>
+                            {
+                                !state.dashboard&&
+                                <>
+                                    <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/payments"><li><AccountBalanceWalletOutlinedIcon/>Payments</li></NavLink>
+                                    <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/reviews"><li><AccountTreeOutlinedIcon/>Reviews</li></NavLink>
+                                </>
+                            }
                         <NavLink onClick={Sidebar.active}  activeClassName="is-active" id="profiles"  to="/app/profile"><li><PersonOutlineOutlinedIcon/>Profile</li></NavLink>
                         <NavLink onClick={Sidebar.active}  activeClassName="is-active"   to="/app/settings"><li><SettingsOutlinedIcon/>Settings</li></NavLink>
                     </ul>

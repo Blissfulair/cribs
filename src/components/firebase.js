@@ -27,15 +27,18 @@ const firebaseConfig = {
     }
 
     register=async(data)=>{
-         const user =  await (await this.auth.createUserWithEmailAndPassword(data.email,data.password)).user.updateProfile({
+         const user =  await this.auth.createUserWithEmailAndPassword(data.email,data.password)
+         
+         await user.user.updateProfile({
             displayName:data.firstname
         })
-        await this.firestore.collection(this.tables.USERS).doc(user.user.uid).set({firstname:data.firstname,lastname:data.lastname,email:data.email})
         return user;
+    }
+    storeData = async(data,user)=>{
+        await this.firestore.collection(this.tables.USERS).doc(user.uid).set({firstname:data.firstname,lastname:data.lastname,email:data.email,role:data.role})
     }
     getUserDetails = async(uid)=>{
         const data = (await this.firestore.collection(this.tables.USERS).doc(uid).get()).data()
-        
       return data
     }
     getHostProperties = async()=>{
@@ -50,7 +53,8 @@ const firebaseConfig = {
     }
     storeProperty = async(data)=>{
         let searchIndex = [];
-        const string = data.address.toLowerCase().split(' ');
+        const allString = data.address+' '+data.city+' '+data.state
+        const string = allString.toLowerCase().split(' ');
         string.forEach(word=>{
             let newWord = ''
             for(let i=0;i<word.length; i++){
@@ -81,6 +85,10 @@ const firebaseConfig = {
                 guest:data.guest,
                 type:data.type,
                 house:data.house,
+                city:data.city,
+                state:data.state,
+                checkIn:[],
+                checkOut:[],
                 createdAt:firebase.firestore.FieldValue.serverTimestamp(),
                 updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
                 keywords:searchIndex
@@ -127,6 +135,19 @@ const firebaseConfig = {
         .get()
 
        
+    }
+
+    reserveCrib = async(id, checkIn, checkOut)=>{
+       let start = []
+       let finish =[]
+       const data= await (await this.firestore.collection(this.tables.PROPERTIES).doc(id).get()).data()
+       start.push(...data.checkIn, new Date(checkIn))
+       finish.push(...data.checkOut, new Date(checkOut))
+        return await this.firestore.collection(this.tables.PROPERTIES).doc(id)
+        .update({
+            checkOut:finish,
+            checkIn:start
+        })
     }
 }
 export default new Firebase();

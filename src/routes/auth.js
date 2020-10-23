@@ -1,21 +1,42 @@
-import React, { useEffect } from "react";
+import React, { Component } from "react";
 import { Route, Switch, withRouter } from "react-router-dom"
 import Dashboard from "../pages/app/dashboard";
 import Properties from "../pages/app/properties";
 import AddProperty from "../pages/app/addProperty";
 import DashboardPayment from "../pages/app/DashboardPayment";
 import DashboardCalendar from "../pages/app/DashboardCalendar";
-const Auth = ({ history, location }) => {
-    const path = location.pathname;
-    useEffect(() => {
-
+import EditProperty from "../pages/app/editProperty";
+import Inbox from "../pages/app/inbox";
+import Setting from "../pages/app/setting";
+import Profile from "../pages/app/profile";
+import Review from "../pages/app/review";
+import AppContext from "../state/context";
+class Auth  extends Component{
+    static contextType = AppContext
+    componentDidMount(){
+        const path = this.props.location.pathname;
         if (path.includes('app')) {
-            history.push(path)
+            this.props.history.push(path)
         }
         else {
-            history.push('/app/dashboard')
+            this.props.history.push('/app/dashboard')
         }
-    }, [history, path])
+    }
+    componentDidUpdate(prevProps){
+        if(prevProps.location.pathname !== this.props.location.pathname || this.context.state.dashboard){
+            if(this.context.state.dashboard){
+                if(prevProps.location.pathname.includes('property'))
+                this.props.history.push('/app/inbox')
+                else if(prevProps.location.pathname.includes('reviews')|| prevProps.location.pathname.includes('payments'))
+                this.props.history.push('/app/profile')
+            }
+        }
+    }
+    componentWillUnmount(){
+        window.localStorage.setItem('path', this.props.location.pathname)
+    }
+
+    render(){
     return (
         <Switch>
             <Route path='/app/dashboard' >
@@ -27,14 +48,33 @@ const Auth = ({ history, location }) => {
             <Route path='/app/add-property' >
                 <AddProperty />
             </Route>
+            <Route path='/app/edit-property' >
+                <EditProperty />
+            </Route>
             <Route path='/app/payments' >
                 <DashboardPayment />
             </Route>
+            <Route path="/app/reviews">
+                <Review/>
+            </Route>
+
+            <Route path='/app/settings' >
+                <Setting />
+            </Route>
+
+            <Route path='/app/profile' >
+                <Profile/>
+            </Route>
+            <Route path='/app/inbox' >
+                <Inbox />
+            </Route>
+ 
             <Route path='/app/calendar'>
                 <DashboardCalendar />
             </Route>
 
         </Switch>
     )
+}
 }
 export default withRouter(Auth);

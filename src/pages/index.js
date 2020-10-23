@@ -1,4 +1,4 @@
-import React, {useState,useContext,useEffect} from "react";
+import React, {Component} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import bg from "../images/login_bg.png"
 import Paper from '@material-ui/core/Paper';
@@ -19,10 +19,14 @@ import Slide from "../components/slider";
 import Explore from "../components/explore";
 import { DatePicker } from "@material-ui/pickers";
 import AppContext from "../state/context";
-import { Button } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import house from "../images/house.png"
 import bangalow from "../images/bangalow.png"
 import condos from "../images/condos.png"
+import benin from "../images/benin.jpeg"
+import abuja from "../images/abuja.jpg"
+import lagos from "../images/lagos.jpg"
+import kano from "../images/kano.jpeg"
 import cottage from "../images/cottage.png"
 const styles = theme =>({
     loginContainer:{
@@ -104,35 +108,43 @@ const styles = theme =>({
         marginLeft:8
     }
 })
-const Index = (props)=>{
-    const {classes} = props
-    const context = useContext(AppContext)
-    const [data, setData]=useState({
-        location:'',
-        checkIn:new Date(),
-        checkOut:new Date()
-    })
-    useEffect(()=>{
-        context.getProperties()
-        console.log('here')
-        setData({
-            location:context.state.searchQuery?context.state.searchQuery.location:'',
-            checkIn:context.state.searchQuery?context.state.searchQuery.checkIn:new Date(),
-            checkOut:context.state.searchQuery?context.state.searchQuery.checkOut:new Date()
+class Index extends Component{
+     static contextType = AppContext
+    constructor(props){
+        super(props)
+        this.state={
+            location:'',
+            checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+         }
+    }
+    // useEffect(()=>{
+    //     context.getProperties()
+    //     this.setStat       location:context.state.searchQuery?context.state.searchQuery.location:'',
+    //         checkIn:context.state.searchQuery?context.state.searchQuery.checkIn:new Date(),
+    //         checkOut:context.state.searchQuery?context.state.searchQuery.checkOut:new Date()
+    //     })
+    // },[context])
+    componentDidMount(){
+        this.setState({
+            location:this.context.state.searchQuery?this.context.state.searchQuery.location:'',
+            checkIn:this.context.state.searchQuery?this.context.state.searchQuery.checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkOut:this.context.state.searchQuery?this.context.state.searchQuery.checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
         })
-    },[context])
+    }
 
-    const changeHandler=(e)=>{
-        setData({
-            ...data,
+     changeHandler=(e)=>{
+        this.setState({
             [e.target.name]:e.target.value
         })
     }
-    const onSubmit = (e)=>{
+     onSubmit = (e)=>{
         e.preventDefault();
-        context.setSearch(data);
-        context.searchProperties(data.location, '','',3,props.history)
+        this.context.setSearch(this.state);
+        this.context.searchProperties(this.state.location, this.state.checkIn,this.state.checkOut,3,this.props.history)
     }
+    render(){
+        const {classes}=this.props
     return(
         <Grid className="home" container justify="center">
             <Grid item className={classes.loginContainer} >
@@ -140,12 +152,13 @@ const Index = (props)=>{
                     <Grid item xs={10} md={5}>
                         <Paper style={{backgroundColor:'#14adc5a8',minHeight:'350px', width:'100%'}}>
                         <div className={classes.formContainer}>
-                            <form onSubmit={onSubmit} className={classes.form} noValidate autoComplete="off">
+                            <form onSubmit={this.onSubmit} className={classes.form} noValidate autoComplete="off">
                                 <div className={classes.location}>
                                     <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
                                     <div style={{width:'100%',height:'90%'}}>
-                                        <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
-                                        <input value={data.location} onChange={changeHandler} name="location" placeholder="Search anyplace of your choice"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} />
+                                    <TextField className="home-location single" name="location" classes={{root:{width:'100%'}}} label="Location" placeholder="Search anyplace e.g Lagos"/>
+                                        {/* <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
+                                        <input value={this.state.location} onChange={this.changeHandler} name="location" placeholder="Search anyplace e.g Lagos"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} /> */}
                                     </div>
                                 </div>
 
@@ -159,8 +172,8 @@ const Index = (props)=>{
                                         label="Check In"
                                         format="dd/MM/yyyy"
                                         name="checkIn"
-                                        value={data.checkIn}
-                                        onChange={(e)=>{setData({...data, checkIn:e})}}
+                                        value={this.state.checkIn}
+                                        onChange={(e)=>{this.setState({checkIn:e})}}
                                         />
                                     </div>
                                     <div className={classes.checkIn}>
@@ -172,8 +185,8 @@ const Index = (props)=>{
                                         label="Check Out"
                                         format="dd/MM/yyyy"
                                         name="checkOut"
-                                        value={data.checkOut}
-                                        onChange={(e)=>{setData({...data, checkOut:e})}}
+                                        value={this.state.checkOut}
+                                        onChange={(e)=>{this.setState({checkOut:e})}}
                                         />
                                     </div>
                                 </div>
@@ -181,6 +194,7 @@ const Index = (props)=>{
                                 <div className={classes.row1}>
                                     <div className={classes.checkIn}>
                                         <People htmlColor="#046FA7" fontSize="default" />
+                                        <TextField className="home-guest single" label="Guest"/>
                                     </div>
                                     <div style={{width:'45%'}}>
                                         <Button type="submit" className={classes.btn}>Search</Button>
@@ -211,13 +225,13 @@ const Index = (props)=>{
                 </Grid>
 
                     {
-                        context.state.properties.length>0?
+                        this.context.state.properties.length>0?
                         <>
                             <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
                             <div style={{marginBottom:10}}>
                                 <Grid  container spacing={2}>
                                     {
-                                        context.state.properties.map((property, i)=>{
+                                        this.context.state.properties.map((property, i)=>{
                                             return(
                                                 <Grid item xs={12} sm={6} md={3} lg={3} >
                                                     <Link to={`/crib/${property.id}`}>
@@ -235,7 +249,7 @@ const Index = (props)=>{
                             <div style={{marginTop:50}}>
                                 <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
                                 <Grid style={{position:'relative'}}  container >
-                                    <Slide content={context.state.properties}/>
+                                    <Slide content={this.context.state.properties}/>
                                 </Grid>
                             </div>
                             <Link className={classes.link} to={'/'}>See more</Link>
@@ -264,11 +278,12 @@ const Index = (props)=>{
 
                 <Typography variant="h4" classes={{root:classes.title}}>Explore Cribs by City</Typography>
                 <Grid style={{position:'relative'}} container>
-                    <Explore content={[{name:'Lagos City', description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Abuja City', description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Kano City', description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'}]}/>
+                    <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'}]}/>
                 </Grid>
                 </Grid>
             </Grid>
         </Grid>
     )
+}
 }
 export default withRouter(withStyles(styles)(Index));

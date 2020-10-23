@@ -1,7 +1,6 @@
 import React from "react";
 import {Link} from 'react-router-dom';
 import CardMedia from '@material-ui/core/CardMedia';
-import image from "../logo.svg"
 import {withStyles} from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
 
@@ -31,12 +30,12 @@ const City = (props)=>{
     return(
         <Link className={classes.cardLink} to={'/'}>
             <div className={classes.card}>
-                <CardMedia className={classes.media} image={image}/>
+                <CardMedia className={classes.media} image={props.image}/>
                 <div style={{backgroundColor:props.color}} className={classes.overlay}>
                     <div style={{position:'absolute',bottom:10,display:'flex',justifyContent:'center', width:'100%'}}>
                         <div style={{width:'90%', margin:'0 auto 20px'}}>
-                            <Typography style={{textAlign:'center', color:'#fff', fontSize:'30px'}} variant="h5">{props.name}</Typography>
-                            <Typography style={{ color:'#fff', fontSize:'12px'}} variant="subtitle1" component="p">{props.description}</Typography>
+                            <Typography style={{textAlign:'center', color:'#fff', fontSize:'30px',fontWeight:'bold'}} variant="h5">{props.name}</Typography>
+                            <Typography style={{ color:'#fff', fontSize:'12px',fontWeight:'bold',zIndex:8}} variant="subtitle1" component="p">{props.description}</Typography>
                         </div>
                     </div>
                 </div>

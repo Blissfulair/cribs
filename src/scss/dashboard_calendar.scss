@@ -8,24 +8,38 @@
 .calendar__details{
     display: flex;
     align-items: center;
+    .title{
+        color: #707070;
+        font-size: 0.9rem;
+    }
 
     .select__property{
         margin-right: 10rem;
-
+        #property{
+            width: 15rem;
+        }
         label{
             display: block;
-            font-size: 1.2rem;
-            color: #707070;
+            // font-size: 1.2rem;
+            // color: #707070;
             padding: 0.8rem 0;
         }
-        select#property{
-            width: 15rem;
+        .input{
             border: 1px solid #DCDCDC;
-            min-height: 2rem;
             color: #A1A1A1;
-            font-size: 1.1rem;
-            padding: 0.5rem 0 0.5rem 0.3rem;
+            font-size: 0.8rem;
         }
+        .input select{
+            padding: 0rem 2rem 0rem 0.8rem;
+            color: #707070;
+            font-size: 0.9rem;
+        }
+        .input .MuiNativeSelect-icon{
+            color: #00A8C8 !important;
+            margin-right: 0.4rem;
+            font-size: 1.3rem;
+        }
+
     }
 
     
@@ -53,7 +67,7 @@
         .amount{
             background: #ffffff;
             display: inline-block;
-            padding: 0.1rem 0.5rem;
+            padding: 0.1rem 0.9rem;
             border: 1px solid #DCDCDC;
             margin-right: 0.2rem;
         }

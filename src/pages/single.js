@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {Component} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import {
     Grid,
@@ -38,7 +38,7 @@ import SmokeFreeIcon from '@material-ui/icons/SmokeFree';
 import { DatePicker } from "@material-ui/pickers";
 import  MapContainer  from "../components/map";
 import Review from "../components/review"
-import {Link, withRouter} from "react-router-dom"
+import { withRouter} from "react-router-dom"
 import './../scss/single.scss'
 import AppContext from "../state/context";
 import Splash from "../components/splash";
@@ -145,32 +145,71 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
-const Single = ({classes, location})=>{
-    const [value, setValue] = useState(0);
 
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
+
+class Single extends Component{
+    static contextType = AppContext
+    constructor(props){
+        super(props)
+        this.state={
+            value:0,
+            open:false,
+            property:null,
+            checkIn: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            days:1
+        }
+        this.propert = null
+    }
+
+    handleChange = (event, newValue) => {
+      this.setState({value:newValue});
     };
-    const [open, setOpen] = useState(false);
 
-    const handleClickOpen = () => {
-      setOpen(true);
+    handleClickOpen = () => {
+      this.setState({open:true});
     };
   
-    const handleClose = () => {
-      setOpen(false);
+    handleClose = () => {
+      this.setState({open:false});
     };
+    setDays = ()=>{
+        let time = this.state.checkOut.getTime()-this.state.checkIn.getTime()
+        const days = time/(1000*3600*24)
+        if(days>=0)
+        this.setState({days:days+1})
+        else{
+            this.setState({days:1})  
+        }
+    }
+    componentDidMount(){
+        const id = this.props.location.pathname.split('crib')[1]
+        this.context.getPropertyById(id)
+        this.setState({
+            property:this.context.state.property,
+            checkIn:this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkOut:this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+        })
+    }
+    // useEffect(()=>{
+        // const id = location.pathname.split('crib')[1]
+        // getPropertyById(id)
+        // setProperty(state.property)
+    // }, [getPropertyById,location.pathname,state.property])
+    componentWillUnmount(){
+        this.propert=null
+    }
+
+    onReserved = (id)=>{
+        this.context.reserveCrib(id, this.state.checkIn,this.state.checkOut)
+        this.props.history.push('/payment')
+    }
+    render(){
+
     const data = [1,3,4,5]
-    const [property, setProperty]=useState(null)
-
-    const {getPropertyById, state} = useContext(AppContext)
-
-    useEffect(()=>{
-        const id = location.pathname.split('crib')[1]
-        getPropertyById(id)
-        setProperty(state.property)
-    }, [getPropertyById,location.pathname,state.property])
-
+    const {classes} = this.props
+    this.propert = this.context.state.property
+    const property =this.propert
     if(!Boolean(property))
     return <Splash/>
     return(
@@ -195,8 +234,8 @@ const Single = ({classes, location})=>{
                                 </Grid>
                                 <Paper elevation={0} className={classes.root}>
                                 <Tabs
-                                    value={value}
-                                    onChange={handleChange}
+                                    value={this.state.value}
+                                    onChange={this.handleChange}
                                    
                                     centered
                                 >
@@ -391,8 +430,8 @@ const Single = ({classes, location})=>{
                                                             id="check-in"
                                                             label="Check-In"
                                                             format="dd/MM/yyyy"
-                                                            // value={selectedDate}
-                                                            // onChange={handleDateChange}
+                                                            value={this.state.checkIn}
+                                                            onChange={(e)=>{this.setState({checkIn:e}); this.setDays()}}
                                                             />
                                                         </div>
                                                    </Grid>
@@ -406,8 +445,8 @@ const Single = ({classes, location})=>{
                                                             id="check-out"
                                                             label="Check-Out"
                                                             format="dd/MM/yyyy"
-                                                            // value={selectedDate}
-                                                            // onChange={handleDateChange}
+                                                            value={this.state.checkOut}
+                                                            onChange={(e)=>{this.setState({checkOut:e});this.setDays()}}
                                                             />
                                                         </div>
                                                    </Grid>
@@ -426,13 +465,13 @@ const Single = ({classes, location})=>{
                                                         <Typography variant="caption" component="p">Includes taxes and fees</Typography>
                                                     </Grid>
                                                     <Grid item xs={4}>
-                                                        <Typography variant="h5" style={{color:'#FF9C07',textAlign:'right',fontWeight:'bold'}}>₦{property.amount}</Typography>
-                                                        <Typography variant="caption" style={{cursor:'pointer'}} component="p" onClick={handleClickOpen}>view details</Typography>
+                                                        <Typography variant="h5" style={{color:'#FF9C07',textAlign:'right',fontWeight:'bold'}}>₦{property.amount*this.state.days}</Typography>
+                                                        <Typography variant="caption" style={{cursor:'pointer'}} component="p" onClick={this.handleClickOpen}>view details</Typography>
                                                         <Dialog
-                                                            open={open}
+                                                            open={this.state.open}
                                                             TransitionComponent={Transition}
                                                             keepMounted
-                                                            onClose={handleClose}
+                                                            onClose={this.handleClose}
                                                             aria-labelledby="detail-title"
                                                             aria-describedby="details"
                                                             >
@@ -444,18 +483,16 @@ const Single = ({classes, location})=>{
                                                             </DialogContentText>
                                                             </DialogContent>
                                                             <DialogActions>
-                                                            <Button onClick={handleClose} color="primary">
+                                                            <Button onClick={this.handleClose} color="primary">
                                                                 Ok
                                                             </Button>
                                                             </DialogActions>
                                                         </Dialog>
                                                     </Grid>
                                                 </Grid>
-                                                <Link to="/payment">
-                                                <Button style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="contained" disableElevation>
+                                                <Button onClick={()=>this.onReserved(property.id)} style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="contained" disableElevation>
                                                     Reserve Now
                                                 </Button>
-                                                </Link>
                                                 <Divider style={{marginTop:15, height:3, backgroundColor:'#DCDCDC'}}/>
                                                 <Typography variant="h6" style={{textAlign:'center', color:'#000000'}} >Speak to the Host</Typography>
                                                 <Grid container style={{marginTop:10,marginBottom:5}}>
@@ -528,5 +565,6 @@ const Single = ({classes, location})=>{
             </Grid>
   
     )
+}
 }
 export default withRouter(withStyles(styles)(Single));

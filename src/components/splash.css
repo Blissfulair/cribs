@@ -15,7 +15,7 @@
   background-color: rgba(0, 0, 0, 0.5);
   align-items: center;
   height: 100vh;
-  position: absolute;
+  position: fixed;
   left: 0;
   bottom: 0;
   z-index: 10;

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {Component} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import {Select, FormControl,Grid,MenuItem, Typography,Paper} from '@material-ui/core';
 import Searchs from "../components/search"
@@ -34,35 +34,73 @@ const styles = theme =>({
         borderRadius:0
     }
 })
-const Search = ({classes,history})=>{
-    const {state, onLoadSearch,setSearch} = useContext(Context)
-    const [age, setAge] = useState('');
-    const [isLoading, setIsLoading] = useState(true)
-
-
-    const handleChange = (event) => {
-      setAge(event.target.value);
-    };
-    useEffect(()=>{
-    const url =history.location.search.replace(/%20/g, ' ');
-    const params = url.split('&')
-    const address = params.filter(address=>address.includes('location')).toString().split('=')[1];
-    const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
-    const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
-    const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
-        const data = {
-            location:address,
-            checkIn:checkin,
-            checkOut,
-            guest
+class Search extends Component{
+    static contextType = Context
+    constructor(props){
+        super(props)
+        this.state={
+            age:'',
+            isLoading:true,
+            checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
         }
-        setSearch(data)
-        onLoadSearch(data)
+    }
+    componentDidMount(){
+        const url =this.props.history.location.search.replace(/%20/g, ' ');
+        const params = url.split('&')
+        const address = params.filter(address=>address.includes('location')).toString().split('=')[1];
+        const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
+        const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
+        const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
+            const data = {
+                location:address,
+                checkIn:checkin,
+                checkOut,
+                guest
+            }
+            this.context.setSearch(data)
+            this.context.onLoadSearch(data)
+    
+            this.setState({
+                isLoading:false,
+                checkOut:checkOut,
+                checkIn:checkin
+            })
+    }
+    componentDidUpdate(prevProps){
+        if(prevProps.history.location !== this.props.history.location){
+            const url =this.props.history.location.search.replace(/%20/g, ' ');
+            const params = url.split('&')
+            const address = params.filter(address=>address.includes('location')).toString().split('=')[1];
+            const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
+            const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
+            const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
+                const data = {
+                    location:address,
+                    checkIn:checkin,
+                    checkOut,
+                    guest
+                }
+                this.context.setSearch(data)
+                this.context.onLoadSearch(data)
+        
+                this.setState({
+                    isLoading:false,
+                    checkOut:checkOut,
+                    checkIn:checkin
+                })
+        }
+    }
 
-        setIsLoading(false)
-    },[history.location.search,setSearch,onLoadSearch])
-    console.log(state)
-    if(isLoading)
+
+     handleChange = (event) => {
+      this.setState({age:event.target.value});
+    };
+
+    render(){
+    const {classes} = this.props
+    const {state} = this.context
+    if(this.state.isLoading)
         return <Splash />
     return(
         <>
@@ -83,8 +121,8 @@ const Search = ({classes,history})=>{
                                         <FormControl classes={{root:classes.formControl}}>
                                             <p className={classes.text}>Sort:</p>
                                             <Select
-                                            value={age}
-                                            onChange={handleChange}
+                                            value={this.state.age}
+                                            onChange={this.handleChange}
                                             displayEmpty
                                             classes={{root:classes.input}}
                                             >
@@ -96,9 +134,13 @@ const Search = ({classes,history})=>{
                                 </Grid>
                                     {
                                         state.results.map((result,index)=>{
-                                            return(
-                                                <Searchs content={result}  props={history} name={`rating${index}`} key={index}/>
-                                            )
+                                            const checkOut = result.checkOut.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
+                                            const checkIn = result.checkIn.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
+                                            if(!checkIn.length>0 && !checkOut.length>0)
+                                                return(
+                                                    <Searchs content={result}  props={this.props.history} name={`rating${index}`} key={index}/>
+                                                )
+                                            else return ''
                                         })
                                     }
                                 
@@ -126,5 +168,6 @@ const Search = ({classes,history})=>{
             </Grid>
         </>
     )
+}
 }
 export default withRouter(withStyles(styles)(Search));

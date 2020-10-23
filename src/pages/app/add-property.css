@@ -136,9 +136,9 @@ textarea::-webkit-scrollbar{
     height: 15px;
     width: 15px;
 }
-.checkmark::after{
+/* .checkmark::after{
     border-color: var(--text-blue) !important;
-}
+} */
 
 .prop-type .radio .radio-mark{
     border-radius: 50% !important;
@@ -292,6 +292,47 @@ textarea::-webkit-scrollbar{
     background: var(--text-blue);
     cursor: pointer;
 }
+.rememberme{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.rememberme input[type=checkbox]{
+    display: none;
+
+}
+.rememberme .checkmark{
+    position: absolute;
+    display: block;
+    right: 0;
+    height: 20px;
+    width: 20px;
+    border-radius: 2px;
+    background: #FFF;
+    box-shadow: 0px 2px 4px var(--shadow);
+    border: 1px solid #EFEFEF;}
+.rememberme .checkmark::after{
+    top: 45%;
+    left: 30%;
+    display: block;
+    position: absolute;
+    content: "";
+    width: 5px;
+    height: 10px;
+    border: solid var(--white);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) translate(-50%, -50%);
+}
+/* .rememberme::after{
+    background: #0B6EA7 !important;
+} */
+.rememberme input:checked ~ .checkmark::after{
+    border-color: #0B6EA7 !important;
+}
+/* .rememberme input {
+    color:  #0B6EA7 !important;
+    opacity: 1 !important;
+} */
 @media (max-width:767px){
     .property-form{
         width: 88%;
@@ -365,6 +406,7 @@ textarea::-webkit-scrollbar{
     .table-head .table-title li:first-child .radio input:checked ~ .radio-mark::after, .inbox-body table tr td:first-child .radio input:checked ~ .radio-mark::after, .property-group .prop-type li .radio input:checked ~ .radio-mark::after{
         background: #355584;
     }
+   
     .other-images label .add-image{
         width: 40px;
         height: 40px;

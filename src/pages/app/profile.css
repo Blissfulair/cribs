@@ -1,0 +1,150 @@
+.profile{
+    width: 75%;
+    display: grid;
+    grid-template-columns: 25% 70%;
+    grid-column-gap: 5%;
+    height: 420px;
+    margin-top: 35px;
+    box-shadow: 0px 1px 6px #00000029;
+    border-radius: 15px;
+    padding: 20px 5%;
+}
+.profile .profile-img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    box-shadow: 0px 1px 2px var(--shadow);
+    position: relative;
+}
+.profile-img img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.profile-img input[type=file]{
+    display: none;
+}
+.profile-img label{
+    height: 35px;
+    width: 35px;
+    background: var(--text-blue);
+    display: flex;
+    border-radius: 50%;
+    box-shadow: 0px 1px 2px var(--shadow);
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.profile-img label .icon-camera::before{
+    font-size: 20px;
+}
+.profile-details{
+    position: relative;
+}
+.profile-details h4{
+    margin-top: 12px;
+    font-family: 'Poppins-Medium';
+    font-size: 14px;
+    font-weight: 100
+}
+.profile-details .rating{
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 5%;
+    width: 12%;
+}
+
+.profile-details .rating li span[class*='icon-']::before{
+    font-size: 9px;
+    color:  #ACA9A9;
+}
+.profile-details .rating li span.rated::before{
+    color: #FFA70E !important;
+}
+.profile-details table{
+    margin-top: 60px;
+}
+.profile-details table tr td{
+    padding: 8px 0;
+}
+.profile-details table tr td:first-child{
+    padding-right: 24px;
+    font-family: 'Poppins-Bold';
+    font-size: 13px;
+    color: var(--text-blue)
+}
+.profile-details table tr td:last-child{
+    font-size: 13px;
+    color: var(--text-blue);
+}
+.profile-details .btn{
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+    width: 50px;
+    height: 50px;
+    background: var(--text-blue);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profile-details .btn span[class*='icon-']::before{
+    color: var(--white);
+    font-size: 22px;
+}
+@media(max-width:767px){
+    .profile{
+        display: block;
+        border-radius: 0;
+        box-shadow: none;
+        width: 100%;
+        padding: 0;
+        height: auto;
+        padding-bottom: 84px;
+    }
+    .profile .profile-img{
+        margin:0 auto;
+    }
+    .profile-img label{
+        background:var(--white)
+    }
+    .profile .icon-camera:before{
+        color: #090202;
+    }
+    .profile-details h4,
+    .profile p{
+        text-align: center;
+        color: #090202;
+    }
+    .profile-details h4{
+        font-family: "Poppins-Bold"
+    }
+    .profile-details .rating{
+        margin: 0 auto;
+        width: 20%;
+    }
+    .profile-details .rating li span[class*='icon-']::before{
+        font-size: 12px;
+    }
+    .profile-details .rating li span.rated::before{
+        color: #E6C41A !important;
+    }
+    .profile-details .btn{
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -72px;
+        background: #355584
+    }
+    .profile-details table tr td:first-child{
+        color: #090202;
+        font-family: "Poppins-Bold"
+    }
+    .profile-details table tr td:last-child{
+        font-family: "Poppins-Medium";
+        color: #090202;
+    }
+}

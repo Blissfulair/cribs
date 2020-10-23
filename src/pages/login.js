@@ -4,12 +4,12 @@ import "./login.css"
 import {Link} from "react-router-dom"
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import { Button ,withStyles,Snackbar, Slide } from "@material-ui/core";
+import {  withStyles,Snackbar, Slide } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import firebase from "../components/firebase"
 import Activity from "../components/activity"
+import AppContext from "../state/context";
 
 const styles = ()=>({
     label:{
@@ -26,6 +26,7 @@ const TransitionUp=(props)=>{
   }
 class Login extends React.Component{
 
+    static contextType = AppContext
     constructor(props){
         super(props)
         this.state = {
@@ -71,7 +72,7 @@ class Login extends React.Component{
                 password:this.state.password,
                 remember:this.state.remember
             }
-            firebase.login(body)
+            this.context.login(body)
             .then(()=>{
                 this.setState({loading:false})
             })
@@ -113,7 +114,7 @@ class Login extends React.Component{
                     <div className="signin">
                         <p>Sign in to get started</p>
                         <ul>
-                            <li >
+                            {/* <li >
                                 <Button classes={{root:this.props.classes.label}} onClick={this.toggleLogin}>
                                     <span style={{color:!this.state.type?'#00ADCB':'#DCDCDC'}}>Renting</span>
                                 </Button>
@@ -125,7 +126,7 @@ class Login extends React.Component{
                                     Hosting
                                     </span>
                                 </Button>
-                            </li>
+                            </li> */}
                         </ul>
                         <div className="form">
                             {

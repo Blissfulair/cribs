@@ -3,30 +3,49 @@ import firebase from '../components/firebase'
 
 const GlobalState= ()=>{
     const initialState={
-        user:null,
-        userData:null,
+        user:undefined,
+        userData:undefined,
         initializing:true,
         properties:[],
         property:null,
         myProperties:[],
         results:[],
-        searchQuery:null
+        searchQuery:null,
+        dashboard:true
     }
-
+   const getProperties=()=>{
+        let props =[]
+        firebase.getHostProperties()
+        .then(properties=>{
+            properties.docs.forEach(doc=>{
+                props.push({id:doc.id, ...doc.data()})
+            })
+            dispatch({type:'GET_PROPERTIES', payload:{properties:props}})
+        })
+    }
     useEffect(()=>{
 
-
+        getProperties()
         firebase.auth.onAuthStateChanged((user)=>{
             dispatch({type:'SET_STATE', payload:{initializing:false}})
             if(user){
+
                 firebase.getUserDetails(user.uid)
                 .then(userData=>{
+                    console.log(userData)
                     dispatch({type:'RETRIVE_USER', payload:{user,userData}})
+                    if(userData.role === 0)
+                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:true}})
+                    else if(userData.role === 1)
+                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                    else if(userData.role ===2)
+                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                    
                 })
                 dispatch({type:'RETRIVE_USER', payload:{user}})
             }
             else{
-                dispatch({type:'RETRIVE_USER', payload:{user:null}})
+                dispatch({type:'RETRIVE_USER', payload:{user:null, userData:null}})
             }
         })
     },[])
@@ -68,14 +87,48 @@ const GlobalState= ()=>{
                     ...prevState,
                     myProperties:action.payload.myProperties
                 }
+            case 'GET_DASHBOARD':
+                return{
+                    ...prevState,
+                    dashboard:action.payload.dashboard
+                }
             default:
                 return prevState
         }
     }
     const [state, dispatch] = useReducer(reducer,initialState)
     const globals=  useMemo(()=>({
-        register:(formData)=>{
-           firebase.register(formData)
+        register :async(formData)=>{
+           await firebase.register(formData)
+           .then((user)=>{
+                 firebase.storeData(formData,user.user)
+                 firebase.getUserDetails(user.user.uid)
+                 .then(userData=>{
+                    dispatch({type:'RETRIVE_USER', payload:{user:user.user,userData}})
+                    if(userData.role === 0)
+                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:true}})
+                    else if(userData.role === 1)
+                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                    else if(userData.role ===2)
+                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                 })
+           })
+    
+        },
+        login:async(data)=>{
+            await firebase.login(data)
+            .then(async(user)=>{
+               await firebase.getUserDetails(user.user.uid)
+                .then(userData=>{
+                   dispatch({type:'RETRIVE_USER', payload:{user:user.user,userData}})
+                   if(userData.role === 0)
+                   dispatch({type:'GET_DASHBOARD', payload:{dashboard:true}})
+                   else if(userData.role === 1)
+                   dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                   else if(userData.role ===2)
+                   dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                })
+            })
         },
         getProperties:()=>{
             let props =[]
@@ -100,7 +153,7 @@ const GlobalState= ()=>{
         getPropertyById:(id)=>{
             firebase.getPropertyById(id)
             .then(property=>{
-                dispatch({type:'GET_PROPERTY', payload:{property}}) 
+                dispatch({type:'GET_PROPERTY', payload:{property:{id:id,...property}}}) 
             })
         },
         setSearch:(search)=>{
@@ -127,11 +180,17 @@ const GlobalState= ()=>{
             .then(docs=>{
                 let results = []
                 docs.forEach(doc=>{
-                    results.push(doc.data())
+                    results.push({id:doc.id,...doc.data()})
                     dispatch({type:'GET_RESULTS', payload:{results:results}})
                 })
 
             })
+        },
+        reserveCrib:(id, checkIn, checkOut)=>{
+            firebase.reserveCrib(id, checkIn, checkOut)
+        },
+        chooseDashboard:()=>{
+            dispatch({type:'GET_DASHBOARD', payload:{dashboard:!state.dashboard}})
         },
         state
     }),[state])

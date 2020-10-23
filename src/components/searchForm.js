@@ -9,6 +9,7 @@ import { DatePicker } from "@material-ui/pickers";
 import "../scss/header.scss"
 import {withRouter} from "react-router-dom"
 import AppContext from "../state/context";
+import Splash from "./splash";
 const styles = theme =>({
 
     location:{
@@ -76,19 +77,28 @@ const SearchForm = (props)=>{
     const {classes} = props
     const [locationF, setLocationF]=useState(false)
     const [guestF, setGuestF]=useState(false)
+    const [loading, setLoading] = useState(false)
     const {searchProperties,setSearch,state}=useContext(AppContext)
     const [data, setData]=useState({
         location:state.searchQuery?state.searchQuery.location:'',
         checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
         checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-        guest:state.searchQuery?state.searchQuery.guest:''
+        guest:state.searchQuery?state.searchQuery.guest:'',
+
     })
   
     // const [checkIn, setCheckIn]=useState(false)
     const onSubmit =(e)=>{
         e.preventDefault()
+        setLoading(true)
         setSearch(data);
         searchProperties(data.location, data.checkIn,data.checkOut,3,props.history)
+        .then(()=>{
+            setLoading(false)
+        })
+        .catch((er)=>{
+            setLoading(false)
+        })
     }
     useEffect(()=>{
         setData({
@@ -99,6 +109,11 @@ const SearchForm = (props)=>{
         })
     },[state.searchQuery])
     return(
+        <>
+        {
+            loading&&
+            <Splash/>
+        }
         <Grid container>
             <Grid item xs={false} md={1}/>
             <Grid item xs={12} md={9}>
@@ -155,6 +170,7 @@ const SearchForm = (props)=>{
                 </form>
             </Grid>
         </Grid>
+        </>
     )
 }
 export default withRouter(withStyles(styles)(SearchForm));

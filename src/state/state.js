@@ -159,8 +159,8 @@ const GlobalState= ()=>{
         setSearch:(search)=>{
             dispatch({type:'SET_SEARCH', payload:{searchQuery:search}}) 
         },
-        searchProperties:(location, checkIn, checkOut, guest, history)=>{
-            firebase.searchProperties(location, checkIn, checkOut, guest)
+        searchProperties:async(location, checkIn, checkOut, guest, history)=>{
+             await firebase.searchProperties(location, checkIn, checkOut, guest)
             .then(docs=>{
                 let results = []
                 dispatch({type:'GET_RESULTS', payload:{results:[]}})

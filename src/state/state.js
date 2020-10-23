@@ -11,7 +11,10 @@ const GlobalState= ()=>{
         myProperties:[],
         results:[],
         searchQuery:null,
-        dashboard:true
+        dashboard:true,
+        photoURL:null,
+        env:null,
+        latestProperties:[]
     }
    const getProperties=()=>{
         let props =[]
@@ -23,14 +26,38 @@ const GlobalState= ()=>{
             dispatch({type:'GET_PROPERTIES', payload:{properties:props}})
         })
     }
+    const getLatestProperties=()=>{
+        let props =[]
+        firebase.getLatestProperties()
+        .then(properties=>{
+            properties.docs.forEach(doc=>{
+                props.push({id:doc.id, ...doc.data()})
+            })
+            dispatch({type:'GET_LATEST', payload:{latestProperties:props}})
+        })
+    }
+    const getGeoInfo = () => {
+        fetch('https://ipapi.co/json/')
+        .then((response) => {
+            response.json()
+            .then(res=>{
+                dispatch({type:'GET_ENV', payload:{env:res}})
+            })
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
     useEffect(()=>{
 
         getProperties()
+        getGeoInfo()
         firebase.auth.onAuthStateChanged((user)=>{
             try{
+
                 firebase.getUserDetails(user.uid)
                 .then(userData=>{
                     dispatch({type:'RETRIVE_USER', payload:{user,userData}})
+                    dispatch({type:'GET_PHOTO', payload:{photoURL:user.photoURL}})
                     if(userData.role === 0)
                     dispatch({type:'GET_DASHBOARD', payload:{dashboard:true}})
                     else if(userData.role === 1)
@@ -38,6 +65,8 @@ const GlobalState= ()=>{
                     else if(userData.role ===2)
                     dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
                     dispatch({type:'SET_STATE', payload:{initializing:false}})
+                    //load the latest properties
+                    getLatestProperties()
                     
                 })
             }
@@ -67,6 +96,21 @@ const GlobalState= ()=>{
                 return{
                     ...prevState,
                     initializing:action.payload.initializing
+                }
+            case 'GET_PHOTO':
+                return{
+                    ...prevState,
+                    photoURL:action.payload.photoURL
+                }
+            case 'GET_LATEST':
+                return{
+                    ...prevState,
+                    latestProperties:action.payload.latestProperties
+                }
+            case 'GET_ENV':
+                return{
+                    ...prevState,
+                    env:action.payload.env
                 }
             case 'SET_SEARCH':
                 return{
@@ -207,6 +251,25 @@ const GlobalState= ()=>{
                     dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
                 })
             })
+        },
+        uploadProfilePhoto:async(image)=>{
+            await firebase.uploadProfilePhoto(state.user,image)
+            .then(async(url)=>{
+                console.log(url)
+               await state.user.updateProfile({
+                    photoURL: url
+                })
+                dispatch({type:'GET_PHOTO', payload:{photoURL:url}})
+
+            })
+        },
+        updateProfile:async(data)=>{
+            await firebase.updateProfile(data, state.user.uid)
+            await firebase.getUserDetails(state.user.uid)
+            .then(user=>{
+                dispatch({type:'RETRIVE_USER', payload:{user:state.user,userData:user}})
+            })
+
         },
         state
     }),[state])

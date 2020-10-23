@@ -11,6 +11,7 @@ import Setting from "../pages/app/setting";
 import Profile from "../pages/app/profile";
 import Review from "../pages/app/review";
 import AppContext from "../state/context";
+import EditProfile from "../pages/app/editProfile";
 class Auth  extends Component{
     static contextType = AppContext
     componentDidMount(){
@@ -64,6 +65,9 @@ class Auth  extends Component{
 
             <Route path='/app/profile' >
                 <Profile/>
+            </Route>
+            <Route path='/app/edit-profile' >
+                <EditProfile/>
             </Route>
             <Route path='/app/inbox' >
                 <Inbox />

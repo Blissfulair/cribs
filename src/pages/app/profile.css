@@ -1,17 +1,13 @@
 .profile{
-    width: 75%;
     display: grid;
-    grid-template-columns: 25% 70%;
+    grid-template-columns: 35% 60%;
     grid-column-gap: 5%;
-    height: 420px;
-    margin-top: 35px;
-    box-shadow: 0px 1px 6px #00000029;
-    border-radius: 15px;
-    padding: 20px 5%;
+    margin-top: 15px;
+    padding: 20px 0;
 }
 .profile .profile-img{
-    width: 150px;
-    height: 150px;
+    width: 135px;
+    height: 135px;
     border-radius: 50%;
     box-shadow: 0px 1px 2px var(--shadow);
     position: relative;
@@ -25,14 +21,14 @@
     display: none;
 }
 .profile-img label{
-    height: 35px;
-    width: 35px;
+    height: 28px;
+    width: 28px;
     background: var(--text-blue);
     display: flex;
     border-radius: 50%;
     box-shadow: 0px 1px 2px var(--shadow);
     position: absolute;
-    right: 0;
+    right: 14px;
     bottom: 0;
     justify-content: center;
     align-items: center;
@@ -46,7 +42,7 @@
 }
 .profile-details h4{
     margin-top: 12px;
-    font-family: 'Poppins-Medium';
+    /* font-family: 'Poppins-Medium'; */
     font-size: 14px;
     font-weight: 100
 }
@@ -64,28 +60,78 @@
 .profile-details .rating li span.rated::before{
     color: #FFA70E !important;
 }
-.profile-details table{
+/* .profile-details table{
     margin-top: 60px;
-}
+} */
 .profile-details table tr td{
     padding: 8px 0;
+    color: #707070;
 }
 .profile-details table tr td:first-child{
     padding-right: 24px;
-    font-family: 'Poppins-Bold';
+    /* font-family: 'Poppins-Bold'; */
     font-size: 13px;
-    color: var(--text-blue)
+
+}
+.profile-edit table tr td:first-child{
+    padding-right: 24px;
+    /* font-family: 'Poppins-Bold'; */
+    font-size: 15px;
+}
+.profile-edit table tr td:last-child{
+    display: flex;
+    align-items: center;
+}
+.profile-edit table {
+    width: 80%;
+}
+.profile-edit table tr td:last-child input:last-child,
+.profile-edit table tr td:last-child textarea{
+    padding: 8px 8px;
+    width: 100%;
+    font-size: 14px;
+}
+.profile-edit table tr td:last-child textarea{
+    height: 200px;
+    border-right: 0 !important;
 }
 .profile-details table tr td:last-child{
     font-size: 13px;
-    color: var(--text-blue);
+}
+.profile-details .title{
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #00A8C8;
+    margin-bottom: 10px;
+}
+.profile-details .review{
+    color: #DCDCDC;
+    margin-bottom: 3px;
+}
+.profile .underline-title{
+    position: relative;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.profile .underline-title + p{
+    width:70%;
+}
+.profile .underline-title::after{
+    position: absolute;
+    bottom: -4px;
+    height: 2px;
+    content: '';
+    left: 0;
+    width: 80px;
+    background: #00A8C8;
+    border: 3px;
 }
 .profile-details .btn{
     position: absolute;
     right: 0;
-    bottom: 10px;
-    width: 50px;
-    height: 50px;
+    bottom: -70px;
+    width: 28px;
+    height: 28px;
     background: var(--text-blue);
     border-radius: 50%;
     display: flex;
@@ -95,6 +141,10 @@
 .profile-details .btn span[class*='icon-']::before{
     color: var(--white);
     font-size: 22px;
+}
+.profile .MuiAvatar-root{
+    width: 136px !important;
+    height: 136px !important;
 }
 @media(max-width:767px){
     .profile{
@@ -109,6 +159,7 @@
     .profile .profile-img{
         margin:0 auto;
     }
+
     .profile-img label{
         background:var(--white)
     }
@@ -121,7 +172,7 @@
         color: #090202;
     }
     .profile-details h4{
-        font-family: "Poppins-Bold"
+        /* font-family: "Poppins-Bold" */
     }
     .profile-details .rating{
         margin: 0 auto;
@@ -141,10 +192,10 @@
     }
     .profile-details table tr td:first-child{
         color: #090202;
-        font-family: "Poppins-Bold"
+        /* font-family: "Poppins-Bold" */
     }
     .profile-details table tr td:last-child{
-        font-family: "Poppins-Medium";
+        /* font-family: "Poppins-Medium"; */
         color: #090202;
     }
 }

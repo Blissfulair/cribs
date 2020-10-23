@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Layout from './layout';
 import '../../scss/dashboard_calendar.scss';
 
@@ -16,38 +16,43 @@ import {withRouter} from 'react-router-dom'
 
 
 import 'react-calendar/dist/Calendar.css';
+import AppContext from '../../state/context';
 
 
 
 const DashboardCalendar = ({history}) => {
 
-    const [properties, ] = useState([
-        {
-            name: "Mary's Garden",
-        },
-        {
-            name: "Peter's Garden",
-        },
-        {
-            name: "John's Garden",
-        },
-    ]);
+    const {state} = useContext(AppContext)
 
 
-    const [available, setAvailable] = useState(true);
-
-    const [bookingDate, setBookingDate] = useState(new Date());
+    const [available, setAvailable] = useState(false);
+    const [property, setProperty] =useState(null)
+    const date = new Date();
+    const [bookingDate, setBookingDate] = useState(new Date(date.getFullYear(), date.getMonth(), date.getDate()));
     const bookNow = ()=>{
-        history.push('/crib/lsjfsjlks')
+        history.push(`/crib/${property.id}`)
     }
     const handlePropertyChange = (event) => {
-        console.log(event.target.value)
+        if(event.target.value === ''){
+            setAvailable(false)
+            setProperty(null)
+        }
+        else{
+            const proper = JSON.parse(event.target.value)
+            setProperty(proper)
+            if(proper.checkIn.length>0)
+            proper.checkIn.filter(check=>{
+                console.log(new Date(check.seconds*1000) )
+                if(new Date(check.seconds*1000) === bookingDate)
+                return setAvailable(false)
+                else
+                return setAvailable(true)
+            })
+            else
+             setAvailable(true)
+        }
 
     };
-
-    const handleAvailable = () => {
-        setAvailable(!available);
-    }
 
     const handleCalendar = () => {
         setBookingDate(bookingDate);
@@ -64,7 +69,7 @@ const DashboardCalendar = ({history}) => {
                 <div className="select__property">
                     {/* <h3>Select Property</h3>
                      */}
-                    <label  for='properties'>
+                    <label  htmlFor='properties'>
                         <h3 className='title'>Select Property</h3>
                     </label>
                     <FormControl  id="property">
@@ -78,8 +83,9 @@ const DashboardCalendar = ({history}) => {
                             name: 'properties'
                         }}
                         >
-                            {properties.map((property, index)=>{
-                                return <option key={index} value={property.name} >{property.name}</option>
+                            <option value=''>Select property</option>
+                            {state.latestProperties.map((property, index)=>{
+                                return <option key={index} value={JSON.stringify(property)} >{property.name}</option>
                             })}
                         </NativeSelect>
                     </FormControl>
@@ -89,7 +95,7 @@ const DashboardCalendar = ({history}) => {
                         <div className="availability__switch">
                             <h3 className='title'>Availability</h3>
                             <FormControlLabel
-                                control={<Switch checked={available} onChange={handleAvailable} />}
+                                control={<Switch checked={available}  />}
 
                             />
                         </div>
@@ -100,7 +106,7 @@ const DashboardCalendar = ({history}) => {
                             <FormControl >
                                 <NativeSelect
                                 className='input'
-                                // value={state.age}
+                                value={property?property.bedroom:''}
                                 // onChange={handleChange}
                                 style={{height:'1.6rem'}}
                                 IconComponent={ExpandMoreIcon}
@@ -124,7 +130,7 @@ const DashboardCalendar = ({history}) => {
                                 <NativeSelect
                                  style={{height:'1.6rem'}}
                                 className='input'
-                                // value={state.age}
+                                value={property?property.guest:''}
                                 // onChange={handleChange}
                                 IconComponent={ExpandMoreIcon}
                                 inputProps={{
@@ -143,7 +149,7 @@ const DashboardCalendar = ({history}) => {
 
                         <div className="price">
                             <h4 className='title'>Price</h4>
-                            <div className="amount">2000</div>
+                            <div className="amount">{property?property.amount:'0'}</div>
                             <span>/night</span>
                         </div>
                         <Button onClick={bookNow} className='button__book'>Book</Button>

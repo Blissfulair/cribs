@@ -51,7 +51,9 @@ class AddProperty extends React.Component{
     }
 
     componentDidMount(){
-        document.querySelector('#properties').setAttribute('class', 'is-active')
+        const dom = document.querySelector('#properties');
+        if(dom !== null)
+        dom.setAttribute('class', 'is-active')
 
     }
 
@@ -141,6 +143,10 @@ class AddProperty extends React.Component{
     onSubmit=(event)=>{
         const form = event
         event.preventDefault();
+        if(!this.context.state.userData.status){
+            this.setState({message:'Profile must be updated before you can publish a crib.'})
+            return
+        }
         if(this.state.title === '' || this.state.description === '' || this.state.state === ''
            || this.state.price === '' || this.state.featured_image === null)
            {
@@ -152,7 +158,8 @@ const body = {
     hostId:this.context.state.user.uid,
     name:this.state.title,
     description:this.state.description,
-    images:[ ...other_images,this.state.featured_image],
+    featuredImage:this.state.featured_image,
+    images:[ ...other_images],
     amount:this.state.price,
     bedroom:this.state.bedroom,
     discount:this.state.discount,
@@ -170,6 +177,7 @@ const body = {
     house:this.state.house,
     city:this.state.city,
     state:this.state.state,
+    hostData:{firstname:this.context.state.userData.firstname,lastname:this.context.state.userData.lastname, photoURL:this.context.state.photoURL}
 }
 firebase.storeProperty(body)
 .then(()=>{
@@ -218,7 +226,7 @@ firebase.storeProperty(body)
         return (
             <>
                 <Backend>
-                    <Activity loading={true}/>
+                    <Activity loading={this.state.isLoading}/>
                     <div className="inbox">
                         <div className="inbox-head dashboard-mt">
                             <div className="inbox-title">

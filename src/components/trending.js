@@ -36,7 +36,7 @@ const Trending = ({classes, rating, color,name, details})=>{
     return(
         <Card elevation={3} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.root}}>
-                <CardMedia image={details.images[0]}
+                <CardMedia image={details.featuredImage}
                         component="img"
                         alt="Contemplative Reptile"
                         height="65%"

@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography"
 
 const styles = (theme)=>({
     cardLink:{
-        height:200,
         width:'98%'
     },
     media: {
@@ -28,7 +27,7 @@ const styles = (theme)=>({
 const City = (props)=>{
     const {classes} = props
     return(
-        <Link className={classes.cardLink} to={'/'}>
+        <Link className={classes.cardLink} style={{height:props.height?props.height:200}} to={'/'}>
             <div className={classes.card}>
                 <CardMedia className={classes.media} image={props.image}/>
                 <div style={{backgroundColor:props.color}} className={classes.overlay}>

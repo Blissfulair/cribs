@@ -35,7 +35,7 @@ const firebaseConfig = {
         return user;
     }
     storeData = async(data,user)=>{
-        await this.firestore.collection(this.tables.USERS).doc(user.uid).set({firstname:data.firstname,lastname:data.lastname,email:data.email,role:data.role})
+        await this.firestore.collection(this.tables.USERS).doc(user.uid).set({firstname:data.firstname,lastname:data.lastname,email:data.email,role:data.role, status:false})
     }
     makeHost = async(user)=>{
         await this.firestore.collection(this.tables.USERS).doc(user.uid).update({role:2})
@@ -47,6 +47,11 @@ const firebaseConfig = {
     getHostProperties = async()=>{
         let properties = null
         properties = await this.firestore.collection(this.tables.PROPERTIES).limit(4).get();
+        return properties;
+    }
+    getLatestProperties = async()=>{
+        let properties = null
+        properties = await this.firestore.collection(this.tables.PROPERTIES).orderBy('createdAt', 'desc').limit(15).get();
         return properties;
     }
     getMyProperties = async(hostId)=>{
@@ -66,11 +71,13 @@ const firebaseConfig = {
             }
         })
          let images = []
+         let image=null
            const post = await this.firestore.collection(this.tables.PROPERTIES).add({
                 hostId:data.hostId,
                 name:data.name,
                 description:data.description,
                 images:images,
+                featuredImage:image,
                 amount:data.amount,
                 bedroom:data.bedroom,
                 discount:data.discount,
@@ -90,6 +97,7 @@ const firebaseConfig = {
                 house:data.house,
                 city:data.city,
                 state:data.state,
+                hostData:data.hostData,
                 checkIn:[],
                 checkOut:[],
                 createdAt:firebase.firestore.FieldValue.serverTimestamp(),
@@ -97,8 +105,14 @@ const firebaseConfig = {
                 keywords:searchIndex
     
             })
+           await this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+post.id).child(data.featuredImage.name).put(data.featuredImage)
+            .then(()=>{
+                this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+post.id).child(data.featuredImage.name).getDownloadURL()
+                .then(async (url)=>{
+                    await this.firestore.collection(this.tables.PROPERTIES).doc(post.id).update({featuredImage:url})
+                })
+            })
             for(let i= 0; i<data.images.length; i++){
-                console.log(data.images[i])
                 this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+post.id).child(data.images[i].name).put(data.images[i])
                 .then(()=>{
                     this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+post.id).child(data.images[i].name).getDownloadURL()
@@ -150,6 +164,35 @@ const firebaseConfig = {
         .update({
             checkOut:finish,
             checkIn:start
+        })
+
+    }
+
+    uploadProfilePhoto = async(user, image)=>{
+        await this.storage
+        .ref('profile/'+user.uid)
+        .put(image);
+          // set progress state
+           // task.on('state_changed', snapshot => {
+          // setURI(uri)
+          // setData({
+          //     ...data,
+          //     camera:false,
+          // transfered: Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          // });
+        //   })
+          return  await this.storage.ref('profile/'+user.uid).getDownloadURL()
+    }
+    updateProfile = async(data, id)=>{
+       await this.firestore.collection(this.tables.USERS).doc(id).update({
+            phone:data.phone,
+            address:data.address,
+            bio:data.bio,
+            linkedin:data.linkedin,
+            facebook:data.facebook,
+            dob:data.dob,
+            gender:data.gender,
+            status:true
         })
     }
 }

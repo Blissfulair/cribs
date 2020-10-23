@@ -61,6 +61,11 @@ const styles = (theme)=>({
     },
     active:{
         color:'#00A8C8'
+    },
+    sublet:{
+        textAlign:'center',
+        color:'#046FA7',
+        fontWeight:'bold'
     }
 })
 

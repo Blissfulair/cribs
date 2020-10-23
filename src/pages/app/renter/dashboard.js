@@ -6,7 +6,8 @@ import {
     Typography
 } from '@material-ui/core'
 import Chart from "../../../components/chart";
-
+import City from "../../../components/city";
+import image from "../../../images/login_bg.png"
 const Progress = ({value}) => (
     <div style={{
         width: 155,
@@ -55,15 +56,18 @@ const RenterDashboard = ({classes, context})=>{
                         </Grid>
                     </Paper>
                     <Paper style={{margin:'30px 0'}} classes={{root:classes.impression}}>
-                        <Grid container>
+                        <Grid container spacing={3}>
                             <Grid item lg={4}>
-                                <p>Promote Property</p>
+                                <City color="#000" height={240} image={image} name="Marg" description="this is it"/>
+                                <p className={classes.sublet}>Promote Property</p>
                             </Grid>
                             <Grid item lg={4}>
-                                <p>Share property link</p>
+                                <City color="#000" height={240}  image={image} name="Marg" description="this is it"/>
+                                <p className={classes.sublet}>Share property link</p>
                             </Grid>
                             <Grid item lg={4}>
-                                <p>Refer a friend</p>
+                                <City color="#000" height={240}  image={image} name="Marg" description="this is it"/>
+                                <p className={classes.sublet}>Refer a friend</p>
                             </Grid>
                         </Grid>
                     </Paper>

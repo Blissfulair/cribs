@@ -19,7 +19,6 @@ import {
     Box,
     LinearProgress,
 } from '@material-ui/core';
-import image from "../images/login_bg.png"
 import DetailSlide from "../components/detailSlide";
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import OpenInBrowserSharpIcon from '@material-ui/icons/OpenInBrowserSharp';
@@ -220,15 +219,15 @@ class Single extends Component{
                             <Grid item xs={12} md={8}>
                                 <Grid container>
                                     <Grid item xs={4}>
-                                        <div className={classes.background} id="slideTop" style={{ backgroundImage:`url(${property.images[0]})`}}>
+                                        <div className={classes.background} id="slideTop" style={{ backgroundImage:`url(${property.featuredImage})`}}>
                                             <div className={classes.overlay}></div>
                                         </div>
-                                        <div className={classes.background} id="slideBottom" style={{ backgroundImage:`url(${property.images[1]})`}}></div>
+                                        <div className={classes.background} id="slideBottom" style={{ backgroundImage:`url(${property.images[0]})`}}></div>
                                     </Grid>
                                     <Grid item xs={8}>
                                         <div className={classes.background} id="slide-cover">
                                             <div className={classes.overlay1}></div>
-                                            <DetailSlide content={property.images}/>
+                                            <DetailSlide content={[property.featuredImage, ...property.images]}/>
                                         </div>
                                     </Grid>
                                 </Grid>
@@ -258,7 +257,7 @@ class Single extends Component{
                                         <Grid item xs={5}>
                                             <div className={classes.position} > 
                                             <BusinessIcon htmlColor="#00A8C8" fontSize="large"/>
-                                            <Typography className={classes.textTitle}  variant="subtitle1" component="p">Condo / 900 Sq.ft</Typography>
+                                            <Typography className={classes.textTitle}  variant="subtitle1" component="p">{property.type}</Typography>
                                             </div>
                                             <div className={classes.position}>
                                                 <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
@@ -497,10 +496,10 @@ class Single extends Component{
                                                 <Typography variant="h6" style={{textAlign:'center', color:'#000000'}} >Speak to the Host</Typography>
                                                 <Grid container style={{marginTop:10,marginBottom:5}}>
                                                     <Grid item xs={3}>
-                                                        <Avatar alt="host" style={{width:50, height:50}} src={image}/>
+                                                        <Avatar alt={property.hostData.firstname} style={{width:50, height:50}} src={property.hostData.photoURL}/>
                                                     </Grid>
                                                     <Grid item xs={9}>
-                                                        <Typography variant="subtitle1"  component="p">Richard Nachos</Typography>
+                                                        <Typography variant="subtitle1"  component="p">{property.hostData.firstname +' '+ property.hostData.lastname}</Typography>
                                                         <Typography variant="caption"  component="p">Contact host</Typography>
                                                     </Grid>
                                                 </Grid>

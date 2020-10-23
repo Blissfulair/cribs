@@ -52,7 +52,9 @@ class EditProperty extends React.Component{
     }
 
     componentDidMount(){
-        document.querySelector('#properties').setAttribute('class', 'is-active')
+        const dom = document.querySelector('#properties')
+        if(dom !== null)
+        dom.setAttribute('class', 'is-active')
         const id = this.props.location.pathname.split('edit-property')[1]
         firebase.getPropertyById(id)
         .then(property=>{
@@ -75,7 +77,7 @@ class EditProperty extends React.Component{
                 inside:property.inside,
                 around:property.around,
                 guest:property.guest,
-                featured_image:property.images[0],
+                featured_image:property.featuredImage,
                 type:property.type,
                 other_images:property.images,
             })

@@ -12,12 +12,16 @@ import Profile from "../pages/app/profile";
 import Review from "../pages/app/review";
 import AppContext from "../state/context";
 import EditProfile from "../pages/app/editProfile";
+import Home from "../pages/app/home";
+import Search from "../pages/app/search";
+import Single from "../pages/app/single";
 class Auth  extends Component{
     static contextType = AppContext
     componentDidMount(){
         const path = this.props.location.pathname;
+        const search = this.props.location.search
         if (path.includes('app')) {
-            this.props.history.push(path)
+            this.props.history.push(path+search)
         }
         else {
             this.props.history.push('/app/dashboard')
@@ -55,8 +59,17 @@ class Auth  extends Component{
             <Route path='/app/payments' >
                 <DashboardPayment />
             </Route>
+            <Route path='/app/search' >
+                <Search />
+            </Route>
+            <Route path='/app/crib' >
+                <Single />
+            </Route>
             <Route path="/app/reviews">
                 <Review/>
+            </Route>
+            <Route path="/app/home">
+                <Home/>
             </Route>
 
             <Route path='/app/settings' >

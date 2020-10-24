@@ -41,7 +41,7 @@ const Slide = ({content})=>{
                     >
                     {content.map((property,index)=>{
                     return (
-                        <Link to={`/crib/${property.id}`}>
+                        <Link to={`/crib/${property.id}`} key={index}>
                             <Trending name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
                         </Link>
                     )

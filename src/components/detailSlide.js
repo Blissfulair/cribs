@@ -15,6 +15,7 @@ const DetailSlide = ({content})=>{
                     infinite
                     minDraggableOffset={20}
                     dots={true}
+                    className="detail-slider"
                     arrowLeft={
                         <div style={{cursor:'pointer',height:30,width:30, borderRadius:'50%',top:'50%', transform:'translateY(-50%)', backgroundColor:'#000000', position:'absolute',zIndex:10,left:15, display:'flex', alignItems:'center',justifyContent:'center'}} className="left">
                             <ArrowLeftIcon htmlColor="#fff"/>

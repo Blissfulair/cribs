@@ -92,9 +92,13 @@ const SearchForm = (props)=>{
         e.preventDefault()
         setLoading(true)
         setSearch(data);
-        searchProperties(data.location, data.checkIn,data.checkOut,3,props.history)
+        searchProperties(data.location, data.checkIn,data.checkOut,data.guest)
         .then(()=>{
             setLoading(false)
+            props.history.push({
+                pathname: '/search',
+                search: `?location=${data.location}&check-in=${data.checkIn}&check-out=${data.checkOut}&guest=${data.guest}`
+            })
         })
         .catch((er)=>{
             setLoading(false)
@@ -174,3 +178,102 @@ const SearchForm = (props)=>{
     )
 }
 export default withRouter(withStyles(styles)(SearchForm));
+
+
+export const MiniSearch = withRouter(withStyles(styles)((props)=>{
+    const {classes} = props
+    const [locationF, setLocationF]=useState(false)
+    const [loading, setLoading] = useState(false)
+    const {searchProperties,setSearch,state}=useContext(AppContext)
+    const [data, setData]=useState({
+        location:state.searchQuery?state.searchQuery.location:'',
+        checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        guest:state.searchQuery?state.searchQuery.guest:'',
+
+    })
+  
+    // const [checkIn, setCheckIn]=useState(false)
+    const onSubmit =(e)=>{
+        e.preventDefault()
+        setLoading(true)
+        setSearch(data);
+        searchProperties(data.location, data.checkIn,data.checkOut,data.guest)
+        .then(()=>{
+            setLoading(false)
+            props.history.push({
+                pathname: '/app/search',
+                search: `?location=${data.location}&check-in=${data.checkIn}&check-out=${data.checkOut}&guest=${data.guest}`
+            })
+        })
+        .catch((er)=>{
+            setLoading(false)
+        })
+    }
+    useEffect(()=>{
+        setData({
+            location:state.searchQuery?state.searchQuery.location:'',
+            checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            guest:state.searchQuery?state.searchQuery.guest:''
+        })
+    },[state.searchQuery])
+    return(
+        <>
+        {
+            loading&&
+            <Splash/>
+        }
+        <Grid container style={{zIndex:22}}>
+            <Grid item xs={false} md={1}/>
+            <Grid item xs={12} md={9}>
+                <form onSubmit={onSubmit} className='search-forms min-form' autoComplete="off">
+                    <div className={classes.location} style={{borderColor:locationF?'#00A3C5':'#DCDCDC',width:'26%', borderRadius:4}}>
+                        <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
+                        <div style={{width:'100%',height:'90%'}}>
+                        <TextField className="home-location single" name="location" classes={{root:{width:'100%'}}} value={data.location}  label="Location" onFocus={()=>setLocationF(true)} onChange={(e)=>setData({...data, location:e.target.value})} onBlur={()=>setLocationF(false)} placeholder="Search anyplace e.g Lagos"/>
+                            {/* <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
+                            <input value={data.location} onFocus={()=>setLocationF(true)} onChange={(e)=>setData({...data, location:e.target.value})} onBlur={()=>setLocationF(false)}  placeholder="Search anyplace of your choice"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} /> */}
+                        </div>
+                    </div>
+
+                    <div className={classes.row1} style={{width:'24%',borderRadius:4}}>
+                        <div className={classes.checkIn}>
+                            <label style={{cursor:'pointer',marginRight:10}} htmlFor="begin">
+                                <Calendar htmlColor="#046FA7" fontSize="default"/>
+                            </label>
+                            <DatePicker
+                            id="begin"
+                            label="Check In"
+                            format="dd/MM/yyyy"
+                            value={data.checkIn}
+                            onChange={(e)=>setData({...data, checkIn:e})}
+                            />
+                        </div>
+                    </div>
+                    
+                    <div className={classes.row1} style={{width:'24%',borderRadius:4}}>
+                        <div className={classes.checkIn}>
+                            <label style={{cursor:'pointer',marginRight:10}} htmlFor="end">
+                                <Calendar htmlColor="#046FA7" fontSize="default"/>
+                            </label>
+                            <DatePicker
+                            id="end"
+                            label="Check Out"
+                            format="dd/MM/yyyy"
+                            value={data.checkOut}
+                            onChange={(e)=>setData({...data, checkOut:e})}
+                            />
+                        </div>
+                    </div>
+                    <div className={classes.row2} style={{width:'20%',borderRadius:4}}>
+                        <div>
+                            <Button type="submit"  className={classes.btn}>Search</Button>
+                        </div>
+                    </div>
+                </form>
+            </Grid>
+        </Grid>
+        </>
+    )
+}))

@@ -21,13 +21,20 @@ const styles = ()=>({
         borderRadius:16,
         height:340,
         minWidth:265,
+        position:'relative',
+        marginBottom:20
+    },
+    image:{
+        borderRadius:16,
+        height:'65%',
+        width:'100%',
         position:'relative'
     },
     overlay:{
         position:'absolute',
         top:0,
         left:0,
-        height:'65%',
+        height:'100%',
         width:'100%',
         opacity: 0.35
     }
@@ -35,13 +42,13 @@ const styles = ()=>({
 const Trending = ({classes, rating, color,name, details})=>{
     return(
         <Card elevation={3} classes={{root:classes.root}}>
-            <CardActionArea classes={{root:classes.root}}>
+            <CardActionArea classes={{root:classes.image}}>
                 <CardMedia image={details.featuredImage}
                         component="img"
                         alt="Contemplative Reptile"
-                        height="65%"
+                        height="100%"
                 />
-                <div style={{zIndex:34, position:'absolute',height:'60%', width:'98%', top:'3%', left:'1%'}}>
+                <div style={{zIndex:34, position:'absolute',height:'94%', width:'98%', top:'3%', left:'1%'}}>
                     <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#fff"/>
                     <div style={{position:'absolute', bottom:0}}>
                         <Rating

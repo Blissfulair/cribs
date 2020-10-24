@@ -1,8 +1,8 @@
-import React, {useState, useContext} from "react"
+import React, {useState} from "react"
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import {MenuItem, Grid,IconButton, Select} from '@material-ui/core';
+import {MenuItem, Grid, Select} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import {Link, withRouter} from "react-router-dom";
 import SyncAltIcon from '@material-ui/icons/SyncAlt';
@@ -13,11 +13,9 @@ import SideBar from "./drawer"
 import SearchIcon from '@material-ui/icons/Search';
 import "./../scss/header.scss"
 import TopDrawer from "./topDrawer";
-import Switch from '@material-ui/core/Switch';
-import Avatar from '@material-ui/core/Avatar';
-import LogoutModal from "./logout";
-import AppContext from "../state/context";
+
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import AppHeader from "./appHeader";
 
 const styles = theme=>({
     container:{
@@ -28,10 +26,14 @@ const styles = theme=>({
     menu:{
         display:'flex',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        listStyle:'none'
     },
     menuItems:{
         marginLeft:'15px'
+    },
+    menuList:{
+        fontSize:12
     },
     brand:{
         textDecoration:'none'
@@ -55,46 +57,21 @@ const styles = theme=>({
 
 
 const Header = (props)=>{
-    const context = useContext(AppContext)
         const [state, setState] = useState({
             left: false,
             top:false
           });
-
-
-        const [logout, setLogout] = React.useState(false);
-        const logoutRef = React.useRef(null);
-        const prevOpen = React.useRef(logout);
         const [lang, setLang]= useState('en')
-        const [loading, setLoading] = useState(false)
-        const toggleLogout = () => {
-            setLogout((prevOpen) => !prevOpen);
-          };
+
         
 
-          React.useEffect(() => {
-            if (prevOpen.current === true && logout === false) {
-              logoutRef.current.focus();
-            }
-        
-            prevOpen.current = logout;
-          }, [logout]);
+
     
         const handleChange = (e) => {
         setLang(e.target.value);
         };
 
-        const becomeHost = ()=>{
-            setLoading(true)
-            context.makeHost()
-            .then(()=>{
-                setLoading(false)
-            })
-            .catch((e)=>{
-                setLoading(false)
-            })
-        }
-        
+
         const toggleDrawer = (anchor, open) => (event) => {
             if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
               return;
@@ -108,60 +85,8 @@ const Header = (props)=>{
         <>
             {
                 props.location.pathname.includes('app')?
-                <AppBar elevation={0} classes={{root:classes.app}} position="fixed"  color="primary">
-                    <Toolbar style={{padding:0}}>
-                        <Grid container justify="center" alignItems="center">
-                            <Grid item xs={11} lg={10} >
-                                <Grid container alignItems="center">
-                                    <Grid  item xs={7} lg={8}>
-                                        <Button style={{justifySelf:'flex-start', justifyContent:'flex-start'}} className="mobile-menu" >
-                                            <MenuIcon/>
-                                        </Button>
-                                        <Typography className="dashboard-mobile-menu" variant="h5" style={{color:'#707070', fontWeight:'bold'}}>{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME.toUpperCase():'React App'}</Typography>
-                                    </Grid>
-                                    <Grid item  xs={5} lg={4}> 
-                                        <Grid container alignItems="center" justify="flex-end">
-                                            <Typography className="dashboard-mobile-menu" component="div">
-                                                {
-                                                    context.state.userData&&
-                                                    context.state.userData.role===2?
-                                                    <Grid component="label" container alignItems="center" spacing={1}>
-                                                    <Grid item className={!context.state.dashboard?classes.active:classes.inactive}>Hosting</Grid>
-                                                    <Grid item>
-                                                        <Switch checked={context.state.dashboard} onChange={()=>{context.chooseDashboard()}} name="checkedC" />
-                                                    </Grid>
-                                                    <Grid item className={!context.state.dashboard?classes.inactive:classes.active}>Renting</Grid>
-                                                    </Grid>
-                                                    :
-                                                    <Grid container>
-                                                        <Button onClick={becomeHost} style={{textTransform:'lowercase', color:'#375FA5'}} variant="text">
-                                                            {loading?'please wait a minute...':`Become a ${context.state.dashboard?'host':'renter'} on Crib`}
-                                                        </Button>
-                                                    </Grid>
-                                                }
-                                            </Typography>
-                                            <IconButton
-                                            ref={logoutRef}
-                                            aria-controls={logout ? 'menu-list-grow' : undefined}
-                                            aria-haspopup="true"
-                                            onClick={toggleLogout}
-                                            style={{marginLeft:40}}
-                                            >
-                                            {
-                                                context.state.user.photoURL?
-                                                <Avatar style={{ width:25,height:25}} src={context.state.user.photoURL} alt="user"/>
-                                                :
-                                                <Avatar style={{ width:25,height:25}}  alt="">{context.state.userData.firstname.charAt(0)+context.state.userData.lastname.charAt(0)}</Avatar>
-                                            }
-                                            </IconButton>
-                                            <LogoutModal logout={logout} logoutRef={logoutRef} setLogout={setLogout} />
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Toolbar>
-                </AppBar>
+                <AppHeader classes={classes}/>
+
                 :
             <AppBar position="fixed"  color="primary">
                 <Toolbar style={{padding:0}}>
@@ -209,7 +134,9 @@ const Header = (props)=>{
                                     </Select>
                                 </div>
                                 <div className={classes.menuItems} style={{backgroundColor:'#EB4F1E', borderRadius:'10px'}}>
-                                    <Button style={{fontSize:'12px', textTransform:'capitalize',color:'#fff'}} >Host Accommodation</Button>
+                                    <Link to="/login">
+                                        <Button style={{fontSize:'12px', textTransform:'capitalize',color:'#fff'}} >Host Accommodation</Button>
+                                    </Link>
                                 </div>
                                 <div className={classes.menuItems}>
                                     <Link color="textPrimary" style={{color:'#000000', fontWeight:'bold'}} to="/register">Signup</Link>

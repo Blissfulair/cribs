@@ -30,7 +30,7 @@ const DashboardCalendar = ({history}) => {
     const date = new Date();
     const [bookingDate, setBookingDate] = useState(new Date(date.getFullYear(), date.getMonth(), date.getDate()));
     const bookNow = ()=>{
-        history.push(`/crib/${property.id}`)
+        history.push(`/app/crib/${property.id}`)
     }
     const handlePropertyChange = (event) => {
         if(event.target.value === ''){

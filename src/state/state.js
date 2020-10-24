@@ -209,7 +209,7 @@ const GlobalState= ()=>{
         setSearch:(search)=>{
             dispatch({type:'SET_SEARCH', payload:{searchQuery:search}}) 
         },
-        searchProperties:async(location, checkIn, checkOut, guest, history)=>{
+        searchProperties:async(location, checkIn, checkOut, guest)=>{
              await firebase.searchProperties(location, checkIn, checkOut, guest)
             .then(docs=>{
                 let results = []
@@ -218,11 +218,6 @@ const GlobalState= ()=>{
                     results.push({id:doc.id, ...doc.data()})
                     dispatch({type:'GET_RESULTS', payload:{results:results}})
                 })
-                history.push({
-                    pathname: '/search',
-                    search: `?location=${location}&check-in=${checkIn}&check-out=${checkOut}&guest=${guest}`
-                })
-
             })
         },
         onLoadSearch:async(data)=>{

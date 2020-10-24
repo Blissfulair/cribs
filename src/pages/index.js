@@ -28,6 +28,7 @@ import abuja from "../images/abuja.jpg"
 import lagos from "../images/lagos.jpg"
 import kano from "../images/kano.jpeg"
 import cottage from "../images/cottage.png"
+import Splash from "../components/splash";
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${bg})`,
@@ -116,7 +117,8 @@ class Index extends Component{
             location:'',
             checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            guest:0
+            guest:0,
+            loading:false
          }
     }
     // useEffect(()=>{
@@ -141,13 +143,28 @@ class Index extends Component{
     }
      onSubmit = (e)=>{
         e.preventDefault();
+        this.setState({loading:true})
         this.context.setSearch(this.state);
-        this.context.searchProperties(this.state.location, this.state.checkIn,this.state.checkOut,this.state.guest,this.props.history)
+        this.context.searchProperties(this.state.location, this.state.checkIn,this.state.checkOut,this.state.guest)
+        .then(()=>{
+            this.props.history.push({
+                pathname: '/search',
+                search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
+            })
+            this.setState({loading:false})
+        })
+        .catch(e=>{
+            this.setState({loading:false})
+        })
     }
     render(){
         const {classes}=this.props
     return(
         <Grid className="home" container justify="center">
+            {
+                this.state.loading&&
+                <Splash/>
+            }
             <Grid item className={classes.loginContainer} >
                 <Grid container justify="center">
                     <Grid item xs={10} md={5}>

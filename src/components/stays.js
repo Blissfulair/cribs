@@ -8,12 +8,12 @@ import "./stays.css"
 
 const styles = (theme)=>({
     media: {
-        height: 0,
-        paddingTop: '130%' // 16:9
+        height: '100%',
+        // paddingTop: '130%' // 16:9
      },
      card: {
         position: 'relative',
-        border: '1px solid #DCDCDC'
+        border: '1px solid #DCDCDC',
      },
      overlay: {
         position: 'absolute',
@@ -30,7 +30,7 @@ const Stays = (props)=>{
     return(
         <Link className="card-link" to={'/'}>
             <Grow in={true} disableStrictModeCompat>
-            <div className={classes.card}>
+            <div className={classes.card} style={{height:props.height?props.height:340}} > 
                 <CardMedia className={classes.media} image={props.image}/>
                 <div style={{backgroundColor:props.color}} className={classes.overlay}>
                     <div style={{position:'absolute',bottom:10,display:'flex',justifyContent:'center', width:'100%'}}>

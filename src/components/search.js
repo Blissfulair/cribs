@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
@@ -9,6 +9,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Rating from '@material-ui/lab/Rating';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import {Link} from "react-router-dom"
+import AppContext from "../state/context";
 
 const styles = ()=>({
     para:{
@@ -43,11 +44,12 @@ const styles = ()=>({
         left: 0
     }
 })
-const Search = ({classes, content, rating, color,name,props})=>{
+const Search = ({classes, content, rating,name})=>{
+    const {state} =useContext(AppContext)
     return(
-    <Link to={`/crib/${content.id}`}>
+    <Link to={state.user?`/app/crib/${content.id}`:`/crib/${content.id}`}>
         <Card elevation={3} style={{margin:'15px 0'}} classes={{root:classes.root}}>
-            <CardActionArea classes={{root:classes.root}} onClick={()=>props.push('/single')}>
+            <CardActionArea classes={{root:classes.root}}>
                 <div className={classes.media}>
                     <CardMedia image={content.images[0]}
                             component="img"

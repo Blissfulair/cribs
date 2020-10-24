@@ -42,8 +42,7 @@ const DashboardCalendar = ({history}) => {
             setProperty(proper)
             if(proper.checkIn.length>0)
             proper.checkIn.filter(check=>{
-                console.log(new Date(check.seconds*1000) )
-                if(new Date(check.seconds*1000) === bookingDate)
+                if(new Date(check.seconds*1000).toDateString() === bookingDate.toDateString())
                 return setAvailable(false)
                 else
                 return setAvailable(true)
@@ -152,7 +151,10 @@ const DashboardCalendar = ({history}) => {
                             <div className="amount">{property?property.amount:'0'}</div>
                             <span>/night</span>
                         </div>
-                        <Button onClick={bookNow} className='button__book'>Book</Button>
+                        {
+                            available &&
+                            <Button onClick={bookNow} className='button__book'>Book</Button>
+                        }
 
                     </div>
 

@@ -103,12 +103,15 @@ section{
             display: flex;
             justify-content: space-between;
 
-            p{
+            button{
                 border: 2px solid #FFFFFF;
                 border-radius: 27px;
                 font-size: .7rem;
-                padding: .3rem;
+                padding: .4rem;
                 width: 30%;
+                background: transparent;
+                cursor: pointer;
+                color:#fff;
                 text-align: center;
 
                 &.active{
@@ -129,7 +132,31 @@ section{
             .picker{
                 display: flex;
                 align-items:center  ;
-                // justify-content: center;
+                justify-content: space-between;
+            }
+            .picker> div:first-child{
+                width: 45%;
+                div{
+                    display: flex;
+                    justify-content: space-between;
+                    &:first-child{
+                        margin-right: 10px;
+                    }
+                    .MuiSelect-icon{
+                        color: #fff;
+                    }
+                    input, select,div{
+                        font-size: 15px;
+                        color: #FFFFFF;
+                    }
+                }
+            }
+            .picker> div:last-child{
+                width: 45%;
+                input, select,div{
+                    font-size: 15px;
+                    color: #FFFFFF;
+                }
             }
             .card-name{
                 margin-bottom: 1rem;

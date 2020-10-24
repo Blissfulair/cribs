@@ -208,7 +208,14 @@ class Single extends Component{
         checkOut:this.state.checkOut,
         nights:this.state.days,
         guest:this.state.guest,
-        amount:property?property.amount:0
+        amount:property?property.amount:0,
+        id:property?property.id:''
+    }
+    let checkOut = []
+    let checkIn = []
+    if(property){
+         checkOut = property.checkOut.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
+         checkIn = property.checkIn.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
     }
     if(!Boolean(property))
     return <Splash/>
@@ -417,7 +424,10 @@ class Single extends Component{
                                                     </Grid>
                                                 </Grid>
                                             </Grid>
-                                            <Typography style={{display:'flex', marginBottom:6}} variant="subtitle2" component="p" >Dates Are Available to be Reserved &nbsp;<CheckCircleOutlinedIcon fontSize="small" htmlColor="#0BA4E0"/></Typography>
+                                            {
+                                                (!checkIn.length>0 || !checkOut.length>0)&&
+                                                <Typography style={{display:'flex', marginBottom:6}} variant="subtitle2" component="p" >Dates Are Available to be Reserved &nbsp;<CheckCircleOutlinedIcon fontSize="small" htmlColor="#0BA4E0"/></Typography>
+                                            }
                                             <form autoComplete="off">
                                                <Grid container spacing={1}>
                                                    <Grid item xs={6}>
@@ -467,10 +477,10 @@ class Single extends Component{
                                                     <Grid item xs={4}>
                                                         <Typography variant="h5" style={{color:'#FF9C07',textAlign:'right',fontWeight:'bold'}}>₦{property.amount*this.state.days}</Typography>
                                                         <Typography variant="caption" style={{cursor:'pointer'}} component="p" onClick={this.handleClickOpen}>view details</Typography>
-                                                        <PopUP summary={summary} open={this.state.open} handleClose={this.handleClose} />
+                                                        <PopUP onReserved={this.onReserved} summary={summary} open={this.state.open} handleClose={this.handleClose} />
                                                     </Grid>
                                                 </Grid>
-                                                <Button onClick={()=>this.onReserved(property.id)} style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="contained" disableElevation>
+                                                <Button onClick={this.handleClickOpen} style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="contained" disableElevation>
                                                     Reserve Now
                                                 </Button>
                                                 <Divider style={{marginTop:15, height:3, backgroundColor:'#DCDCDC'}}/>

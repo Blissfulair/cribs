@@ -15,6 +15,7 @@ import EditProfile from "../pages/app/editProfile";
 import Home from "../pages/app/home";
 import Search from "../pages/app/search";
 import Single from "../pages/app/single";
+import Payment from "../pages/app/payment";
 class Auth  extends Component{
     static contextType = AppContext
     componentDidMount(){
@@ -61,6 +62,9 @@ class Auth  extends Component{
             </Route>
             <Route path='/app/search' >
                 <Search />
+            </Route>
+            <Route path='/app/payment' >
+                <Payment />
             </Route>
             <Route path='/app/crib' >
                 <Single />

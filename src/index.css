@@ -277,6 +277,12 @@ svg{
 #app-home-page .BrainhubCarousel__dots .BrainhubCarousel__dot.BrainhubCarousel__dot--selected::before{
   background: #ffffff !important;
 }
+.MuiDialog-paperScrollPaper{
+  height: 100vh !important;
+  max-width: 450px !important;
+  min-width: 300px;
+  background: #FCFBFB  !important;
+}
 @media(max-width:767px){
   #end,#begin{
     font-size: 12px;

@@ -10,12 +10,6 @@ import {
     TextField, 
     Divider, 
     Avatar,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    Slide,
-    DialogContentText,
-    DialogTitle,
     Box,
     LinearProgress,
 } from '@material-ui/core';
@@ -41,6 +35,7 @@ import { withRouter} from "react-router-dom"
 import './../scss/single.scss'
 import AppContext from "../state/context";
 import Splash from "../components/splash";
+import PopUP from "../components/popup";
 const styles = theme =>({
     container:{
         paddingTop:140
@@ -140,9 +135,6 @@ const BorderLinearProgress = withStyles((theme) => ({
       backgroundColor: '#00B2CE',
     },
   }))(LinearProgress);
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
 
 
 
@@ -466,27 +458,7 @@ class Single extends Component{
                                                     <Grid item xs={4}>
                                                         <Typography variant="h5" style={{color:'#FF9C07',textAlign:'right',fontWeight:'bold'}}>₦{property.amount*this.state.days}</Typography>
                                                         <Typography variant="caption" style={{cursor:'pointer'}} component="p" onClick={this.handleClickOpen}>view details</Typography>
-                                                        <Dialog
-                                                            open={this.state.open}
-                                                            TransitionComponent={Transition}
-                                                            keepMounted
-                                                            onClose={this.handleClose}
-                                                            aria-labelledby="detail-title"
-                                                            aria-describedby="details"
-                                                            >
-                                                            <DialogTitle id="detail-title">{"Details"}</DialogTitle>
-                                                            <DialogContent>
-                                                            <DialogContentText id="details">
-                                                                Let Google help apps determine location. This means sending anonymous location data to
-                                                                Google, even when no apps are running.
-                                                            </DialogContentText>
-                                                            </DialogContent>
-                                                            <DialogActions>
-                                                            <Button onClick={this.handleClose} color="primary">
-                                                                Ok
-                                                            </Button>
-                                                            </DialogActions>
-                                                        </Dialog>
+                                                        <PopUP open={this.state.open} handleClose={this.handleClose} />
                                                     </Grid>
                                                 </Grid>
                                                 <Button onClick={()=>this.onReserved(property.id)} style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="contained" disableElevation>

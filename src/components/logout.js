@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
@@ -10,7 +10,7 @@ import MenuList from '@material-ui/core/MenuList';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {withRouter} from "react-router-dom"
-import firebase from './firebase'
+import AppContext from '../state/context';
 const styles = () => ({
     item:{
         marginLeft:10
@@ -18,6 +18,7 @@ const styles = () => ({
 });
 
 const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
+  const {signOut} = useContext(AppContext)
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -45,7 +46,7 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
                   <MenuList autoFocusItem={logout} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/profile')}}><PersonOutlineOutlinedIcon className={classes.item}/> Profile</MenuItem>
                     <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/settings')}}><SettingsOutlinedIcon className={classes.item}/> Settings</MenuItem>
-                    <MenuItem onClick={(e)=>{closeLogout(e); firebase.logout()}}><ExitToAppIcon className={classes.item}/> Logout</MenuItem>
+                    <MenuItem onClick={(e)=>{closeLogout(e); signOut()}}><ExitToAppIcon className={classes.item}/> Logout</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

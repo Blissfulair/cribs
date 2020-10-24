@@ -266,6 +266,12 @@ const GlobalState= ()=>{
             })
 
         },
+        signOut:()=>{
+            firebase.logout()
+            .then(()=>{
+                dispatch({type:'RETRIVE_USER', payload:{user:undefined,userData:undefined}})
+            })
+        }, 
         state
     }),[state])
     return globals;

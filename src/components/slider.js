@@ -1,11 +1,13 @@
-import React from "react"
+import React, { useContext } from "react"
 import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import Trending from "./trending"
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import {Link} from "react-router-dom"
+import AppContext from "../state/context";
 const Slide = ({content})=>{
+    const {state}=useContext(AppContext)
     return(
         <>
             
@@ -41,7 +43,7 @@ const Slide = ({content})=>{
                     >
                     {content.map((property,index)=>{
                     return (
-                        <Link to={`/crib/${property.id}`} key={index}>
+                        <Link to={state.userData?`/app/crib/${property.id}`:`/crib/${property.id}`} key={index}>
                             <Trending name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
                         </Link>
                     )

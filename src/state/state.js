@@ -150,8 +150,8 @@ const GlobalState= ()=>{
     const globals=  useMemo(()=>({
         register :async(formData)=>{
            await firebase.register(formData)
-           .then((user)=>{
-                 firebase.storeData(formData,user.user)
+           .then(async(user)=>{
+                await firebase.storeData(formData,user.user)
                  firebase.getUserDetails(user.user.uid)
                  .then(userData=>{
                     dispatch({type:'RETRIVE_USER', payload:{user:user.user,userData}})
@@ -266,8 +266,8 @@ const GlobalState= ()=>{
             })
 
         },
-        signOut:()=>{
-            firebase.logout()
+        signOut:async()=>{
+            await firebase.logout()
             .then(()=>{
                 dispatch({type:'RETRIVE_USER', payload:{user:undefined,userData:undefined}})
             })

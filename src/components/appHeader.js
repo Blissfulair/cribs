@@ -109,10 +109,15 @@ const AppHeader = ({classes, history})=>{
                                 style={{marginLeft:40}}
                                 >
                                 {
-                                    context.state.user.photoURL?
-                                    <Avatar style={{ width:25,height:25}} src={context.state.user.photoURL} alt="user"/>
-                                    :
-                                    <Avatar style={{ width:25,height:25}}  alt="">{context.state.userData.firstname.charAt(0)+context.state.userData.lastname.charAt(0)}</Avatar>
+                                    context.state.user&&
+                                    <>
+                                        {
+                                            context.state.user.photoURL?
+                                            <Avatar style={{ width:25,height:25}} src={context.state.user.photoURL} alt="user"/>
+                                            :
+                                            <Avatar style={{ width:25,height:25}}  alt="">{context.state.userData.firstname.charAt(0)+context.state.userData.lastname.charAt(0)}</Avatar>
+                                        }
+                                    </>
                                 }
                                 </IconButton>
                                 <LogoutModal logout={logout} logoutRef={logoutRef} setLogout={setLogout} />

@@ -33,6 +33,12 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
     setLogout(false);
   };
 
+  const onLogout = ()=>{
+    signOut()
+    .then(()=>{
+      history.push('/')
+    })
+  }
   return (
       <div>
         <Popper open={logout} anchorEl={logoutRef.current} role={undefined} transition disablePortal>
@@ -46,7 +52,7 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
                   <MenuList autoFocusItem={logout} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/profile')}}><PersonOutlineOutlinedIcon className={classes.item}/> Profile</MenuItem>
                     <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/settings')}}><SettingsOutlinedIcon className={classes.item}/> Settings</MenuItem>
-                    <MenuItem onClick={(e)=>{closeLogout(e); signOut()}}><ExitToAppIcon className={classes.item}/> Logout</MenuItem>
+                    <MenuItem onClick={(e)=>{closeLogout(e); onLogout()}}><ExitToAppIcon className={classes.item}/> Logout</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

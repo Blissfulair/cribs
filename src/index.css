@@ -280,8 +280,102 @@ svg{
 .MuiDialog-paperScrollPaper{
   height: 100vh !important;
   max-width: 450px !important;
-  min-width: 300px;
+  min-width: 375px;
   background: #FCFBFB  !important;
+}
+.MuiDialog-paperScrollPaper table:first-child{
+  border: 1px solid #DCDCDC;
+  width: 100%;
+  border-radius: 6px;
+  border-collapse: separate;
+  background: #fff;
+}
+.MuiDialog-paperScrollPaper table:nth-child(2){
+  width: 100%;
+  margin-top: 10px;
+  border-bottom: 1px solid #DCDCDC;
+
+}
+.MuiDialog-paperScrollPaper table:nth-child(2) tr:nth-child(4) td{
+  padding-bottom: 23px;
+  border-bottom: 1px solid #DCDCDC;
+
+}
+.MuiDialog-paperScrollPaper table:nth-child(2) tr:nth-child(5) td{
+  padding-top: 10px;
+  font-weight: bold;
+
+}
+.MuiDialog-paperScrollPaper table:nth-child(2) td{
+  padding-bottom: 10px;
+  color: #707070;
+  font-size: 14px;
+}
+.MuiDialog-paperScrollPaper table:nth-child(2) tr td:last-child{
+  text-align: right;
+}
+.MuiDialog-paperScrollPaper table:first-child td{
+  padding:5px 8px;
+}
+.MuiDialog-paperScrollPaper table:first-child td p:first-child{
+  font-size: 12px;
+  color: #707070;
+}
+.MuiDialog-paperScrollPaper table:first-child td p:last-child{
+  font-size: 12px;
+  color: #00A8C8;
+}
+.MuiDialog-paperScrollPaper table:first-child tr:first-child td{
+  border-bottom: 1px solid #DCDCDC;
+
+}
+.MuiDialog-paperScrollPaper table:first-child tr:first-child td:first-child{
+  border-top-right-radius: 4px;
+}
+.MuiDialog-paperScrollPaper table:first-child tr:first-child td:last-child{
+  border-left: 1px solid #DCDCDC;
+}
+.MuiDialog-paperScrollPaper table:nth-child(2) + p{
+  margin-top: 12px;
+  text-align: right;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.MuiDialog-paperScrollPaper table:nth-child(2) + p span{
+  margin-left: 30px;
+}
+.MuiDialog-paperScrollPaper .cancel-policy{
+  font-weight: bold;
+}
+.MuiDialog-paperScrollPaper .cancel-policy + p{
+  font-size: 11px;
+  margin-bottom: 13px;
+}
+.MuiDialog-paperScrollPaper .summary-btn{
+  display: flex;
+  justify-content: space-between;
+}
+.MuiDialog-paperScrollPaper .summary-btn button{
+  background:#EB4F1E;
+  padding: 10px 23px;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  cursor: pointer;
+}
+.MuiDialog-paperScrollPaper .summary-btn button:last-child{
+  padding: 10px 70px;
+  background: #00A8C8;
+}
+.MuiDialogContent-root{
+  padding: 8px 32px !important;
+}
+.MuiDialogTitle-root{
+  padding: 16px 32px !important;
+}
+.MuiDialogTitle-root .MuiTypography-h6{
+  font-size: 0.95rem !important;
+  color: #00A8C8;
 }
 @media(max-width:767px){
   #end,#begin{

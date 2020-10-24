@@ -148,7 +148,8 @@ class Single extends Component{
             property:null,
             checkIn: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            days:1
+            days:1,
+            guest:1,
         }
         this.propert = null
     }
@@ -178,6 +179,7 @@ class Single extends Component{
         this.context.getPropertyById(id)
         this.setState({
             property:this.context.state.property,
+            guest:this.context.state.searchQuery?this.context.state.searchQuery.guest:1,
             checkIn:this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             checkOut:this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
         })
@@ -201,6 +203,13 @@ class Single extends Component{
     const {classes} = this.props
     this.propert = this.context.state.property
     const property =this.propert
+    const summary = {
+        checkIn:this.state.checkIn,
+        checkOut:this.state.checkOut,
+        nights:this.state.days,
+        guest:this.state.guest,
+        amount:property?property.amount:0
+    }
     if(!Boolean(property))
     return <Splash/>
     return(
@@ -447,7 +456,7 @@ class Single extends Component{
                                                         <label htmlFor="check-out">
                                                             <Calendar htmlColor="#00A8C8" fontSize="small" />
                                                         </label>
-                                                        <TextField className="single" id="guest"  label="Guests" variant="outlined" />
+                                                        <TextField onChange={(e)=>this.setState({guest:e.target.value})} className="single" id="guest"  label="Guests" variant="outlined" />
                                                     </div>
                                                 </div>
                                                 <Grid container spacing={1}>
@@ -458,7 +467,7 @@ class Single extends Component{
                                                     <Grid item xs={4}>
                                                         <Typography variant="h5" style={{color:'#FF9C07',textAlign:'right',fontWeight:'bold'}}>₦{property.amount*this.state.days}</Typography>
                                                         <Typography variant="caption" style={{cursor:'pointer'}} component="p" onClick={this.handleClickOpen}>view details</Typography>
-                                                        <PopUP open={this.state.open} handleClose={this.handleClose} />
+                                                        <PopUP summary={summary} open={this.state.open} handleClose={this.handleClose} />
                                                     </Grid>
                                                 </Grid>
                                                 <Button onClick={()=>this.onReserved(property.id)} style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="contained" disableElevation>

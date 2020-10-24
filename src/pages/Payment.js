@@ -1,16 +1,30 @@
-import { Button, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
+import { Button, MenuItem, Select, TextField } from '@material-ui/core';
 // import { KeyboardArrowDown } from '@material-ui/icons';
 // import { makeStyles } from '@material-ui/core/styles';
 import { DatePicker } from '@material-ui/pickers';
 import React, { useState } from 'react';
 import './../scss/payment.scss';
-
+import { PaystackConsumer } from 'react-paystack';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const Payment = () => {
-
+    const config = {
+        reference: (new Date()).getTime(),
+        email: "user@example.com",
+        amount: 20000,
+        publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
+    };
+    const componentProps = {
+        ...config,
+        text: 'Paystack',
+        onSuccess: () => {
+            console.log('paid')
+        },
+        onClose: () => null
+    }
     const cvvNumberLimit = 3;
     const cardNumberLimit = 19;
 
-	const [month, setMonth] = useState(''); // month the card will expire
+	const [month, setMonth] = useState(0); // month the card will expire
 	const [selectedDate, handleDateChange] = useState(new Date()); // Year the card expires 
 
     return (
@@ -68,9 +82,11 @@ const Payment = () => {
 				<aside>
 					<div className="card-details">
 						<div className="payment-type">
-							<p className="active">Card</p>
-							<p>Paystack</p>
-							<p>Paypal</p>
+							<button className="active">Card</button>
+                            <PaystackConsumer {...componentProps} >
+                                {({initializePayment}) => <button onClick={() => initializePayment()}>Paystack</button>}
+                            </PaystackConsumer>
+							<button>Paypal</button>
 						</div>
 						{/* <div className="user-card-details"> */}
 						<form>
@@ -91,43 +107,47 @@ const Payment = () => {
 
 							<div className="expire">
 								<div className="date-expire">
-									<p>Expiration Date</p>
 									<div className="picker">
-										<span>
-											<InputLabel id="demo-simple-select-label">MM</InputLabel>
-											<Select
-												labelId="demo-simple-select-label"
-												id="demo-simple-select"
-												value={month}
-												onChange={(e) => {
-													setMonth(e.target.value);
-												}}
-											>
-												<MenuItem value={1}>January</MenuItem>
-												<MenuItem value={2}>February</MenuItem>
-												<MenuItem value={3}>March</MenuItem>
-												<MenuItem value={4}>April</MenuItem>
-												<MenuItem value={5}>May</MenuItem>
-												<MenuItem value={6}>June</MenuItem>
-												<MenuItem value={7}>July</MenuItem>
-												<MenuItem value={8}>August</MenuItem>
-												<MenuItem value={9}>September</MenuItem>
-												<MenuItem value={10}>October</MenuItem>
-												<MenuItem value={11}>November</MenuItem>
-												<MenuItem value={12}>December</MenuItem>
-											</Select>
-										</span>
-										<span>
-											<DatePicker
-												views={["year"]}
-												label="YYYY"
-												value={selectedDate}
+										<div>
+                                            <p>Expiration Date</p>
+                                            <div>
+                                                <Select
+                                                    labelId="card-month-label"
+                                                    id="card-month"
+                                                    value={month}
+                                                    IconComponent={ExpandMoreIcon}
+                                                    
+                                                    onChange={(e) => {
+                                                        setMonth(e.target.value);
+                                                    }}
+                                                >
+                                                    <MenuItem value={0}>MM</MenuItem>
+                                                    <MenuItem value={1}>Jan</MenuItem>
+                                                    <MenuItem value={2}>Feb</MenuItem>
+                                                    <MenuItem value={3}>Mar</MenuItem>
+                                                    <MenuItem value={4}>Apr</MenuItem>
+                                                    <MenuItem value={5}>May</MenuItem>
+                                                    <MenuItem value={6}>Jun</MenuItem>
+                                                    <MenuItem value={7}>Jul</MenuItem>
+                                                    <MenuItem value={8}>Aug</MenuItem>
+                                                    <MenuItem value={9}>Sep</MenuItem>
+                                                    <MenuItem value={10}>Oct</MenuItem>
+                                                    <MenuItem value={11}>Nov</MenuItem>
+                                                    <MenuItem value={12}>Dec</MenuItem>
+                                                </Select>
+                                                <DatePicker
+                                                views={["year"]}
+                                
+                                                value={selectedDate}
+                                                defaultValue="YYYY"
 												onChange={handleDateChange}
 												animateYearScrolling
 											/>
-										</span>
+                                            </div>
+		
+                                        </div>
 										<div>
-											<p>CVV</p>
+                                            <p>CVV</p>
 											<TextField
 												type="password"
 												inputProps={{

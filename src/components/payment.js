@@ -5,7 +5,7 @@ import { Button, MenuItem, Select, TextField } from '@material-ui/core';
 import {Elements,CardNumberElement,CardCvcElement} from '@stripe/react-stripe-js';
 import AppContext from '../state/context';
 import {loadStripe} from '@stripe/stripe-js';
-import emailjs from 'emailjs-com';
+// import emailjs from 'emailjs-com';
 
 const stripePromise = loadStripe('pk_test_51Hg8hoK2fIb9aYwzRl3MOcLEWpgHCGKnqkXzl8emOzsoNn5ii8oMMuKRAyjV1tanLgvOBuRvFFDu0MK9frmDdDuZ00uaY2DWuF');
 

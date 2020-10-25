@@ -16,12 +16,18 @@ const Payment = ({location}) => {
         checkIn:'',
         checkOut:'',
         id:'',
-		accumulate:0,
-		state:'',
-		city:''
+        accumulate:0,
+        state:'',
+        city:0,
+        address:'',
+        image:'',
+        hostEmail:'',
+        firstname:'',
+        lastname:'',
+        phone:''
     })
     useEffect(()=>{
-		if(location.state !== undefined){
+        if(location.state !== undefined){
             setData({
                 name:location.state.name,
                 amount:location.state.amount,
@@ -38,6 +44,12 @@ const Payment = ({location}) => {
                 accumulate:location.state.accumulate,
                 state:location.state.state,
                 city:location.state.city,
+                address:location.state.address,
+                image:location.state.image,
+                hostEmail:location.state.hostEmail,
+                firstname:location.state.firstname,
+                lastname:location.state.lastname,
+                phone:location.state.phone
             })
         }
         else{
@@ -59,6 +71,12 @@ const Payment = ({location}) => {
                     accumulate:pay.accumulate,
                     state:pay.state,
                     city:pay.city,
+                    address:pay.address,
+                    image:pay.image,
+                    hostEmail:pay.hostEmail,
+                    firstname:pay.firstname,
+                    lastname:pay.lastname,
+                    phone:pay.phone
                 })
             }
         }

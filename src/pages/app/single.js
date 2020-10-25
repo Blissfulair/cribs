@@ -189,7 +189,6 @@ class Single extends Component{
     }
 
     onReserved = (para)=>{
-        // this.context.reserveCrib(id, this.state.checkIn,this.state.checkOut)
         window.sessionStorage.setItem('?'+para.id, JSON.stringify(para))
         this.props.history.push({
             pathname:'/app/payment',
@@ -212,7 +211,13 @@ class Single extends Component{
         id:property?property.id:'',
         name:property?property.name:'',
         state:property?property.state:'',
-        city:property?property.city:''
+        city:property?property.city:'',
+        image:property?property.featuredImage:'',
+        firstname:property?property.hostData.firstname:'',
+        lastname:property?property.hostData.lastname:'',
+        phone:property?property.hostData.phone:'',
+        hostEmail:property?property.hostData.email:'',
+        address:property?property.address:'',
     }
     let checkOut = []
     let checkIn = []

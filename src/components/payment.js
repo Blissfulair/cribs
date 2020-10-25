@@ -1,49 +1,41 @@
-import React, {Component} from "react"
+import React, {Component, useContext} from "react"
 import { PaystackConsumer } from 'react-paystack';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Button, MenuItem, Select, TextField } from '@material-ui/core';
 import {Elements,CardNumberElement,CardCvcElement} from '@stripe/react-stripe-js';
 import AppContext from '../state/context';
 import {loadStripe} from '@stripe/stripe-js';
+import {mailReciept} from "../emailTemplates/receipt"
 // import emailjs from 'emailjs-com';
 
 const stripePromise = loadStripe('pk_test_51Hg8hoK2fIb9aYwzRl3MOcLEWpgHCGKnqkXzl8emOzsoNn5ii8oMMuKRAyjV1tanLgvOBuRvFFDu0MK9frmDdDuZ00uaY2DWuF');
 
 const PayStack = ({changeHandler,state,data})=>{
+    const {reserveCrib} = useContext(AppContext)
     const config = {
         reference: (new Date()).getTime(),
         email: state.email,
         amount: (data.total+data.refund)*100,
         publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
     };
+
     const handleSubmit =()=> {
-        fetch('https://us-central1-cribng.cloudfunctions.net/api/send-mail', {
-            method:'post',
-            body:{
-                email:state.email,
-                message:state.message,
-                subject:'Crib NG'
-            }
+        const mailData = {
+            from:'noreply@givitec.com',
+            to:state.email,
+            subject:'Reciept of Payment',
+            senderName:process.env.REACT_APP_NAME,
+            message:{...data, tranxID:config.reference, clientName:state.name}
+        }
+        reserveCrib(data.id, data.checkIn,data.checkOut)
+        .then(()=>{
+            mailReciept(mailData)
+            console.log('reserved')
         })
-        .then(response=>response.json())
-        .then(res=>{
-            console.log(res)
-        })
+        
     
         // sendMail(templateId, {to_name:state.name,message: 'Your transaction ID on Crib NG is '+config.reference, from_name: 'Crib NG', reply_to: state.email})
       }
-    // const sendMail = (templateId, variables)=>{
-    //     console.log('jk')
-    //     emailjs.send(
-    //         'blessing.airehenbuwa', templateId,
-    //         variables,
-    //         'user_th0PQqpzSrtEThhIuOmlD'
-    //         ).then(res => {
-    //           console.log('Email successfully sent!')
-    //         })
-    //         // Handle errors here however you like, or use a React error boundary
-    //         .catch(err => console.error(err))
-    // }
     const componentProps = {
         ...config,
         text: 'Paystack',
@@ -214,7 +206,7 @@ class PaymentCard extends Component{
         this.setState({
             name:this.context.state.userData.firstname+ ' '+this.context.state.userData.lastname,
             phone:this.context.state.userData.phone,
-            email:this.context.state.userData.email
+            email:this.context.state.userData.email,
         })
         let today = new Date();
         today = today.getFullYear();

@@ -214,7 +214,13 @@ class Single extends Component{
         id:property?property.id:'',
         state:property?property.state:'',
         name:property?property.name:'',
-        city:property?property.city:''
+        city:property?property.city:'',
+        image:property?property.featuredImage:'',
+        firstname:property?property.hostData.firstname:'',
+        lastname:property?property.hostData.lastname:'',
+        phone:property?property.hostData.phone:'',
+        hostEmail:property?property.hostData.email:'',
+        address:property?property.address:'',
     }
     let checkOut = []
     let checkIn = []

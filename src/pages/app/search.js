@@ -158,9 +158,9 @@ class Search extends Component{
                                 </Grid>
                                     {
                                         state.results.map((result,index)=>{
-                                            const checkOut = result.checkOut.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
-                                            const checkIn = result.checkIn.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
-                                            if(!checkIn.length>0 && !checkOut.length>0)
+                                            const checkOut = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.context.state.searchQuery.checkOut).toDateString())
+                                            const checkIn = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.context.state.searchQuery.checkIn).toDateString())
+                                            if(checkIn.length<1 && checkOut.length<1)
                                                 return(
                                                     <Searchs content={result}   name={`rating${index}`} key={index}/>
                                                 )

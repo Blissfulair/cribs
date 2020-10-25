@@ -97,6 +97,7 @@ section{
             width: 90%;
             margin: auto;
             margin-top: 3.5rem;
+            min-height: 352px;
         }
 
         .payment-type {
@@ -123,10 +124,28 @@ section{
 
         form{
             margin-top: 2.2rem;
-
+            .cardinput{
+                border-bottom:2px solid #fff;
+                padding-bottom: 5px;
+                padding-top: 6px;
+            }
+            .cvcinput{
+                border-bottom:2px solid #fff;
+                padding-top: 7px;
+                padding-bottom: 5px;
+            }
+            .card-error{
+                border-bottom:2px solid red;
+            }
+            .card-success{
+                border-bottom:2px solid green;
+            }
             .expire{
                 display: flex;
                 justify-content: center;
+                .date-expire{
+                    width: 100%;
+                }
             }
 
             .picker{
@@ -160,6 +179,12 @@ section{
             }
             .card-name{
                 margin-bottom: 1rem;
+                input{
+                    color: #fff;
+                    font-size: 14px;
+                    padding-bottom: 2px;
+                    padding-top: 12px;
+                }
             }  
 
             .MuiInput-underline:after{

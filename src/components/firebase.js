@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
+import {getDates} from '../helpers/helpers'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -24,8 +25,13 @@ const firebaseConfig = {
             USERS:'users',
             TRANSACTIONS:'transactions'
         }
+        // Date.prototype.addDays = function(days) {
+        //     let date = new Date(this.valueOf());
+        //     date.setDate(date.getDate() + days);
+        //     return date;
+        // }
     }
-
+    
     register=async(data)=>{
          const user =  await this.auth.createUserWithEmailAndPassword(data.email,data.password)
          
@@ -155,15 +161,13 @@ const firebaseConfig = {
     }
 
     reserveCrib = async(id, checkIn, checkOut)=>{
-       let start = []
-       let finish =[]
+       let bookedDates = []
+       const dates = getDates(checkIn, checkOut)
        const data= await (await this.firestore.collection(this.tables.PROPERTIES).doc(id).get()).data()
-       start.push(...data.checkIn, new Date(checkIn))
-       finish.push(...data.checkOut, new Date(checkOut))
+       bookedDates.push(...data.bookedDates, ...dates)
         return await this.firestore.collection(this.tables.PROPERTIES).doc(id)
         .update({
-            checkOut:finish,
-            checkIn:start
+            bookedDates:bookedDates
         })
 
     }

@@ -1,60 +1,96 @@
-import { Button, MenuItem, Select, TextField } from '@material-ui/core';
-// import { KeyboardArrowDown } from '@material-ui/icons';
-// import { makeStyles } from '@material-ui/core/styles';
-import { DatePicker } from '@material-ui/pickers';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './../../scss/payment.scss';
-import { PaystackConsumer } from 'react-paystack';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {withRouter} from "react-router-dom"
+import PaymentCard from '../../components/payment';
 
-const Payment = () => {
+const Payment = ({location}) => {
 
-    const config = {
-        reference: (new Date()).getTime(),
-        email: "user@example.com",
-        amount: 20000,
-        publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
-    };
-    const componentProps = {
-        ...config,
-        text: 'Paystack',
-        onSuccess: () => {
-            console.log('paid')
-        },
-        onClose: () => null
-    }
-    const cvvNumberLimit = 3;
-    const cardNumberLimit = 19;
-
-	const [month, setMonth] = useState(0); // month the card will expire
-	const [selectedDate, handleDateChange] = useState(new Date()); // Year the card expires 
-
+    const [data, setData] =useState({
+        amount:0,
+        name:'',
+        nights:1,
+        ownerFee:0,
+        systemFee:0,
+        tax:0,
+        total:0,
+        refund:0,
+        guest:1,
+        checkIn:'',
+        checkOut:'',
+        id:'',
+        accumulate:0,
+        state:'',
+        city:0
+    })
+    useEffect(()=>{
+        if(location.state !== undefined){
+            setData({
+                name:location.state.name,
+                amount:location.state.amount,
+                nights:location.state.nights,
+                ownerFee:location.state.ownerFee,
+                systemFee:location.state.systemFee,
+                tax:location.state.tax,
+                total:location.state.total,
+                refund:location.state.refund,
+                guest:location.state.guest,
+                checkIn:location.state.checkIn,
+                checkOut:location.state.checkOut,
+                id:location.state.id,
+                accumulate:location.state.accumulate,
+                state:location.state.state,
+                city:location.state.city,
+            })
+        }
+        else{
+           let pay = JSON.parse(window.sessionStorage.getItem(location.search))
+            if(pay){
+                setData({
+                    name:pay.name,
+                    amount:pay.amount,
+                    nights:pay.nights,
+                    ownerFee:pay.ownerFee,
+                    systemFee:pay.systemFee,
+                    tax:pay.tax,
+                    total:pay.total,
+                    refund:pay.refund,
+                    guest:pay.guest,
+                    checkIn:pay.checkIn,
+                    checkOut:pay.checkOut,
+                    id:pay.id,
+                    accumulate:pay.accumulate,
+                    state:pay.state,
+                    city:pay.city,
+                })
+            }
+        }
+    },[location])
     return (
 			<section>
 				<div className="house-payment-details">
 					<div className="location">
 						<h1>Confirm and pay</h1>
-						<h2>Ikot, Calabar, Ng</h2>
-						<h3>Mary's Garden</h3>
-						<small>2 Guests</small>
+						<h2 style={{textTransform:'capitalize'}}>{`${data.city}, ${data.state}, Ng`}</h2>
+						<h3 style={{fontSize:15,fontWeight:600}}>{data.name}</h3>
+						<small style={{ fontWeight: 600 }}>{`${data.guest} ${Number(data.guest) === 1?'Guest':'Guests'}`} </small>
 					</div>
 
 					<div className="charges">
 						<div className="amounts">
-							<div>200 x 13 nights</div>
-							<div>100,000</div>
+							<div>{data.amount} x {`${data.nights} ${data.nights===1?'night':'nights'}`}</div>
+							<div>{data.accumulate}</div>
 						</div>
 						<div className="amounts">
 							<div>Owner Fees{/*  <KeyboardArrowDown /> */}</div>
-							<div>100,000</div>
+							<div>{data.ownerFee}</div>
 						</div>
 						<div className="amounts">
 							<div>Service Fees</div>
-							<div>100,000</div>
+							<div>{data.systemFee}</div>
 						</div>
 						<div className="amounts">
 							<div>Tax</div>
-							<div>100,000</div>
+							<div>{data.tax}</div>
 						</div>
 					</div>
 
@@ -62,11 +98,11 @@ const Payment = () => {
 
 					<div className="amounts">
 						<div style={{ fontWeight: 900 }}>Total</div>
-						<div>100,000</div>
+						<div>{data.total}</div>
 					</div>
 					<div className="amounts">
 						<div style={{ fontWeight: 900 }}>Refundable Damage Deposit</div>
-						<div>100,000</div>
+						<div>{data.refund}</div>
 					</div>
 
 					<p className="total-left" style={{ paddingTop: ".8rem" }}>
@@ -76,108 +112,16 @@ const Payment = () => {
 						className="total-left"
 						style={{ fontWeight: 900, fontSize: "1rem" }}
 					>
-						100,000
+						₦{data.total+data.refund}
 					</p>
 				</div>
 				{/* end of house-payment-details*/}
 
 				<aside>
-					<div className="card-details">
-						<div className="payment-type">
-							<button className="active">Card</button>
-                            <PaystackConsumer {...componentProps} >
-                                {({initializePayment}) => <button onClick={() => initializePayment()}>Paystack</button>}
-                            </PaystackConsumer>
-							<button>Paypal</button>
-						</div>
-						{/* <div className="user-card-details"> */}
-						<form>
-							<div className="card-name">
-								<p>Name on Card</p>
-								<TextField placeholder="Richard Belfast" fullWidth />
-							</div>
-							<div className="card-name">
-								<p>Card Number</p>
-								<TextField
-									type="password"
-									fullWidth
-									inputProps={{
-										maxLength: cardNumberLimit,
-									}}
-								/>
-							</div>
-
-							<div className="expire">
-								<div className="date-expire">
-									<div className="picker">
-										<div>
-                                            <p>Expiration Date</p>
-                                            <div>
-                                                <Select
-                                                    labelId="card-month-label"
-                                                    id="card-month"
-                                                    value={month}
-                                                    IconComponent={ExpandMoreIcon}
-                                                    
-                                                    onChange={(e) => {
-                                                        setMonth(e.target.value);
-                                                    }}
-                                                >
-                                                    <MenuItem value={0}>MM</MenuItem>
-                                                    <MenuItem value={1}>Jan</MenuItem>
-                                                    <MenuItem value={2}>Feb</MenuItem>
-                                                    <MenuItem value={3}>Mar</MenuItem>
-                                                    <MenuItem value={4}>Apr</MenuItem>
-                                                    <MenuItem value={5}>May</MenuItem>
-                                                    <MenuItem value={6}>Jun</MenuItem>
-                                                    <MenuItem value={7}>Jul</MenuItem>
-                                                    <MenuItem value={8}>Aug</MenuItem>
-                                                    <MenuItem value={9}>Sep</MenuItem>
-                                                    <MenuItem value={10}>Oct</MenuItem>
-                                                    <MenuItem value={11}>Nov</MenuItem>
-                                                    <MenuItem value={12}>Dec</MenuItem>
-                                                </Select>
-                                                <DatePicker
-                                                views={["year"]}
-                                
-                                                value={selectedDate}
-                                                defaultValue="YYYY"
-												onChange={handleDateChange}
-												animateYearScrolling
-											/>
-                                            </div>
-		
-                                        </div>
-										<div>
-                                            <p>CVV</p>
-											<TextField
-												type="password"
-												inputProps={{
-													maxLength: cvvNumberLimit,
-												}}
-											/>
-										</div>
-									</div>
-								</div>
-								{/* <div className="cvv">
-									<p>CVV</p>
-									<TextField
-										type="password"
-										inputProps={{
-											maxLength: cvvNumberLimit,
-										}}
-									/>
-								</div> */}
-							</div>
-
-							<Button>Pay</Button>
-						</form>
-
-						{/* </div> */}
-					</div>
+                    <PaymentCard data={data}/>
 				</aside>
 			</section>
 		);
 }
 
-export default Payment;
+export default withRouter(Payment);

@@ -36,6 +36,8 @@ import './../scss/single.scss'
 import AppContext from "../state/context";
 import Splash from "../components/splash";
 import PopUP from "../components/popup";
+import { getDates } from "../helpers/helpers";
+import CancelIcon from '@material-ui/icons/CancelOutlined';
 const styles = theme =>({
     container:{
         paddingTop:140
@@ -166,13 +168,8 @@ class Single extends Component{
       this.setState({open:false});
     };
     setDays = ()=>{
-        let time = this.state.checkOut.getTime()-this.state.checkIn.getTime()
-        const days = time/(1000*3600*24)
-        if(days>=0)
-        this.setState({days:days+1})
-        else{
-            this.setState({days:1})  
-        }
+        const dates = getDates(this.state.checkIn,this.state.checkOut)
+        this.setState({days:dates.length})
     }
     componentDidMount(){
         const id = this.props.location.pathname.split('crib')[1]
@@ -193,9 +190,14 @@ class Single extends Component{
         this.propert=null
     }
 
-    onReserved = (id)=>{
-        this.context.reserveCrib(id, this.state.checkIn,this.state.checkOut)
-        this.props.history.push('/payment')
+    onReserved = (para)=>{
+        // this.context.reserveCrib(id, this.state.checkIn,this.state.checkOut)
+        window.sessionStorage.setItem('?'+para.id, JSON.stringify(para))
+        this.props.history.push({
+            pathname:'/payment',
+            search:para.id,
+            state:para
+        })
     }
     render(){
 
@@ -209,13 +211,16 @@ class Single extends Component{
         nights:this.state.days,
         guest:this.state.guest,
         amount:property?property.amount:0,
-        id:property?property.id:''
+        id:property?property.id:'',
+        state:property?property.state:'',
+        name:property?property.name:'',
+        city:property?property.city:''
     }
     let checkOut = []
     let checkIn = []
     if(property){
-         checkOut = property.checkOut.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
-         checkIn = property.checkIn.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
+        checkOut = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
+        checkIn = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkIn).toDateString())
     }
     if(!Boolean(property))
     return <Splash/>
@@ -425,8 +430,10 @@ class Single extends Component{
                                                 </Grid>
                                             </Grid>
                                             {
-                                                (!checkIn.length>0 || !checkOut.length>0)&&
-                                                <Typography style={{display:'flex', marginBottom:6}} variant="subtitle2" component="p" >Dates Are Available to be Reserved &nbsp;<CheckCircleOutlinedIcon fontSize="small" htmlColor="#0BA4E0"/></Typography>
+                                                (checkIn.length<1 && checkOut.length<1)?
+                                                <Typography style={{display:'flex', marginBottom:6, color:'#4caf50'}} variant="subtitle2" component="p" >Dates Are Available to be Reserved &nbsp;<CheckCircleOutlinedIcon fontSize="small" htmlColor="#0BA4E0"/></Typography>
+                                                :
+                                                <Typography style={{display:'flex', marginBottom:6, color:'#f44336'}} variant="subtitle2" component="p" >Dates Are Already Reserved, Try Other Dates &nbsp;<CancelIcon fontSize="small" htmlColor="#f44336"/></Typography>
                                             }
                                             <form autoComplete="off">
                                                <Grid container spacing={1}>
@@ -441,7 +448,7 @@ class Single extends Component{
                                                             label="Check-In"
                                                             format="dd/MM/yyyy"
                                                             value={this.state.checkIn}
-                                                            onChange={(e)=>{this.setState({checkIn:e}); this.setDays()}}
+                                                            onChange={(e)=>{this.setState({checkIn:e},()=>{this.setDays()})}}
                                                             />
                                                         </div>
                                                    </Grid>
@@ -456,7 +463,7 @@ class Single extends Component{
                                                             label="Check-Out"
                                                             format="dd/MM/yyyy"
                                                             value={this.state.checkOut}
-                                                            onChange={(e)=>{this.setState({checkOut:e});this.setDays()}}
+                                                            onChange={(e)=>{this.setState({checkOut:e}, ()=>{this.setDays()})}}
                                                             />
                                                         </div>
                                                    </Grid>

@@ -18,10 +18,13 @@ const PopUP = ({open, handleClose, summary,onReserved})=>{
         const accumulate = Number(summary.amount)*summary.nights;
         const systemFee = 0.10*accumulate
         const tax = 0.004*accumulate
-        const total = accumulate +systemFee+tax;
+        const ownerFee = 500;
+        const total = accumulate +systemFee+tax+ownerFee;
         const refund = 0.15*accumulate
+        
     return(
         <Dialog
+        id="popup"
         open={open}
         TransitionComponent={Transition}
         keepMounted
@@ -55,7 +58,7 @@ const PopUP = ({open, handleClose, summary,onReserved})=>{
                 <tbody>
                     <tr>
                         <td>
-                            {summary.amount} x {summary.nights} nights
+                            {summary.amount} x {`${summary.nights} ${summary.nights ===1?'night':'nights'}`}
                         </td>
                         <td>
                             {accumulate}
@@ -66,7 +69,7 @@ const PopUP = ({open, handleClose, summary,onReserved})=>{
                         Owner Fees
                         </td>
                         <td>
-                            500
+                            {ownerFee}
                         </td>
                     </tr>
                     <tr>
@@ -111,12 +114,12 @@ const PopUP = ({open, handleClose, summary,onReserved})=>{
                     </tr>
                 </tbody>
             </table>
-            <p>You are to pay <span>{total+refund}</span></p>
+            <p>You are to pay <span>₦{total+refund}</span></p>
             <p className="cancel-policy">*Cancellation Policy</p>
             <p>100% refund for cancellation requested by {date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear()} at 11:59am(property local time). 50% refund for cancellations requested by {date.getDate()+3+'/'+(date.getMonth()+1)+'/'+date.getFullYear()} at 11:59 (properties local time).</p>
             <div className="summary-btn">
                 <button onClick={()=>handleClose()}>Go Back</button>
-                <button onClick={()=>onReserved(summary.id)}>Make Payment</button>
+                <button onClick={()=>onReserved({...summary,ownerFee:ownerFee,systemFee:systemFee,total:total,tax:tax, refund:refund, accumulate:accumulate})}>Make Payment</button>
             </div>
         </DialogContent>
     </Dialog>

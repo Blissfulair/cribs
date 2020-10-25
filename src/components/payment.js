@@ -5,6 +5,7 @@ import { Button, MenuItem, Select, TextField } from '@material-ui/core';
 import {Elements,CardNumberElement,CardCvcElement} from '@stripe/react-stripe-js';
 import AppContext from '../state/context';
 import {loadStripe} from '@stripe/stripe-js';
+import emailjs from 'emailjs-com';
 
 const stripePromise = loadStripe('pk_test_51Hg8hoK2fIb9aYwzRl3MOcLEWpgHCGKnqkXzl8emOzsoNn5ii8oMMuKRAyjV1tanLgvOBuRvFFDu0MK9frmDdDuZ00uaY2DWuF');
 
@@ -16,20 +17,33 @@ const PayStack = ({changeHandler,state,data})=>{
         publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
     };
     const handleSubmit =()=> {
-        const templateId = 'template_3x8ftwg';
+        fetch('https://us-central1-cribng.cloudfunctions.net/api/send-mail', {
+            method:'post',
+            body:{
+                email:state.email,
+                message:state.message,
+                subject:'Crib NG'
+            }
+        })
+        .then(response=>response.json())
+        .then(res=>{
+            console.log(res)
+        })
     
-        sendMail(templateId, {message_html: 'Your transaction ID on Crib NG is '+config.reference, from_name: state.name, reply_to: state.email})
+        // sendMail(templateId, {to_name:state.name,message: 'Your transaction ID on Crib NG is '+config.reference, from_name: 'Crib NG', reply_to: state.email})
       }
-    const sendMail = (templateId, variables)=>{
-        window.emailjs.send(
-            'gmail', templateId,
-            variables
-            ).then(res => {
-              console.log('Email successfully sent!')
-            })
-            // Handle errors here however you like, or use a React error boundary
-            .catch(err => console.error('Oh w'))
-    }
+    // const sendMail = (templateId, variables)=>{
+    //     console.log('jk')
+    //     emailjs.send(
+    //         'blessing.airehenbuwa', templateId,
+    //         variables,
+    //         'user_th0PQqpzSrtEThhIuOmlD'
+    //         ).then(res => {
+    //           console.log('Email successfully sent!')
+    //         })
+    //         // Handle errors here however you like, or use a React error boundary
+    //         .catch(err => console.error(err))
+    // }
     const componentProps = {
         ...config,
         text: 'Paystack',

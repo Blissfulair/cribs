@@ -6,9 +6,96 @@ import "./profile.css"
 // import "./edit-profile.css"
 import Backend from "./layout"
 import AppContext from "../../state/context";
-import { NativeSelect, Button,Snackbar, Slide } from "@material-ui/core";
+import { NativeSelect, Button,Snackbar, Slide, Grid } from "@material-ui/core";
 import Activity from "../../components/activity"
 import {Alert} from "@material-ui/lab"
+
+const EditProfileDom = ({state, handleCloseSnackBar, context, changeHandler,onSubmit,handleClick})=>{
+    return(
+        <>
+            <Activity loading={state.loading} />
+
+            <div style={{paddingTop:80}} className="inbox">
+                <div className="inbox-head dashboard-mt">
+                    <div className="inbox-title">
+                        <h4>Profile</h4>
+                    </div>
+                </div>
+
+                <div className="profile-edit">
+                    <div className="profile-details">
+                        <form onSubmit={event=>{onSubmit(event)}}>
+                            {
+                            state.message&&
+                            <Snackbar
+                            open={state.open}
+                            onClose={handleCloseSnackBar}
+                            TransitionComponent={state.transition}
+                            anchorOrigin={{vertical:'top',horizontal:'right'}}
+                            autoHideDuration={5000}
+                            key={state.transition ? state.transition.name : ''}
+                            >
+                                <Alert variant="filled" severity={state.success?"success":"error"}>{state.message}</Alert>
+                            </Snackbar>
+                        }
+                            <table>
+                                <tbody>
+                                    <tr>
+                                    <td>Address:</td>
+                                        <td><input onChange={(e)=>changeHandler(e)} name="address" defaultValue={context.state.userData.address?context.state.userData.address:''} /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone:</td>
+                                        <td>
+                                            <img alt="flag" src={`https://www.countryflags.io/${context.state.env?context.state.env.country_code.toLowerCase():'us'}/shiny/32.png`}/>
+                                            <input type="text" onChange={(e)=>changeHandler(e)} name="phone" defaultValue={context.state.userData.phone?context.state.userData.phone:context.state.env.country_calling_code} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Facebook:</td>
+                                        <td>
+                                            <input type="text" onChange={(e)=>changeHandler(e)} name="facebook" defaultValue={context.state.userData.facebook?context.state.userData.facebook:''} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>LinkedIn:</td>
+                                        <td>
+                                            <input type="text" onChange={(e)=>changeHandler(e)} name="linkedin" defaultValue={context.state.userData.linkedin?context.state.userData.linkedin:''} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date of Birth:</td>
+                                        <td>
+                                            <input type="text" onChange={(e)=>changeHandler(e)} name="dob" defaultValue={context.state.userData.dob?context.state.userData.dob:''} />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gender:</td>
+                                        <td>
+                                            <NativeSelect defaultValue={context.state.userData.gender?context.state.userData.gender:''} onBlur={changeHandler} name="gender" id="">
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </NativeSelect>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bio:</td>
+                                        <td>
+                                            <textarea onChange={(e)=>changeHandler(e)} defaultValue={context.state.userData.bio?context.state.userData.bio:''} name="bio"  />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div className="edit-btn">
+                                <Button onClick={handleClick(TransitionUp)} variant="contained" type="submit" style={{background:'#00A8C8', color:'#fff', textTransform:'capitalize'}}>Save</Button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </>
+    )
+}
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
@@ -96,88 +183,20 @@ class EditProfile extends React.Component{
     render(){
         return (
             <>
-                <Backend>
-                    <Activity loading={this.state.loading} />
-
-                    <div style={{paddingTop:80}} className="inbox">
-                        <div className="inbox-head dashboard-mt">
-                            <div className="inbox-title">
-                                <h4>Profile</h4>
-                            </div>
-                        </div>
-
-                        <div className="profile-edit">
-                            <div className="profile-details">
-                                <form onSubmit={event=>{this.onSubmit(event)}}>
-                                    {
-                                    this.state.message&&
-                                    <Snackbar
-                                    open={this.state.open}
-                                    onClose={this.handleCloseSnackBar}
-                                    TransitionComponent={this.state.transition}
-                                    anchorOrigin={{vertical:'top',horizontal:'right'}}
-                                    autoHideDuration={5000}
-                                    key={this.state.transition ? this.state.transition.name : ''}
-                                    >
-                                        <Alert variant="filled" severity={this.state.success?"success":"error"}>{this.state.message}</Alert>
-                                    </Snackbar>
-                                }
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                            <td>Address:</td>
-                                                <td><input onChange={this.changeHandler} name="address" defaultValue={this.context.state.userData.address?this.context.state.userData.address:''} /></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Phone:</td>
-                                                <td>
-                                                    <img alt="flag" src={`https://www.countryflags.io/${this.context.state.env?this.context.state.env.country_code.toLowerCase():'us'}/shiny/32.png`}/>
-                                                    <input type="text" onChange={this.changeHandler} name="phone" defaultValue={this.context.state.userData.phone?this.context.state.userData.phone:this.context.state.env.country_calling_code} />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Facebook:</td>
-                                                <td>
-                                                    <input type="text" onChange={this.changeHandler} name="facebook" defaultValue={this.context.state.userData.facebook?this.context.state.userData.facebook:''} />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>LinkedIn:</td>
-                                                <td>
-                                                    <input type="text" onChange={this.changeHandler} name="linkedin" defaultValue={this.context.state.userData.linkedin?this.context.state.userData.linkedin:''} />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Date of Birth:</td>
-                                                <td>
-                                                    <input type="text" onChange={this.changeHandler} name="dob" defaultValue={this.context.state.userData.dob?this.context.state.userData.dob:''} />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Gender:</td>
-                                                <td>
-                                                    <NativeSelect defaultValue={this.context.state.userData.gender?this.context.state.userData.gender:''} onBlur={this.changeHandler} name="gender" id="">
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                    </NativeSelect>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Bio:</td>
-                                                <td>
-                                                    <textarea onChange={this.changeHandler} defaultValue={this.context.state.userData.bio?this.context.state.userData.bio:''} name="bio"  />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div className="edit-btn">
-                                        <Button onClick={this.handleClick(TransitionUp)} variant="contained" type="submit" style={{background:'#00A8C8', color:'#fff', textTransform:'capitalize'}}>Save</Button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </Backend>
+                {
+                    this.context.state.dashboard?
+                    <Grid container justify="center">
+                        <Grid item md={11}>
+                            <Grid container>
+                                <EditProfileDom state={this.state} onSubmit={this.onSubmit} context={this.context} handleClick={this.handleClick} changeHandler={this.changeHandler} handleCloseSnackBar={this.handleCloseSnackBar} />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    :
+                    <Backend>
+                        <EditProfileDom state={this.state} onSubmit={this.onSubmit} context={this.context} handleClick={this.handleClick} changeHandler={this.changeHandler} handleCloseSnackBar={this.handleCloseSnackBar} />
+                    </Backend>
+                }
             </>
         )
     }

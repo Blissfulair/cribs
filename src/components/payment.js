@@ -43,6 +43,7 @@ const PayStack = withRouter(({changeHandler,state,data,history})=>{
      
             mailReciept(mailData)
             .then(()=>{
+                window.sessionStorage.removeItem('@py')
                 setLoading(false)
                 if(context.state.userData)
                 history.push('/app/home')
@@ -225,11 +226,13 @@ class PaymentCard extends Component{
     }
 
     componentDidMount(){
-        this.setState({
-            name:this.context.state.userData.firstname+ ' '+this.context.state.userData.lastname,
-            phone:this.context.state.userData.phone,
-            email:this.context.state.userData.email,
-        })
+        if(this.context.state.userData){
+            this.setState({
+                name:this.context.state.userData.firstname+ ' '+this.context.state.userData.lastname,
+                phone:this.context.state.userData.phone,
+                email:this.context.state.userData.email,
+            })
+        }
         let today = new Date();
         today = today.getFullYear();
         const years = []

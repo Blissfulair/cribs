@@ -6,40 +6,55 @@ import '../../scss/dashboard_calendar.scss';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { Button } from '@material-ui/core';
-import Calendar from 'react-calendar';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import BookingCalendar from '../../react-calender/src/BookingCalendar';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {withRouter} from 'react-router-dom'
 
 
-import 'react-calendar/dist/Calendar.css';
+// import 'react-calendar/dist/Calendar.css';
 import AppContext from '../../state/context';
 
 
 
 const DashboardCalendar = ({history}) => {
 
-    const {state} = useContext(AppContext)
+    const {state,setSearch} = useContext(AppContext)
 
 
     const [available, setAvailable] = useState(false);
     const [property, setProperty] =useState(null)
+    const [dates, setDates]=useState([new Date()])
+    const [guest, setGuest]=useState(1)
+    const [location, setLocation]=useState('')
     const date = new Date();
     const [bookingDate, setBookingDate] = useState(new Date(date.getFullYear(), date.getMonth(), date.getDate()));
     const bookNow = ()=>{
+        const data = {
+            checkIn:bookingDate,
+            checkOut:bookingDate,
+            guest:guest,
+            location:location
+
+        }
+        setSearch(data)
         history.push(`/app/crib/${property.id}`)
     }
     const handlePropertyChange = (event) => {
         if(event.target.value === ''){
             setAvailable(false)
             setProperty(null)
+
         }
         else{
             const proper = JSON.parse(event.target.value)
             setProperty(proper)
+            setLocation(proper.state)
+            const dates = []
+            proper.bookedDates.forEach(date=>dates.push(new Date(date.seconds*1000)))
+            dates.sort((a,b)=>new Date(b)-new Date(a))
+            setDates([...new Set(dates)])
             if(proper.checkIn.length>0)
             proper.checkIn.filter(check=>{
                 if(new Date(check.seconds*1000).toDateString() === bookingDate.toDateString())
@@ -51,10 +66,31 @@ const DashboardCalendar = ({history}) => {
              setAvailable(true)
         }
 
+
     };
 
-    const handleCalendar = () => {
-        setBookingDate(bookingDate);
+    const handleCalendar = (e) => {
+        const date = new Date(e)
+        const bookDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+        if(property){
+            setLocation(property.state)
+            const dates = []
+            property.bookedDates.forEach(date=>dates.push(new Date(date.seconds*1000)))
+            dates.sort((a,b)=>new Date(b)-new Date(a))
+            setDates([...new Set(dates)])
+            if(property.checkIn.length>0)
+            property.checkIn.filter(check=>{
+                if(new Date(check.seconds*1000).toDateString() === bookingDate.toDateString())
+                return setAvailable(false)
+                else
+                return setAvailable(true)
+            })
+            else
+            setAvailable(true)
+        }
+ 
+         
+        setBookingDate(bookDate);
     }
 
     return (
@@ -113,7 +149,7 @@ const DashboardCalendar = ({history}) => {
                                     name: 'room'
                                 }}
                                 >
-                                <option value="0">0</option>
+                                <option value={0}>0</option>
                                 <option value={1}>1</option>
                                 <option value={2}>2</option>
                                 <option value={3}>3</option>
@@ -130,13 +166,13 @@ const DashboardCalendar = ({history}) => {
                                  style={{height:'1.6rem'}}
                                 className='input'
                                 value={property?property.guest:''}
-                                // onChange={handleChange}
+                                onChange={setGuest}
                                 IconComponent={ExpandMoreIcon}
                                 inputProps={{
                                     name: 'guest'
                                 }}
                                 >
-                                <option value="0">0</option>
+                                <option value={0}>0</option>
                                 <option value={1}>1</option>
                                 <option value={2}>2</option>
                                 <option value={3}>3</option>
@@ -161,13 +197,13 @@ const DashboardCalendar = ({history}) => {
                 </div>
 
                 <div className="actual__calendar">
-                    <Calendar
-                        onChange={handleCalendar}
-                        value={[new Date(2020, 9, 11), new Date(2020, 9, 9)]}
-                        nextLabel={<ArrowForwardIcon style={{fontSize:15}}/>}
-                        prevLabel={<ArrowBackIcon style={{fontSize:15}}/>}
-                        defaultValue={[new Date(2020, 9, 11), new Date(2020, 9, 9)]
-                        }
+                    <BookingCalendar
+                        // onChange={handleCalendar}
+                        bookings={[...dates]}
+                        onChangeValue={handleCalendar}
+                        // nextLabel={<ArrowForwardIcon style={{fontSize:15}}/>}
+                        // prevLabel={<ArrowBackIcon style={{fontSize:15}}/>}
+                        // defaultValue={[...dates]}
                         // activeStartDate={bookingDate}
 
                     />

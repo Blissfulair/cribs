@@ -38,6 +38,7 @@ import Splash from "../components/splash";
 import PopUP from "../components/popup";
 import { getDates } from "../helpers/helpers";
 import CancelIcon from '@material-ui/icons/CancelOutlined';
+import Share from "../components/share";
 const styles = theme =>({
     container:{
         paddingTop:140
@@ -140,18 +141,19 @@ const BorderLinearProgress = withStyles((theme) => ({
 
 
 
-class Single extends Component{
+  class Single extends Component{
     static contextType = AppContext
     constructor(props){
         super(props)
         this.state={
             value:0,
-            open:false,
             property:null,
             checkIn: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             days:1,
-            guest:1,
+            open:false,
+            triger:false,
+            guest:1
         }
         this.propert = null
     }
@@ -167,6 +169,12 @@ class Single extends Component{
     handleClose = () => {
       this.setState({open:false});
     };
+    shareOpen = () => {
+        this.setState({triger:true});
+      };
+    shareClose = () => {
+        this.setState({triger:false});
+      };
     setDays = ()=>{
         const dates = getDates(this.state.checkIn,this.state.checkOut)
         this.setState({days:dates.length})
@@ -191,7 +199,6 @@ class Single extends Component{
     }
 
     onReserved = (para)=>{
-        // this.context.reserveCrib(id, this.state.checkIn,this.state.checkOut)
         window.sessionStorage.setItem('?'+para.id, JSON.stringify(para))
         this.props.history.push({
             pathname:'/payment',
@@ -199,7 +206,7 @@ class Single extends Component{
             state:para
         })
     }
-    render(){
+    render(){   
 
     const data = [1,3,4,5]
     const {classes} = this.props
@@ -210,10 +217,10 @@ class Single extends Component{
         checkOut:this.state.checkOut,
         nights:this.state.days,
         guest:this.state.guest,
-        amount:property?property.amount:0,
+        amount:property?Number(property.amount):0,
         id:property?property.id:'',
-        state:property?property.state:'',
         name:property?property.name:'',
+        state:property?property.state:'',
         city:property?property.city:'',
         image:property?property.featuredImage:'',
         firstname:property?property.hostData.firstname:'',
@@ -225,8 +232,8 @@ class Single extends Component{
     let checkOut = []
     let checkIn = []
     if(property){
-        checkOut = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
-        checkIn = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkIn).toDateString())
+         checkOut = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
+         checkIn = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkIn).toDateString())
     }
     if(!Boolean(property))
     return <Splash/>
@@ -427,10 +434,12 @@ class Single extends Component{
                                                     </Grid>
                                                     <Grid container spacing={1} alignItems="center">
                                                         <Grid item xs={6}>
-                                                            <OpenInBrowserSharpIcon  style={{fontSize:32}} htmlColor="#000000"/>
+                                                            <button style={{background:'transparent', border:'none'}} onClick={this.shareOpen}>
+                                                                <OpenInBrowserSharpIcon  style={{fontSize:32}} htmlColor="#000000"/>
+                                                            </button>
                                                         </Grid>
                                                         <Grid item xs={6}>
-                                                            <Typography>Share</Typography>
+                                                            <Typography >Share</Typography>
                                                         </Grid>
                                                     </Grid>
                                                 </Grid>
@@ -489,13 +498,25 @@ class Single extends Component{
                                                     </Grid>
                                                     <Grid item xs={4}>
                                                         <Typography variant="h5" style={{color:'#FF9C07',textAlign:'right',fontWeight:'bold'}}>₦{property.amount*this.state.days}</Typography>
-                                                        <Typography variant="caption" style={{cursor:'pointer'}} component="p" onClick={this.handleClickOpen}>view details</Typography>
+                                                        {
+                                                            (checkIn.length<1 && checkOut.length<1)&&
+                                                            <Typography variant="caption" style={{cursor:'pointer'}} component="p" onClick={this.handleClickOpen}>view details</Typography>
+                                                        }
                                                         <PopUP onReserved={this.onReserved} summary={summary} open={this.state.open} handleClose={this.handleClose} />
+                                                        <Share text={property.name+'-'+property.description} url={'http://localhost:3000/crib/'+property.id.replace('/','')} triger={this.state.triger} close={this.shareClose} />
                                                     </Grid>
                                                 </Grid>
-                                                <Button onClick={this.handleClickOpen} style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="contained" disableElevation>
-                                                    Reserve Now
-                                                </Button>
+                                                {
+                                                    (checkIn.length<1 && checkOut.length<1)?
+                                                    <Button  onClick={this.handleClickOpen} style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="contained" disableElevation>
+                                                        Reserve Now
+                                                    </Button>
+                                                    :
+                                                    <Button style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="disabled"  disableElevation>
+                                                        Unavailable 
+                                                    </Button>
+                                                }
+
                                                 <Divider style={{marginTop:15, height:3, backgroundColor:'#DCDCDC'}}/>
                                                 <Typography variant="h6" style={{textAlign:'center', color:'#000000'}} >Speak to the Host</Typography>
                                                 <Grid container style={{marginTop:10,marginBottom:5}}>
@@ -519,7 +540,11 @@ class Single extends Component{
                                             <MapContainer/>
                                         </div>
                                         <Grid container spacing={3} justify="center">
+
                                             <Grid item xs={5}>
+                                                {
+                                                property.reviews.length>0&&
+                                                <>
                                                 <div style={{marginTop:570,marginBottom:26}}>
                                                     <Typography className={classes.progressBarTitle}>Excellent</Typography>
                                                     <BorderLinearProgress variant="determinate" value={30}/>
@@ -544,15 +569,20 @@ class Single extends Component{
                                                         <Typography style={{fontSize:12,fontWeight:500, marginBottom:17}} variant="subtitle1" component="p">Property Condition</Typography>
                                                     </Grid>
                                                 </Grid>
+                                                </>
+                                                }
                                             </Grid>
+
                                             <Grid item xs={6}>
                                                <Grid container style={{marginTop:80}}>
                                                    <Grid item md={10}>
                                                     {
-                                                        
-                                                        data.map((item, i)=>{
+                                                        property.reviews.length>0?
+                                                        property.reviews.map((item, i)=>{
                                                             return <Review number={i} data={data} key={i}/>
                                                         })
+                                                        :
+                                                        <Typography>No review for this crib yet!</Typography>
                                                     }
                                                    </Grid>
                                                </Grid>

@@ -31,6 +31,7 @@ const firebaseConfig = {
         //     date.setDate(date.getDate() + days);
         //     return date;
         // }
+
     }
     
     register=async(data)=>{
@@ -105,8 +106,6 @@ const firebaseConfig = {
                 city:data.city,
                 state:data.state,
                 hostData:data.hostData,
-                checkIn:[],
-                checkOut:[],
                 createdAt:firebase.firestore.FieldValue.serverTimestamp(),
                 updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
                 keywords:searchIndex

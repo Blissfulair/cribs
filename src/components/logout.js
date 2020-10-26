@@ -11,6 +11,8 @@ import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {withRouter} from "react-router-dom"
 import AppContext from '../state/context';
+import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
+import { Divider } from '@material-ui/core';
 const styles = () => ({
     item:{
         marginLeft:10
@@ -18,7 +20,7 @@ const styles = () => ({
 });
 
 const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
-  const {signOut} = useContext(AppContext)
+  const {signOut,state} = useContext(AppContext)
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -50,9 +52,28 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
               <Paper>
                 <ClickAwayListener onClickAway={closeLogout}>
                   <MenuList autoFocusItem={logout} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/profile')}}><PersonOutlineOutlinedIcon className={classes.item}/> Profile</MenuItem>
-                    <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/settings')}}><SettingsOutlinedIcon className={classes.item}/> Settings</MenuItem>
-                    <MenuItem onClick={(e)=>{closeLogout(e); onLogout()}}><ExitToAppIcon className={classes.item}/> Logout</MenuItem>
+                    {
+                      state.dashboard?
+                        <>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/profile')}}>Profile</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/home')}}>Dashboard</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/history')}}>History</MenuItem>
+                          <Divider/>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/settings')}}>Settings</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e)}}>EN</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/support')}}>Help and Support</MenuItem>
+                          <Divider/>
+                          <MenuItem onClick={(e)=>{closeLogout(e); onLogout()}}>Logout</MenuItem>
+                        </>
+                      :
+                        <>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/dashboard')}}><DashboardOutlinedIcon className={classes.item}/> Dashboard</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/profile')}}><PersonOutlineOutlinedIcon className={classes.item}/> Profile</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/settings')}}><SettingsOutlinedIcon className={classes.item}/> Settings</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); onLogout()}}><ExitToAppIcon className={classes.item}/> Logout</MenuItem>
+                        </>
+
+                    }
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

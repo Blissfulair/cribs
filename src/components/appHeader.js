@@ -50,21 +50,17 @@ const AppHeader = ({classes, history})=>{
                                 <MenuIcon/>
                             </Button>
                             {
-                                history.location.pathname.includes('home') || history.location.pathname.includes('search') || history.location.pathname.includes('crib')?
+                                context.state.dashboard?
                                 <Grid container alignItems="center">
                                     <Grid lg={1} item>
-                                        <Link to="/app/home">
-                                            <Typography className="dashboard-mobile-menu" variant="h5" style={{color:'#707070', fontWeight:'bold', whiteSpace:'nowrap'}}>{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME.toUpperCase():'React App'}</Typography>
-                                        </Link>
+                                        <Typography className="dashboard-mobile-menu" variant="h5" style={{color:'#707070', fontWeight:'bold', whiteSpace:'nowrap'}}>{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME.toUpperCase():'React App'}</Typography>
                                     </Grid>
                                     <Grid lg={11} item>
                                         <MiniSearch/>
                                     </Grid>
                                 </Grid>
                                 :
-                                <Link to="/app/home">
-                                    <Typography className="dashboard-mobile-menu" variant="h5" style={{color:'#707070', fontWeight:'bold'}}>{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME.toUpperCase():'React App'}</Typography>
-                                </Link>
+                                <Typography className="dashboard-mobile-menu" variant="h5" style={{color:'#707070', fontWeight:'bold'}}>{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME.toUpperCase():'React App'}</Typography>
                             
                             }
 
@@ -73,7 +69,7 @@ const AppHeader = ({classes, history})=>{
                             <Grid container alignItems="center" justify="flex-end">
                                 <Typography className="dashboard-mobile-menu" component="div">
                                     {
-                                        history.location.pathname.includes('home')&&
+                                        context.state.dashboard&&
                                         <ul className={classes.menu}>
                                             <li className={classes.menuList}>
                                                 <Link style={{color:'#707070'}}  to="/app/inbox">Inbox</Link>

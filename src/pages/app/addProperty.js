@@ -177,7 +177,7 @@ const body = {
     house:this.state.house,
     city:this.state.city,
     state:this.state.state,
-    hostData:{firstname:this.context.state.userData.firstname,lastname:this.context.state.userData.lastname, photoURL:this.context.state.photoURL}
+    hostData:{firstname:this.context.state.userData.firstname,lastname:this.context.state.userData.lastname, photoURL:this.context.state.photoURL,phone:this.context.state.userData.phone,email:this.context.state.userData.email}
 }
 firebase.storeProperty(body)
 .then(()=>{

@@ -134,7 +134,7 @@ const Payment = ({location}) => {
 				{/* end of house-payment-details*/}
 
 				<aside>
-					<PaymentCard/>
+					<PaymentCard data={data}/>
 				</aside>
 			</section>
 		);

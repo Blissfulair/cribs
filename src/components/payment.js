@@ -1,4 +1,4 @@
-import React, {Component, useContext} from "react"
+import React, {Component, useContext, useState} from "react"
 import { PaystackConsumer } from 'react-paystack';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Button, MenuItem, Select, TextField } from '@material-ui/core';
@@ -6,12 +6,15 @@ import {Elements,CardNumberElement,CardCvcElement} from '@stripe/react-stripe-js
 import AppContext from '../state/context';
 import {loadStripe} from '@stripe/stripe-js';
 import {mailReciept} from "../emailTemplates/receipt"
+import {withRouter} from "react-router-dom"
+import Splash from "./splash";
 // import emailjs from 'emailjs-com';
 
 const stripePromise = loadStripe('pk_test_51Hg8hoK2fIb9aYwzRl3MOcLEWpgHCGKnqkXzl8emOzsoNn5ii8oMMuKRAyjV1tanLgvOBuRvFFDu0MK9frmDdDuZ00uaY2DWuF');
 
-const PayStack = ({changeHandler,state,data})=>{
-    const {reserveCrib} = useContext(AppContext)
+const PayStack = withRouter(({changeHandler,state,data,history})=>{
+    const context = useContext(AppContext)
+    const [loading, setLoading] = useState(false)
     const config = {
         reference: (new Date()).getTime(),
         email: state.email,
@@ -20,17 +23,34 @@ const PayStack = ({changeHandler,state,data})=>{
     };
 
     const handleSubmit =()=> {
+        setLoading(true)
         const mailData = {
             from:'noreply@givitec.com',
             to:state.email,
             subject:'Reciept of Payment',
             senderName:process.env.REACT_APP_NAME,
-            message:{...data, tranxID:config.reference, clientName:state.name}
+            message:{...data, id:data.id.replace('/',''), tranxID:config.reference, clientName:state.name}
         }
-        reserveCrib(data.id, data.checkIn,data.checkOut)
+        const reserve = {
+            ...data,
+            id:data.id.replace('/',''),
+            transactionID:config.reference,
+            renterEmail:state.email,
+            fullname:state.name
+        }
+        context.reserveCrib(reserve)
         .then(()=>{
+     
             mailReciept(mailData)
-            console.log('reserved')
+            .then(()=>{
+                setLoading(false)
+                if(context.state.userData)
+                history.push('/app/home')
+                else
+                history.push('/')
+            })
+
+            
         })
         
     
@@ -45,7 +65,9 @@ const PayStack = ({changeHandler,state,data})=>{
         onClose: () => null
     }
     return <form>
-
+        {
+            loading&&<Splash/>
+        }
         <div className="card-name">
             <p>Full Name</p>
             <TextField value={state.name} placeholder="Richard Belfast" name="name" fullWidth onChange={(e)=>changeHandler(e)} />
@@ -71,7 +93,7 @@ const PayStack = ({changeHandler,state,data})=>{
 
 
     </form>
-}
+})
 const Card = ({state, changeMonth,changeYear})=>{
 return    <form>
     <Elements stripe={stripePromise}>
@@ -197,7 +219,7 @@ class PaymentCard extends Component{
             method:'card',
             email:'',
             phone:'',
-            name:""
+            name:"",
         }
 
     }

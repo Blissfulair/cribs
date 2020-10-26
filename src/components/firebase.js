@@ -23,7 +23,8 @@ const firebaseConfig = {
         this.tables = {
             PROPERTIES :'properties',
             USERS:'users',
-            TRANSACTIONS:'transactions'
+            TRANSACTIONS:'transactions',
+            BOOKINGS:'bookings'
         }
         // Date.prototype.addDays = function(days) {
         //     let date = new Date(this.valueOf());
@@ -160,15 +161,39 @@ const firebaseConfig = {
        
     }
 
-    reserveCrib = async(id, checkIn, checkOut)=>{
+    reserveCrib = async(reserveData)=>{
        let bookedDates = []
-       const dates = getDates(checkIn, checkOut)
-       const data= await (await this.firestore.collection(this.tables.PROPERTIES).doc(id).get()).data()
+       const dates = getDates(reserveData.checkIn, reserveData.checkOut)
+       const data= await (await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id).get()).data()
        bookedDates.push(...data.bookedDates, ...dates)
-        return await this.firestore.collection(this.tables.PROPERTIES).doc(id)
+       await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString()).set({
+        checkIn:reserveData.checkIn,
+        checkOut:reserveData.checkOut,
+        amount:reserveData.total+reserveData.refund,
+        propertyID:reserveData.id,
+        email:reserveData.renterEmail,
+        name:reserveData.fullname,
+        transactionID:reserveData.transactionID,
+        status:'pending',
+        creactedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        
+    })
+       await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id)
         .update({
             bookedDates:bookedDates
         })
+        .then(async()=>{
+            await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString()).update({
+                status:'success',
+            })
+        })
+        .catch(async(e)=>{
+            await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString())
+            .update({
+                status:'failed'
+            })
+        })
+
 
     }
 

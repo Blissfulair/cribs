@@ -2,7 +2,7 @@
 import { sendMail } from "../helpers/helpers"
 
 
-export const mailReciept = (data)=>{
+export const mailReciept = async(data)=>{
     const Dom = `<!DOCTYPE html>
                     <html>
                     <head>
@@ -354,6 +354,6 @@ export const mailReciept = (data)=>{
                     </body>
                     </html>
                     `
-        sendMail(data.from,data.to, data.subject, Dom, data.senderName)
+      await  sendMail(data.from,data.to, data.subject, Dom, data.senderName)
 }
    

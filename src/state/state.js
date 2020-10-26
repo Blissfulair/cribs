@@ -231,8 +231,8 @@ const GlobalState= ()=>{
 
             })
         },
-        reserveCrib:async(id, checkIn, checkOut)=>{
-            await firebase.reserveCrib(id, checkIn, checkOut)
+        reserveCrib:async(data)=>{
+            await firebase.reserveCrib(data)
         },
         chooseDashboard:()=>{
             dispatch({type:'GET_DASHBOARD', payload:{dashboard:!state.dashboard}})

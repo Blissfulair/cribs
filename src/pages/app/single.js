@@ -156,7 +156,8 @@ class Single extends Component{
             triger:false,
             hostTriger:false,
             guest:1,
-            favourite:false
+            favourite:false,
+            loading:true
         }
         this.propert = null
     }
@@ -221,6 +222,7 @@ class Single extends Component{
         this.context.getPropertyById(id)
         .then((property)=>{
             this.context.storeActivity(property)
+            this.setState({loading:false})
         })
         const favourite = getFav(id)
         this.setState({
@@ -282,7 +284,7 @@ class Single extends Component{
          property.bookedDates.forEach(date=>dates.push(new Date(date.seconds*1000)))
          dates.sort((a,b)=>new Date(b)-new Date(a))
     }
-    if(!Boolean(property))
+    if(this.state.loading)
     return <Splash/>
     return(
             <Grid container justify="center">

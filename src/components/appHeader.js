@@ -39,6 +39,27 @@ const AppHeader = ({classes, history})=>{
     
         prevOpen.current = logout;
       }, [logout]);
+
+    const  changeDashboard=()=>{
+            context.chooseDashboard()
+            .then((res)=>{
+                if(res)
+                {
+                    if(history.location.pathname.includes('calender') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('property') || history.location.pathname.includes('add-property') || history.location.pathname.includes('edit-property'))
+                    history.push('/app/home')
+                    else
+                    history.push(history.location.pathname+history.location.search)
+                }
+                else
+                {
+                    if(history.location.pathname.includes('crib') || history.location.pathname.includes('search') || !history.location.pathname.includes('payment') || history.location.pathname.includes('history'))
+                    history.push('/app/dashboard')
+                    else
+                    history.push(history.location.pathname+history.location.search)
+                }
+            })
+      }
+      console.log(context.state.dashboard) 
     return(
         <AppBar elevation={0} classes={{root:classes.app}} position="fixed"  color="primary">
         <Toolbar style={{padding:0}}>
@@ -85,7 +106,7 @@ const AppHeader = ({classes, history})=>{
                                         <Grid component="label" container alignItems="center" spacing={1}>
                                         <Grid item className={!context.state.dashboard?classes.active:classes.inactive}>Hosting</Grid>
                                         <Grid item>
-                                            <Switch checked={context.state.dashboard} onChange={()=>{context.chooseDashboard()}} name="checkedC" />
+                                            <Switch checked={context.state.dashboard} onChange={()=>{changeDashboard()}} name="checkedC" />
                                         </Grid>
                                         <Grid item className={!context.state.dashboard?classes.inactive:classes.active}>Renting</Grid>
                                         </Grid>

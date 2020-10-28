@@ -40,9 +40,18 @@ const PayStack = withRouter(({changeHandler,state,data,history})=>{
         }
         context.reserveCrib(reserve)
         .then(()=>{
-     
+            context.notifications(data.hostId, {
+                name:state.name,
+                email:state.email,
+                hostEmail:data.hostEmail,
+                id:data.id,
+                checkIn:data.checkIn,
+                checkOut:data.checkOut,
+                photoURL:data.photoURL,
+            }, 'booking')
             mailReciept(mailData)
             .then(()=>{
+
                 window.sessionStorage.removeItem('@py')
                 setLoading(false)
                 if(context.state.userData)

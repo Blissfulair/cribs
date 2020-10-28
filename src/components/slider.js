@@ -6,7 +6,7 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import {Link} from "react-router-dom"
 import AppContext from "../state/context";
-const Slide = ({content})=>{
+const Slide = ({content,favourites})=>{
     const {state}=useContext(AppContext)
     return(
         <>
@@ -44,7 +44,7 @@ const Slide = ({content})=>{
                     {content.map((property,index)=>{
                     return (
                         <Link to={state.userData?`/app/crib/${property.id}`:`/crib/${property.id}`} key={index}>
-                            <Trending name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
+                            <Trending favourite={favourites.includes(property.id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
                         </Link>
                     )
                     })

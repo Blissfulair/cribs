@@ -1,17 +1,17 @@
 import React, {Component} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import {Select, FormControl,Grid,MenuItem, Typography,Paper} from '@material-ui/core';
-import Searchs from "../../components/search"
-import Splash from "../../components/splash"
-import Explore from "../../components/explore";
-import  MapContainer  from "../../components/map";
+import Searchs from "../../../components/search"
+import Splash from "../../../components/splash"
+import Explore from "../../../components/explore";
+import  MapContainer  from "../../../components/map";
 import {withRouter} from "react-router-dom"
-import Context from "../../state/context"
-import benin from "../../images/benin.jpeg"
-import abuja from "../../images/abuja.jpg"
-import lagos from "../../images/lagos.jpg"
-import kano from "../../images/kano.jpeg"
-import { getFavs } from "../../helpers/helpers";
+import Context from "../../../state/context"
+import benin from "../../../images/benin.jpeg"
+import abuja from "../../../images/abuja.jpg"
+import lagos from "../../../images/lagos.jpg"
+import kano from "../../../images/kano.jpeg"
+import { getFavs } from "../../../helpers/helpers";
 const styles = theme =>({
     container:{
         paddingTop:100
@@ -39,85 +39,28 @@ const styles = theme =>({
         borderRadius:0
     }
 })
-class Search extends Component{
+class Favourites extends Component{
     static contextType = Context
     constructor(props){
         super(props)
         this.state={
             age:'',
             isLoading:true,
+            guest:'',
+            properties:[],
             checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            guest:1,
             favourites:[]
         }
     }
     componentDidMount(){
-        const url =this.props.history.location.search.replace(/%20/g, ' ');
-        const params = url.split('&')
-        const address = params.filter(address=>address.includes('location')).toString().split('=')[1];
-        const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
-        const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
-        const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
-        const favourites = getFavs()
-            const data = {
-                location:address,
-                checkIn:checkin,
-                checkOut,
-                guest
-            }
-            this.context.setSearch(data)
-            this.context.onLoadSearch(data)
-            .then(()=>{
-                this.setState({
-                    isLoading:false,
-                    checkOut:checkOut,
-                    checkIn:checkin,
-                    favourites:favourites
-                })
-            })
-            .catch((er)=>{
-                this.setState({
-                    isLoading:false,
-                    checkOut:checkOut,
-                    checkIn:checkin
-                })
-            })
-    
+        let properties = JSON.parse(window.localStorage.getItem('@fi'))
+        const favourites =getFavs()
+        this.context.getFavourite(properties)
+        .then(()=>{
+            this.setState({isLoading:false, favourites})
+        })
     }
-    componentDidUpdate(prevProps){
-        if(prevProps.history.location !== this.props.history.location){
-            const url =this.props.history.location.search.replace(/%20/g, ' ');
-            const params = url.split('&')
-            const address = params.filter(address=>address.includes('location')).toString().split('=')[1];
-            const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
-            const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
-            const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
-                const data = {
-                    location:address,
-                    checkIn:checkin,
-                    checkOut,
-                    guest
-                }
-                this.context.setSearch(data)
-                this.context.onLoadSearch(data)
-                .then(()=>{
-                    this.setState({
-                        isLoading:false,
-                        checkOut:checkOut,
-                        checkIn:checkin
-                    })
-                })
-                .catch((er)=>{
-                    this.setState({
-                        isLoading:false,
-                        checkOut:checkOut,
-                        checkIn:checkin
-                    })
-                })
-        }
-    }
-
 
      handleChange = (event) => {
       this.setState({age:event.target.value});
@@ -125,7 +68,6 @@ class Search extends Component{
 
     render(){
     const {classes} = this.props
-    const {state} = this.context
 
     return(
         <>
@@ -135,12 +77,12 @@ class Search extends Component{
             }
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
-                    <div id="search-page" className={classes.container}>
+                    <div className={classes.container}>
                         <Grid container justify="flex-start" style={{position:'relative'}} spacing={3}>
                             <Grid item xs={12} md={6}>
 
                                 {
-                                    state.results.length>0?
+                                    this.context.state.favourite.length>0?
                                     <>
                                     <Grid container justify="space-between">
                                     <Grid item>
@@ -162,14 +104,10 @@ class Search extends Component{
                                     </Grid>
                                 </Grid>
                                     {
-                                        state.results.map((result,index)=>{
-                                            const checkOut = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.context.state.searchQuery.checkOut).toDateString())
-                                            const checkIn = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.context.state.searchQuery.checkIn).toDateString())
-                                            if(checkIn.length<1 && checkOut.length<1)
+                                        this.context.state.favourite.map((result,index)=>{
                                                 return(
                                                     <Searchs favourite={this.state.favourites.includes(result.id)} content={result}   name={`rating${index}`} key={index}/>
                                                 )
-                                            else return ''
                                         })
                                     }
                                 
@@ -199,4 +137,4 @@ class Search extends Component{
     )
 }
 }
-export default withRouter(withStyles(styles)(Search));
+export default withRouter(withStyles(styles)(Favourites));

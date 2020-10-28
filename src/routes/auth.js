@@ -16,6 +16,7 @@ import Home from "../pages/app/home";
 import Search from "../pages/app/search";
 import Single from "../pages/app/single";
 import Payment from "../pages/app/payment";
+import Favourites from "../pages/app/host/favourites";
 class Auth  extends Component{
     static contextType = AppContext
     componentDidMount(){
@@ -35,6 +36,11 @@ class Auth  extends Component{
                 this.props.history.push('/app/inbox')
                 else if(prevProps.location.pathname.includes('reviews')|| prevProps.location.pathname.includes('payments'))
                 this.props.history.push('/app/profile')
+                // else if(this.props.history.location.pathname.includes('calender') || this.props.history.location.pathname.includes('dashboard') || this.props.history.location.pathname.includes('withdraw') || this.props.history.location.pathname.includes('reviews'))
+                // this.context.setDashboard(false)
+                // else
+                // this.context.setDashboard(true)
+                // this.props.history.push(path+search)
             }
         }
     }
@@ -57,8 +63,11 @@ class Auth  extends Component{
             <Route path='/app/edit-property' >
                 <EditProperty />
             </Route>
-            <Route path='/app/payments' >
+            <Route path='/app/withdraws' >
                 <DashboardPayment />
+            </Route>
+            <Route path='/app/favourites' >
+                <Favourites />
             </Route>
             <Route path='/app/search' >
                 <Search />

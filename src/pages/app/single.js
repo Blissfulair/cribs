@@ -36,9 +36,12 @@ import './../../scss/single.scss'
 import AppContext from "../../state/context";
 import Splash from "../../components/splash";
 import PopUP from "../../components/popup";
-import { getDates } from "../../helpers/helpers";
+import { getDates, getFav } from "../../helpers/helpers";
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import Share from "../../components/share";
+import HostPopUp from "../../components/hostPopUp";
+import BookingCalendar from "../../react-calender/src/BookingCalendar";
+import FavoriteIcon from '@material-ui/icons/Favorite';
 const styles = theme =>({
     container:{
         paddingTop:140
@@ -146,12 +149,14 @@ class Single extends Component{
         this.state={
             value:0,
             property:null,
-            checkIn: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkIn: null,
+            checkOut:null,
             days:1,
             open:false,
             triger:false,
-            guest:1
+            hostTriger:false,
+            guest:1,
+            favourite:false
         }
         this.propert = null
     }
@@ -170,17 +175,56 @@ class Single extends Component{
     shareOpen = () => {
         this.setState({triger:true});
       };
+    hostOpen = () => {
+    this.setState({hostTriger:true});
+    };
     shareClose = () => {
         this.setState({triger:false});
       };
+    hostClose = () => {
+    this.setState({hostTriger:false});
+    };
     setDays = ()=>{
         const dates = getDates(this.state.checkIn,this.state.checkOut)
         this.setState({days:dates.length})
     }
+    onFavourite =()=>{
+        let favourites = []
+        let favourite = JSON.parse(window.localStorage.getItem('@fi'))
+        if(favourite !== null){
+            favourites = [this.context.state.property.id.replace('/',''), ...favourite]
+        }
+        else
+        favourites.push(this.context.state.property.id.replace('/',''))
+        try{
+            window.localStorage.setItem('@fi', JSON.stringify(favourites))
+            this.setState({favourite:true})
+        }
+    catch(e){}
+    }
+    onDeleteFavourite =()=>{
+        try{
+            let favourites = JSON.parse(window.localStorage.getItem('@fi'))
+            if(favourites !== null)
+            {
+                const newFavourites = favourites.filter(data=>data !== this.context.state.property.id)
+                window.localStorage.setItem('@fi', JSON.stringify([...newFavourites]))
+            }
+            this.setState({favourite:false})
+        }
+        catch(e){}
+
+
+    }
     componentDidMount(){
-        const id = this.props.location.pathname.split('crib')[1]
+        const id = this.props.location.pathname.split('crib')[1].replace('/','')
         this.context.getPropertyById(id)
+        .then((property)=>{
+            this.context.storeActivity(property)
+        })
+        const favourite = getFav(id)
         this.setState({
+            favourite:favourite,
             property:this.context.state.property,
             guest:this.context.state.searchQuery?this.context.state.searchQuery.guest:1,
             checkIn:this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
@@ -205,7 +249,6 @@ class Single extends Component{
         })
     }
     render(){   
-
     const data = [1,3,4,5]
     const {classes} = this.props
     this.propert = this.context.state.property
@@ -225,13 +268,19 @@ class Single extends Component{
         lastname:property?property.hostData.lastname:'',
         phone:property?property.hostData.phone:'',
         hostEmail:property?property.hostData.email:'',
+        photoURL:this.context.state.user.photoURL,
         address:property?property.address:'',
+        hostId:property?property.hostId:'',
     }
     let checkOut = []
     let checkIn = []
+    let dates = []
     if(property){
          checkOut = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
          checkIn = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkIn).toDateString())
+
+         property.bookedDates.forEach(date=>dates.push(new Date(date.seconds*1000)))
+         dates.sort((a,b)=>new Date(b)-new Date(a))
     }
     if(!Boolean(property))
     return <Splash/>
@@ -390,12 +439,13 @@ class Single extends Component{
                                         </Grid>
                                     </Grid>
 
-                                    {/* <Grid container id="availability">
+                                     <Grid container id="availability">
                                         <Grid item>
                                         <Typography className={classes.subTitle}>Availability</Typography>
                                         <Typography>Enter your trip dates for accurate pricing and availability</Typography>
+                                            <BookingCalendar bookings={dates}/>
                                         </Grid>
-                                    </Grid> */}
+                                    </Grid> 
                                 </Box>
                                 </Paper>
                             </Grid>
@@ -424,7 +474,17 @@ class Single extends Component{
                                                 <Grid item xs={3}>
                                                     <Grid container spacing={1} alignItems="center">
                                                         <Grid item xs={6}>
-                                                            <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#000000"/>
+                                                            {
+                                                                !this.state.favourite?
+                                                                    <button style={{background:'transparent', border:'none',cursor:'pointer'}} onClick={this.onFavourite}>
+                                                                        <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#000000"/>
+                                                                    </button>
+                                                                :
+                                                                    <button style={{background:'transparent', border:'none',cursor:'pointer'}} onClick={this.onDeleteFavourite}>
+                                                                        <FavoriteIcon style={{fontSize:32}} htmlColor="#EB4F1E"/>
+                                                                    </button>
+                                                            }
+
                                                         </Grid>
                                                         <Grid item xs={6}>
                                                             <Typography>Save</Typography>
@@ -461,7 +521,13 @@ class Single extends Component{
                                                             label="Check-In"
                                                             format="dd/MM/yyyy"
                                                             value={this.state.checkIn}
-                                                            onChange={(e)=>{this.setState({checkIn:e},()=>{this.setDays()})}}
+                                                            onChange={(e)=>{
+                                                                if(Date.parse(e)>Date.parse(this.state.checkOut))
+                                                                this.setState({checkIn:e,checkOut:e},()=>{this.setDays()})
+                                                                else
+                                                                this.setState({checkIn:e},()=>{this.setDays()})
+                                                            }
+                                                            }
                                                             />
                                                         </div>
                                                    </Grid>
@@ -502,6 +568,7 @@ class Single extends Component{
                                                         }
                                                         <PopUP onReserved={this.onReserved} summary={summary} open={this.state.open} handleClose={this.handleClose} />
                                                         <Share text={property.name+'-'+property.description} url={'http://localhost:3000/crib/'+property.id.replace('/','')} triger={this.state.triger} close={this.shareClose} />
+                                                        <HostPopUp host={property.hostData}  triger={this.state.hostTriger} close={this.hostClose} />
                                                     </Grid>
                                                 </Grid>
                                                 {
@@ -510,20 +577,22 @@ class Single extends Component{
                                                         Reserve Now
                                                     </Button>
                                                     :
-                                                    <Button style={{textTransform:'capitalize', backgroundColor:'#00A8C8', width:'100%', borderRadius:44, color:'#fff',padding:'10px 0', fontSize:18,marginTop:15}} variant="disabled"  disableElevation>
+                                                    <Button style={{textTransform:'capitalize', backgroundColor:'#DEDEDE', width:'100%', borderRadius:44, color:'#707070',padding:'10px 0', fontSize:18,marginTop:15}} variant="disabled"  disableElevation>
                                                         Unavailable 
                                                     </Button>
                                                 }
 
                                                 <Divider style={{marginTop:15, height:3, backgroundColor:'#DCDCDC'}}/>
-                                                <Typography variant="h6" style={{textAlign:'center', color:'#000000'}} >Speak to the Host</Typography>
+                                                    <Typography variant="h6" style={{textAlign:'center', color:'#000000'}} >Speak to the Host</Typography>
                                                 <Grid container style={{marginTop:10,marginBottom:5}}>
                                                     <Grid item xs={3}>
                                                         <Avatar alt={property.hostData.firstname} style={{width:50, height:50}} src={property.hostData.photoURL}/>
                                                     </Grid>
                                                     <Grid item xs={9}>
                                                         <Typography variant="subtitle1"  component="p">{property.hostData.firstname +' '+ property.hostData.lastname}</Typography>
+                                                        <button type="button" style={{background:'transparent', border:'none'}} onClick={this.hostOpen}>
                                                         <Typography variant="caption"  component="p">Contact host</Typography>
+                                                        </button>
                                                     </Grid>
                                                 </Grid>
                                             </form>

@@ -22,6 +22,7 @@ import lagos from "../../images/lagos.jpg"
 import kano from "../../images/kano.jpeg"
 import { Paper } from "@material-ui/core";
 import SlideBanner from "../../components/slideBanner";
+import { getFavs } from "../../helpers/helpers";
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${cottage})`,
@@ -67,7 +68,8 @@ class Home extends Component{
             location:'',
             checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            guest:0
+            guest:0,
+            favourites:[]
          }
     }
     // useEffect(()=>{
@@ -78,7 +80,9 @@ class Home extends Component{
     //     })
     // },[context])
     componentDidMount(){
+        const favourites = getFavs()
         this.setState({
+            favourites :favourites,
             location:this.context.state.searchQuery?this.context.state.searchQuery.location:'',
             checkIn:this.context.state.searchQuery?this.context.state.searchQuery.checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             checkOut:this.context.state.searchQuery?this.context.state.searchQuery.checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
@@ -140,7 +144,7 @@ class Home extends Component{
                                             return(
                                                 <Grid item xs={12} sm={6} md={3} lg={3} >
                                                     <Link to={`/app/crib/${property.id}`}>
-                                                        <Trending details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
+                                                        <Trending favourite={this.state.favourites.includes(property.id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
                                                     </Link>
                                                 </Grid>
                                             )
@@ -154,7 +158,7 @@ class Home extends Component{
                             <div style={{marginTop:50}}>
                                 <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
                                 <Grid style={{position:'relative'}}  container >
-                                    <Slide content={this.context.state.properties}/>
+                                    <Slide favourites={this.state.favourites} content={this.context.state.properties}/>
                                 </Grid>
                             </div>
                             <Link className={classes.link} to={'/'}>See more</Link>

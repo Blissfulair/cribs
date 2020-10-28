@@ -1,22 +1,36 @@
 import React, {useMemo} from 'react'
 import { Chart as ReactChart } from 'react-charts'
  
-const Chart=({type})=> {
-    // const formatXAxis = () => {
-
-    //     const d = new Date();
-    //     return d.toLocaleString('default', { month: 'short' });
-    // };
-
+const Chart=({type,monthly,yearly,weekly, filter})=> {
   const data = useMemo(
     () => [
       {
-        label: 'Series 1',
-        data: [[0, 1], [1, 2], [2, 4], [3, 2], [4, 7],[5, 1], [6, 2], [7, 4], [8, 2], [9, 7], [10, 2], [11, 7]]
+        label: 'Series month',
+        data: [...monthly]
       }
     ],
-    []
+    [monthly]
   )
+  const dataYearly = useMemo(
+    () => [
+      {
+        label: 'Series year',
+        data: [...yearly]
+      }
+    ],
+    [yearly]
+  )
+
+  const dataWeekly = useMemo(
+    () => [
+      {
+        label: 'Series week',
+        data: [...weekly]
+      }
+    ],
+    [weekly]
+  )
+
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   const axes = useMemo(
     () => [
@@ -27,6 +41,26 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
       }
     ],
     [months]
+  )
+  const axesYearly = useMemo(
+    () => [
+      { primary: true, type: 'ordinal', position: 'bottom' },
+      {
+        type: 'linear',
+        position: 'left',
+      }
+    ],
+    []
+  )
+  const axesWeekly = useMemo(
+    () => [
+      { primary: true, type: 'ordinal', position: 'bottom', format: d => `Week${d}` },
+      {
+        type: 'linear',
+        position: 'left',
+      }
+    ],
+    []
   )
   const series = useMemo(
     () => ({
@@ -43,9 +77,20 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
         height: '300px'
       }}
     >
-      <ReactChart data={data} series={series} axes={axes} />
+     {
+        filter === 'month'?
+        <ReactChart data={data} series={series} axes={axes} />
+        :
+        filter === 'year'?
+        <ReactChart data={dataYearly} series={series} axes={axesYearly} />
+        :
+        <ReactChart data={dataWeekly} series={series} axes={axesWeekly} />
+     }
     </div>
   )
+  if(monthly.length>1)
   return chart
+  else
+  return <div>loading...</div>
 }
 export default Chart

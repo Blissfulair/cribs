@@ -81,7 +81,7 @@
         }
     }
 }
-.booking-calendar {
+.actual__calendar .booking-calendar {
     border: none !important;
  
     .header {
@@ -114,20 +114,12 @@
     }
    
     .week {
-        border-right: none !important;
-        border-top:none !important;
-
-        background: transparent !important;
 
    
       .day-box .day{
-            border-right: none;
-            font-size: 14px !important;
+           
         }
       .day-box .day:not(.today) {
-        background-color: #FFFFFF !important;
-        color: #000000 !important;
-        border: 1px solid #CBCBCB !important;
         // for selected days
         &.different-month { 
             background-color: #fff !important;
@@ -154,31 +146,14 @@
       }
       &.names {
         .day-box .day {
-            background-color: transparent !important;
-            border: none !important;
-            color: #AFAFAF !important;
-            margin-bottom:  -26px !important;
+
+
         }
       }
     }
-    .today {
-        background-color: #00A8C8 !important;
-        color: #fff !important;
-        border: 2px solid #046FA7 !important;
-        &::before{
-            background-color: transparent !important;
-        }
-        &::after{
-            background-color: transparent !important;
-        }
-    }
  
     .day-box{
-        width: 11.28571% !important;
-        margin: 9px 1.5% !important;
-    }
-    .day-box::before{
-        border: none !important;
+
     }
 
 
@@ -188,13 +163,45 @@
     border-bottom:none !important;
 
 }
-.booking-calendar .react-calendar-inner{
+.actual__calendar .booking-calendar .react-calendar-inner{
     border-radius: 3px;
     box-shadow: 0px 0px 3px #00000029;
-    min-width: 400px !important;
-   min-height: 370px;
    background-color: #FBFBFB !important;
-   padding: 20px;
-   padding-top: 10px;
 }
+#availability .booking-calendar{
+    margin-top: 40px;
+    border-radius: 3px;
+    padding-top: 20px;
+    box-shadow: 0px 0px 3px #00000029;
+   background-color: #FBFBFB !important;
+    .header{
+        padding-left: 20px;
+        padding-right: 20px;
+        .icon-previous {
+            
+            background-color: #DEDEDE !important;
+            padding:5px 30px;
+            border-radius: 30px;
+            color: #ACACAC;
+            font-size: 15px !important;
+        }
+        .icon-next {
+            padding:5px 30px;
+            border-radius: 30px;
+            font-size: 15px !important;
+            color: #ACACAC;
+            background-color: #DEDEDE !important;
+        }
+        .month-label {
+           
+            color: #707070 !important;
+            text-transform: capitalize !important;
+            font-size: 1.1rem !important;
+        }
+    }
+    .react-calendar-inner{
+        padding-top: 0px;
+    }
+}
+
 @import 'mobileDashboardCalendar';

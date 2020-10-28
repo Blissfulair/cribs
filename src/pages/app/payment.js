@@ -26,7 +26,9 @@ const Payment = ({location}) => {
         hostEmail:'',
         firstname:'',
         lastname:'',
-        phone:''
+        phone:'',
+        hostId:'',
+        photoURL:''
     })
     useEffect(()=>{
         if(location.state !== undefined){
@@ -51,7 +53,9 @@ const Payment = ({location}) => {
                 hostEmail:location.state.hostEmail,
                 firstname:location.state.firstname,
                 lastname:location.state.lastname,
-                phone:location.state.phone
+                phone:location.state.phone,
+                hostId:location.state.hostId,
+                photoURL:location.state.photoURL
             })
         }
         else{
@@ -78,7 +82,9 @@ const Payment = ({location}) => {
                     hostEmail:pay.hostEmail,
                     firstname:pay.firstname,
                     lastname:pay.lastname,
-                    phone:pay.phone
+                    phone:pay.phone,
+                    hostId:pay.hostId,
+                    photoURL:pay.photoURL
                 })
             }
         }

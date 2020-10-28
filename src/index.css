@@ -283,6 +283,12 @@ svg{
   min-width: 375px;
   background: #FCFBFB  !important;
 }
+#host-pop-up .MuiDialog-paperScrollPaper{
+  height: 60vh;
+  max-width: 450px;
+  min-width: 375px;
+  background: #FCFBFB ;
+}
 #popup .MuiDialog-paperScrollPaper table:first-child{
   border: 1px solid #DCDCDC;
   width: 100%;

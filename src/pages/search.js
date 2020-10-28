@@ -11,6 +11,7 @@ import benin from "../images/benin.jpeg"
 import abuja from "../images/abuja.jpg"
 import lagos from "../images/lagos.jpg"
 import kano from "../images/kano.jpeg"
+import { getFavs } from "../helpers/helpers";
 const styles = theme =>({
     container:{
         paddingTop:200
@@ -46,7 +47,9 @@ class Search extends Component{
             age:'',
             isLoading:true,
             checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+            checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            guest:1,
+            favourites:[]
         }
     }
     componentDidMount(){
@@ -56,6 +59,7 @@ class Search extends Component{
         const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
         const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
         const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
+        const favourites = getFavs()
             const data = {
                 location:address,
                 checkIn:checkin,
@@ -68,7 +72,8 @@ class Search extends Component{
                 this.setState({
                     isLoading:false,
                     checkOut:checkOut,
-                    checkIn:checkin
+                    checkIn:checkin,
+                    favourites:favourites
                 })
             })
             .catch((er)=>{
@@ -162,7 +167,7 @@ class Search extends Component{
                                             const checkIn = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.context.state.searchQuery.checkIn).toDateString())
                                             if(checkIn.length<1 && checkOut.length<1)
                                                 return(
-                                                    <Searchs content={result}  props={this.props.history} name={`rating${index}`} key={index}/>
+                                                    <Searchs favourite={this.state.favourites.includes(result.id)} content={result}  props={this.props.history} name={`rating${index}`} key={index}/>
                                                 )
                                             else return ''
                                         })

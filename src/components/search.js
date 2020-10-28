@@ -10,6 +10,7 @@ import Rating from '@material-ui/lab/Rating';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import {Link} from "react-router-dom"
 import AppContext from "../state/context";
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const styles = ()=>({
     para:{
@@ -44,7 +45,7 @@ const styles = ()=>({
         left: 0
     }
 })
-const Search = ({classes, content, rating,name})=>{
+const Search = ({classes, content, rating,name, favourite})=>{
     const {state} =useContext(AppContext)
     return(
     <Link to={state.user?`/app/crib/${content.id}`:`/crib/${content.id}`}>
@@ -57,7 +58,12 @@ const Search = ({classes, content, rating,name})=>{
                             height="100%"
                     />
                     <div style={{zIndex:34, position:'absolute',height:'100%', width:'98%', top:'3%', left:'1%'}}>
-                        <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#fff"/>
+                        {
+                            favourite?
+                            <FavoriteIcon  style={{fontSize:32}} htmlColor="#EB4F1E"/>
+                            :
+                            <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#fff"/>
+                        }
                     </div>
                     <div className={classes.overlay}>
                     </div>

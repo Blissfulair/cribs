@@ -8,6 +8,7 @@ import {withStyles} from "@material-ui/core/styles"
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Rating from '@material-ui/lab/Rating';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const styles = ()=>({
     para:{
@@ -39,7 +40,7 @@ const styles = ()=>({
         opacity: 0.35
     }
 })
-const Trending = ({classes, rating, color,name, details})=>{
+const Trending = ({classes, rating, color,name, details,favourite})=>{
     return(
         <Card elevation={3} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.image}}>
@@ -49,7 +50,13 @@ const Trending = ({classes, rating, color,name, details})=>{
                         height="100%"
                 />
                 <div style={{zIndex:34, position:'absolute',height:'94%', width:'98%', top:'3%', left:'1%'}}>
-                    <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#fff"/>
+                    {
+
+                            favourite?
+                            <FavoriteIcon  style={{fontSize:32}} htmlColor="#C8BB00"/>
+                            :
+                            <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#fff"/>
+                    }
                     <div style={{position:'absolute', bottom:0}}>
                         <Rating
                         name={name}

@@ -15,7 +15,7 @@ import {
 import {Link} from "react-router-dom"
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import Chart from "../../../components/chart";
-import image from "../../../images/login_bg.png"
+import { getMonthInWord } from "../../../helpers/helpers";
 
 const Progress = ({value}) => (
     <div style={{
@@ -85,44 +85,68 @@ const HostDashboard = ({classes, state, switchChart, context})=>{
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Chart type="line"/>
+                        <Chart monthly={context.state.chart.monthly} weekly={context.state.chart.weekly} filter={state.chart} yearly={context.state.chart.yearly} type="line"/>
                     </Paper>
                     <Paper style={{margin:'30px 0'}} classes={{root:classes.impression}}>
                         <Typography style={{marginBottom:10, fontSize:17,fontWeight:'bold'}} variant="h5">Notification</Typography>
                         <Divider/>
                         <List>
-                            <ListItem style={{margin:'12px 0'}}>
-                                <Link style={{display:'flex',alignItems:'flex-end'}} to="/">
-                                    <Avatar style={{marginRight:15}} src={image}/>
-                                    <ListItemText primary={
-                                        <p style={{color:'#707070', fontSize:15}}><span style={{color:'#00A8C8'}}>Annabella</span> made a reservation for <span style={{color:'#00A8C8'}}>12 -14 June, confirm</span></p>
-                                    }/>
-                                </Link>
-                            </ListItem>
-                            <ListItem style={{margin:'12px 0'}}>
-                                <Link style={{display:'flex',alignItems:'flex-end'}} to="/">
-                                    <Avatar style={{marginRight:15}} src={image}/>
-                                    <ListItemText primary={
-                                        <p style={{color:'#707070', fontSize:15}}><span style={{color:'#00A8C8'}}>John</span> Crik left a review <span style={{color:'#00A8C8'}}>see review</span></p>
-                                    }/>
-                                </Link>
-                            </ListItem>
-                            <ListItem style={{margin:'12px 0'}}>
-                                <Link style={{display:'flex',alignItems:'flex-end'}} to="/">
-                                    <Avatar style={{marginRight:15}} src={image}/>
-                                    <ListItemText primary={
-                                        <p style={{color:'#707070', fontSize:15}}><span style={{color:'#00A8C8'}}>Royce David</span> canceled reservation <span style={{color:'#00A8C8'}}>check details</span></p>
-                                    }/>
-                                </Link>
-                            </ListItem>
-                            <ListItem style={{margin:'12px 0'}}>
-                                <Link style={{display:'flex',alignItems:'flex-end'}} to="/">
-                                    <Avatar style={{marginRight:15}} src={image}/>
-                                    <ListItemText primary={
-                                        <p style={{color:'#707070', fontSize:15}}><span style={{color:'#00A8C8'}}>John Crik</span> reservation has ended</p>
-                                    }/>
-                                </Link>
-                            </ListItem>
+                            {
+                                context.state.notifications.length>0&&
+                                context.state.notifications.map((notification,i)=>{
+                                    if(notification.type === 'booking'){
+                                        if(notification.status === 'reserved')
+                                        return(
+                                            <ListItem key={i} style={{margin:'12px 0'}}>
+                                                <Link style={{display:'flex',alignItems:'flex-end'}} to="/">
+                                                    <Avatar style={{marginRight:15}} src={notification.photoURL?notification.photoURL:''}/>
+                                                    <ListItemText primary={
+                                                        <p style={{color:'#707070', fontSize:15}}><span style={{color:'#00A8C8'}}>{notification.name}</span> made a reservation for <span style={{color:'#00A8C8'}}>{`${new Date(notification.checkIn.seconds*1000).getDate()} ${getMonthInWord(notification.checkIn.seconds*1000)} - ${new Date(notification.checkOut.seconds*1000).getDate()} ${getMonthInWord(notification.checkOut.seconds*1000)}, ${new Date(notification.checkOut.seconds*1000).getFullYear()}`}</span></p>
+                                                    }/>
+                                                </Link>
+                                            </ListItem>
+                                        )
+                                    else if(notification.status === 'cancelled')
+                                        return(
+                                            <ListItem key={i} style={{margin:'12px 0'}}>
+                                                <Link style={{display:'flex',alignItems:'flex-end'}} to="/">
+                                                    <Avatar style={{marginRight:15}} src={notification.photoURL?notification.photoURL:''}/>
+                                                    <ListItemText primary={
+                                                        <p style={{color:'#707070', fontSize:15}}><span style={{color:'#00A8C8'}}>{notification.name}</span> canceled reservation <span style={{color:'#00A8C8'}}>check details</span></p>
+                                                    }/>
+                                                </Link>
+                                            </ListItem>
+                                        )
+                                    else if(notification.status === 'complete')
+                                        return(
+                                            <ListItem style={{margin:'12px 0'}}>
+                                                <Link style={{display:'flex',alignItems:'flex-end'}} to="/">
+                                                    <Avatar style={{marginRight:15}} src={notification.photoURL?notification.photoURL:''}/>
+                                                    <ListItemText primary={
+                                                        <p style={{color:'#707070', fontSize:15}}><span style={{color:'#00A8C8'}}>{notification.name}</span> reservation has ended</p>
+                                                    }/>
+                                                </Link>
+                                            </ListItem>
+                                        )
+                                    }
+                                    else{
+                                        const names = notification.name.split(' ')
+                                        return(
+                                            <ListItem style={{margin:'12px 0'}}>
+                                                <Link style={{display:'flex',alignItems:'flex-end'}} to="/">
+                                                    <Avatar style={{marginRight:15}} src={notification.photoURL?notification.photoURL:''}/>
+                                                    <ListItemText primary={
+                                                        <p style={{color:'#707070', fontSize:15}}><span style={{color:'#00A8C8'}}>{names[0]}</span> {names[1]} left a review <span style={{color:'#00A8C8'}}>see review</span></p>
+                                                    }/>
+                                                </Link>
+                                            </ListItem>
+                                        )
+                                    }
+                                    return ''
+                                })
+                            }
+
+
                         </List>
                     </Paper>
                     <Grid container spacing={10}>

@@ -24,8 +24,11 @@ const firebaseConfig = {
             PROPERTIES :'properties',
             USERS:'users',
             TRANSACTIONS:'transactions',
-            BOOKINGS:'bookings'
+            BOOKINGS:'bookings',
+            ACTIVITIES:'activities',
+            NOTIFICATIONS:'notifications'
         }
+        this.serverTime = firebase.firestore.Timestamp.now().seconds
         // Date.prototype.addDays = function(days) {
         //     let date = new Date(this.valueOf());
         //     date.setDate(date.getDate() + days);
@@ -159,7 +162,32 @@ const firebaseConfig = {
 
        
     }
-
+    notification = async(hostId, data, type)=>{
+        await this.firestore.collection(this.tables.NOTIFICATIONS).add({
+            hostId:hostId,
+            checkIn:data.checkIn,
+            checkOut:data.checkOut,
+            propertyID:data.id,
+            email:data.email,
+            name:data.name,
+            photoURL:data.photoURL,
+            hostEmail:data.hostEmail,
+            status:'reserved',
+            type:type,
+            view:'unread',
+            creactedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        })
+    }
+    getHostNotifications = async(hostId)=>{
+        const data =[]
+         await this.firestore.collection(this.tables.NOTIFICATIONS).where('hostId', '==', hostId).onSnapshot(snap=>{
+            snap.docs.forEach(doc=>{
+                data.push({...doc.data(), id:doc.id})
+            })
+           
+        })
+        return data;
+    }
     reserveCrib = async(reserveData)=>{
        let bookedDates = []
        const dates = getDates(reserveData.checkIn, reserveData.checkOut)
@@ -177,6 +205,7 @@ const firebaseConfig = {
         creactedAt:firebase.firestore.FieldValue.serverTimestamp(),
         
     })
+
        await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id)
         .update({
             bookedDates:bookedDates
@@ -222,6 +251,53 @@ const firebaseConfig = {
             gender:data.gender,
             status:true
         })
+    }
+    favourite = async(ip,property)=>{
+        try{
+            await this.firestore.collection(ip.toString()).doc(property.id)
+            .set({...property})
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+
+    getFavourite=async(ids)=>{
+        try{
+          return await this.firestore.collection(this.tables.PROPERTIES).where('id','in',ids).get()
+
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+    storeActivity = (ip, property)=>{
+        try{
+            const today = new Date(this.serverTime*1000)
+            const onejan = new Date(today.getFullYear(), 0, 1);
+            const weekNumber = Math.ceil( (((today.getTime() - onejan.getTime()) / 86400000) + onejan.getDay() + 1) / 7 )
+            this.firestore.collection(this.tables.ACTIVITIES).doc(property.id+today.getDate().toString()+today.getMonth().toString()+today.getFullYear().toString()+ip)
+            .set({
+                ip:ip,
+                propertyId:property.id,
+                hostId:property.hostId,
+                day:today.getDate(),
+                month:today.getMonth(),
+                year:today.getFullYear(),
+                week:weekNumber,
+                createdAt:firebase.firestore.FieldValue.serverTimestamp()
+            })
+        }
+        catch(e){}
+    }
+    getActivities = async(hostId)=>{
+        try{
+            const today = new Date(this.serverTime*1000)
+            return await this.firestore.collection(this.tables.ACTIVITIES).where('hostId', '==', hostId)
+            .where('year', '==', today.getFullYear())
+            .get()
+        }
+        catch(e){}
     }
 }
 export default new Firebase();

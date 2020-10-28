@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core'
 import AppContext from "../../state/context"
 import HostDashboard from "./host/dashboard"
-import RenterDashboard from "./renter/dashboard";
+// import RenterDashboard from "./renter/dashboard";
 const styles = (theme)=>({
     user:{
         borderRadius:0,
@@ -80,12 +80,16 @@ class Dashboard extends React.Component{
                 impression:0,
                 active:0,
                 verified:0,
-                chart:'month'
+                chart:'month',
+                monthly:[],
+                yearly:[],
+                weekly:[]
             }
 
         }
         componentDidMount(){
 
+           
         }
         switchChart=(type)=>{
             this.setState({chart:type})
@@ -99,12 +103,12 @@ class Dashboard extends React.Component{
                 <Layout>
                     <Grid container style={{paddingTop:120}}>
                         <Grid item xs={12} md={11} >
-                            {
+                            {/* {
                                 this.context.state.dashboard?
                                 <RenterDashboard classes={classes} context ={this.context}/>
-                                :
+                                : */}
                                 <HostDashboard classes={classes} state={this.state} context ={this.context} switchChart={this.switchChart}/>
-                            }
+                            {/* } */}
                         </Grid>
                     </Grid>
                 </Layout>

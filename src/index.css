@@ -383,6 +383,126 @@ svg{
   font-size: 0.95rem !important;
   color: #00A8C8;
 }
+
+#popup.withdraw-modal .MuiDialog-paperScrollPaper{
+  max-height: 70vh !important;
+}
+#popup.withdraw-modal .MuiDialog-paperScrollPaper input{
+  padding: 10px 8px;
+  border: 1px solid #DBDBDB;
+  border-radius: 5px;
+  font-size: 15px;
+  color: #ACA9A9;
+  outline: 0;
+}
+#popup.withdraw-modal .MuiDialog-paperScrollPaper table{
+  border: none !important;
+}
+#popup.withdraw-modal .MuiDialog-paperScrollPaper input:focus{
+    border-color: #00A8C8;
+}
+#popup.withdraw-modal .MuiDialog-paperScrollPaper td{
+  padding: 13px 8px !important;
+
+}
+#popup.withdraw-modal .MuiDialog-paperScrollPaper td:first-child{
+  color: #00A8C8;
+}
+#popup.withdraw-modal .MuiDialog-paperScrollPaper form{
+  border: 1px solid #DBDBDB;
+  border-radius: 5px;
+  background: #fff;
+  display: grid;
+  justify-content: center;
+}
+#popup.withdraw-modal .MuiDialog-paperScrollPaper form button{
+  text-transform: capitalize;
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  color: #fff;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper{
+  max-width: 900px !important;
+  width: 900px !important;
+  background: #FCFCFC !important;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper .MuiTabs-indicator{
+  background: #00ABBE !important;
+  height: 3px;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper .MuiTab-wrapper{
+  color: #707070 !important;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper table:nth-child(2) tr td:last-child{
+  text-align: left;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper table:nth-child(2),
+#popup.history-modal .MuiDialog-paperScrollPaper table:nth-child(2) tr td{
+  border-bottom: none;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper .rate{
+  width: 100%;
+  display: grid;
+  justify-content: center;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper .rate-value{
+  text-align: center;
+  color: #00ABBE;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper .MuiRating-root{
+  margin: 9px auto;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper  .MuiRating-label{
+  font-size: 34px !important;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper textarea{
+  width: 100%;
+  height: 120px;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper textarea:focus{
+  border-color: #00A8C8 !important;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper .rate-title{
+  font-size: 13px;
+  margin-top: 8px;
+  color: #00ABBE;
+}
+#popup.history-modal .MuiDialog-paperScrollPaper textarea + div{
+  display: grid;
+  justify-self: center;
+  width: 40%;
+  margin: 0 auto;
+  margin-top: 20px;
+
+}
+#popup.history-modal .MuiDialog-paperScrollPaper textarea + div button{
+  background: #00A8C8;
+  border-radius: 25px;
+  color: #fff;
+  text-transform: capitalize;
+}
+.MuiRating-root.Mui-disabled{
+  opacity: 1 !important;
+}
+.trending-card .MuiRating-label{
+  color: #fff;
+  font-size: 19px;
+}
+.fav-search .MuiRating-label{
+color: #000;
+font-size: 19px;
+}
+#singlepage .MuiRating-label .MuiSvgIcon-fontSizeSmall,
+#singlepage .MuiRating-label{
+  color: #ACA9A9;
+  font-size: 13px;
+
+}
 @media(max-width:767px){
   #end,#begin{
     font-size: 12px;

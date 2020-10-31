@@ -198,12 +198,8 @@ class SignUp extends React.Component{
                                 </div>
                                 <div className="form-check">
                                     <FormControlLabel
-                                            control={<Checkbox id="renting" onChange={(e)=>{this.setState({remember: !this.state.remember}); this.setRenting(e)}} checked={this.state.renting} classes={{root:this.props.classes.check}} name="role"/>}
-                                            label="Renting"
-                                        />
-                                    <FormControlLabel
-                                            control={<Checkbox id="hosting" onChange={(e)=>{this.setState({remember: !this.state.remember}); this.setHosting(e)}} checked={this.state.hosting} classes={{root:this.props.classes.check}} name="role"/>}
-                                            label="Hosting"
+                                            control={<Checkbox id="rememberme" onChange={(e)=>{this.setState({remember: !this.state.remember})}} checked={this.state.renting} classes={{root:this.props.classes.check}} name="role"/>}
+                                            label="rememberme"
                                         />
                                 </div>
                                 <button onClick={this.handleClick(TransitionUp)} className="btn-signup">Sign Up</button>

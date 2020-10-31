@@ -4,14 +4,14 @@ import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import { withStyles } from '@material-ui/core/styles';
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
+// import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+// import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
+// import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {withRouter} from "react-router-dom"
 import AppContext from '../state/context';
-import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
+// import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import { Divider } from '@material-ui/core';
 const styles = () => ({
     item:{
@@ -68,10 +68,11 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
                         </>
                       :
                         <>
-                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/dashboard')}}><DashboardOutlinedIcon className={classes.item}/> Dashboard</MenuItem>
-                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/profile')}}><PersonOutlineOutlinedIcon className={classes.item}/> Profile</MenuItem>
-                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/settings')}}><SettingsOutlinedIcon className={classes.item}/> Settings</MenuItem>
-                          <MenuItem onClick={(e)=>{closeLogout(e); onLogout()}}><ExitToAppIcon className={classes.item}/> Logout</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/dashboard')}}> Dashboard</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/profile')}}> Profile</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/settings')}}>Settings</MenuItem>
+                          <Divider/>
+                          <MenuItem onClick={(e)=>{closeLogout(e); onLogout()}}>Logout</MenuItem>
                         </>
 
                     }

@@ -40,9 +40,9 @@ const styles = ()=>({
         opacity: 0.35
     }
 })
-const Trending = ({classes, rating, color,name, details,favourite})=>{
+const Trending = ({classes, color,name, details,favourite})=>{
     return(
-        <Card elevation={3} classes={{root:classes.root}}>
+        <Card className="trending-card" elevation={3} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.image}}>
                 <CardMedia image={details.featuredImage}
                         component="img"
@@ -60,12 +60,10 @@ const Trending = ({classes, rating, color,name, details,favourite})=>{
                     <div style={{position:'absolute', bottom:0}}>
                         <Rating
                         name={name}
-                        defaultValue={rating}
+                        defaultValue={details.rateValue/details.totalReviewer}
                         precision={0.5}
-                        
+                        disabled
                         style={{fontSize:20, color:'#fff'}}
-                        onClick={(value)=>{if(value.target.value !== undefined)console.log(value.target.value)}}
-                        ///getLabelText={(value)=>{console.log(value, props.name)}}
                         emptyIcon={<StarBorderIcon htmlColor="#fff" style={{fontSize:20}} />}
                         />
                     </div>

@@ -10,6 +10,7 @@ import "../scss/header.scss"
 import {withRouter} from "react-router-dom"
 import AppContext from "../state/context";
 import Splash from "./splash";
+import { getDates } from "../helpers/helpers";
 const styles = theme =>({
 
     location:{
@@ -106,6 +107,7 @@ const SearchForm = (props)=>{
     }
     useEffect(()=>{
         setData({
+            days:1,
             location:state.searchQuery?state.searchQuery.location:'',
             checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
@@ -141,7 +143,13 @@ const SearchForm = (props)=>{
                             label="Check In"
                             format="dd/MM/yyyy"
                             value={data.checkIn}
-                            onChange={(e)=>setData({...data, checkIn:e})}
+                            onChange={(e)=>{
+                                const dates = getDates(data.checkIn,data.checkOut)
+                                if(Date.parse(e)>Date.parse(data.checkOut))
+                                setData({...data,checkIn:e,checkOut:e, days:dates.length})
+                                else
+                                setData({...data, checkIn:e, days:dates.length})
+                            }}
                             />
                         </div>
                     </div>
@@ -186,13 +194,13 @@ export const MiniSearch = withRouter(withStyles(styles)((props)=>{
     const [loading, setLoading] = useState(false)
     const {searchProperties,setSearch,state}=useContext(AppContext)
     const [data, setData]=useState({
+        days:1,
         location:state.searchQuery?state.searchQuery.location:'',
         checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
         checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
         guest:state.searchQuery?state.searchQuery.guest:'',
 
     })
-  
     // const [checkIn, setCheckIn]=useState(false)
     const onSubmit =(e)=>{
         e.preventDefault()
@@ -247,7 +255,14 @@ export const MiniSearch = withRouter(withStyles(styles)((props)=>{
                             label="Check In"
                             format="dd/MM/yyyy"
                             value={data.checkIn}
-                            onChange={(e)=>setData({...data, checkIn:e})}
+                            onChange={(e)=>{
+                                const dates = getDates(data.checkIn,data.checkOut)
+                                if(Date.parse(e)>Date.parse(data.checkOut))
+                                setData({...data,checkIn:e,checkOut:e, days:dates.length})
+                                else
+                                setData({...data, checkIn:e, days:dates.length})
+                            }
+                        }
                             />
                         </div>
                     </div>

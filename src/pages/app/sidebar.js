@@ -4,10 +4,10 @@ import "./sidebar.css";
 import PropTypes from "prop-types"
 import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
+// import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
 import EventOutlinedIcon from '@material-ui/icons/EventOutlined';
 import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
-import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
+// import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import AppContext from "../../state/context";
@@ -25,22 +25,22 @@ const Sidebar = ()=>{
                                 <NavLink onClick={Sidebar.active} activeClassName="is-active"  id="properties" to="/app/property"><li><HomeOutlinedIcon/> Property </li></NavLink>
                             }
                         
-                            <NavLink onClick={Sidebar.active}  activeClassName="is-active"  id="inboxes" to="/app/inbox">
+                            {/* <NavLink onClick={Sidebar.active}  activeClassName="is-active"  id="inboxes" to="/app/inbox">
                             <li>
                                 <EmailOutlinedIcon/>
                                 Inbox
                                 <span className="i-num">2</span>
                                 
                              </li>
-                            </NavLink>
+                            </NavLink> */}
 
                         
                         <NavLink  onClick={Sidebar.active}  activeClassName="is-active" to="/app/calendar"><li><EventOutlinedIcon/>Calendar</li></NavLink>
                             {
                                 !state.dashboard&&
                                 <>
-                                    <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/payments"><li><AccountBalanceWalletOutlinedIcon/>Payments</li></NavLink>
-                                    <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/reviews"><li><AccountTreeOutlinedIcon/>Reviews</li></NavLink>
+                                    <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/withdraws"><li><AccountBalanceWalletOutlinedIcon/>Payments</li></NavLink>
+                                    {/* <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/reviews"><li><AccountTreeOutlinedIcon/>Reviews</li></NavLink> */}
                                 </>
                             }
                         <NavLink onClick={Sidebar.active}  activeClassName="is-active" id="profiles"  to="/app/profile"><li><PersonOutlineOutlinedIcon/>Profile</li></NavLink>

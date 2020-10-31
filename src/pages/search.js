@@ -59,7 +59,11 @@ class Search extends Component{
         const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
         const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
         const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
+        const type = params.filter(type=>type.includes('type'))
+        const city = params.filter(city=>city.includes('city'))
         const favourites = getFavs()
+        if(address !== undefined){
+ 
             const data = {
                 location:address,
                 checkIn:checkin,
@@ -83,7 +87,27 @@ class Search extends Component{
                     checkIn:checkin
                 })
             })
-    
+        }
+        else if(type.length>0){
+            const ty = type[0].split('=')[1]
+            this.context.getPropertiesByType(ty)
+            .then(()=>{
+                this.setState({
+                    isLoading:false,
+                    favourites:favourites
+                })
+            })
+        } 
+        else if(city.length>0){
+            const cy = city[0].split('=')[1]
+            this.context.getPropertiesByCity(cy)
+            .then(()=>{
+                this.setState({
+                    isLoading:false,
+                    favourites:favourites
+                })
+            })
+        }   
     }
     componentDidUpdate(prevProps){
         if(prevProps.history.location !== this.props.history.location){
@@ -93,6 +117,7 @@ class Search extends Component{
             const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
             const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
             const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
+            
                 const data = {
                     location:address,
                     checkIn:checkin,
@@ -161,15 +186,22 @@ class Search extends Component{
                                         </FormControl>
                                     </Grid>
                                 </Grid>
-                                    {
+                                {
                                         state.results.map((result,index)=>{
+                                            if(this.context.state.searchQuery){
                                             const checkOut = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.context.state.searchQuery.checkOut).toDateString())
                                             const checkIn = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.context.state.searchQuery.checkIn).toDateString())
                                             if(checkIn.length<1 && checkOut.length<1)
                                                 return(
-                                                    <Searchs favourite={this.state.favourites.includes(result.id)} content={result}  props={this.props.history} name={`rating${index}`} key={index}/>
+                                                    <Searchs favourite={this.state.favourites.includes(result.id)} content={result}   name={`rating${index}`} key={index}/>
                                                 )
                                             else return ''
+                                             }
+                                             else{
+                                                return(
+                                                    <Searchs favourite={this.state.favourites.includes(result.id)} content={result}   name={`rating${index}`} key={index}/>
+                                                ) 
+                                             }
                                         })
                                     }
                                 
@@ -190,7 +222,7 @@ class Search extends Component{
                         </Grid>
                         <Typography variant="h4" classes={{root:classes.title}}>Explore Cribs by City</Typography>
                         <Grid style={{position:'relative'}} container>
-                        <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'}]}/>
+                        <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link:'/search?city=lagos'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/search?city=abuja'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/search?city=kano'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/search?city=benin'}]}/>
                         </Grid>
                     </div>
                 </Grid>

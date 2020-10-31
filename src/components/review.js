@@ -1,8 +1,7 @@
 import React from "react"
 import {Grid, Avatar, Typography, Divider} from "@material-ui/core"
-import image from "../images/login_bg.png"
 import Rating from '@material-ui/lab/Rating';
-
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 const Review = ({data, number})=>{
     return(
         <>
@@ -10,17 +9,25 @@ const Review = ({data, number})=>{
             <Grid item xs={8}>
                 <Rating
                 name='kls'
-                defaultValue={5}
-                
+                disabled
+                defaultValue={data.rating}
+                emptyIcon={<StarBorderIcon fontSize="small" />}
                 style={{fontSize:15, color:'#000000', margin:'15px 0'}}
                 />
-                <Typography>
-                Luqman Business traveler Oct 16, 2019 Flat. Stayed 3 nights in Oct 2019
+                <span>{' '+data.rating+'/5'}</span>
+                <Typography style={{fontWeight:'bold', fontSize:14}}>
+                    {data.name}
+                </Typography>
+                <Typography style={{fontSize:14}}>
+                    {data.review}
+                </Typography>
+                <Typography style={{fontSize:12}} variant="subtitle2" component="small">
+                    {new Date(data.creactedAt.seconds*1000).toDateString()}
                 </Typography>
             </Grid>
             <Grid item xs={4}>
                 <Grid container justify="flex-end">
-                    <Avatar style={{height:60,width:60}} src={image} alt="reviewer"/>
+                    <Avatar style={{height:60,width:60}} src={data.photoURL} alt="reviewer"/>
                 </Grid>
             </Grid>
         </Grid>

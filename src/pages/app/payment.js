@@ -28,7 +28,9 @@ const Payment = ({location}) => {
         lastname:'',
         phone:'',
         hostId:'',
-        photoURL:''
+        photoURL:'',
+        propertyName:'',
+        propertyState:''
     })
     useEffect(()=>{
         if(location.state !== undefined){
@@ -55,7 +57,7 @@ const Payment = ({location}) => {
                 lastname:location.state.lastname,
                 phone:location.state.phone,
                 hostId:location.state.hostId,
-                photoURL:location.state.photoURL
+                photoURL:location.state.photoURL,
             })
         }
         else{

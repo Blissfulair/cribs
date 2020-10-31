@@ -29,7 +29,7 @@ import lagos from "../images/lagos.jpg"
 import kano from "../images/kano.jpeg"
 import cottage from "../images/cottage.png"
 import Splash from "../components/splash";
-import { getFavs } from "../helpers/helpers";
+import { getFavs, getDates } from "../helpers/helpers";
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${bg})`,
@@ -120,7 +120,8 @@ class Index extends Component{
             checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             guest:0,
             loading:false,
-            favourites:[]
+            favourites:[],
+            days:1,
          }
     }
     // useEffect(()=>{
@@ -139,7 +140,10 @@ class Index extends Component{
             checkOut:this.context.state.searchQuery?this.context.state.searchQuery.checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
         })
     }
-
+    setDays = ()=>{
+        const dates = getDates(this.state.checkIn,this.state.checkOut)
+        this.setState({days:dates.length})
+    }
      changeHandler=(e)=>{
         this.setState({
             [e.target.name]:e.target.value
@@ -195,7 +199,13 @@ class Index extends Component{
                                         format="dd/MM/yyyy"
                                         name="checkIn"
                                         value={this.state.checkIn}
-                                        onChange={(e)=>{this.setState({checkIn:e})}}
+                                        onChange={(e)=>{
+                                            if(Date.parse(e)>Date.parse(this.state.checkOut))
+                                            this.setState({checkIn:e,checkOut:e},()=>{this.setDays()})
+                                            else
+                                            this.setState({checkIn:e},()=>{this.setDays()})
+                                        }
+                                        }
                                         />
                                     </div>
                                     <div className={classes.checkIn}>
@@ -233,16 +243,16 @@ class Index extends Component{
                 <Typography classes={{root:classes.title}} variant="h3">Where would you like to stay?</Typography>
                 <Grid  container spacing={2}>
                     <Grid item xs={12} sm={6} md={3} lg={3} >
-                    <Stays title="House" image={house} available={1000} color={'#DF6C08'}/>
+                    <Stays title="House" link={`/search?type=house`} image={house} available={1000} color={'#DF6C08'}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays title="Bungalows" image={bangalow} available={1000}/>
+                    <Stays title="Bungalows" link={`/search?type=bungalows`} image={bangalow} available={1000}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays title="Condos" image={condos} available={1000} color="#DF0808"/>
+                    <Stays title="Condos" link={`/search?type=condos`} image={condos} available={1000} color="#DF0808"/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays title="Cottages" image={cottage} available={1000} color="#000000"/>
+                    <Stays title="Cottages" link={`/search?type=cottages`} image={cottage} available={1000} color="#000000"/>
                     </Grid>
                 </Grid>
 
@@ -300,7 +310,7 @@ class Index extends Component{
 
                 <Typography variant="h4" classes={{root:classes.title}}>Explore Cribs by City</Typography>
                 <Grid style={{position:'relative'}} container>
-                    <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'}]}/>
+                    <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link:'/search?city=lagos'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/search?city=abuja'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/search?city=kano'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/search?city=benin'}]}/>
                 </Grid>
                 </Grid>
             </Grid>

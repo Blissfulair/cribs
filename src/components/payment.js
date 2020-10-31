@@ -36,7 +36,11 @@ const PayStack = withRouter(({changeHandler,state,data,history})=>{
             id:data.id.replace('/',''),
             transactionID:config.reference,
             renterEmail:state.email,
-            fullname:state.name
+            fullname:state.name,
+            userId:context.state.user?context.state.user.uid:null,
+            propertyName:data.name,
+            propertyState:data.state,
+            propertyCity:data.city
         }
         context.reserveCrib(reserve)
         .then(()=>{

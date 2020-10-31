@@ -5,6 +5,7 @@ import {
     Slide,
     DialogTitle,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
@@ -119,7 +120,7 @@ const PopUP = ({open, handleClose, summary,onReserved})=>{
             <p>100% refund for cancellation requested by {date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear()} at 11:59am(property local time). 50% refund for cancellations requested by {date.getDate()+3+'/'+(date.getMonth()+1)+'/'+date.getFullYear()} at 11:59 (properties local time).</p>
             <div className="summary-btn">
                 <button onClick={()=>handleClose()}>Go Back</button>
-                <button onClick={()=>onReserved({...summary,ownerFee:ownerFee,systemFee:systemFee,total:total,tax:tax, refund:refund, accumulate:accumulate})}>Make Payment</button>
+                <Link to="/login"><button>Make Payment</button></Link>
             </div>
         </DialogContent>
     </Dialog>

@@ -81,7 +81,7 @@ const Footer = ({classes})=>{
                                             </ul>
                                         </Grid>
                                         <Grid item md={4}  xs={12}>
-                                            <Typography classes={{root:classes.title}} variant="h2">Comapny</Typography>
+                                            <Typography classes={{root:classes.title}} variant="h2">Company</Typography>
                                             <ul className={classes.list}>
                                                 <li className={classes.listItem} ><Link className={classes.link} to="/">About</Link></li>
                                                 <li className={classes.listItem} ><Link className={classes.link} to="/">Carreer</Link></li>

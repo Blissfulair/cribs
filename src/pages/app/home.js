@@ -121,10 +121,10 @@ class Home extends Component{
                 <Typography classes={{root:classes.title}} variant="h3">Where would you like to stay?</Typography>
                 <Grid  container spacing={2}>
                     <Grid item xs={12} sm={6} md={3} lg={3} >
-                    <Stays title="House" height={280} image={house} available={1000} color={'#DF6C08'}/>
+                    <Stays title="House" link={`/app/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays title="Bungalows" height={280} image={bangalow} available={1000}/>
+                    <Stays title="Bungalows" link={`/app/search?type=bungalows`}  height={280} image={bangalow} available={1000}/>
                     </Grid>
                     <Grid item xs={12} sm={12} md={6} lg={6}>
                         <div className={classes.loginContainer}>
@@ -187,7 +187,7 @@ class Home extends Component{
 
                 <Typography variant="h4" classes={{root:classes.title}}>Explore Cribs by City</Typography>
                 <Grid style={{position:'relative'}} container>
-                    <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more'}]}/>
+                <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link:'/app/search?city=lagos'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/app/search?city=abuja'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/app/search?city=kano'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/app/search?city=benin'}]}/>
                 </Grid>
                 </Grid>
             </Grid>

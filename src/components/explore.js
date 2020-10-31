@@ -44,7 +44,7 @@ const Explore = ({content})=>{
                     >
                     {content.map((city,index)=>{
                     return (
-                        <City color='#000000' name={city.name} image={city.image} description={city.description}  key={index} />
+                        <City color='#000000' link={city.link} name={city.name} image={city.image} description={city.description}  key={index} />
                     )
                     })
                     }

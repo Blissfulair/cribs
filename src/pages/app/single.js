@@ -42,6 +42,7 @@ import Share from "../../components/share";
 import HostPopUp from "../../components/hostPopUp";
 import BookingCalendar from "../../react-calender/src/BookingCalendar";
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 const styles = theme =>({
     container:{
         paddingTop:140
@@ -157,7 +158,14 @@ class Single extends Component{
             hostTriger:false,
             guest:1,
             favourite:false,
-            loading:true
+            loading:true,
+            labels : {
+                1: 'Mediocre',
+                2: 'Okay',
+                3: 'Good',
+                4: 'Excellent',
+                5: 'Excellent'
+              },
         }
         this.propert = null
     }
@@ -251,7 +259,6 @@ class Single extends Component{
         })
     }
     render(){   
-    const data = [1,3,4,5]
     const {classes} = this.props
     this.propert = this.context.state.property
     const property =this.propert
@@ -467,9 +474,10 @@ class Single extends Component{
                                                         Excellent 4.7/5 Good for families
                                                     </Typography>
                                                     <Rating
+                                                    disabled
                                                     name='kls'
-                                                    defaultValue={4}
-                                                    
+                                                    defaultValue={property.rateValue/property.totalReviewer}
+                                                    emptyIcon={<StarBorderIcon htmlColor="#fff" fontSize="small" />}
                                                     style={{fontSize:15, color:'#000000', margin:'15px 0'}}
                                                     />
                                                 </Grid>
@@ -614,29 +622,29 @@ class Single extends Component{
                                                 {
                                                 property.reviews.length>0&&
                                                 <>
-                                                <div style={{marginTop:570,marginBottom:26}}>
-                                                    <Typography className={classes.progressBarTitle}>Excellent</Typography>
-                                                    <BorderLinearProgress variant="determinate" value={30}/>
-                                                    <Typography className={classes.progressBarTitle}>Good</Typography>
+    <div style={{marginTop:570,marginBottom:26}}>
+                                                    <Typography className={classes.progressBarTitle}>{this.state.labels[Math.ceil(property.rateValue/property.totalReviewer)]}</Typography>
+                                                    <BorderLinearProgress variant="determinate" value={(property.rateValue/5)*100}/>
+                                                    {/* <Typography className={classes.progressBarTitle}>Good</Typography>
                                                     <BorderLinearProgress variant="determinate" value={50}/>
                                                     <Typography className={classes.progressBarTitle}>Okay</Typography>
                                                     <BorderLinearProgress variant="determinate" value={15}/>
                                                     <Typography className={classes.progressBarTitle}>Mediocre</Typography>
-                                                    <BorderLinearProgress variant="determinate" value={7}/>
+                                                    <BorderLinearProgress variant="determinate" value={7}/> */}
                                                 </div>
                                                 <Grid container >
                                                     <Grid item md={5}>
-                                                        <Typography variant="h5" style={{fontWeight:'bold'}}>3.9</Typography>
-                                                        <Typography style={{fontSize:12,fontWeight:500, marginBottom:17}} variant="subtitle1" component="p">Neatness</Typography>
-                                                        <Typography variant="h5" style={{fontWeight:'bold'}}>4.3</Typography>
-                                                        <Typography style={{fontSize:12,fontWeight:500, marginBottom:17}} variant="subtitle1" component="p">Amenities</Typography>
+                                                        <Typography variant="h5" style={{fontWeight:'bold'}}>{(property.rateValue/property.totalReviewer).toFixed(1)}</Typography>
+                                                        <Typography style={{fontSize:12,fontWeight:500, marginBottom:17}} variant="subtitle1" component="p">Overall Rating</Typography>
+                                                        {/* <Typography variant="h5" style={{fontWeight:'bold'}}>4.3</Typography>
+                                                        <Typography style={{fontSize:12,fontWeight:500, marginBottom:17}} variant="subtitle1" component="p">Amenities</Typography> */}
                                                     </Grid>
-                                                    <Grid item md={7}>
+                                                    {/* <Grid item md={7}>
                                                         <Typography variant="h5" style={{fontWeight:'bold'}}>4.1</Typography>
                                                         <Typography style={{fontSize:12,fontWeight:500, marginBottom:17}} variant="subtitle1" component="p">Customer Service</Typography>
                                                         <Typography variant="h5" style={{fontWeight:'bold'}}>3.6</Typography>
                                                         <Typography style={{fontSize:12,fontWeight:500, marginBottom:17}} variant="subtitle1" component="p">Property Condition</Typography>
-                                                    </Grid>
+                                                    </Grid> */}
                                                 </Grid>
                                                 </>
                                                 }
@@ -648,7 +656,7 @@ class Single extends Component{
                                                     {
                                                         property.reviews.length>0?
                                                         property.reviews.map((item, i)=>{
-                                                            return <Review number={i} data={data} key={i}/>
+                                                            return <Review number={i} property={property} data={item} key={i}/>
                                                         })
                                                         :
                                                         <Typography>No review for this crib yet!</Typography>

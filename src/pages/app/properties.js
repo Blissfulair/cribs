@@ -21,6 +21,7 @@ import AddIcon from "@material-ui/icons/Add"
 import EditIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AppContext from "../../state/context"
+import { currency } from "../../helpers/helpers";
 
 export const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -141,6 +142,8 @@ class Properties extends React.Component{
                                 {
                                 properties.length>0?
                                 properties.map((property, i) =>{
+                                        const date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+                                        const avail = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === date.toDateString())
                                         const update = new Date(property.updatedAt.seconds*1000);
                                         const created = new Date(property.createdAt.seconds*1000);
                                         const updatedAt = update.getDate()+'/'+(update.getMonth()+1)+'/'+update.getFullYear() 
@@ -151,11 +154,11 @@ class Properties extends React.Component{
                                             {property.name}
                                         </StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{this.str_length(property.description, 30)}</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.amount}</StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{currency(property.amount)}</StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{createdAt}</StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{updatedAt}</StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="center">
-                                            <Switch name={property.id} checked={property.availability}/>
+                                            <Switch name={property.id} checked={avail.length}/>
                                         </StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="center">
                                             <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>

@@ -17,12 +17,29 @@ import Search from "../pages/app/search";
 import Single from "../pages/app/single";
 import Payment from "../pages/app/payment";
 import Favourites from "../pages/app/host/favourites";
+import History from "../pages/app/renter/history";
 class Auth  extends Component{
     static contextType = AppContext
+    constructor(props){
+        super(props)
+        this.state={
+            times:0
+        }
+    }
     componentDidMount(){
         const path = this.props.location.pathname;
         const search = this.props.location.search
         if (path.includes('app')) {
+            if(this.context.state.dashboard)
+                if(path.includes('inbox'))
+                this.props.history.push('/app/history')
+                else if(path.includes('profile'))
+                this.props.history.push('/app/profile')
+                else if(path.includes('setting'))
+                this.props.history.push('/app/setting')
+                else
+                this.props.history.push('/app/home')
+            else
             this.props.history.push(path+search)
         }
         else {
@@ -30,6 +47,7 @@ class Auth  extends Component{
         }
     }
     componentDidUpdate(prevProps){
+        let dash = true
         if(prevProps.location.pathname !== this.props.location.pathname || this.context.state.dashboard){
             if(this.context.state.dashboard){
                 if(prevProps.location.pathname.includes('property'))
@@ -41,6 +59,26 @@ class Auth  extends Component{
                 // else
                 // this.context.setDashboard(true)
                 // this.props.history.push(path+search)
+                dash = this.context.state.dashboard
+            }
+        }
+        else if(dash !== this.context.state.dashboard && this.state.times === 0){
+            dash = this.context.state.dashboard
+            const path = this.props.location.pathname;
+            const search = this.props.location.search
+            this.setState({times:1})
+            if (path.includes('app')) {
+                if(!this.context.state.dashboard)
+                {
+                    if(path.includes('profile'))
+                    this.props.history.push('/app/profile')
+                    else if(path.includes('settings'))
+                    this.props.history.push('/app/settings')
+                    else
+                    this.props.history.push('/app/dashboard')
+                }
+                else
+                this.props.history.push(path+search)
             }
         }
     }
@@ -65,6 +103,9 @@ class Auth  extends Component{
             </Route>
             <Route path='/app/withdraws' >
                 <DashboardPayment />
+            </Route>
+            <Route path='/app/history' >
+                <History />
             </Route>
             <Route path='/app/favourites' >
                 <Favourites />

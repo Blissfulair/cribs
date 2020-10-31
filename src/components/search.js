@@ -49,10 +49,10 @@ const Search = ({classes, content, rating,name, favourite})=>{
     const {state} =useContext(AppContext)
     return(
     <Link to={state.user?`/app/crib/${content.id}`:`/crib/${content.id}`}>
-        <Card elevation={3} style={{margin:'15px 0'}} classes={{root:classes.root}}>
+        <Card className="fav-search" elevation={3} style={{margin:'15px 0'}} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.root}}>
                 <div className={classes.media}>
-                    <CardMedia image={content.images[0]}
+                    <CardMedia image={content.featuredImage}
                             component="img"
                             alt="Contemplative Reptile"
                             height="100%"
@@ -77,11 +77,10 @@ const Search = ({classes, content, rating,name, favourite})=>{
                         <Typography>
                             <Rating
                                 name={name}
-                                defaultValue={rating}
+                                defaultValue={content.rateValue/content.totalReviewer}
                                 precision={0.5}
-                                
+                                disabled
                                 style={{fontSize:20, color:'#000000'}}
-                                onClick={(value)=>{if(value.target.value !== undefined)console.log(value.target.value)}}
                                 ///getLabelText={(value)=>{console.log(value, props.name)}}
                                 emptyIcon={<StarBorderIcon htmlColor="#000000" style={{fontSize:20}} />}
                                 />

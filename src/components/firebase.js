@@ -26,7 +26,8 @@ const firebaseConfig = {
             TRANSACTIONS:'transactions',
             BOOKINGS:'bookings',
             ACTIVITIES:'activities',
-            NOTIFICATIONS:'notifications'
+            NOTIFICATIONS:'notifications',
+            PAYMENTS:'payments'
         }
         this.serverTime = firebase.firestore.Timestamp.now().seconds
         // Date.prototype.addDays = function(days) {
@@ -49,20 +50,20 @@ const firebaseConfig = {
         await this.firestore.collection(this.tables.USERS).doc(user.uid).set({firstname:data.firstname,lastname:data.lastname,email:data.email,role:data.role, status:false})
     }
     makeHost = async(user)=>{
-        await this.firestore.collection(this.tables.USERS).doc(user.uid).update({role:2})
+        await this.firestore.collection(this.tables.USERS).doc(user.uid).update({role:2,balance:0,pending:0,income:0,withdrawn:0})
     }
     getUserDetails = async(uid)=>{
         const data = (await this.firestore.collection(this.tables.USERS).doc(uid).get()).data()
       return data
     }
-    getHostProperties = async()=>{
+    getHostProperties = async(hostId)=>{
         let properties = null
-        properties = await this.firestore.collection(this.tables.PROPERTIES).limit(4).get();
+        properties = await this.firestore.collection(this.tables.PROPERTIES).where('hostId', 'not-in', [hostId]).limit(4).get();
         return properties;
     }
-    getLatestProperties = async()=>{
+    getLatestProperties = async(hostId)=>{
         let properties = null
-        properties = await this.firestore.collection(this.tables.PROPERTIES).orderBy('createdAt', 'desc').limit(15).get();
+        properties = await this.firestore.collection(this.tables.PROPERTIES).where('hostId', '!=', hostId).orderBy('hostId').orderBy('createdAt', 'desc').limit(15).get();
         return properties;
     }
     getMyProperties = async(hostId)=>{
@@ -105,10 +106,13 @@ const firebaseConfig = {
                 address:data.address,
                 guest:data.guest,
                 type:data.type,
-                house:data.house,
-                city:data.city,
+                house:data.house.toLowerCase(),
+                city:data.city.toLowerCase(),
                 state:data.state,
                 hostData:data.hostData,
+                bookedDates:[],
+                rateValue:0,
+                totalReviewer:0,
                 createdAt:firebase.firestore.FieldValue.serverTimestamp(),
                 updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
                 keywords:searchIndex
@@ -145,8 +149,30 @@ const firebaseConfig = {
     }
 
     getPropertyById = async(id)=>{
-        const property = await (await this.firestore.collection(this.tables.PROPERTIES).doc(id).get()).data();
-        return property 
+        const property = await this.firestore.collection(this.tables.PROPERTIES).doc(id).get();
+        const reviews = []
+        await this.firestore.collection(this.tables.NOTIFICATIONS).where('propertyID', '==', property.id).where('type', '==', 'review').get()
+        .then(docs=>{
+            docs.forEach(doc=>reviews.push({...doc.data()}))
+        })
+
+        return {...property.data(), reviews:reviews} 
+    }
+    getPropertiesByType = async(type,hostId)=>{
+        const properties = [];
+       return await this.firestore.collection(this.tables.PROPERTIES).where('type', '==', type).where('hostId', '!=', hostId).get()
+                .then(docs=>{
+                    docs.forEach(doc=>properties.push({...doc.data(), id:doc.id}))
+                    return properties
+                })
+    }
+    getPropertiesByCity = async(city,hostId)=>{
+        const properties = [];
+       return await this.firestore.collection(this.tables.PROPERTIES).where('city', '==', city).where('hostId', '!=', hostId).get()
+                .then(docs=>{
+                    docs.forEach(doc=>properties.push({...doc.data(), id:doc.id}))
+                    return properties
+                })
     }
     searchProperties = async (location, checkIn, checkOut, guest=0)=>{
         // this.firestore.collection(this.tables.PROPERTIES)
@@ -181,7 +207,8 @@ const firebaseConfig = {
     getHostNotifications = async(hostId)=>{
         const data =[]
          await this.firestore.collection(this.tables.NOTIFICATIONS).where('hostId', '==', hostId).onSnapshot(snap=>{
-            snap.docs.forEach(doc=>{
+            snap.docs.forEach((doc,i)=>{
+                if(i <= 6)
                 data.push({...doc.data(), id:doc.id})
             })
            
@@ -191,8 +218,8 @@ const firebaseConfig = {
     reserveCrib = async(reserveData)=>{
        let bookedDates = []
        const dates = getDates(reserveData.checkIn, reserveData.checkOut)
-       const data= await (await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id).get()).data()
-       bookedDates.push(...data.bookedDates, ...dates)
+    //    const data= await (await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id).get()).data()
+       bookedDates.push(...dates)
        await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString()).set({
         checkIn:reserveData.checkIn,
         checkOut:reserveData.checkOut,
@@ -201,19 +228,38 @@ const firebaseConfig = {
         email:reserveData.renterEmail,
         name:reserveData.fullname,
         transactionID:reserveData.transactionID,
-        status:'pending',
+        userId:reserveData.userId,
+        propertyName:reserveData.propertyName,
+        propertyState:reserveData.propertyState,
+        propertyCity:reserveData.propertyCity,
+        bookedDates:bookedDates,
+        status:'success',
         creactedAt:firebase.firestore.FieldValue.serverTimestamp(),
         
     })
 
-       await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id)
-        .update({
-            bookedDates:bookedDates
-        })
+    //    await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id)
+    //     .update({
+    //         bookedDates:bookedDates
+    //     })
         .then(async()=>{
-            await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString()).update({
-                status:'success',
-            })
+            // await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString()).update({
+            //     status:'success',
+            // })
+            // await this.firestore.collection(this.tables.TRANSACTIONS).add({
+            //     amount:reserveData.total*0.9,
+            //     propertyID:reserveData.id,
+            //     name:reserveData.fullname,
+            //     transactionID:reserveData.transactionID,
+            //     userId:reserveData.userId,
+            //     hostId:reserveData.hostId
+            // })
+            // .then(()=>{
+                this.firestore.collection(this.tables.USERS).doc(reserveData.hostId).get()
+                .then(host=>{
+                    this.firestore.collection(this.tables.USERS).doc(reserveData.hostId).update({balance:host.data().balance+reserveData.total*0.9, income:host.data().income+reserveData.total*0.9})
+                })
+            //})
         })
         .catch(async(e)=>{
             await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString())
@@ -298,6 +344,110 @@ const firebaseConfig = {
             .get()
         }
         catch(e){}
+    }
+
+    getHistories = async(userId)=>{
+        const histories = []
+         await this.firestore.collection(this.tables.BOOKINGS).where('userId','==',userId).onSnapshot(snap=>{ 
+            snap.forEach(doc=>{
+
+                histories.push({...doc.data(), id:doc.id})
+            })
+        })
+        return histories
+    }
+    deleteHistory =async(ids)=>{
+        try{
+            await this.firestore.collection(this.tables.BOOKINGS).where('transactionID', 'in', ids).get()
+            .then(docs=>{
+                docs.forEach(async(doc)=>{
+                    await this.firestore.collection(this.tables.BOOKINGS).doc(doc.id).delete()
+                })
+            })
+        }
+        catch(e){}
+    }
+    withdraw = async(data)=>{
+        try{
+            const pending = Number(data.amount)
+            const date = new Date(this.serverTime*1000)
+            const transId = firebase.firestore.Timestamp.now().nanoseconds;
+           await this.firestore.collection(this.tables.PAYMENTS).doc(transId.toString()).set({
+                hostId:data.hostId,
+                amount:pending,
+                status:'pending',
+                type:data.type,
+                details:{...data.details},
+                createdAt:this.serverTime,
+                year:date.getFullYear(),
+                month:date.getMonth(),
+                transactionID:transId
+            })
+            await this.firestore.collection(this.tables.USERS).doc(data.hostId).update({
+                balance:(data.balance - pending),
+                pending:(data.pending+pending)
+            })
+            return {
+                balance:(data.balance - pending),
+                pending:data.pending+pending,
+                hostId:data.hostId,
+                amount:pending,
+                status:'pending',
+                type:data.type,
+                details:{...data.details},
+                createdAt:this.serverTime,
+                year:date.getFullYear(),
+                month:date.getMonth(),
+                transactionID:transId    
+            }
+        }catch(e){}
+    }
+
+    approveWithdrawal = async(transId,hostId,amount)=>{
+        await this.firestore.collection(this.tables.PAYMENTS).doc(transId).update({status:'processed'})
+        .then(async()=>{
+            const user = await (await this.firestore.collection(this.tables.USERS).doc(hostId).get()).data() 
+            this.firestore.collection(this.tables.USERS).doc(hostId).update({withdrawn:user.withdrawn+amount,pending:user.pending-amount})
+        })
+    }
+    getPaymentHistory=async(hostId)=>{
+        return await this.firestore.collection(this.tables.PAYMENTS).where('hostId', '==', hostId).get()
+        .then(docs=>{
+            const payments =[]
+            docs.forEach(doc=>payments.push({...doc.data(),id:doc.id}))
+            return payments;
+        })
+    }
+
+    sendReview = async(data)=>{
+        await this.firestore.collection(this.tables.NOTIFICATIONS).add({
+            // hostId:data.hostId,
+            checkIn:data.checkIn,
+            checkOut:data.checkOut,
+            propertyID:data.propertyID,
+            email:data.email,
+            name:data.name,
+            photoURL:data.photoURL,
+            review:data.review,
+            rating:data.rating,
+            status:'submited',
+            type:'review',
+            view:'unread',
+            creactedAt:firebase.firestore.FieldValue.serverTimestamp(),
+        })
+        .then(async()=>{
+        await this.firestore.collection(this.tables.BOOKINGS).doc(data.historyId.toString()).update({
+                reviewed:true,
+                review:data.review,
+                rating:data.rating
+            })
+        })
+        const property = await (await this.firestore.collection(this.tables.PROPERTIES).doc(data.propertyID).get()).data()
+        await this.firestore.collection(this.tables.PROPERTIES).doc(data.propertyID).update({
+            rateValue:Number(data.rating)+property.rateValue,
+            totalReviewer:Number(property.totalReviewer)+1
+
+        })
     }
 }
 export default new Firebase();

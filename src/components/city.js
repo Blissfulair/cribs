@@ -27,7 +27,7 @@ const styles = (theme)=>({
 const City = (props)=>{
     const {classes} = props
     return(
-        <Link className={classes.cardLink} style={{height:props.height?props.height:200}} to={'/'}>
+        <Link className={classes.cardLink} style={{height:props.height?props.height:200}} to={`${props.link}`}>
             <div className={classes.card}>
                 <CardMedia className={classes.media} image={props.image}/>
                 <div style={{backgroundColor:props.color}} className={classes.overlay}>

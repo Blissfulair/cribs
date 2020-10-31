@@ -40,6 +40,38 @@ export const getFav = (id)=>{
     }
     return favourite
 }
+export const setDashboard = (dashboard)=>{
+    try{
+        window.sessionStorage.setItem('@dash', JSON.stringify(dashboard))
+    }
+    catch(e){}
+
+}
+export const getDashboard = ()=>{
+    try{
+       let dashboard = JSON.parse(window.sessionStorage.getItem('@dash'))
+       dashboard = dashboard === null?true:dashboard
+       return dashboard;
+    }
+    catch(e){}
+
+}
+
+export const currency=(amount, decimal, decSeperator, thouSeperator)=> {
+   const decPlaces = isNaN(decimal = Math.abs(decimal)) ? 2 : decimal;
+    const decSep = typeof decSeperator === "undefined" ? "." : decSeperator;
+    const thouSep = typeof thouSeperator === "undefined" ? "," : thouSeperator;
+    let sign = amount < 0 ? "-" : "";
+    let i = String(parseInt(amount = Math.abs(Number(amount) || 0).toFixed(decPlaces)));
+    let j =0
+     j= (j = i.length) > 3 ? j % 3 : 0;
+    
+    return '₦ '+ sign +
+        (j ? i.substr(0, j) + thouSep : "") +
+        i.substr(j).replace(/(\decSep{3})(?=\decSep)/g, "$1" + thouSep) +
+        (decPlaces ? decSep + Math.abs(amount - i).toFixed(decPlaces).slice(2) : "");
+    }
+
 
 export const getFavs = ()=>{
     let data = [];

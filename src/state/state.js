@@ -1,6 +1,6 @@
 import {useReducer,useMemo,useEffect} from "react"
 import firebase from '../components/firebase'
-import { getWeekNumber } from "../helpers/helpers"
+import { getWeekNumber, setDashboard, getDashboard } from "../helpers/helpers"
 
 const GlobalState= ()=>{
     const initialState={
@@ -19,6 +19,11 @@ const GlobalState= ()=>{
         favourite:[],
         activities:[],
         notifications:[],
+        histories:[],
+        earnings:{
+            balance:0,
+            pending:0,
+        },
         chart:{
             monthly:[],
             yearly:[],
@@ -47,6 +52,11 @@ const GlobalState= ()=>{
                 return{
                     ...prevState,
                     photoURL:action.payload.photoURL
+                }
+            case 'GET_EARNINGS':
+                return{
+                    ...prevState,
+                    earnings:action.payload.earnings
                 }
             case 'GET_LATEST':
                 return{
@@ -93,6 +103,11 @@ const GlobalState= ()=>{
                     ...prevState,
                     results:action.payload.results
                 }
+            case 'GET_HISTORIES':
+                return{
+                    ...prevState,
+                    histories:action.payload.histories
+                }
             case 'GET_MY_PROPERTIES':
                 return{
                     ...prevState,
@@ -108,9 +123,9 @@ const GlobalState= ()=>{
         }
     }
     const [state, dispatch] = useReducer(reducer,initialState)
-   const getProperties=()=>{
+   const getProperties=(userId)=>{
         let props =[]
-        firebase.getHostProperties()
+        firebase.getHostProperties(userId)
         .then(properties=>{
             properties.docs.forEach(doc=>{
                 props.push({id:doc.id, ...doc.data()})
@@ -118,9 +133,9 @@ const GlobalState= ()=>{
             dispatch({type:'GET_PROPERTIES', payload:{properties:props}})
         })
     }
-    const getLatestProperties=()=>{
+    const getLatestProperties=(userId)=>{
         let props =[]
-        firebase.getLatestProperties()
+        firebase.getLatestProperties(userId)
         .then(properties=>{
             properties.docs.forEach(doc=>{
                 props.push({id:doc.id, ...doc.data()})
@@ -181,31 +196,19 @@ const GlobalState= ()=>{
               dispatch({type:'GET_CHART', payload:{chart}})
           })
       }
-    //  this.context.getActivities(this.context.state.user.uid)
-    //  .then(data=>{
-    //      let monthly = {}
-    //      let yearly = {}
-    //      let weekly ={}
-    //      let years = []
-    //      let weeks = []
-    //      data.forEach((da)=>{
-    //          monthly[da.month]=(monthly[da.month] || 0)+1
-    //          yearly[da.year]=(yearly[da.year] || 0)+1
-    //          weekly[da.week]=(weekly[da.week] || 0)+1
-    //      })
-    //      let today = new Date();
-    //      today = today.getFullYear();
-    //      for(let year = today-10; year <= today; year++){
-    //          years = [...years,[year, (yearly[year] || 0)]]
-    //      }
-    //      const weekNumber = getWeekNumber()
-    //      for(let week = weekNumber-7; week <= weekNumber; week++){
-    //          weeks = [...weeks,[week, (weekly[week] || 0)]]
-    //      }
-    //      this.setState({
 
-    //  })
-    //  })
+    // const  getEarnings=async(hostId)=>{
+    //     return await firebase.getIncome(hostId)
+    //       .then((res)=>{
+    //           let net = 0
+    //           res.forEach(doc=>{
+    //                 const data = doc.data()
+    //                 net += data.amount*0.9
+    //           })
+    //           console.log(net)
+    //           dispatch({type:'GET_EARNINGS', payload:{earnings:{net:net}}})
+    //       })
+    //   }
     const getGeoInfo = () => {
         fetch('https://ipapi.co/json/')
         .then((response) => {
@@ -220,7 +223,7 @@ const GlobalState= ()=>{
 
     useEffect(()=>{
 
-        getProperties()
+        
         getGeoInfo()
         firebase.auth.onAuthStateChanged((user)=>{
             try{
@@ -232,12 +235,21 @@ const GlobalState= ()=>{
                     if(userData.role === 0)
                     dispatch({type:'GET_DASHBOARD', payload:{dashboard:true}})
                     else if(userData.role === 1)
-                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                    {
+                        dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                        dispatch({type:'GET_EARNINGS', payload:{earnings:{ balance:userData.balance, pending:userData.pending}}})
+                    }
                     else if(userData.role ===2)
-                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                    {
+                        const dash = getDashboard()
+                        dispatch({type:'GET_DASHBOARD', payload:{dashboard:dash}})
+                        dispatch({type:'GET_EARNINGS', payload:{earnings:{ balance:userData.balance, pending:userData.pending}}})
+                    }
+
                     dispatch({type:'SET_STATE', payload:{initializing:false}})
                     //load the latest properties
-                    getLatestProperties()
+                    getLatestProperties(user.uid)
+                    getProperties(user.uid)
                     getHostNotifications(user.uid)
                     getActivities(user.uid)
                     
@@ -246,6 +258,7 @@ const GlobalState= ()=>{
             catch(e){
                 dispatch({type:'RETRIVE_USER', payload:{user:null, userData:null}})
                 dispatch({type:'SET_STATE', payload:{initializing:false}})
+                getProperties('')
             }
             // if(user){
 
@@ -333,13 +346,15 @@ const GlobalState= ()=>{
             })
         },
         onLoadSearch:async(data)=>{
-            await firebase.searchProperties(data.location, data.checkIn, data.checkOut, data.guest)
+            let results = []
+           return await firebase.searchProperties(data.location, data.checkIn, data.checkOut, data.guest)
             .then(docs=>{
-                let results = []
+                
                 docs.forEach(doc=>{
                     results.push({id:doc.id,...doc.data()})
                     dispatch({type:'GET_RESULTS', payload:{results:results}})
                 })
+                return results;
 
             })
         },
@@ -348,6 +363,7 @@ const GlobalState= ()=>{
         },
         chooseDashboard:async()=>{
             await dispatch({type:'GET_DASHBOARD', payload:{dashboard:!state.dashboard}})
+                setDashboard(!state.dashboard)
             return !state.dashboard
         },
         makeHost:async()=>{
@@ -404,10 +420,52 @@ const GlobalState= ()=>{
             catch(e){}
         },
 
-        notifications:(hostId,data)=>{
-            firebase.notification(hostId,data)
+        notifications:(hostId,data,type)=>{
+            firebase.notification(hostId,data,type)
         },
+        getHistories:async(userId)=>{
+            return await  firebase.getHistories(userId)
+             .then(histories=>{
+                     dispatch({type:'GET_HISTORIES', payload:{histories}})
+                     return histories
+                 })
 
+         },
+         deleteHistory:async(ids)=>{
+            await firebase.deleteHistory(ids)
+         },
+         withdrawal: async(data)=>{
+            return await firebase.withdraw(data)
+             .then(res=>{
+                dispatch({type:'GET_EARNINGS', payload:{earnings:{balance:res.balance, pending:res.pending}}})
+                
+                return res;
+             })
+         },
+         approveWithdrawal:async(transId,hostId,amount)=>{
+            await firebase.approveWithdrawal(transId,hostId,amount)
+         },
+         getPaymentHistory:async()=>{
+            return await firebase.getPaymentHistory(state.user.uid)
+            .then(histories=>histories)
+         },
+         sendReview:async(data)=>{
+            await firebase.sendReview(data);
+         },
+         getPropertiesByType:async(type)=>{
+
+             await firebase.getPropertiesByType(type, state.user?state.user.uid:'')
+             .then(results=>{
+                dispatch({type:'GET_RESULTS', payload:{results:results}})
+             })
+         },
+         getPropertiesByCity:async(city)=>{
+
+            await firebase.getPropertiesByCity(city, state.user?state.user.uid:'')
+            .then(results=>{
+               dispatch({type:'GET_RESULTS', payload:{results:results}})
+            })
+        },
         state
     }),[state])
     return globals;

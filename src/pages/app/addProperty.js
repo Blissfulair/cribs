@@ -10,6 +10,7 @@ import AppContext from "../../state/context";
 import Activity from '../../components/activity'
 import firebase from "../../components/firebase"
 
+
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
@@ -119,6 +120,9 @@ class AddProperty extends React.Component{
         const str = leng - value.length ;
         event.target.nextElementSibling.innerHTML = str < 0 ? 0 + " Characters Left" :str + " Characters Left";
       }
+    getLocation = async(address)=>{
+
+    }
     // onChangeState=e=>{
     //     e.preventDefault();
     //     let val = e.target.value
@@ -291,7 +295,7 @@ firebase.storeProperty(body)
                                     <div className="col">
                                         <label htmlFor="cat">Address</label>
                                         <div className="input">
-                                            <input type="text" onChange={this.changeHandler} value={this.state.address}   id="cat" name="address" placeholder="45, Benin/Agbor Road" />
+                                            <input type="text" onChange={(e)=>{this.changeHandler(e);this.getLocation(e.target.value)}} value={this.state.address}   id="cat" name="address" placeholder="45, Benin/Agbor Road" />
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div>

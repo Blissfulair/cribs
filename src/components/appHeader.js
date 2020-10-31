@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import { Grid,IconButton} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import {MiniSearch} from "../components/searchForm"
 
 const AppHeader = ({classes, history})=>{
@@ -45,7 +45,8 @@ const AppHeader = ({classes, history})=>{
             .then((res)=>{
                 if(res)
                 {
-                    if(history.location.pathname.includes('calender') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('property') || history.location.pathname.includes('add-property') || history.location.pathname.includes('edit-property'))
+                    console.log(history.location.pathname)
+                    if(history.location.pathname.includes('calendar') || history.location.pathname.includes('inbox') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('property') || history.location.pathname.includes('add-property') || history.location.pathname.includes('edit-property'))
                     history.push('/app/home')
                     else
                     history.push(history.location.pathname+history.location.search)
@@ -59,7 +60,6 @@ const AppHeader = ({classes, history})=>{
                 }
             })
       }
-      console.log(context.state.dashboard) 
     return(
         <AppBar elevation={0} classes={{root:classes.app}} position="fixed"  color="primary">
         <Toolbar style={{padding:0}}>
@@ -89,17 +89,6 @@ const AppHeader = ({classes, history})=>{
                         <Grid item  xs={5} lg={4}> 
                             <Grid container alignItems="center" justify="flex-end">
                                 <Typography className="dashboard-mobile-menu" component="div">
-                                    {
-                                        context.state.dashboard&&
-                                        <ul className={classes.menu}>
-                                            <li className={classes.menuList}>
-                                                <Link style={{color:'#707070'}}  to="/app/inbox">Inbox</Link>
-                                            </li>
-                                            <li className={classes.menuList}>
-                                                <Link style={{color:'#707070', margin:'0 20px'}} to="/app/calender">Booking</Link>
-                                            </li>
-                                        </ul>
-                                    }
                                     {
                                         context.state.userData&&
                                         context.state.userData.role===2?

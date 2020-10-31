@@ -28,7 +28,7 @@ const styles = (theme)=>({
 const Stays = (props)=>{
     const {classes} = props
     return(
-        <Link className="card-link" to={'/'}>
+        <Link className="card-link" to={props.link}>
             <Grow in={true} disableStrictModeCompat>
             <div className={classes.card} style={{height:props.height?props.height:340}} > 
                 <CardMedia className={classes.media} image={props.image}/>

@@ -104,6 +104,60 @@
     -ms-user-select: none;
     user-select: none;
 }
+.history{
+    position: relative;
+}
+.history .radio .radio-mark,
+.history  .radio .radio-mark,
+.history  .radio .radio-mark{
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 3px 6px var(--shadow);
+    background: var(--white);
+    border-radius: 4px;
+}
+.history  .radio-mark::after{
+    position: absolute;
+    content: '';
+    display: none;
+}
+.history .radio input,
+.history  .radio input,
+.history .radio input{
+    display: none;
+}
+.history .radio input:checked ~ .radio-mark::after,
+.history .radio input:checked ~ .radio-mark::after,
+.history  .radio input:checked ~ .radio-mark::after{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: block;
+    background: var(--text-blue);
+}
+
+
+.table-head .table-title li:first-child .radio,
+.inbox-body table tr td:first-child .radio,
+.property-group .prop-type li .radio{
+    position: relative;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    font-size: 20px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 .table-head .table-title li:first-child .radio .radio-mark,
 .inbox-body table tr td:first-child .radio .radio-mark,
 .property-group .prop-type li .radio .radio-mark{
@@ -139,6 +193,7 @@
     display: block;
     background: var(--text-blue);
 }
+
 .inbox-body table tr td:nth-child(2) a,
 .inbox-body table tr td:last-child a,
 .inbox-body table tr td:last-child span{

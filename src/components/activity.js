@@ -2,13 +2,13 @@ import React from 'react'
 import './splash.css'
 import {CircularProgress} from "@material-ui/core"
 
-const Activity = ({loading, classes})=>{
+const Activity = ({loading})=>{
     return(
         <>
             {
                 loading&&
                 <div className="loading">
-                    <CircularProgress translate="yes" thickness={5} />
+                    <CircularProgress />
                 </div>
             }
         </>

@@ -503,6 +503,22 @@ font-size: 19px;
   font-size: 13px;
 
 }
+.MuiCircularProgress-colorPrimary{
+  color: #00A8C8 !important;
+}
+.loading .MuiCircularProgress-svg{
+  height: 50px;
+  width: 50px;
+}
+.MuiCircularProgress-indeterminate{
+  animation: none !important;
+}
+.btn-signup .MuiCircularProgress-colorPrimary{
+  color: #fff !important;
+  height: 13px !important;
+  width: 13px !important;
+  margin-right: 10px;
+}
 @media(max-width:767px){
   #end,#begin{
     font-size: 12px;

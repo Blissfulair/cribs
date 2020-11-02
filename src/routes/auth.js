@@ -43,6 +43,9 @@ class Auth  extends Component{
             this.props.history.push(path+search)
         }
         else {
+            if(this.context.state.dashboard)
+            this.props.history.push('/app/home')
+            else if(!this.context.state.dashboard)
             this.props.history.push('/app/dashboard')
         }
     }

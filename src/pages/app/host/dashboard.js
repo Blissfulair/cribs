@@ -92,7 +92,7 @@ const HostDashboard = ({classes, state, switchChart, context})=>{
                         <Divider/>
                         <List>
                             {
-                                context.state.notifications.length>0&&
+                                context.state.notifications.length>0?
                                 context.state.notifications.map((notification,i)=>{
                                     if(notification.type === 'booking'){
                                         if(notification.status === 'reserved')
@@ -144,7 +144,10 @@ const HostDashboard = ({classes, state, switchChart, context})=>{
                                     }
                                     return ''
                                 })
+                                :
+                                <p>No notification yet</p>
                             }
+                            
 
 
                         </List>

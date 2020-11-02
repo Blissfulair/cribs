@@ -347,14 +347,15 @@ const firebaseConfig = {
     }
 
     getHistories = async(userId)=>{
-        const histories = []
-         await this.firestore.collection(this.tables.BOOKINGS).where('userId','==',userId).onSnapshot(snap=>{ 
-            snap.forEach(doc=>{
-
-                histories.push({...doc.data(), id:doc.id})
+        const data = []
+          await this.firestore.collection(this.tables.BOOKINGS).where('userId','==',userId).onSnapshot(snap=>{ 
+            snap.docs.forEach(doc=>{
+                data.push({...doc.data(), id:doc.id})
             })
+            return data
         })
-        return histories
+        return data
+       
     }
     deleteHistory =async(ids)=>{
         try{

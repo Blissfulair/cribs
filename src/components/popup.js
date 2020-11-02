@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -6,10 +6,13 @@ import {
     DialogTitle,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import AppContext from '../state/context';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 const PopUP = ({open, handleClose, summary,onReserved})=>{
+        const {state} = useContext(AppContext)
         const date = new Date()
         const getMonth = (date) => {
 
@@ -120,7 +123,12 @@ const PopUP = ({open, handleClose, summary,onReserved})=>{
             <p>100% refund for cancellation requested by {date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear()} at 11:59am(property local time). 50% refund for cancellations requested by {date.getDate()+3+'/'+(date.getMonth()+1)+'/'+date.getFullYear()} at 11:59 (properties local time).</p>
             <div className="summary-btn">
                 <button onClick={()=>handleClose()}>Go Back</button>
-                <Link to="/login"><button>Make Payment</button></Link>
+                {
+                    state.userData?
+                    <button onClick={()=>{onReserved({...summary, accumulate:accumulate,total:total,ownerFee:ownerFee,systemFee:systemFee,refund:refund,tax:tax})}}>Make Payment</button>
+                    :
+                    <Link to="/login"><button>Make Payment</button></Link>
+                }
             </div>
         </DialogContent>
     </Dialog>

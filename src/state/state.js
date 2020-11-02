@@ -285,6 +285,7 @@ const GlobalState= ()=>{
                     dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
                     else if(userData.role ===2)
                     dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                    
                  })
            })
     
@@ -335,25 +336,31 @@ const GlobalState= ()=>{
             dispatch({type:'SET_SEARCH', payload:{searchQuery:search}}) 
         },
         searchProperties:async(location, checkIn, checkOut, guest)=>{
+            let results = []
              await firebase.searchProperties(location, checkIn, checkOut, guest)
             .then(docs=>{
-                let results = []
-                dispatch({type:'GET_RESULTS', payload:{results:[]}})
                 docs.forEach(doc=>{
-                    results.push({id:doc.id, ...doc.data()})
-                    dispatch({type:'GET_RESULTS', payload:{results:results}})
+                    const result = doc.data()
+                    const checkOutarr = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(checkOut).toDateString())
+                    const checkInarr = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(checkIn).toDateString())
+                    if(checkInarr.length<1 && checkOutarr.length<1)
+                    results.push({id:doc.id,...result})
                 })
             })
+            dispatch({type:'GET_RESULTS', payload:{results:results}})
         },
         onLoadSearch:async(data)=>{
             let results = []
            return await firebase.searchProperties(data.location, data.checkIn, data.checkOut, data.guest)
             .then(docs=>{
-                
                 docs.forEach(doc=>{
-                    results.push({id:doc.id,...doc.data()})
-                    dispatch({type:'GET_RESULTS', payload:{results:results}})
+                    const result = doc.data()
+                    const checkOut = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(data.checkOut).toDateString())
+                    const checkIn = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(data.checkIn).toDateString())
+                    if(checkIn.length<1 && checkOut.length<1)
+                    results.push({id:doc.id,...result})
                 })
+                dispatch({type:'GET_RESULTS', payload:{results:results}})
                 return results;
 
             })
@@ -424,10 +431,11 @@ const GlobalState= ()=>{
             firebase.notification(hostId,data,type)
         },
         getHistories:async(userId)=>{
-            return await  firebase.getHistories(userId)
-             .then(histories=>{
-                     dispatch({type:'GET_HISTORIES', payload:{histories}})
-                     return histories
+             await  firebase.getHistories(userId)
+             .then(data=>{
+                 console.log(data)
+                     dispatch({type:'GET_HISTORIES', payload:{data}})
+                     return data
                  })
 
          },

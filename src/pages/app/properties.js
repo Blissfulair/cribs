@@ -158,7 +158,7 @@ class Properties extends React.Component{
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{createdAt}</StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{updatedAt}</StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="center">
-                                            <Switch name={property.id} checked={avail.length}/>
+                                            <Switch name={property.id} checked={!avail.length}/>
                                         </StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="center">
                                             <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>

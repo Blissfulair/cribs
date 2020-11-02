@@ -9,6 +9,7 @@ import AppContext from "../../state/context";
 import { NativeSelect, Button,Snackbar, Slide, Grid } from "@material-ui/core";
 import Activity from "../../components/activity"
 import {Alert} from "@material-ui/lab"
+import {withRouter} from "react-router-dom"
 
 const EditProfileDom = ({state, handleCloseSnackBar, context, changeHandler,onSubmit,handleClick})=>{
     return(
@@ -169,6 +170,7 @@ class EditProfile extends React.Component{
         this.context.updateProfile(data)
         .then(()=>{
             this.setState({loading:false,success:true, message:'Profile has been updated'})
+            this.props.history.push('/app/profile')
         })
         .catch((e)=>{
             this.setState({loading:false,success:false, message:'Oops! failed to complete the operation. Please try again.'}) 
@@ -201,4 +203,4 @@ class EditProfile extends React.Component{
         )
     }
 }
-export default EditProfile;
+export default withRouter(EditProfile);

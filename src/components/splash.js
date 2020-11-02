@@ -1,27 +1,12 @@
 import React from "react"
 import "./splash.css"
-import {withStyles} from "@material-ui/core"
-const styles = ()=>({
-    container:{
-        display:'flex',
-        backgroundColor:'#fff',
-        width:'100%',
-        height:'100vh',
-        justifyContent:'center',
-        alignItems:'center',
-        position:'fixed',
-        top:0,
-        left:0,
-        zIndex:3
-    },
-})
-const Splash =({classes})=>{
+import {CircularProgress} from "@material-ui/core"
+
+const Splash =()=>{
     return(
-        <div className={classes.container}>
-            <div className='app-spinner'>
-                
-            </div>
+        <div style={{backgroundColor:'#fff'}} className='loading'>
+            <CircularProgress/>
         </div>
     )
 }
-export default withStyles(styles)(Splash);
+export default Splash;

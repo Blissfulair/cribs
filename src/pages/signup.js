@@ -4,12 +4,11 @@ import "./login.css"
 import {Link, withRouter} from "react-router-dom"
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import {withStyles,Snackbar, Slide } from "@material-ui/core";
+import {withStyles,Snackbar, Slide,CircularProgress } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppContext from "../state/context";
-import Activity from "../components/activity"
 // import firebase from "../components/firebase"
 
 
@@ -100,7 +99,7 @@ class SignUp extends React.Component{
             this.context.register(body)
             .then(()=>{
                 this.setState({loading:false})
-                this.props.history.push('/app/dashboard')
+                this.props.history.push('/app/home')
             })
             .catch((err=>{
                 this.setState({loading:false,
@@ -137,7 +136,6 @@ class SignUp extends React.Component{
     render(){
         return (
             <>
-            <Activity loading={this.state.loading} />
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div className="signin">
@@ -202,7 +200,14 @@ class SignUp extends React.Component{
                                             label="rememberme"
                                         />
                                 </div>
-                                <button onClick={this.handleClick(TransitionUp)} className="btn-signup">Sign Up</button>
+                                <button onClick={this.handleClick(TransitionUp)} className="btn-signup">
+                                    {
+                                        this.state.loading&&
+                                        <CircularProgress/>
+                                        
+                                    }
+                                    Sign Up
+                                </button>
                                 <div className="social-signup">
                                     <a href="https://www.facebook.com" className="col">
                                         <FacebookIcon/>

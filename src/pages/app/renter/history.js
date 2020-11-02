@@ -145,7 +145,7 @@ class History extends React.Component{
     componentDidMount(){
         this.context.getHistories(this.context.state.user.uid)
         .then(histories=>{
-            this.setState({histories,loading:false})
+            this.setState({loading:false})
         })
     }
 	handleClickOpen = (history) => {

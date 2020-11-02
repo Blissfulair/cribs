@@ -4,12 +4,11 @@ import "./login.css"
 import {Link} from "react-router-dom"
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import {  withStyles,Snackbar, Slide } from "@material-ui/core";
+import {  withStyles,Snackbar, Slide,CircularProgress } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Activity from "../components/activity"
-import AppContext from "../state/context";
+import AppContext from "../state/context"
 
 const styles = ()=>({
     label:{
@@ -108,7 +107,6 @@ class Login extends React.Component{
     render(){
         return (
             <>
-                <Activity loading={this.state.loading} />
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div className="signin">
@@ -168,7 +166,14 @@ class Login extends React.Component{
                                         />
                                     <Link to="/forgot">Forgot Password?</Link>
                                 </div>
-                                <button onClick={this.handleClick(TransitionUp)} className="btn-signup">Login</button>
+                                <button onClick={this.handleClick(TransitionUp)} className="btn-signup">
+                                    {
+                                        this.state.loading&&
+                                        <CircularProgress/>
+                                        
+                                    }
+                                    Login
+                                </button>
                                 <div className="social-signup">
                                     <a href="https://www.facebook.com" className="col">
                                         <FacebookIcon/>

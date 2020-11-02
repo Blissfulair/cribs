@@ -2,13 +2,15 @@ import React from "react";
 import "./inbox.css"
 import "./properties.css"
 import "./add-property.css"
-import image from  "../../images/login_bg.png"
+import image from  "../../images/placeholder.jpg"
 import {Snackbar, Slide } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Backend from "./layout"
 import AppContext from "../../state/context";
 import Activity from '../../components/activity'
 import firebase from "../../components/firebase"
+import {states} from "../../icons/options"
+import {withRouter} from "react-router-dom"
 
 
 const TransitionUp=(props)=>{
@@ -39,7 +41,7 @@ class AddProperty extends React.Component{
             kitchen:false,
             inside:'',
             around:'',
-            guest:0,
+            guest:1,
             featured_image:null,
             type:'house',
             other_images:[],
@@ -47,7 +49,8 @@ class AddProperty extends React.Component{
             message:'',
             transition:undefined,
             open:false,
-            isLoading:false
+            isLoading:false,
+            status:false,
         }
     }
 
@@ -145,19 +148,18 @@ class AddProperty extends React.Component{
     // }
 
     onSubmit=(event)=>{
-        const form = event
         event.preventDefault();
         if(!this.context.state.userData.status){
-            this.setState({message:'Profile must be updated before you can publish a crib.'})
+            this.setState({message:'Profile must be updated before you can publish a crib.', status:true})
             return
         }
         if(this.state.title === '' || this.state.description === '' || this.state.state === ''
-           || this.state.price === '' || this.state.featured_image === null)
+           || this.state.price === '' || this.state.featured_image === null || this.state.guest<1 || other_images.length<1)
            {
             this.setState({message:'All fields must be filled'})
             return false
            }
-           this.setState({isLoading:true})
+           this.setState({isLoading:true, message:''})
 const body = {
     hostId:this.context.state.user.uid,
     name:this.state.title,
@@ -202,7 +204,7 @@ firebase.storeProperty(body)
         kitchen:false,
         inside:'',
         around:'',
-        guest:0,
+        guest:1,
         featured_image:null,
         type:'house',
         other_images:[],
@@ -219,9 +221,10 @@ firebase.storeProperty(body)
             elements[i].remove()
 
         }
-        form.target.reset();
+        this.refs.form.reset();
      })
      .catch(err=>{
+         console.log(err)
          this.setState({message:'Failed to submit', isLoading:false})
      })
 
@@ -242,7 +245,7 @@ firebase.storeProperty(body)
 
                     {/* <!-- form --> */}
                     <div className="property-form dashboard-mt">
-                        <form onSubmit={event=>{this.onSubmit(event)}} method="post" encType="multipart/form-data">
+                        <form ref='form' onSubmit={event=>{this.onSubmit(event)}} method="post" encType="multipart/form-data">
                         {
                                 this.state.message&&
                                 <Snackbar
@@ -276,7 +279,13 @@ firebase.storeProperty(body)
                                         <div className="input">
                                             <select name="state" onBlur={this.changeHandler}  id="state">
                                                 <option value="">Select State</option>
-                                                <option value="edo">Edo</option>
+                                                {
+                                                    states.map((state, i)=>{
+                                                        return (
+                                                        <option key={i} value={state}>{state}</option>
+                                                        )
+                                                    })
+                                                }
                                             </select>
                                             <span>
                                                 <div className="angle"></div>
@@ -313,15 +322,13 @@ firebase.storeProperty(body)
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div> */}
-                                    {/* <div className="col">
-                                        <label htmlFor="furnished">Furnished</label>
+                                    <div className="col">
+                                        <label htmlFor="guest">Guest</label>
                                         <div className="input">
-                                            <select onBlur={this.changeHandler}  name="furnished" id="furnished">
-                                                <option value="any">Any</option>
-                                            </select>
+                                            <input type="text" value={this.state.guest}  onChange={this.changeHandler}  name="guest" id="guest" placeholder="E.g 1" />
                                             <span><div className="angle"></div></span>
                                         </div>
-                                    </div> */}
+                                    </div>
                                     <div className="col">
                                         <label htmlFor="price">Price</label>
                                         <div className="input">
@@ -449,22 +456,22 @@ firebase.storeProperty(body)
 
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="Apartment"  name="type" id="apartment" />
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="cottages"  name="type" id="apartment" />
                                                 <span className="radio-mark"></span>
                                             </label>
-                                            <label htmlFor="cottages">Cottages</label>
+                                            <label htmlFor="apartment">Cottages</label>
                                         </li>
 
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="Detached" name="type" id="detached" />
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="condos" name="type" id="condos" />
                                                 <span className="radio-mark"></span>
                                             </label>
                                             <label htmlFor="condos">Condos</label>
                                         </li>
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="Bungalow" name="type" id="bungalow" />
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="bungalows" name="type" id="bungalows" />
                                                 <span className="radio-mark"></span>
                                             </label>
                                             <label htmlFor="bungalows">Bungalows</label>
@@ -496,7 +503,12 @@ firebase.storeProperty(body)
                                 </div>
 
                                 <div className="property-group">
-                                    <button onClick={this.handleClick(TransitionUp)}>Save and Preview</button>
+                                    {
+                                        !this.state.status?
+                                        <button onClick={this.handleClick(TransitionUp)}>Save and Preview</button>
+                                        :
+                                        <button style={{backgroundColor:'green'}} type="button" onClick={()=>this.props.history.push('/app/edit-profile')} >Update Profile</button>
+                                    }
                                 </div>
                             </div>
                         </form>
@@ -506,4 +518,4 @@ firebase.storeProperty(body)
         )
     }
 }
-export default AddProperty;
+export default withRouter(AddProperty);

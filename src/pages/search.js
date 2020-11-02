@@ -71,22 +71,23 @@ class Search extends Component{
                 guest
             }
             this.context.setSearch(data)
-            this.context.onLoadSearch(data)
-            .then(()=>{
-                this.setState({
-                    isLoading:false,
-                    checkOut:checkOut,
-                    checkIn:checkin,
-                    favourites:favourites
+                this.context.onLoadSearch(data)
+                .then(()=>{
+                    console.log(address)
+                    this.setState({
+                        isLoading:false,
+                        checkOut:checkOut,
+                        checkIn:checkin,
+                        favourites:favourites
+                    })
                 })
-            })
-            .catch((er)=>{
-                this.setState({
-                    isLoading:false,
-                    checkOut:checkOut,
-                    checkIn:checkin
+                .catch((er)=>{
+                    this.setState({
+                        isLoading:false,
+                        checkOut:checkOut,
+                        checkIn:checkin
+                    })
                 })
-            })
         }
         else if(type.length>0){
             const ty = type[0].split('=')[1]
@@ -152,12 +153,10 @@ class Search extends Component{
     const {classes} = this.props
     const {state} = this.context
 
+    if(this.state.isLoading)
+     return <Splash />
     return(
         <>
-            {
-                this.state.isLoading&&
-                    <Splash />
-            }
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
                     <div id="search-page" className={classes.container}>
@@ -188,20 +187,10 @@ class Search extends Component{
                                 </Grid>
                                 {
                                         state.results.map((result,index)=>{
-                                            if(this.context.state.searchQuery){
-                                            const checkOut = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.context.state.searchQuery.checkOut).toDateString())
-                                            const checkIn = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.context.state.searchQuery.checkIn).toDateString())
-                                            if(checkIn.length<1 && checkOut.length<1)
+
                                                 return(
                                                     <Searchs favourite={this.state.favourites.includes(result.id)} content={result}   name={`rating${index}`} key={index}/>
                                                 )
-                                            else return ''
-                                             }
-                                             else{
-                                                return(
-                                                    <Searchs favourite={this.state.favourites.includes(result.id)} content={result}   name={`rating${index}`} key={index}/>
-                                                ) 
-                                             }
                                         })
                                     }
                                 

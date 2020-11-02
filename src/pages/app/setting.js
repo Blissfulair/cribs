@@ -3,17 +3,19 @@ import "./inbox.css"
 import "./properties.css"
 import "./add-property.css"
 import "./setting.css"
-import {Snackbar, Slide } from "@material-ui/core";
+import {Snackbar, Slide,Grid } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import VisibilityIcon from '@material-ui/icons/VisibilityOutlined';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOffOutlined';
 
 import Backend from "./layout"
 import { IconButton } from "@material-ui/core";
+import AppContext from "../../state/context";
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
 class Setting extends React.Component{
+    static contextType = AppContext
     constructor(props){
         super(props)
         this.state ={
@@ -47,10 +49,9 @@ class Setting extends React.Component{
         this.setState({open:false})
         }
     render(){
-        return (
-            <>
-                <Backend>
-                    <div style={{paddingTop:46}} className="inbox">
+            const settings=(
+                <>
+                                    <div style={{paddingTop:46}} className="inbox">
                         <div className="inbox-head dashboard-mt">
                             <div className="inbox-title">
                                 <h4>Account Setting</h4>
@@ -128,7 +129,24 @@ class Setting extends React.Component{
                             </p>
                         </div>
                     </div>
-                </Backend>
+                </>
+            )
+        return (
+            <>
+                {
+                    this.context.state.dashboard?
+                    <Grid container justify="center">
+                        <Grid item md={11}>
+                            <Grid container>
+                                {settings}
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    :
+                    <Backend>
+                        {settings}
+                    </Backend>
+                }
             </>
         )
     }

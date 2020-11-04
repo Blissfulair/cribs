@@ -38,7 +38,7 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
   const onLogout = ()=>{
     signOut()
     .then(()=>{
-      history.push('/')
+      window.sessionStorage.removeItem('@dash')
     })
   }
   return (

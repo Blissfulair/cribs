@@ -45,7 +45,6 @@ const AppHeader = ({classes, history})=>{
             .then((res)=>{
                 if(res)
                 {
-                    console.log(history.location.pathname)
                     if(history.location.pathname.includes('calendar') || history.location.pathname.includes('inbox') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('property') || history.location.pathname.includes('add-property') || history.location.pathname.includes('edit-property'))
                     history.push('/app/home')
                     else

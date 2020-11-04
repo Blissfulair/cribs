@@ -301,7 +301,10 @@ const GlobalState= ()=>{
                    else if(userData.role === 1)
                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
                    else if(userData.role ===2)
-                   dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                   {
+                    const dash = getDashboard()
+                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:dash}})
+                   }
                 })
             })
         },

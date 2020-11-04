@@ -253,7 +253,7 @@ class Single extends Component{
     onReserved = (para)=>{
         window.sessionStorage.setItem('?'+para.id, JSON.stringify(para))
         this.props.history.push({
-            pathname:'/payment',
+            pathname:'/app/payment',
             search:para.id,
             state:para
         })

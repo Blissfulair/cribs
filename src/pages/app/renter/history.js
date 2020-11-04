@@ -17,14 +17,15 @@ import {
 	TableRow,
     Typography,
     Avatar,
-    Button
+    Button,
+    CircularProgress
  } from "@material-ui/core";
  import Rating from '@material-ui/lab/Rating';
 import { fade } from '@material-ui/core/styles';
 import AppContext from "../../../state/context";
 import { StyledTableCell, StyledTableRow } from './../properties';
 import { getMonthInWord } from "../../../helpers/helpers";
-import Splash from "../../../components/splash";
+import Modal from "../../../components/modal";
 import WithdrawPopUp from "../../../components/withdrawPopup";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -134,8 +135,11 @@ class History extends React.Component{
                 4: 'Good+',
                 4.5: 'Excellent',
                 5: 'Excellent+',
-              },
-              hover:-1,
+            },
+            hover:-1,
+            reviewLoading:false,
+            massage:'',
+
 
         }
         this.search = createRef()
@@ -144,8 +148,8 @@ class History extends React.Component{
 
     componentDidMount(){
         this.context.getHistories(this.context.state.user.uid)
-        .then(histories=>{
-            this.setState({loading:false})
+        .then(()=>{
+            this.setState({loading:false, histories:this.context.state.histories})
         })
     }
 	handleClickOpen = (history) => {
@@ -206,7 +210,7 @@ class History extends React.Component{
            this.setState({err:'Rating and review are required.'})
             return false
        }
-       this.setState({err:''})
+       this.setState({err:'', reviewLoading:true})
         const {userData,user} = this.context.state
         const data ={
             name:userData.firstname+' '+userData.lastname,
@@ -224,14 +228,13 @@ class History extends React.Component{
         this.context.sendReview(data)
         .then(()=>{
             this.handleClose()
-            this.setState({review:''})
+            this.setState({review:'',reviewLoading:false})
         })
     }
     render(){
-       
-        console.log(this.state.selected)
-        const {histories,history} = this.state
+        const {history} = this.state
         const {classes} =this.props
+        const {histories} = this.context.state
         const inbox = (
             <>
             {histories.length>0?histories.map((history,i)=>{
@@ -257,8 +260,7 @@ class History extends React.Component{
             }
             </>
         )
-        if(this.state.loading)
-            return <Splash/>
+
         return (
             <Grid container justify ="center">
                 { this.state.history&&
@@ -343,12 +345,17 @@ class History extends React.Component{
                                         }
                                         <textarea name="review" onChange={(e)=>this.setState({review:e.target.value})}/>
                                     <div>
-                                            <Button onClick={this.onSendReview}>Done</Button>
+                                            {
+                                                !this.state.reviewLoading?
+                                                <Button onClick={this.onSendReview}>Done</Button>
+                                                :
+                                                <Button><div className="review"><CircularProgress/></div>Please wait...</Button>
+                                            }
                                     </div>
                                     </>
                                     :
                                     <>
-                                                                                <div className="rate">
+                                        <div className="rate">
                                             <StyledRating 
                                             name="rating" 
                                             value={history.rating}
@@ -411,7 +418,9 @@ class History extends React.Component{
                             </div>
                         </div>
                         <div className="inbox-body">
-                            <TableContainer className='payment-table' component={Paper} >
+                            <TableContainer style={{position:'relative'}} className='payment-table' component={Paper} >
+                            
+                                <Modal loading={ this.state.loading}/>
                                 <Table  aria-label="payment">
                                     <TableHead>
                                     <TableRow>

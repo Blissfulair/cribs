@@ -38,15 +38,14 @@ class Auth  extends Component{
                 else if(path.includes('setting'))
                 this.props.history.push('/app/setting')
                 else
-                this.props.history.push('/app/home')
+                this.props.history.push(path+search)
             else
             this.props.history.push(path+search)
         }
         else {
-            if(this.context.state.dashboard)
-            this.props.history.push('/app/home')
-            else if(!this.context.state.dashboard)
-            this.props.history.push('/app/dashboard')
+
+           if(!this.context.state.dashboard)
+            this.props.history.push(path+search)
         }
     }
     componentDidUpdate(prevProps){

@@ -2,7 +2,7 @@ import React from "react";
 import "./inbox.css"
 import "./properties.css"
 import "./add-property.css"
-import image from  "../../images/login_bg.png"
+import image from  "../../images/placeholder.jpg"
 import {Snackbar, Slide } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Backend from "./layout"
@@ -10,12 +10,12 @@ import AppContext from "../../state/context";
 import Activity from '../../components/activity'
 import firebase from "../../components/firebase"
 import {withRouter} from "react-router-dom"
+import {states} from "../../icons/options"
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
-let images =[]
-let other_images =[]
+
 class EditProperty extends React.Component{
     static contextType = AppContext
     constructor(props){
@@ -47,7 +47,8 @@ class EditProperty extends React.Component{
             message:'',
             transition:undefined,
             open:false,
-            isLoading:false
+            isLoading:true,
+            images:[],
         }
     }
 
@@ -80,8 +81,9 @@ class EditProperty extends React.Component{
                 featured_image:property.featuredImage,
                 type:property.type,
                 other_images:property.images,
+                images:property.images,
+                isLoading:false
             })
-            other_images.push(property.images)
         })
 
     }
@@ -101,10 +103,10 @@ class EditProperty extends React.Component{
         let del = document.createElement('div');
         let newEl = document.createElement('div');
         newEl.setAttribute('class', 'viewing')
-        other_images.push(e.target.files[0]);
+        this.state.other_images.push(e.target.files[0]);
         reader.readAsDataURL(e.target.files[0]);
         reader.onload = (e)=>{
-            images.push(reader.result)
+            this.state.images.push(reader.result)
             pic.setAttribute('src', reader.result);
             newEl.appendChild(pic);
             newEl.appendChild(del);
@@ -123,12 +125,17 @@ class EditProperty extends React.Component{
           }
         this.setState({open:false})
         }
-    deleteImage(e){
+    deleteImage=(e)=>{
         let img = e.target.previousElementSibling.currentSrc;
-        let index = images.findIndex((e)=> e === img);
+        let index = this.state.other_images.findIndex((e)=> e === img);
+        let blob = this.state.images.findIndex((e)=> e === img);
         if(index >= 0)
         {
-            images.splice(index, 1);
+            this.state.other_images.splice(index, 1);
+            e.target.parentElement.remove();
+        }
+        else if(blob >= 0){
+            this.state.images.splice(index, 1);
             e.target.parentElement.remove();
         }
     }
@@ -148,42 +155,23 @@ class EditProperty extends React.Component{
         const str = leng - value.length ;
         event.target.nextElementSibling.innerHTML = str < 0 ? 0 + " Characters Left" :str + " Characters Left";
       }
-    // onChangeState=e=>{
-    //     e.preventDefault();
-    //     let val = e.target.value
-    //     axios.get(`${api}/cities/${val}`)
-    //     .then(resp=>{
-    //         let options = resp.data.cities.length > 0?resp.data.cities.map((value,i)=>{
-    //             let option = document.createElement('option');
-    //             option.setAttribute('value', value.name)
-    //             option.innerHTML = value.name
-    //             document.querySelector('#city').appendChild(option)
-                
-    //             return option
-    //         }):''
-           
-    //         this.setState({
-    //             cities:resp.data.cities
-    //          })
-    //     })
-    //     .catch(error=>error)
-    // }
+
 
     onSubmit=(event)=>{
-        const form = event
         event.preventDefault();
+        const id = this.props.location.pathname.split('edit-property')[1].replace('/','')
         if(this.state.title === '' || this.state.description === '' || this.state.state === ''
            || this.state.price === '' || this.state.featured_image === null)
            {
             this.setState({message:'All fields must be filled'})
             return false
            }
-           this.setState({isLoading:true})
+        //    this.setState({isLoading:true})
 const body = {
     hostId:this.context.state.user.uid,
     name:this.state.title,
     description:this.state.description,
-    images:[ ...other_images,this.state.featured_image],
+    images:[ ...this.state.other_images,this.state.featured_image],
     amount:this.state.price,
     bedroom:this.state.bedroom,
     smoke:this.state.smoking,
@@ -201,7 +189,8 @@ const body = {
     city:this.state.city,
     state:this.state.state,
 }
-firebase.storeProperty(body)
+console.log(body)
+firebase.updateProperty(id,body)
 .then(()=>{
     this.setState({
         title:'',
@@ -237,14 +226,15 @@ firebase.storeProperty(body)
             elements[i].remove()
 
         }
-        form.target.reset();
      })
      .catch(err=>{
+         console.log(err)
          this.setState({message:'Failed to submit', isLoading:false})
      })
 
     }
     render(){
+        console.log(this.state)
         return (
             <>
                 <Backend>
@@ -292,9 +282,15 @@ firebase.storeProperty(body)
                                     <div className="col">
                                         <label htmlFor="state">State</label>
                                         <div className="input">
-                                            <select name="state"  onBlur={this.changeHandler}  id="state">
+                                            <select defaultValue={this.state.state} name="state"  onBlur={this.changeHandler}  id="state">
                                                 <option value="">Select State</option>
-                                                <option value="edo">Edo</option>
+                                                {
+                                                    states.map((state, i)=>{
+                                                        return (
+                                                        <option key={i} value={state}>{state}</option>
+                                                        )
+                                                    })
+                                                }
                                             </select>
                                             <span>
                                                 <div className="angle"></div>
@@ -331,15 +327,13 @@ firebase.storeProperty(body)
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div> */}
-                                    {/* <div className="col">
-                                        <label htmlFor="furnished">Furnished</label>
+                                    <div className="col">
+                                        <label htmlFor="guest">Guest</label>
                                         <div className="input">
-                                            <select onBlur={this.changeHandler}  name="furnished" id="furnished">
-                                                <option value="any">Any</option>
-                                            </select>
+                                            <input type="text" value={this.state.guest}  onChange={this.changeHandler}  name="guest" id="guest" placeholder="E.g 1" />
                                             <span><div className="angle"></div></span>
                                         </div>
-                                    </div> */}
+                                    </div>
                                     <div className="col">
                                         <label htmlFor="price">Price</label>
                                         <div className="input">
@@ -467,7 +461,7 @@ firebase.storeProperty(body)
 
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="Apartment"  name="type" id="apartment" />
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="cottages"  name="type" id="cottages" />
                                                 <span className="radio-mark"></span>
                                             </label>
                                             <label htmlFor="cottages">Cottages</label>
@@ -475,14 +469,14 @@ firebase.storeProperty(body)
 
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="Detached" name="type" id="detached" />
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="condos" name="type" id="condos" />
                                                 <span className="radio-mark"></span>
                                             </label>
                                             <label htmlFor="condos">Condos</label>
                                         </li>
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="Bungalow" name="type" id="bungalow" />
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="bungalows" name="type" id="bungalows" />
                                                 <span className="radio-mark"></span>
                                             </label>
                                             <label htmlFor="bungalows">Bungalows</label>
@@ -509,7 +503,16 @@ firebase.storeProperty(body)
                                             <div className="add-image"></div>
                                         </label>
 
-                                        <div className="images"></div>
+                                        <div className="images">
+                                            {
+                                                this.state.other_images.map((image,i)=>(
+                                                    <div key={i} className="viewing">
+                                                        <img src={image} alt={`side${i}`} />
+                                                        <div onClick={this.deleteImage} aria-hidden="true" ></div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
                                     </div>
                                 </div>
 

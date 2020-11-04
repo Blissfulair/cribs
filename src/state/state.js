@@ -315,9 +315,9 @@ const GlobalState= ()=>{
                 dispatch({type:'GET_PROPERTIES', payload:{properties:props}})
             })
         },
-        getMyProperties:()=>{
+        getMyProperties:async()=>{
             let props =[]
-            firebase.getMyProperties(state.user.uid)
+           await firebase.getMyProperties(state.user.uid)
             .then(properties=>{
                 properties.docs.forEach(doc=>{
                     props.push({id:doc.id, ...doc.data()})
@@ -431,12 +431,22 @@ const GlobalState= ()=>{
             firebase.notification(hostId,data,type)
         },
         getHistories:async(userId)=>{
-             await  firebase.getHistories(userId)
-             .then(data=>{
-                 console.log(data)
-                     dispatch({type:'GET_HISTORIES', payload:{data}})
-                     return data
-                 })
+            await  firebase.getHistories(userId)
+             .onSnapshot(snap=>{ 
+                const data = []
+                snap.docs.forEach(doc=>{
+                    data.push({...doc.data(), id:doc.id})
+                })
+                dispatch({type:'GET_HISTORIES', payload:{histories:data}})
+                
+                
+            })
+            return state.histories
+            //  .then(data=>{
+            //      console.log(data)
+            //          dispatch({type:'GET_HISTORIES', payload:{data}})
+            //          return data
+            //      })
 
          },
          deleteHistory:async(ids)=>{

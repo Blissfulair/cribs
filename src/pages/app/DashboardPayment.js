@@ -8,6 +8,7 @@ import {
     TableHead,
     TableBody,
 	TableContainer,
+	TablePagination,
 	Paper,
 	TableRow,
 	Typography,
@@ -19,6 +20,7 @@ import { StyledTableCell, StyledTableRow, styles } from './properties';
 import AppContext from '../../state/context';
 import WithdrawPopUp from '../../components/withdrawPopup';
 import { currency } from '../../helpers/helpers';
+import Modal from '../../components/modal';
 
 
 
@@ -37,10 +39,13 @@ class DashboardPayment extends Component {
 			bankName:'',
 			email:'',
 			loading:false,
+			tableLoading:true,
 			err:'',
 			year:'',
 			month:'',
-			status:''
+			status:'',
+			page:0,
+			rowsPerPage:8
 		}
 	}
 
@@ -50,10 +55,16 @@ class DashboardPayment extends Component {
 		this.context.getPaymentHistory()
 		.then(history=>{
 			history.sort((a,b) => (a.createdAt*1000 > b.createdAt*1000) ? -1 : ((b.createdAt*1000 > a.createdAt*1000) ? 1 : 0)); 
-			const payments = history.filter((payment, i)=>{ if(i <10)return payment; else return ''} )
-			this.setState({allPayments:history, payments, year:date.getFullYear().toString(), month:date.getMonth().toString()})
+			const payments = history
+			this.setState({allPayments:history, payments, year:date.getFullYear().toString(), month:date.getMonth().toString(),tableLoading:false})
 		})
 	}
+	handleChangePage = (event, newPage) => {
+		this.setState({page:newPage});
+	  };
+	handleChangeRowsPerPage = (event) => {
+		this.setState({rowsPerPage:Number(event.target.value),page:0});
+	  };
 	handleClickOpen = () => {
 		this.setState({open:true});
 	  }
@@ -181,6 +192,7 @@ class DashboardPayment extends Component {
 		const {classes} = this.props
 		const {state} = this.context
 		const today = new Date().getFullYear()
+		const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.payments.length - this.state.page * this.state.rowsPerPage);
 		const years = []
 		for(let year = today; year >= 2018; year --)
 			years.push(year)
@@ -365,7 +377,8 @@ class DashboardPayment extends Component {
 
 				<Grid container style={{marginTop:80}}>
 					<Grid item xs={10}>
-					<TableContainer className='payment-table' component={Paper} >
+					<TableContainer style={{position:'relative'}} className='payment-table' component={Paper} >
+							<Modal loading={this.state.tableLoading}/>
                             <Table  aria-label="payment">
                                 <TableHead>
                                 <TableRow>
@@ -379,7 +392,7 @@ class DashboardPayment extends Component {
                                 <TableBody>
                                 {
                                 this.state.payments.length>0?
-                                this.state.payments.map((payment, i) =>{
+                                this.state.payments.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((payment, i) =>{
                                         const created = new Date(payment.createdAt*1000);
                                         const createdAt = created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
                                     return(
@@ -392,14 +405,31 @@ class DashboardPayment extends Component {
 										<StyledTableCell classes={{root:classes.tdRoot}} align="left">{payment.transactionID}</StyledTableCell>
 										<StyledTableCell classes={{root:classes.tdRoot}}  align="left"><span style={{color:payment.status === 'pending'?'#ff9800':payment.status === 'processed'?'#4caf50':'#f44336'}}>{payment.status}</span></StyledTableCell>
                                         </StyledTableRow>
-                                    )
-                                })
+									)
+									
+								})
+								
                                 :
                                 <Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">There are no transaction to show yet...</Typography>
                             }
+							    {emptyRows > 0 && (
+										<StyledTableRow classes={{root:classes.trRoot}} style={{ height: 53 * emptyRows }}>
+										<StyledTableCell classes={{root:classes.tdRoot}}  colSpan={6} />
+										</StyledTableRow>
+									)}
                                 </TableBody>
                             </Table>
+							<TablePagination
+								rowsPerPageOptions={[8, 16, 24]}
+								component="div"
+								count={this.state.payments.length}
+								rowsPerPage={this.state.rowsPerPage}
+								page={this.state.page}
+								onChangePage={this.handleChangePage}
+								onChangeRowsPerPage={this.handleChangeRowsPerPage}
+								/>
                             </TableContainer>
+
 						</Grid>
 						</Grid>
 			</div>

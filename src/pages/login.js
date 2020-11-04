@@ -168,11 +168,13 @@ class Login extends React.Component{
                                 </div>
                                 <button onClick={this.handleClick(TransitionUp)} className="btn-signup">
                                     {
-                                        this.state.loading&&
-                                        <CircularProgress/>
+                                        this.state.loading?
+                                       <> <CircularProgress/>  Logging in...</>
+                                        :
+                                        'Login'
                                         
                                     }
-                                    Login
+                                    
                                 </button>
                                 <div className="social-signup">
                                     <a href="https://www.facebook.com" className="col">

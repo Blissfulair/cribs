@@ -6,7 +6,9 @@ import  Search from "../pages/search";
 import Single from "../pages/single";
 import Login from "../pages/login";
 import SignUp from "../pages/signup";
+import AppContext from "../state/context";
 class Root extends Component{
+    static contextType = AppContext
     componentDidMount(){
         const path = this.props.location.pathname;
         const search = this.props.location.search
@@ -19,8 +21,20 @@ class Root extends Component{
         }
         else if(this.props.user === null)
         this.props.history.push('/')
-        else if(Boolean(this.props.user) && path.includes('crib'))
-        this.props.history.push(path+search)
+        else if(Boolean(this.props.user))
+        {
+            if(path.includes('crib'))
+            this.props.history.push(path+search)
+            else
+            {
+                if(this.context.state.dashboard)
+                this.props.history.push('/app/home')
+                else
+                this.props.history.push('/app/dashboard')
+            }
+            
+        }
+        
     }
     componentDidUpdate(prevProps){
         if(prevProps.user !== this.props.user){

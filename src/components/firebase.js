@@ -27,7 +27,8 @@ const firebaseConfig = {
             BOOKINGS:'bookings',
             ACTIVITIES:'activities',
             NOTIFICATIONS:'notifications',
-            PAYMENTS:'payments'
+            PAYMENTS:'payments',
+            BOOKED:'bookedDates'
         }
         this.serverTime = firebase.firestore.Timestamp.now().seconds
         // Date.prototype.addDays = function(days) {
@@ -140,6 +141,65 @@ const firebaseConfig = {
         // return property.get()
     }
 
+
+    updateProperty = async(id,data)=>{
+        let searchIndex = [];
+        const allString = data.address+' '+data.city+' '+data.state
+        const string = allString.toLowerCase().split(' ');
+        string.forEach(word=>{
+            let newWord = ''
+            for(let i=0;i<word.length; i++){
+                newWord +=word.charAt(i)
+                searchIndex.push(newWord)
+            }
+        })
+         let images = []
+         let image=null
+         console.log(data)
+           await this.firestore.collection(this.tables.PROPERTIES).doc(id).update({
+                name:data.name,
+                description:data.description,
+                images:images,
+                featuredImage:image,
+                amount:data.amount,
+                bedroom:data.bedroom,
+                smoke:data.smoke,
+                wifi:data.wifi,
+                parking:data.parking,
+                cable:data.cable,
+                bathroom:data.bathroom,
+                kitchen:data.kitchen,
+                inside:data.inside,
+                around:data.around,
+                address:data.address,
+                guest:data.guest,
+                type:data.type,
+                house:data.house.toLowerCase(),
+                city:data.city.toLowerCase(),
+                state:data.state,
+                updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
+                keywords:searchIndex
+    
+            })
+           await this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+id).child(data.featuredImage.name).put(data.featuredImage)
+            .then(()=>{
+                this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+id).child(data.featuredImage.name).getDownloadURL()
+                .then(async (url)=>{
+                    await this.firestore.collection(this.tables.PROPERTIES).doc(id).update({featuredImage:url})
+                })
+            })
+            for(let i= 0; i<data.images.length; i++){
+                this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+id).child(data.images[i].name).put(data.images[i])
+                .then(()=>{
+                    this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+id).child(data.images[i].name).getDownloadURL()
+                    .then(async (url)=>{
+                        images.push(url)
+                        await this.firestore.collection(this.tables.PROPERTIES).doc(id).update({images:images})
+                    })
+                })
+            }
+    }
+
     logout=async()=>{
         return await this.auth.signOut();
     }
@@ -188,6 +248,9 @@ const firebaseConfig = {
 
        
     }
+    getBookedDates = async(propertyID)=>{
+        return this.firestore.collection(this.tables.BOOKED).where('propertyID', '==', propertyID).get()
+    }
     notification = async(hostId, data, type)=>{
         await this.firestore.collection(this.tables.NOTIFICATIONS).add({
             hostId:hostId,
@@ -220,7 +283,7 @@ const firebaseConfig = {
        const dates = getDates(reserveData.checkIn, reserveData.checkOut)
     //    const data= await (await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id).get()).data()
        bookedDates.push(...dates)
-       await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString()).set({
+        await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString()).set({
         checkIn:reserveData.checkIn,
         checkOut:reserveData.checkOut,
         amount:reserveData.total+reserveData.refund,
@@ -236,6 +299,11 @@ const firebaseConfig = {
         status:'success',
         creactedAt:firebase.firestore.FieldValue.serverTimestamp(),
         
+    })
+    
+    await this.firestore.collection(this.tables.BOOKED).add({
+        propertyID:reserveData.id,
+        bookedDates:bookedDates,
     })
 
     //    await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id)
@@ -346,16 +414,9 @@ const firebaseConfig = {
         catch(e){}
     }
 
-    getHistories = async(userId)=>{
-        const data = []
-          await this.firestore.collection(this.tables.BOOKINGS).where('userId','==',userId).onSnapshot(snap=>{ 
-            snap.docs.forEach(doc=>{
-                data.push({...doc.data(), id:doc.id})
-            })
-            return data
-        })
-        return data
-       
+    getHistories = (userId)=>{
+        return  this.firestore.collection(this.tables.BOOKINGS).where('userId','==',userId)
+    
     }
     deleteHistory =async(ids)=>{
         try{

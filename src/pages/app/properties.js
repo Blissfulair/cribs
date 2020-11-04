@@ -7,6 +7,7 @@ import {
     TableHead,
     TableBody,
     TableCell,
+    TablePagination,
     TableContainer,
     Paper,
     TableRow,
@@ -22,6 +23,7 @@ import EditIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AppContext from "../../state/context"
 import { currency } from "../../helpers/helpers";
+import Modal from "../../components/modal";
 
 export const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -74,16 +76,28 @@ class Properties extends React.Component{
         this.state ={
             property:[],
             properties :[],
+            page:0,
+            rowsPerPage:10,
+            loading:true,
         }
     }
     componentDidMount(){
-        this.context.getMyProperties();
+        this.context.getMyProperties()
+        .then(()=>{
+            this.setState({loading:false})
+        })
 
     }
 
     changeHandler =e=>{
         this.setState({[e.target.name]:e.target.value})
     }
+    handleChangePage = (event, newPage) => {
+		this.setState({page:newPage});
+	  };
+	handleChangeRowsPerPage = (event) => {
+		this.setState({rowsPerPage:Number(event.target.value),page:0});
+	  };
 
     mark = n=>{
         //let properties = this.state.property.push(n.target.dataset[n.target.name]);
@@ -106,6 +120,7 @@ class Properties extends React.Component{
     render(){
         const properties = this.context.state.myProperties
         const {classes} = this.props
+        const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, properties.length - this.state.page * this.state.rowsPerPage);
 
         return (
                 <Layout>
@@ -125,8 +140,9 @@ class Properties extends React.Component{
                                     </div>
                                 </div>
                             </div>
-                            <TableContainer component={Paper} >
-                            <Table  aria-label="customized table">
+                            <TableContainer className="property-table" style={{position:'relative'}} component={Paper} >
+                                <Modal loading={this.state.loading} />
+                            <Table  aria-label="property table">
                                 <TableHead>
                                 <TableRow>
                                     <StyledTableCell classes={{root:classes.tdHead}}>Property Title</StyledTableCell>
@@ -141,7 +157,7 @@ class Properties extends React.Component{
                                 <TableBody>
                                 {
                                 properties.length>0?
-                                properties.map((property, i) =>{
+                                properties.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((property, i) =>{
                                         const date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
                                         const avail = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === date.toDateString())
                                         const update = new Date(property.updatedAt.seconds*1000);
@@ -178,8 +194,22 @@ class Properties extends React.Component{
                                 :
                                 <Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">No Properties uploaded yet</Typography>
                             }
+                            	{emptyRows > 0 && (
+										<StyledTableRow classes={{root:classes.trRoot}} style={{ height: 53 * emptyRows }}>
+										<StyledTableCell classes={{root:classes.tdRoot}}  colSpan={6} />
+										</StyledTableRow>
+									)}
                                 </TableBody>
                             </Table>
+                            <TablePagination
+								rowsPerPageOptions={[8, 16, 24]}
+								component="div"
+								count={properties.length}
+								rowsPerPage={this.state.rowsPerPage}
+								page={this.state.page}
+								onChangePage={this.handleChangePage}
+								onChangeRowsPerPage={this.handleChangeRowsPerPage}
+								/>
                             </TableContainer>
                         </Grid>
 

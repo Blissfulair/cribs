@@ -202,11 +202,12 @@ class SignUp extends React.Component{
                                 </div>
                                 <button onClick={this.handleClick(TransitionUp)} className="btn-signup">
                                     {
-                                        this.state.loading&&
-                                        <CircularProgress/>
-                                        
+                                           this.state.loading?
+                                           <> <CircularProgress/>  Signing up...</>
+                                            :
+                                            'Sign Up'
                                     }
-                                    Sign Up
+                                   
                                 </button>
                                 <div className="social-signup">
                                     <a href="https://www.facebook.com" className="col">

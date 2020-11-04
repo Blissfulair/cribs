@@ -13,18 +13,22 @@ import DashboardPayment from "../pages/app/DashboardPayment";
 import DashboardCalendar from "../pages/app/DashboardCalendar";
 import EditProperty from "../pages/app/editProperty";
 import Inbox from "../pages/app/inbox";
-import Setting from "../pages/app/setting";
-import Profile from "../pages/app/profile";
+import Setting from "../pages/app/host/setting";
+import RentSetting from "../pages/app/renter/setting";
+import Profile from "../pages/app/host/profile";
+import RentProfile from "../pages/app/renter/profile";
 import Review from "../pages/app/review";
-import EditProfile from "../pages/app/editProfile";
+import EditProfile from "../pages/app/host/editProfile";
+import RentEditProfile from "../pages/app/renter/editProfile";
 import Home from "../pages/app/home";
 import PrivateSearch from "../pages/app/search";
 import PrivateSingle from "../pages/app/single";
 import PrivatePayment from "../pages/app/payment";
 import Favourites from "../pages/app/host/favourites";
 import History from "../pages/app/renter/history";
-import PrivateRoute from "./privateRoute";
 import PublicRoute from "./publicRoute";
+import RentRoute from "./privateRoute";
+import HostRoute from "./auth";
 class Root extends Component{
 
     render(){
@@ -32,23 +36,26 @@ class Root extends Component{
         <Switch>
 
 
-            <PrivateRoute exact component={Dashboard} path='/app/dashboard' />
-            <PrivateRoute exact component={Properties} path='/app/property' />
-            <PrivateRoute exact path='/app/add-property' component={AddProperty} />
-            <PrivateRoute exact component={EditProperty} path='/app/edit-property' />
-            <PrivateRoute exact path='/app/withdraws' component={DashboardPayment} />
-            <PrivateRoute exact path='/app/history' component={History} />
-            <PrivateRoute exact path='/app/favourites' component={Favourites} />
-            <PrivateRoute exact path='/app/search' component={PrivateSearch} />
-            <PrivateRoute exact path='/app/payment' component={PrivatePayment} />
-            <PrivateRoute exact path='/app/crib' component={PrivateSingle} />
-            <PrivateRoute exact path='/app/reviews' component={Review} />
-            <PrivateRoute exact path='/app/home' component={Home} />
-            <PrivateRoute exact path='/app/settings' component={Setting} />
-            <PrivateRoute exact path='/app/profile' component={Profile} />
-            <PrivateRoute exact path='/app/edit-profile' component={EditProfile} />
-            <PrivateRoute exact path='/app/inbox' component={Inbox} />
-            <PrivateRoute exact path='/app/calendar' component={DashboardCalendar} />
+            <HostRoute exact component={Dashboard} path='/app/dashboard' />
+            <HostRoute exact component={Properties} path='/app/property' />
+            <HostRoute exact path='/app/add-property' component={AddProperty} />
+            <HostRoute exact component={EditProperty} path='/app/edit-property' />
+            <HostRoute exact path='/app/withdraws' component={DashboardPayment} />
+            <RentRoute exact path='/app/history' component={History} />
+            <RentRoute exact path='/app/favourites' component={Favourites} />
+            <RentRoute exact path='/app/search' component={PrivateSearch} />
+            <RentRoute exact path='/app/payment' component={PrivatePayment} />
+            <RentRoute exact path='/app/crib/:id' component={PrivateSingle} />
+            <RentRoute exact path='/app/reviews' component={Review} />
+            <RentRoute exact path='/app/home' component={Home} />
+            <HostRoute exact path='/app/settings' component={Setting} />
+            <RentRoute exact path='/app/setting' component={RentSetting} />
+            <HostRoute exact path='/app/profile' component={Profile} />
+            <RentRoute exact path='/app/myprofile' component={RentProfile} />
+            <HostRoute exact path='/app/edit-profile' component={EditProfile} />
+            <RentRoute exact path='/app/edit-myprofile' component={RentEditProfile} />
+            <HostRoute exact path='/app/inbox' component={Inbox} />
+            <HostRoute exact path='/app/calendar' component={DashboardCalendar} />
             
 
 

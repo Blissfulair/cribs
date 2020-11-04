@@ -55,12 +55,12 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
                     {
                       state.dashboard?
                         <>
-                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/profile')}}>Profile</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/myprofile')}}>Profile</MenuItem>
                           <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/favourites')}}>Favourites</MenuItem>
                           <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/home')}}>Dashboard</MenuItem>
                           <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/history')}}>History</MenuItem>
                           <Divider/>
-                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/settings')}}>Settings</MenuItem>
+                          <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/setting')}}>Settings</MenuItem>
                           <MenuItem onClick={(e)=>{closeLogout(e)}}>EN</MenuItem>
                           <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/support')}}>Help and Support</MenuItem>
                           <Divider/>

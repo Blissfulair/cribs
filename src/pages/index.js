@@ -275,7 +275,7 @@ class Index extends Component{
                                     }
                                 </Grid>
                             </div>
-                            <Link className={classes.link} to={'/'}>See more</Link>
+                            <Link className={classes.link} to={{pathname:'/more-cribs', search:'trending'}}>See more</Link>
 
                             
                             <div style={{marginTop:50}}>
@@ -284,7 +284,7 @@ class Index extends Component{
                                     <Slide favourites={this.state.favourites} content={this.context.state.properties}/>
                                 </Grid>
                             </div>
-                            <Link className={classes.link} to={'/'}>See more</Link>
+                            <Link className={classes.link} to={{pathname:'/more-cribs', search:'recommended'}}>See more</Link>
                         </>
                         :''
                     }

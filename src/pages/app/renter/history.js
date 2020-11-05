@@ -417,10 +417,10 @@ class History extends React.Component{
                                 </ul>
                             </div>
                         </div>
-                        <div className="inbox-body">
-                            <TableContainer style={{position:'relative'}} className='payment-table' component={Paper} >
+                        <div style={{position:'relative'}}  className="inbox-body">
+                            <TableContainer className='payment-table' component={Paper} >
                             
-                                <Modal loading={ this.state.loading}/>
+                                <Modal loading={this.state.loading}/>
                                 <Table  aria-label="payment">
                                     <TableHead>
                                     <TableRow>

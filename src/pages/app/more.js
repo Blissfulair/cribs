@@ -2,15 +2,9 @@ import React, {Component} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
-import Container from '@material-ui/core/Container';
 import {Link,withRouter} from "react-router-dom"
 import Stays from "../../components/stays";
 import Trending from "../../components/trending"
-import IconBox from "../../components/iconBox";
-import trust from "../../images/trust.svg"
-import jigsaw from "../../images/jigsaw.svg"
-import focus from "../../images/focus.svg"
-import Slide from "../../components/slider";
 import Explore from "../../components/explore";
 import AppContext from "../../state/context";
 import house from "../../images/house.png"
@@ -22,7 +16,9 @@ import lagos from "../../images/lagos.jpg"
 import kano from "../../images/kano.jpeg"
 import { Paper } from "@material-ui/core";
 import SlideBanner from "../../components/slideBanner";
+import firebase from "../../components/firebase"
 import { getFavs } from "../../helpers/helpers";
+import Splash from "../../components/splash";
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${cottage})`,
@@ -60,16 +56,14 @@ const styles = theme =>({
         marginLeft:8
     }
 })
-class Home extends Component{
+class More extends Component{
      static contextType = AppContext
     constructor(props){
         super(props)
         this.state={
-            location:'',
-            checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            guest:0,
-            favourites:[]
+            favourites:[],
+            properties:[],
+            loading:true
          }
     }
     // useEffect(()=>{
@@ -80,12 +74,13 @@ class Home extends Component{
     //     })
     // },[context])
     componentDidMount(){
+        const condition = this.props.location.search.replace('?', '')
+        const properties=[]
         const favourites = getFavs()
-        this.setState({
-            favourites :favourites,
-            location:this.context.state.searchQuery?this.context.state.searchQuery.location:'',
-            checkIn:this.context.state.searchQuery?this.context.state.searchQuery.checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut:this.context.state.searchQuery?this.context.state.searchQuery.checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+        firebase.getMoreProperties(condition,this.context.state.user?this.context.state.user.uid:'')
+        .then((props)=>{
+            props.forEach(prop=>properties.push({...prop.data(),id:prop.id}))
+            this.setState({favourites,properties,loading:false})
         })
     }
 
@@ -94,15 +89,17 @@ class Home extends Component{
             [e.target.name]:e.target.value
         })
     }
-     onSubmit = (e)=>{
-        e.preventDefault();
-        this.context.setSearch(this.state);
-        this.context.searchProperties(this.state.location, this.state.checkIn,this.state.checkOut,this.state.guest,this.props.history)
-    }
+    //  onSubmit = (e)=>{
+    //     e.preventDefault();
+    //     this.context.setSearch(this.state);
+    //     this.context.searchProperties(this.state.location, this.state.checkIn,this.state.checkOut,this.state.guest,this.props.history)
+    // }
     render(){
         const {classes}=this.props
+    if(this.state.loading)
+        return <Splash/>
     return(
-        <Grid id="app-home-page" style={{paddingTop:90}} className="home" container justify="center">
+        <Grid id="app-home-page" style={{paddingTop:this.context.state.userData?90:150}} className="home" container justify="center">
             <Grid container justify="center" >
                 <Grid item xs={11} md={10} >
                     <Grid container spacing={3}>
@@ -111,36 +108,55 @@ class Home extends Component{
                         </Grid>
                         <Grid item xs={12} lg={4}>
                             <Paper style={{height:200,padding:'20px 8px'}}>
-                                <Typography style={{fontSize:40, color:'#707070'}} variant="h3">Hi, {this.context.state.userData.firstname}</Typography>
-                                <Typography style={{color:'#707070', fontSize:15,marginTop:22}} variant="subtitle1" component="p">
-                                Check your inbox so as not to miss clients requests.
-                                </Typography>
+                                {
+                                    this.context.state.userData?
+                                    <>
+                                        <Typography style={{fontSize:40, color:'#707070'}} variant="h3">Hi, {this.context.state.userData.firstname}</Typography>
+                                        <Typography style={{color:'#707070', fontSize:15,marginTop:22}} variant="subtitle1" component="p">
+                                        Check your inbox so as not to miss clients requests.
+                                        </Typography>
+                                    </>
+                                    :
+                                    <>
+                                        <Typography style={{fontSize:40, color:'#707070'}} variant="h3">Hi, there!</Typography>
+                                        <Typography style={{color:'#707070', fontSize:15,marginTop:22}} variant="subtitle1" component="p">
+                                        Login in to access more features..
+                                        </Typography>
+                                    </>
+                                }
                             </Paper>
                         </Grid>
                     </Grid>
-                <Typography classes={{root:classes.title}} variant="h3">Where would you like to stay?</Typography>
-                <Grid  container spacing={2}>
-                    <Grid item xs={12} sm={6} md={3} lg={3} >
-                    <Stays title="House" link={`/app/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays title="Bungalows" link={`/app/search?type=bungalows`}  height={280} image={bangalow} available={1000}/>
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={6} lg={6}>
-                        <div className={classes.loginContainer}>
-                            <div className={classes.containerOverlay}></div>
-                        </div>
-                    </Grid>
-                </Grid>
+                    {
+                        this.context.state.user?
+                        ''
+                        :
+                        <>
+                            <Typography classes={{root:classes.title}} variant="h3">Where would you like to stay?</Typography>
+                            <Grid  container spacing={2}>
+                                <Grid item xs={12} sm={6} md={3} lg={3} >
+                                <Stays title="House" link={`/app/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
+                                </Grid>
+                                <Grid item xs={12} sm={6} md={3} lg={3}>
+                                <Stays title="Bungalows" link={`/app/search?type=bungalows`}  height={280} image={bangalow} available={1000}/>
+                                </Grid>
+                                <Grid item xs={12} sm={12} md={6} lg={6}>
+                                    <div className={classes.loginContainer}>
+                                        <div className={classes.containerOverlay}></div>
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        </>
+                    }
 
                     {
-                        this.context.state.properties.length>0?
+                        this.state.properties.length>0?
                         <>
-                            <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
+                            <Typography classes={{root:classes.title}} variant="h3">Cribs</Typography>
                             <div style={{marginBottom:10}}>
                                 <Grid  container spacing={2}>
                                     {
-                                        this.context.state.properties.map((property, i)=>{
+                                        this.state.properties.map((property, i)=>{
                                             return(
                                                 <Grid item xs={12} sm={6} md={3} lg={3} >
                                                     <Link to={`/app/crib/${property.id}`}>
@@ -152,38 +168,11 @@ class Home extends Component{
                                     }
                                 </Grid>
                             </div>
-                            <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'trending'}}>See more</Link>
 
-                            
-                            <div style={{marginTop:50}}>
-                                <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
-                                <Grid style={{position:'relative'}}  container >
-                                    <Slide favourites={this.state.favourites} content={this.context.state.properties}/>
-                                </Grid>
-                            </div>
-                            <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>
                         </>
                         :''
                     }
 
-                <Typography variant="h4" classes={{root:classes.title}} style={{marginTop:90}} align="center">Reasons to Explore With Us</Typography>
-                <Container >
-                    <Grid container  justify="center" >
-                        <Grid item  xs={12} sm={10} md={10}>
-                            <Grid container justify="center" spacing={8}>
-                            <Grid item xs={12}  sm={4} md={4}>
-                            <IconBox image={trust} name="Reliable"/>
-                        </Grid>
-                        <Grid item xs={12} sm={4} md={4}>
-                            <IconBox image={focus} name="Fast"/>
-                        </Grid>
-                        <Grid item xs={12} sm={4} md={4}>
-                            <IconBox image={jigsaw} name="Convenient"/>
-                        </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Container>
 
                 <Typography variant="h4" classes={{root:classes.title}}>Explore Cribs by City</Typography>
                 <Grid style={{position:'relative'}} container>
@@ -195,4 +184,4 @@ class Home extends Component{
     )
 }
 }
-export default withRouter(withStyles(styles)(Home));
+export default withRouter(withStyles(styles)(More));

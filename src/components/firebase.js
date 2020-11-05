@@ -62,6 +62,20 @@ const firebaseConfig = {
         properties = await this.firestore.collection(this.tables.PROPERTIES).where('hostId', 'not-in', [hostId]).limit(4).get();
         return properties;
     }
+    getMoreProperties = async(condition,id)=>{
+        let properties = null
+        if(condition === 'trending')
+            if(id==='')
+                properties = await this.firestore.collection(this.tables.PROPERTIES).orderBy('createdAt', 'desc').limit(16).get();
+            else
+                properties = await this.firestore.collection(this.tables.PROPERTIES).where('hostId', '!=', id).orderBy('hostId').orderBy('createdAt', 'desc').limit(16).get();
+        else if(condition === 'recommended')
+            if(id === '')
+                properties = await this.firestore.collection(this.tables.PROPERTIES).orderBy('rateValue', 'desc').limit(16).get();
+            else
+                properties = await this.firestore.collection(this.tables.PROPERTIES).where('hostId', '!=', id).orderBy('hostId').orderBy('rateValue', 'desc').limit(16).get();
+        return properties;
+    }
     getLatestProperties = async(hostId)=>{
         let properties = null
         properties = await this.firestore.collection(this.tables.PROPERTIES).where('hostId', '!=', hostId).orderBy('hostId').orderBy('createdAt', 'desc').limit(15).get();

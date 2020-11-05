@@ -29,6 +29,7 @@ import History from "../pages/app/renter/history";
 import PublicRoute from "./publicRoute";
 import RentRoute from "./privateRoute";
 import HostRoute from "./auth";
+import More from "../pages/app/more";
 class Root extends Component{
 
     render(){
@@ -39,7 +40,7 @@ class Root extends Component{
             <HostRoute exact component={Dashboard} path='/app/dashboard' />
             <HostRoute exact component={Properties} path='/app/property' />
             <HostRoute exact path='/app/add-property' component={AddProperty} />
-            <HostRoute exact component={EditProperty} path='/app/edit-property' />
+            <HostRoute exact component={EditProperty} path='/app/edit-property/:id' />
             <HostRoute exact path='/app/withdraws' component={DashboardPayment} />
             <RentRoute exact path='/app/history' component={History} />
             <RentRoute exact path='/app/favourites' component={Favourites} />
@@ -52,6 +53,7 @@ class Root extends Component{
             <RentRoute exact path='/app/setting' component={RentSetting} />
             <HostRoute exact path='/app/profile' component={Profile} />
             <RentRoute exact path='/app/myprofile' component={RentProfile} />
+            <RentRoute exact path='/app/more-cribs' component={More} />
             <HostRoute exact path='/app/edit-profile' component={EditProfile} />
             <RentRoute exact path='/app/edit-myprofile' component={RentEditProfile} />
             <HostRoute exact path='/app/inbox' component={Inbox} />
@@ -69,6 +71,7 @@ class Root extends Component{
             <PublicRoute exact path="/search" component={Search}/>
             <PublicRoute exact path="/crib/:id" component={Single}/>
             <PublicRoute exact path="/login" component={Login} />
+            <PublicRoute exact path='/more-cribs' component={More} />
 
             <PublicRoute exact path="/" component={Index} />
             

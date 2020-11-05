@@ -27,14 +27,14 @@ const styles =()=>({
         color:'#fff',
     }
 })
-const AppLogo = ({image, name,classes,href, target})=>{
+const AppLogo = ({image, name,classes,href, target, status=false})=>{
     return(
         <a style={{textDecoration:'none'}} href={href} target={target}>
                     <div className={classes.container}>
             <div className={classes.inner}>
                 <img className={classes.image} src={image} alt=""/>
                 <div>
-                    <p className={classes.paragraphy}>Download from</p>
+                    <p className={classes.paragraphy}>{status?'Download from':'Coming Soon on'}</p>
                     <h3 className={classes.paragraphy} style={{fontSize:16,marginTop:-4}}>{name} Store</h3>
                 </div>
             </div>

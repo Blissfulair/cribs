@@ -56,7 +56,7 @@ class DashboardPayment extends Component {
 		.then(history=>{
 			history.sort((a,b) => (a.createdAt*1000 > b.createdAt*1000) ? -1 : ((b.createdAt*1000 > a.createdAt*1000) ? 1 : 0)); 
 			const payments = history
-			this.setState({allPayments:history, payments, year:date.getFullYear().toString(), month:date.getMonth().toString(),tableLoading:false})
+			this.setState({allPayments:history, payments, year:date.getFullYear().toString(),tableLoading:false})
 		})
 	}
 	handleChangePage = (event, newPage) => {
@@ -83,35 +83,120 @@ class DashboardPayment extends Component {
 		this.setState({[e.target.name]:e.target.value})
 	}
 	filterByStatus =(status)=>{
-		
-		if(status !== '')
-		{
-			const payments = this.state.allPayments.filter((payment, i)=>{if(payment.status === status && i<10)return payment;else return ''} )
+		if(status === '' && this.state.month === ''){
+			const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
+	
+			const payments = this.state.allPayments.filter((payment)=>{if(payment.year.toString() === filterYear)return payment;else return ''} )
+			console.log(payments, 'month and status empty')
 			this.setState({payments,status})
 		}
 		else{
-			const payments = this.state.allPayments.filter((payment, i)=>{ if(i <10)return payment;else return ''} )
-			this.setState({payments,status})
-		}
+			if(status !== '' && this.state.month !== ''){
+				const filterStatus = status
+				const filterMonth = this.state.month
+				const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
 		
+				const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.month.toString() === filterMonth &&  payment.year.toString() === filterYear)return payment;else return ''} )
+				this.setState({payments,status})
+			}
+			else if(status !== '' && this.state.month === ''){
+				const filterStatus = status
+				const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
+		
+				const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus &&  payment.year.toString() === filterYear)return payment;else return ''} )
+				this.setState({payments,status})
+			}
+			else if(status === '' && this.state.month !== ''){
+				const filterMonth = this.state.month
+				const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
+		
+				const payments = this.state.allPayments.filter((payment)=>{if(payment.month.toString() === filterMonth  && payment.year.toString() === filterYear)return payment;else return ''} )
+				this.setState({payments,status})	
+			}
+			else{
+				const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
+				const payments = this.state.allPayments.filter((payment)=>{if( payment.year.toString() === filterYear)return payment;else return ''} )
+				this.setState({payments,status})	
+				console.log(payments, 'last empty')
+			}
+		}
+
 	}
 	filterByYear =(year)=>{
-			const payments = this.state.allPayments.filter((payment, i)=>{if(payment.year.toString() === year && i<10)return payment;else return ''} )
+		if(this.state.status === '' && this.state.month === ''){
+			const filterYear = year !== ''?year:new Date().getFullYear().toString()
+			const payments = this.state.allPayments.filter((payment)=>{if( payment.year.toString() === filterYear)return payment;else return ''} )
 			this.setState({payments,year})
+		}
+		else{
+			console.log('top')
+			if(this.state.status !== '' && this.state.month !== ''){
+				console.log('first')
+				const filterYear = year !== ''?year:new Date().getFullYear().toString()
+				const filterStatus = this.state.status
+				const filterMonth = this.state.month
+				const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.month.toString() === filterMonth && payment.year.toString() === filterYear)return payment;else return ''} )
+				this.setState({payments,year})
+			}
+			else if(this.state.status !== '' && this.state.month === ''){
+				console.log('second')
+				const filterYear = year !== ''?year:new Date().getFullYear().toString()
+				const filterStatus = this.state.status
+				const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.year.toString() === filterYear)return payment;else return ''} )
+				this.setState({payments,year})
+			}
+			else if(this.state.month !== '' && this.state.status === ''){
+				console.log('third',this.state)
+				const filterYear = year !== ''?year:new Date().getFullYear().toString()
+				const filterMonth = this.state.month
+				const payments = this.state.allPayments.filter((payment)=>{if(payment.month.toString() === filterMonth  && payment.year.toString() === filterYear)return payment;else return ''} )
+				this.setState({payments,year})
+			}
+			else{
+				console.log('last')
+				const filterYear = year !== ''?year:new Date().getFullYear().toString()
+				const payments = this.state.allPayments.filter((payment)=>{if(payment.year.toString() === filterYear)return payment;else return ''} )
+				this.setState({payments,year})
+			}
+		}
 		
 	}
 	filterByMonth =(month)=>{
 		
-		if(month !== '')
-		{
-			const payments = this.state.allPayments.filter((payment, i)=>{if(payment.month.toString() === month && i<10)return payment;else return ''} )
-			this.setState({payments,month})
-		}
-		else{
-			const payments = this.state.allPayments.filter((payment, i)=>{ if(i <10)return payment; else return ''} )
-			this.setState({payments,month})
-		}
-		
+			if(month === '' && this.state.status === ''){
+				const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
+				const payments = this.state.allPayments.filter((payment)=>{if( payment.year.toString() === filterYear)return payment;else return ''} )
+				this.setState({payments,month})
+			}
+			else{
+				if(month !== '' && this.state.status !== '')
+				{
+					const filterMonth = month
+					const filterStatus = this.state.status
+					const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
+					const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.month.toString() === filterMonth && payment.year.toString() === filterYear)return payment;else return ''} )
+					this.setState({payments,month})
+				}
+				else if(month === '' && this.state.status !== ''){
+					const filterStatus = this.state.status
+					const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
+					const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus  && payment.year.toString() === filterYear)return payment;else return ''} )
+					this.setState({payments,month})
+				}
+				else if(month !== '' && this.state.status === ''){
+					const filterMonth = month
+					const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
+					const payments = this.state.allPayments.filter((payment)=>{if(payment.month.toString() === filterMonth && payment.year.toString() === filterYear)return payment;else return ''} )
+					this.setState({payments,month})
+				}
+			}
+			// else{
+			// 	const filterMonth = month
+			// 	const filterStatus = this.state.status !== ''? this.state.status:'pending';
+			// 	const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
+			// 	const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.month.toString() === filterMonth && payment.year.toString() === filterYear)return payment;else return ''} )
+			// 	this.setState({payments,month})
+			// }
 	}
 	onSubmit=(e)=>{
 		e.preventDefault()

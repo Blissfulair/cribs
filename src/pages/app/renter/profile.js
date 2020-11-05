@@ -43,7 +43,7 @@ const ProfileDetails = ({context,uploadImage})=>{
                         defaultValue={5}
                     />
                 </Grid>
-                <Typography variant="subtitle2" style={{marginTop:12, color:'#00A8C8'}} component="p">Top Host</Typography>
+                {/* <Typography variant="subtitle2" style={{marginTop:12, color:'#00A8C8'}} component="p">Top Host</Typography> */}
 
                 <Link to="/app/edit-myprofile">
                     <div className="btn">

@@ -11,12 +11,18 @@ const HostRoute = ({component: Component, ...rest}) => {
         // Show the component only when the user is logged in
         // Otherwise, redirect the user to /signin page
         <Route {...rest} render={props => (
-             Boolean(state.userData)?
-             !dash?
+            // state.user && state.user.emailVerified?
+            //  Boolean(state.userData)?
+            Boolean(state.userData)&& !dash && state.user.emailVerified?
                 <Component {...props} />
                 :
-                <Redirect to="/app/home"  />
-            : <Redirect to={{ pathname: "/login", state: { referer: props.location } }}  />
+                <Redirect to="/verification"  />
+                // :
+                // <Redirect to="/verification"  />
+            // : <Redirect to={{ pathname: "/login", state: { referer: props.location } }}  />
+
+            // :
+            // <Redirect to={{ pathname: "/login", state: { referer: props.location } }} />
         )} />
     );
 };

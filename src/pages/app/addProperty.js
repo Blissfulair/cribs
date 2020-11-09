@@ -507,7 +507,28 @@ firebase.storeProperty(body)
                                         !this.state.status?
                                         <button onClick={this.handleClick(TransitionUp)}>Save and Preview</button>
                                         :
-                                        <button style={{backgroundColor:'green'}} type="button" onClick={()=>this.props.history.push('/app/edit-profile')} >Update Profile</button>
+                                        <button style={{backgroundColor:'green'}} type="button" onClick={()=>this.props.history.push({pathname:'/app/edit-profile',state:{detail:{    name:this.state.title,
+                                            description:this.state.description,
+                                            featuredImage:this.state.featured_image,
+                                            images:[ ...other_images],
+                                            amount:this.state.price,
+                                            bedroom:this.state.bedroom,
+                                            discount:this.state.discount,
+                                            smoke:this.state.smoking,
+                                            wifi:this.state.wifi,
+                                            parking:this.state.parking,
+                                            cable:this.state.cable,
+                                            bathroom:this.state.bathroom,
+                                            kitchen:this.state.kitchen,
+                                            inside:this.state.inside,
+                                            around:this.state.around,
+                                            address:this.state.address,
+                                            guest:this.state.guest,
+                                            type:this.state.type,
+                                            house:this.state.house,
+                                            city:this.state.city,
+                                            state:this.state.state
+                                            }}})} >Update Profile</button>
                                     }
                                 </div>
                             </div>

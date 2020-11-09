@@ -225,10 +225,9 @@ const GlobalState= ()=>{
 
         
         getGeoInfo()
-        firebase.auth.onAuthStateChanged((user)=>{
+        firebase.auth.onAuthStateChanged(async(user)=>{
             try{
-
-                firebase.getUserDetails(user.uid)
+                await firebase.getUserDetails(user.uid)
                 .then(userData=>{
                     dispatch({type:'RETRIVE_USER', payload:{user,userData}})
                     dispatch({type:'GET_PHOTO', payload:{photoURL:user.photoURL}})
@@ -256,7 +255,7 @@ const GlobalState= ()=>{
                 })
             }
             catch(e){
-                dispatch({type:'RETRIVE_USER', payload:{user:null, userData:null}})
+                // dispatch({type:'RETRIVE_USER', payload:{user:null, userData:null}})
                 dispatch({type:'SET_STATE', payload:{initializing:false}})
                 getProperties('')
             }
@@ -276,9 +275,9 @@ const GlobalState= ()=>{
            await firebase.register(formData)
            .then(async(user)=>{
                 await firebase.storeData(formData,user.user)
-                 firebase.getUserDetails(user.user.uid)
+                 await firebase.getUserDetails(user.user.uid)
                  .then(userData=>{
-                    // dispatch({type:'RETRIVE_USER', payload:{user:user.user,userData}})
+                    dispatch({type:'RETRIVE_USER', payload:{user:user.user,userData}})
                     // if(userData.role === 0)
                     // dispatch({type:'GET_DASHBOARD', payload:{dashboard:true}})
                     // else if(userData.role === 1)
@@ -486,6 +485,9 @@ const GlobalState= ()=>{
             .then(results=>{
                dispatch({type:'GET_RESULTS', payload:{results:results}})
             })
+        },
+        resendVerification:async()=>{
+           await firebase.resendVerification(state.user)
         },
         state
     }),[state])

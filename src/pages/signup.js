@@ -35,13 +35,15 @@ class SignUp extends React.Component{
             password:'',
             email:'',
             lastname:'',
+            cpassword:'',
             remember:false,
             err:'',
             token:'',
             type:false,
             role:0,
             renting:false,
-            hosting:false
+            hosting:false,
+            isConfirmed:false
         }
     }
 
@@ -71,6 +73,14 @@ class SignUp extends React.Component{
               }
             this.setState({open:false})
             };
+    onConfirmPassword = ()=>{
+        if(this.state.password === this.state.cpassword){
+            this.setState({isConfirmed:true})
+        }
+        else{
+            this.setState({isConfirmed:false})
+        }
+    }
     onSubmit =(event)=>{
         event.preventDefault()
         if(this.state.firstname === '')
@@ -194,6 +204,27 @@ class SignUp extends React.Component{
                                     </div>
                                     <span className="icon-checkmark"></span>
                                 </div>
+                                {
+                                    this.state.password.length<7 && this.state.password !==''?
+                                    <p style={{color:'red', textAlign:'left'}}>Password must be at least 7 digits.</p>
+                                    :''
+                                }
+                                <label htmlFor="cpassword">Confirm Password</label>
+                                <div className="form-groups">
+                                   
+                                    <div className="input">
+                                        <input name="cpassword" type="password" placeholder="Enter confirm password" onChange={(e)=>{this.setState({cpassword:e.target.value},()=>{this.onConfirmPassword()})}}  id="cpassword" />
+                                    </div>
+                                    <span className="icon-checkmark"></span>
+                                </div>
+                                {
+                                   this.state.cpassword !== ''?
+                                    this.state.isConfirmed?
+                                    <p style={{color:'green', textAlign:'left'}}>Password matched</p>
+                                    :
+                                    <p style={{color:'red', textAlign:'left'}}>Password is does not match</p>
+                                    :''
+                                }
                                 <div className="form-check">
                                     <FormControlLabel
                                             control={<Checkbox id="rememberme" onChange={(e)=>{this.setState({remember: !this.state.remember})}} checked={this.state.renting} classes={{root:this.props.classes.check}} name="role"/>}

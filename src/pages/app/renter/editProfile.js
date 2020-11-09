@@ -40,11 +40,11 @@ const EditProfileDom = ({state, handleCloseSnackBar, context, changeHandler,onSu
                             <table>
                                 <tbody>
                                     <tr>
-                                    <td>Address:</td>
+                                    <td>Address: <span style={{color:'red'}}>*</span></td>
                                         <td><input onChange={(e)=>changeHandler(e)} name="address" defaultValue={context.state.userData.address?context.state.userData.address:''} /></td>
                                     </tr>
                                     <tr>
-                                        <td>Phone:</td>
+                                        <td>Phone: <span style={{color:'red'}}>*</span></td>
                                         <td>
                                             <img alt="flag" src={`https://www.countryflags.io/${context.state.env?context.state.env.country_code.toLowerCase():'us'}/shiny/32.png`}/>
                                             <input type="text" onChange={(e)=>changeHandler(e)} name="phone" defaultValue={context.state.userData.phone?context.state.userData.phone:context.state.env.country_calling_code} />
@@ -63,22 +63,23 @@ const EditProfileDom = ({state, handleCloseSnackBar, context, changeHandler,onSu
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Date of Birth:</td>
+                                        <td>Date of Birth: <span style={{color:'red'}}>*</span></td>
                                         <td>
                                             <input type="text" onChange={(e)=>changeHandler(e)} name="dob" defaultValue={context.state.userData.dob?context.state.userData.dob:''} />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Gender:</td>
+                                        <td>Gender: <span style={{color:'red'}}>*</span></td>
                                         <td>
                                             <NativeSelect defaultValue={context.state.userData.gender?context.state.userData.gender:''} onBlur={changeHandler} name="gender" id="">
+                                                <option value="">Choose</option>
                                                 <option value="Male">Male</option>
                                                 <option value="Female">Female</option>
                                             </NativeSelect>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Bio:</td>
+                                        <td>Bio: <span style={{color:'red'}}>*</span></td>
                                         <td>
                                             <textarea onChange={(e)=>changeHandler(e)} defaultValue={context.state.userData.bio?context.state.userData.bio:''} name="bio"  />
                                         </td>
@@ -105,9 +106,9 @@ class EditProfile extends React.Component{
         this.state = {
             phone:'',
             address:'',
-            linkedin:'',
+            linkedin:null,
             gender:'',
-            facebook:'',
+            facebook:null,
             dob:'',
             bio:'',
             loading:false,
@@ -126,8 +127,8 @@ class EditProfile extends React.Component{
             phone:this.context.state.userData.phone,
             address:this.context.state.userData.address,
             bio:this.context.state.userData.bio,
-            linkedin:this.context.state.userData.linkedin,
-            facebook:this.context.state.userData.facebook,
+            linkedin:this.context.state.userData.linkedin === undefined?null:this.context.state.userData.linkedin,
+            facebook:this.context.state.userData.facebook === undefined?null:this.context.state.userData.facebook,
             dob:this.context.state.userData.dob,
             gender:this.context.state.userData.gender
         })
@@ -149,10 +150,25 @@ class EditProfile extends React.Component{
 
     onSubmit = n =>{
         n.preventDefault();
-        if(this.state.phone === '' || this.state.address === '' || this.state.bio === '' || this.state.dob === '' || this.state.gender === ''){
-            this.setState({
-                message:'All fields are required. Please fill and try again'
-            })
+        this.setState({message:'', success:false})
+        if(this.state.address === '' || this.state.address === undefined){
+            this.setState({message:'Address is required'})
+            return
+        }
+       else if(this.state.phone === '' || this.state.phone === undefined){
+            this.setState({message:'Phone Number is required'})
+            return
+        }
+       else if( this.state.dob === '' || this.state.dob === undefined){
+            this.setState({ message:'Date of birth is required'})
+            return
+        }
+       else if( this.state.gender === '' || this.state.gender === undefined){
+            this.setState({ message:'Gender is required' })
+            return
+        }
+        else if( this.state.bio === '' || this.state.bio === undefined){
+            this.setState({ message:'Bio is required'})
             return
         }
         this.setState({loading:true})
@@ -168,7 +184,7 @@ class EditProfile extends React.Component{
         this.context.updateProfile(data)
         .then(()=>{
             this.setState({loading:false,success:true, message:'Profile has been updated'})
-            this.props.history.push('/app/profile')
+            this.props.history.push('/app/myprofile')
         })
         .catch((e)=>{
             this.setState({loading:false,success:false, message:'Oops! failed to complete the operation. Please try again.'}) 

@@ -14,13 +14,17 @@ const PublicRoute = ({component: Component, ...rest}) => {
             props.location.state.referer !== undefined&&
                 <Redirect to={props.location.state.referer} exact />
             :
-            Boolean(state.userData) && !dash ?
-                <Redirect to="/app/dashboard" exact />
+            state.user?
+            !state.user.emailVerified?
+            <Redirect to="/verification" />
+                : 
+                dash?
+                <Redirect to="/app/home" />
+                :
+                <Redirect to="/app/dashboard" />
             :
-            Boolean(state.userData) && dash?
-            <Redirect to="/app/home" exact />
-            : <Component {...props} />
-        )} />
+            <Component {...props} />
+            )} />
     );
 };
 

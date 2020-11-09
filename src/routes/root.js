@@ -26,10 +26,13 @@ import PrivateSingle from "../pages/app/single";
 import PrivatePayment from "../pages/app/payment";
 import Favourites from "../pages/app/host/favourites";
 import History from "../pages/app/renter/history";
+import Activates from "../pages/activate";
 import PublicRoute from "./publicRoute";
 import RentRoute from "./privateRoute";
 import HostRoute from "./auth";
 import More from "../pages/app/more";
+import VerifyRoute from "./verification";
+
 class Root extends Component{
 
     render(){
@@ -58,6 +61,7 @@ class Root extends Component{
             <RentRoute exact path='/app/edit-myprofile' component={RentEditProfile} />
             <HostRoute exact path='/app/inbox' component={Inbox} />
             <HostRoute exact path='/app/calendar' component={DashboardCalendar} />
+            <VerifyRoute exact path='/verification' component={Activates} />
             
 
 

@@ -45,17 +45,25 @@ const firebaseConfig = {
          await user.user.updateProfile({
             displayName:data.firstname
         })
+        await user.user.sendEmailVerification({
+            url:process.env.NODE_ENV ==='development'?process.env.REACT_APP_LOCAL_URL+'/app/home':process.env.REACT_APP_PROD_URL+'/app/home'
+        })
         return user;
     }
+    resendVerification = async(user)=>{
+        await user.sendEmailVerification({
+            url:process.env.NODE_ENV ==='development'?process.env.REACT_APP_LOCAL_URL+'/app/home':process.env.REACT_APP_PROD_URL+'/app/home'
+        })
+    }
     storeData = async(data,user)=>{
-        await this.firestore.collection(this.tables.USERS).doc(user.uid).set({firstname:data.firstname,lastname:data.lastname,email:data.email,role:data.role, status:false})
+        await this.firestore.collection(this.tables.USERS).doc(user.uid).set({firstname:data.firstname,lastname:data.lastname,email:data.email,role:data.role, status:false, balance:0,pending:0})
     }
     makeHost = async(user)=>{
         await this.firestore.collection(this.tables.USERS).doc(user.uid).update({role:2,balance:0,pending:0,income:0,withdrawn:0})
     }
     getUserDetails = async(uid)=>{
-        const data = (await this.firestore.collection(this.tables.USERS).doc(uid).get()).data()
-      return data
+       return (await this.firestore.collection(this.tables.USERS).doc(uid).get()).data()
+
     }
     getHostProperties = async(hostId)=>{
         let properties = null

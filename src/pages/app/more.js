@@ -135,10 +135,10 @@ class More extends Component{
                             <Typography classes={{root:classes.title}} variant="h3">Where would you like to stay?</Typography>
                             <Grid  container spacing={2}>
                                 <Grid item xs={12} sm={6} md={3} lg={3} >
-                                <Stays title="House" link={`/app/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
+                                <Stays title="House" link={`${this.context.state.userData?'/app':''}/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={3} lg={3}>
-                                <Stays title="Bungalows" link={`/app/search?type=bungalows`}  height={280} image={bangalow} available={1000}/>
+                                <Stays title="Bungalows" link={`${this.context.state.userData?'/app':''}/search?type=bungalows`}  height={280} image={bangalow} available={1000}/>
                                 </Grid>
                                 <Grid item xs={12} sm={12} md={6} lg={6}>
                                     <div className={classes.loginContainer}>
@@ -159,7 +159,7 @@ class More extends Component{
                                         this.state.properties.map((property, i)=>{
                                             return(
                                                 <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                    <Link to={`/app/crib/${property.id}`}>
+                                                    <Link to={`${this.context.state.userData?'/app':''}/crib/${property.id}`}>
                                                         <Trending favourite={this.state.favourites.includes(property.id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
                                                     </Link>
                                                 </Grid>
@@ -176,7 +176,7 @@ class More extends Component{
 
                 <Typography variant="h4" classes={{root:classes.title}}>Explore Cribs by City</Typography>
                 <Grid style={{position:'relative'}} container>
-                <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link:'/app/search?city=lagos'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/app/search?city=abuja'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/app/search?city=kano'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/app/search?city=benin'}]}/>
+                <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link:`${this.context.state.userData?'/app':''}/search?city=lagos`},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:`${this.context.state.userData?'/app':''}/search?city=abuja`},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:`${this.context.state.userData?'/app':''}/search?city=kano`},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:`${this.context.state.userData?'/app':''}/search?city=benin`}]}/>
                 </Grid>
                 </Grid>
             </Grid>

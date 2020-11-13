@@ -158,7 +158,7 @@ class Home extends Component{
                             <div style={{marginTop:50}}>
                                 <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
                                 <Grid style={{position:'relative'}}  container >
-                                    <Slide favourites={this.state.favourites} content={this.context.state.properties}/>
+                                    <Slide favourites={this.state.favourites} content={this.context.state.latestProperties}/>
                                 </Grid>
                             </div>
                             <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>

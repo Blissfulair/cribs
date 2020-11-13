@@ -139,21 +139,18 @@ class DashboardPayment extends Component {
 				this.setState({payments,year})
 			}
 			else if(this.state.status !== '' && this.state.month === ''){
-				console.log('second')
 				const filterYear = year !== ''?year:new Date().getFullYear().toString()
 				const filterStatus = this.state.status
 				const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.year.toString() === filterYear)return payment;else return ''} )
 				this.setState({payments,year})
 			}
 			else if(this.state.month !== '' && this.state.status === ''){
-				console.log('third',this.state)
 				const filterYear = year !== ''?year:new Date().getFullYear().toString()
 				const filterMonth = this.state.month
 				const payments = this.state.allPayments.filter((payment)=>{if(payment.month.toString() === filterMonth  && payment.year.toString() === filterYear)return payment;else return ''} )
 				this.setState({payments,year})
 			}
 			else{
-				console.log('last')
 				const filterYear = year !== ''?year:new Date().getFullYear().toString()
 				const payments = this.state.allPayments.filter((payment)=>{if(payment.year.toString() === filterYear)return payment;else return ''} )
 				this.setState({payments,year})

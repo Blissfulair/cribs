@@ -220,6 +220,13 @@ textarea::-webkit-scrollbar{
     grid-template-columns: repeat(5, 18% [col-start]);
     grid-column-gap: 2.5%;
 }
+.other-images .images .loading{
+    border-radius: 15px;
+    background: #ACA9A9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .other-images .images > div{
     position: relative;
     height: 95px;

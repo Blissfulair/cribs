@@ -3,7 +3,7 @@ import "./inbox.css"
 import "./properties.css"
 import "./add-property.css"
 import image from  "../../images/placeholder.jpg"
-import {Snackbar, Slide } from "@material-ui/core";
+import {Snackbar, Slide, NativeSelect } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Backend from "./layout"
 import AppContext from "../../state/context";
@@ -11,6 +11,7 @@ import Activity from '../../components/activity'
 import firebase from "../../components/firebase"
 import {withRouter} from "react-router-dom"
 import {states} from "../../icons/options"
+import {CircularProgress} from "@material-ui/core"
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
@@ -31,12 +32,12 @@ class EditProperty extends React.Component{
             bedroom:1,
             discount:0,
             bathroom:0,
-            parking:false,
-            wifi:false,
-            smoking:false,
-            cable:false,
+            parking:0,
+            wifi:0,
+            smoking:0,
+            cable:0,
             jaccuzi:0,
-            kitchen:false,
+            kitchen:0,
             inside:'',
             around:'',
             guest:0,
@@ -49,6 +50,9 @@ class EditProperty extends React.Component{
             open:false,
             isLoading:true,
             images:[],
+            hostId:'',
+            id:'',
+            sideLoading:false
         }
     }
 
@@ -57,64 +61,72 @@ class EditProperty extends React.Component{
         if(dom !== null)
         dom.setAttribute('class', 'is-active')
         const id = this.props.location.pathname.split('edit-property')[1]
-        firebase.getPropertyById(id)
-        .then(property=>{
-            this.setState({
-                state:property.state,
-                city:property.city,
-                title:property.name,
-                description:property.description,
-                house:property.house,
-                address:property.address,
-                price:property.amount,
-                bedroom:property.bedroom,
-                bathroom:property.bathroom,
-                parking:property.parking,
-                wifi:property.wifi,
-                smoking:property.smoke,
-                cable:property.cable,
-                jaccuzi:0,
-                kitchen:property.kitchen,
-                inside:property.inside,
-                around:property.around,
-                guest:property.guest,
-                featured_image:property.featuredImage,
-                type:property.type,
-                other_images:property.images,
-                images:property.images,
-                isLoading:false
+        firebase.getHostPropertyById(id)
+        .then(data=>{
+            data.onSnapshot(res=>{
+                const property = res.data()
+                console.log(res.data())
+                this.setState({
+                    state:property.state,
+                    city:property.city,
+                    title:property.name,
+                    description:property.description,
+                    house:property.house,
+                    address:property.address,
+                    price:property.amount,
+                    bedroom:property.bedroom,
+                    bathroom:property.bathroom,
+                    parking:property.parking,
+                    wifi:property.wifi,
+                    smoking:property.smoke,
+                    cable:property.cable,
+                    kitchen:property.kitchen,
+                    inside:property.inside,
+                    around:property.around,
+                    guest:property.guest,
+                    featured_image:property.featuredImage,
+                    type:property.type,
+                    other_images:property.images,
+                    isLoading:false,
+                    id:id,
+                    hostId:property.hostId,
+                })
             })
+     
         })
 
     }
 
+
     uploadImage = (e)=>{
+
         let image = e.target.files[0];
         this.setState({featured_image:image})
+        const data = {
+            hostId:this.state.hostId,
+            id:this.state.id,
+            featuredImage:image
+        }
         let reader = new FileReader();
         reader.readAsDataURL(image);
         reader.onload = (e)=>{
             document.getElementById('img').setAttribute('src', reader.result);
+
+            firebase.uploadImagesOnProp(data);
         }
     }
     uploadImages = (e)=>{
-        let reader = new FileReader();
-        let pic = document.createElement('img');
-        let del = document.createElement('div');
-        let newEl = document.createElement('div');
-        newEl.setAttribute('class', 'viewing')
-        this.state.other_images.push(e.target.files[0]);
-        reader.readAsDataURL(e.target.files[0]);
-        reader.onload = (e)=>{
-            this.state.images.push(reader.result)
-            pic.setAttribute('src', reader.result);
-            newEl.appendChild(pic);
-            newEl.appendChild(del);
-            document.getElementsByClassName('images')[0].appendChild(newEl);
-            document.getElementsByClassName('images')[0].lastChild.lastChild.onclick = (e)=>{
-                this.deleteImage(e);
-            }
+        this.setState({sideLoading:true})
+        const data = {
+            id:this.state.id,
+            hostId:this.state.hostId,
+            images:this.state.other_images,
+            image:e.target.files[0]
         }
+        firebase.uploadImagesOnPropSideView(data)
+        .then(()=>{
+            this.setState({sideLoading:false})
+        })
     }
     handleClick = (Transition) => () => {
         this.setState({transition:Transition, open:true})
@@ -126,26 +138,28 @@ class EditProperty extends React.Component{
         this.setState({open:false})
         }
     deleteImage=(e)=>{
+
         let img = e.target.previousElementSibling.currentSrc;
-        let index = this.state.other_images.findIndex((e)=> e === img);
-        let blob = this.state.images.findIndex((e)=> e === img);
-        if(index >= 0)
-        {
-            this.state.other_images.splice(index, 1);
-            e.target.parentElement.remove();
+        const data = {
+            id:this.state.id,
+            images:this.state.other_images,
+            url:img
         }
-        else if(blob >= 0){
-            this.state.images.splice(index, 1);
-            e.target.parentElement.remove();
-        }
+        firebase.deleteUploadedImage(data)
     }
 
 
     changeHandler =(e)=>{
         const name = e.target.name;
         this.setState({[name]:e.target.value})
-        if(e.target.value === 'on')
+
+    }
+    changeType =(e)=>{
+        const name = e.target.name;
+        if(e.target.checked)
         this.setState({[name]:1})
+        else
+        this.setState({[name]:0})
     }
     maxStringLength = (event,leng = 80)=>{
         const value = event.target.value;
@@ -166,12 +180,10 @@ class EditProperty extends React.Component{
             this.setState({message:'All fields must be filled'})
             return false
            }
-        //    this.setState({isLoading:true})
+    this.setState({message:'', success:false, isLoading:true})
 const body = {
-    hostId:this.context.state.user.uid,
     name:this.state.title,
     description:this.state.description,
-    images:[ ...this.state.other_images,this.state.featured_image],
     amount:this.state.price,
     bedroom:this.state.bedroom,
     smoke:this.state.smoking,
@@ -189,43 +201,14 @@ const body = {
     city:this.state.city,
     state:this.state.state,
 }
-console.log(body)
 firebase.updateProperty(id,body)
 .then(()=>{
     this.setState({
-        title:'',
-        description:'',
-        house:'',
-        address:'',
-        price:'',
-        bedroom:1,
-        discount:0,
-        bathroom:0,
-        parking:false,
-        wifi:false,
-        smoking:false,
-        cable:false,
-        jaccuzi:0,
-        kitchen:false,
-        inside:'',
-        around:'',
-        guest:0,
-        featured_image:null,
-        type:'house',
-        other_images:[],
-        city:'',
-        state:'',
+       
         success:true,
         message:'Submitted successfully',
         isLoading:false
     })
-
-        const elements = document.querySelectorAll('.viewing')
-        for(let i =0 ; i< elements.length ; i++){
-            
-            elements[i].remove()
-
-        }
      })
      .catch(err=>{
          console.log(err)
@@ -233,8 +216,8 @@ firebase.updateProperty(id,body)
      })
 
     }
+
     render(){
-        console.log(this.state)
         return (
             <>
                 <Backend>
@@ -266,12 +249,12 @@ firebase.updateProperty(id,body)
                             }
                             <div className="property-group">
                                 <label htmlFor="title">Title</label>
-                                <input type="text" onChange={this.changeHandler} value={this.state.title} onKeyUp={event=>{this.maxStringLength(event,25)}} name="title" id="title" placeholder="E.g: One Bedroom Flat" />
+                                <input type="text" onChange={this.changeHandler} defaultValue={this.state.title} onKeyUp={event=>{this.maxStringLength(event,25)}} name="title" id="title" placeholder="E.g: One Bedroom Flat" />
                                 <p>25 Characters</p>
                             </div>
                             <div className="property-group">
                                 <label htmlFor="desc">Description</label>
-                                <textarea name="description" value={this.state.description}  onKeyUp={event=>{this.maxStringLength(event,500)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="desc" cols="30" rows="10" />
+                                <textarea name="description" defaultValue={this.state.description}  onKeyUp={event=>{this.maxStringLength(event,500)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="desc" cols="30" rows="10" />
                                 <p>500 Characters</p>
                             </div>
 
@@ -282,7 +265,15 @@ firebase.updateProperty(id,body)
                                     <div className="col">
                                         <label htmlFor="state">State</label>
                                         <div className="input">
-                                            <select defaultValue={this.state.state} name="state"  onBlur={this.changeHandler}  id="state">
+                                            <NativeSelect 
+                                            value={this.state.state}
+                                            className="input-edit-property"
+                                            onChange={this.changeHandler}
+                                            inputProps={{
+                                                name: 'state',
+                                                id:'state'
+                                            }}
+                                            >
                                                 <option value="">Select State</option>
                                                 {
                                                     states.map((state, i)=>{
@@ -291,7 +282,7 @@ firebase.updateProperty(id,body)
                                                         )
                                                     })
                                                 }
-                                            </select>
+                                            </NativeSelect>
                                             <span>
                                                 <div className="angle"></div>
                                             </span>
@@ -300,7 +291,7 @@ firebase.updateProperty(id,body)
                                     <div className="col">
                                         <label htmlFor="city">City</label>
                                         <div className="input">
-                                            <input value={this.state.city} placeholder="Eg Benin" name="city" onChange={this.changeHandler}  id="city"/>
+                                            <input defaultValue={this.state.city} placeholder="Eg Benin" name="city" onChange={this.changeHandler}  id="city"/>
                                             <span>
                                                 <div className="angle"></div>
                                             </span>
@@ -309,7 +300,7 @@ firebase.updateProperty(id,body)
                                     <div className="col">
                                         <label htmlFor="cat">Address</label>
                                         <div className="input">
-                                            <input type="text" onChange={this.changeHandler} value={this.state.address}   id="cat" name="address" placeholder="45, Benin/Agbor Road" />
+                                            <input type="text" onChange={this.changeHandler} defaultValue={this.state.address}   id="cat" name="address" placeholder="45, Benin/Agbor Road" />
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div>
@@ -330,14 +321,14 @@ firebase.updateProperty(id,body)
                                     <div className="col">
                                         <label htmlFor="guest">Guest</label>
                                         <div className="input">
-                                            <input type="text" value={this.state.guest}  onChange={this.changeHandler}  name="guest" id="guest" placeholder="E.g 1" />
+                                            <input type="text" defaultValue={this.state.guest}  onChange={this.changeHandler}  name="guest" id="guest" placeholder="E.g 1" />
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div>
                                     <div className="col">
                                         <label htmlFor="price">Price</label>
                                         <div className="input">
-                                            <input type="text" value={this.state.price}  onChange={this.changeHandler}  name="price" id="price" placeholder="E.g 100000" />
+                                            <input type="text" defaultValue={this.state.price}  onChange={this.changeHandler}  name="price" id="price" placeholder="E.g 100000" />
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div>
@@ -350,13 +341,21 @@ firebase.updateProperty(id,body)
                                     <div className="col">
                                         <label htmlFor="bedroom">Bedroom</label>
                                         <div className="input">
-                                            <select name="bedroom"  onBlur={this.changeHandler}  id="bedroom">
+                                            <NativeSelect
+                                                value={this.state.bedroom}
+                                                className="input-edit-property"
+                                                onChange={this.changeHandler}
+                                                inputProps={{
+                                                    name: 'bedroom',
+                                                    id:'bedroom'
+                                                }}
+                                                >
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
                                                 <option value="4">4</option>
                                                 <option value="5">5</option>
-                                            </select>
+                                            </NativeSelect>
                                             <span>
                                                 <div className="angle"></div>
                                             </span>
@@ -365,13 +364,21 @@ firebase.updateProperty(id,body)
                                     <div className="col">
                                         <label htmlFor="bathroom">Bathroom</label>
                                         <div className="input">
-                                            <select   name="bathroom" onBlur={this.changeHandler}  id="bathroom">
+                                            <NativeSelect
+                                                value={this.state.bathroom}
+                                                className="input-edit-property"
+                                                onChange={this.changeHandler}
+                                                inputProps={{
+                                                    name: 'bathroom',
+                                                    id:'bathroom'
+                                                }}
+                                                >
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
                                                 <option value="4">4</option>
                                                 <option value="5">5</option>
-                                            </select>
+                                            </NativeSelect>
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div>
@@ -399,35 +406,40 @@ firebase.updateProperty(id,body)
                                 <div className="property-group-inner2">
                                     <div className="col">
                                         <label className="rememberme">
-                                                <input  type="checkbox" onChange={this.changeHandler}  name="wifi" id="pool" />
+                                                <input  type="checkbox" checked={this.state.wifi}  onChange={this.changeType}  name="wifi" id="pool" />
+                                                   
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="pool">Wifi</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                                <input type="checkbox" onChange={this.changeHandler}  name="parking" id="smoking" />
+                                                <input type="checkbox" checked={this.state.parking}  onChange={this.changeType}  name="parking" id="smoking" />
+
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="smoking">parking</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                                <input type="checkbox" onChange={this.changeHandler}  name="smoke" id="jaccuzi" />
+                                                <input type="checkbox"  checked={this.state.smoking}   onChange={this.changeType}  name="smoking" id="jaccuzi" />
+
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="jaccuzi">Smoke Alarm</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                            <input type="checkbox" onChange={this.changeHandler}  name="cable" id="water" />
+                                            <input type="checkbox" checked={this.state.cable}  onChange={this.changeType}  name="cable" id="water" />
+
                                             <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="water">Cable Tv</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                            <input type="checkbox" onChange={this.changeHandler}  name="kitchen" id="kitchen" />
+                                            <input type="checkbox" checked={this.state.kitchen}  onChange={this.changeType}  name="kitchen" id="kitchen" />
+
                                             <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="kitchen">Kitchen</label>
@@ -453,7 +465,12 @@ firebase.updateProperty(id,body)
                                     <ul className="prop-type">
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="house"  name="type" id="house" />
+                                                {
+                                                    this.state.type === 'house'?
+                                                    <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="house"  name="type" id="house" />
+                                                    :
+                                                    <input type="radio" onChange={this.changeHandler}  defaultValue="house"  name="type" id="house" />
+                                                }
                                                 <span className="radio-mark"></span>
                                             </label>
                                             <label htmlFor="house">House</label>
@@ -461,25 +478,76 @@ firebase.updateProperty(id,body)
 
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="cottages"  name="type" id="cottages" />
+                                                {
+                                                    this.state.type === 'duplex'?
+                                                    <input type="radio" onChange={this.changeHandler} defaultValue="duplex" defaultChecked  name="type" id="apartment" />
+                                                    :
+                                                    <input type="radio" onChange={this.changeHandler} defaultValue="duplex"  name="type" id="apartment" />
+                                                }
                                                 <span className="radio-mark"></span>
                                             </label>
-                                            <label htmlFor="cottages">Cottages</label>
+                                            <label htmlFor="apartment">Duplex</label>
                                         </li>
 
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="condos" name="type" id="condos" />
+                                                {
+                                                    this.state.type === 'flat'?
+                                                    <input type="radio" onChange={this.changeHandler} defaultValue="flat" defaultChecked name="type" id="condos" />
+                                                    :
+                                                    <input type="radio" onChange={this.changeHandler} defaultValue="flat" name="type" id="condos" />
+                                                }
                                                 <span className="radio-mark"></span>
                                             </label>
-                                            <label htmlFor="condos">Condos</label>
+                                            <label htmlFor="condos">Flat</label>
                                         </li>
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="bungalows" name="type" id="bungalows" />
+                                                {
+                                                    this.state.type === 'bungalow'?
+                                                    <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="bungalow" name="type" id="bungalows" />
+                                                    :
+                                                    <input type="radio" onChange={this.changeHandler} defaultValue="bungalow" name="type" id="bungalows" />
+                                                }
                                                 <span className="radio-mark"></span>
                                             </label>
-                                            <label htmlFor="bungalows">Bungalows</label>
+                                            <label htmlFor="bungalows">Bungalow</label>
+                                        </li>
+                                        <li>
+                                            <label className="radio">
+                                                {
+                                                    this.state.type === 'hotel'?
+                                                    <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="hotel" name="type" id="hotel" />
+                                                    :
+                                                    <input type="radio" onChange={this.changeHandler} defaultValue="hotel" name="type" id="hotel" />
+                                                }
+                                                <span className="radio-mark"></span>
+                                            </label>
+                                            <label htmlFor="hotel">Hotel</label>
+                                        </li>
+                                        <li>
+                                            <label className="radio">
+                                                {
+                                                    this.state.type === 'warehouse'?
+                                                    <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="warehouse" name="type" id="warehouse" />
+                                                    :
+                                                    <input type="radio" onChange={this.changeHandler} defaultValue="warehouse" name="type" id="warehouse" />
+                                                }
+                                                <span className="radio-mark"></span>
+                                            </label>
+                                            <label htmlFor="warehouse">Warehouse</label>
+                                        </li>
+                                        <li>
+                                            <label className="radio">
+                                                {
+                                                    this.state.type === 'storage'?
+                                                    <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="storage" name="type" id="storage" />
+                                                    :
+                                                    <input type="radio" onChange={this.changeHandler} defaultValue="storage" name="type" id="storage" />
+                                                }
+                                                <span className="radio-mark"></span>
+                                            </label>
+                                            <label htmlFor="storage">Storage</label>
                                         </li>
                                     </ul>
                                 </div>
@@ -510,7 +578,13 @@ firebase.updateProperty(id,body)
                                                         <img src={image} alt={`side${i}`} />
                                                         <div onClick={this.deleteImage} aria-hidden="true" ></div>
                                                     </div>
-                                                ))
+                                                )) 
+                                            }
+                                            {
+                                                this.state.sideLoading&&
+                                                <div className="loading">
+                                                    <CircularProgress/>
+                                                </div>
                                             }
                                         </div>
                                     </div>

@@ -424,14 +424,12 @@ class Single extends Component{
                                                 <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 1</Typography>
                                             </div>
-                                            <Typography style={{marginLeft:32}} variant="caption" component="p">1 King Bed</Typography>                                        
                                         </Grid>
                                         <Grid item xs={7}>
                                             <div className={classes.position} style={{marginBottom:5}}>
                                                 <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 2</Typography>
                                             </div>
-                                            <Typography style={{marginLeft:32}} variant="caption" component="p">1 King Bed</Typography>
                                         </Grid>
                                     </Grid>
                                     <Divider style={{marginTop:20}}/>

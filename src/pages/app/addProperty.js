@@ -456,25 +456,46 @@ firebase.storeProperty(body)
 
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="cottages"  name="type" id="apartment" />
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="duplex"  name="type" id="apartment" />
                                                 <span className="radio-mark"></span>
                                             </label>
-                                            <label htmlFor="apartment">Cottages</label>
+                                            <label htmlFor="apartment">Duplex</label>
                                         </li>
 
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="condos" name="type" id="condos" />
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="flat" name="type" id="condos" />
                                                 <span className="radio-mark"></span>
                                             </label>
-                                            <label htmlFor="condos">Condos</label>
+                                            <label htmlFor="condos">Flat</label>
                                         </li>
                                         <li>
                                             <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="bungalows" name="type" id="bungalows" />
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="bungalow" name="type" id="bungalows" />
                                                 <span className="radio-mark"></span>
                                             </label>
-                                            <label htmlFor="bungalows">Bungalows</label>
+                                            <label htmlFor="bungalows">Bungalow</label>
+                                        </li>
+                                        <li>
+                                            <label className="radio">
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="hotel" name="type" id="hotel" />
+                                                <span className="radio-mark"></span>
+                                            </label>
+                                            <label htmlFor="hotel">Hotel</label>
+                                        </li>
+                                        <li>
+                                            <label className="radio">
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="Warehouse" name="type" id="warehouse" />
+                                                <span className="radio-mark"></span>
+                                            </label>
+                                            <label htmlFor="warehouse">Warehouse</label>
+                                        </li>
+                                        <li>
+                                            <label className="radio">
+                                                <input type="radio" onChange={this.changeHandler} defaultValue="storage" name="type" id="storage" />
+                                                <span className="radio-mark"></span>
+                                            </label>
+                                            <label htmlFor="storage">Storage</label>
                                         </li>
                                     </ul>
                                 </div>

@@ -522,6 +522,11 @@ font-size: 19px;
   width: 13px !important;
   margin-right: 10px;
 }
+.input-edit-property select{
+  color: #ACA9A9;
+  padding: 5px 8%;
+  font-size: 13px;
+}
 @media(max-width:767px){
   #end,#begin{
     font-size: 12px;

@@ -175,14 +175,9 @@ const firebaseConfig = {
                 searchIndex.push(newWord)
             }
         })
-         let images = []
-         let image=null
-         console.log(data)
            await this.firestore.collection(this.tables.PROPERTIES).doc(id).update({
                 name:data.name,
                 description:data.description,
-                images:images,
-                featuredImage:image,
                 amount:data.amount,
                 bedroom:data.bedroom,
                 smoke:data.smoke,
@@ -203,25 +198,37 @@ const firebaseConfig = {
                 keywords:searchIndex
     
             })
-           await this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+id).child(data.featuredImage.name).put(data.featuredImage)
-            .then(()=>{
-                this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+id).child(data.featuredImage.name).getDownloadURL()
-                .then(async (url)=>{
-                    await this.firestore.collection(this.tables.PROPERTIES).doc(id).update({featuredImage:url})
-                })
-            })
-            for(let i= 0; i<data.images.length; i++){
-                this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+id).child(data.images[i].name).put(data.images[i])
-                .then(()=>{
-                    this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+id).child(data.images[i].name).getDownloadURL()
-                    .then(async (url)=>{
-                        images.push(url)
-                        await this.firestore.collection(this.tables.PROPERTIES).doc(id).update({images:images})
-                    })
-                })
-            }
+
     }
 
+
+    uploadImagesOnProp=async(data)=>{
+        await this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+data.id).child(data.featuredImage.name).put(data.featuredImage)
+        .then(()=>{
+            this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+data.id).child(data.featuredImage.name).getDownloadURL()
+            .then(async (url)=>{
+                await this.firestore.collection(this.tables.PROPERTIES).doc(data.id).update({featuredImage:url})
+            })
+        })
+    }
+
+    uploadImagesOnPropSideView = async(data)=>{
+       await this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+data.id).child(data.image.name).put(data.image)
+        .then(()=>{
+            this.storage.ref(this.tables.PROPERTIES+'/'+data.hostId+'/'+data.id).child(data.image.name).getDownloadURL()
+            .then(async (url)=>{
+                data.images.push(url)
+                await this.firestore.collection(this.tables.PROPERTIES).doc(data.id).update({images:data.images})
+            })
+        })
+    }
+    deleteUploadedImage=async(data)=>{
+         this.storage.refFromURL(data.url).delete()
+         .then(async() => {
+             const images = data.images.filter(url=>url !== data.url);
+               await this.firestore.collection(this.tables.PROPERTIES).doc(data.id).update({images:images})
+        }).catch(err => console.log(err))
+    }
     logout=async()=>{
         return await this.auth.signOut();
     }
@@ -239,6 +246,9 @@ const firebaseConfig = {
         })
 
         return {...property.data(), reviews:reviews} 
+    }
+    getHostPropertyById = async(id)=>{
+      return await this.firestore.collection(this.tables.PROPERTIES).doc(id)
     }
     getPropertiesByType = async(type,hostId)=>{
         const properties = [];

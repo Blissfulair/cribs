@@ -249,10 +249,10 @@ class Index extends Component{
                     <Stays title="Bungalows" link={`/search?type=bungalows`} image={bangalow} available={1000}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays title="Condos" link={`/search?type=condos`} image={condos} available={1000} color="#DF0808"/>
+                    <Stays title="Hotels" link={`/search?type=hotel`} image={condos} available={1000} color="#DF0808"/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays title="Cottages" link={`/search?type=cottages`} image={cottage} available={1000} color="#000000"/>
+                    <Stays title="Duplex" link={`/search?type=duplex`} image={cottage} available={1000} color="#000000"/>
                     </Grid>
                 </Grid>
 
@@ -281,7 +281,7 @@ class Index extends Component{
                             <div style={{marginTop:50}}>
                                 <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
                                 <Grid style={{position:'relative'}}  container >
-                                    <Slide favourites={this.state.favourites} content={this.context.state.properties}/>
+                                    <Slide favourites={this.state.favourites} content={this.context.state.latestProperties}/>
                                 </Grid>
                             </div>
                             <Link className={classes.link} to={{pathname:'/more-cribs', search:'recommended'}}>See more</Link>

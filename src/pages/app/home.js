@@ -124,7 +124,7 @@ class Home extends Component{
                     <Stays title="House" link={`/app/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays title="Bungalows" link={`/app/search?type=bungalows`}  height={280} image={bangalow} available={1000}/>
+                    <Stays title="Bungalows" link={`/app/search?type=bungalow`}  height={280} image={bangalow} available={1000}/>
                     </Grid>
                     <Grid item xs={12} sm={12} md={6} lg={6}>
                         <div className={classes.loginContainer}>

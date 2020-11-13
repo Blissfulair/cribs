@@ -246,7 +246,7 @@ class Index extends Component{
                     <Stays title="House" link={`/search?type=house`} image={house} available={1000} color={'#DF6C08'}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays title="Bungalows" link={`/search?type=bungalows`} image={bangalow} available={1000}/>
+                    <Stays title="Bungalows" link={`/search?type=bungalow`} image={bangalow} available={1000}/>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3} lg={3}>
                     <Stays title="Hotels" link={`/search?type=hotel`} image={condos} available={1000} color="#DF0808"/>

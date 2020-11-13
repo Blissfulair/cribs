@@ -258,6 +258,7 @@ const GlobalState= ()=>{
                 // dispatch({type:'RETRIVE_USER', payload:{user:null, userData:null}})
                 dispatch({type:'SET_STATE', payload:{initializing:false}})
                 getProperties('')
+                getLatestProperties('')
             }
             // if(user){
 

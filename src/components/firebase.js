@@ -52,7 +52,8 @@ const firebaseConfig = {
     }
     resendVerification = async(user)=>{
         await user.sendEmailVerification({
-            url:process.env.NODE_ENV ==='development'?process.env.REACT_APP_LOCAL_URL+'/app/home':process.env.REACT_APP_PROD_URL+'/app/home'
+            //url:process.env.NODE_ENV ==='development'?process.env.REACT_APP_LOCAL_URL+'/app/home':process.env.REACT_APP_PROD_URL+'/app/home'
+            url:'https://cribng.netlify.app/app/home'
         })
     }
     storeData = async(data,user)=>{

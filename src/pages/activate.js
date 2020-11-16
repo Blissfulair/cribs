@@ -10,7 +10,7 @@ const  Activate = ()=>{
     const [message, setMessage]=useState('')
     const [loading, setLoading]=useState(false)
     const [status, setStatus]=useState(true)
-    const {state,resendVerification} = useContext(AppContext)
+    const {state} = useContext(AppContext)
     const onResend = ()=>{
         setLoading(true)
         const data = {

@@ -3,6 +3,7 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 import {getDates} from '../helpers/helpers'
+import { mailVerify } from '../emailTemplates/receipt'
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -45,15 +46,20 @@ const firebaseConfig = {
          await user.user.updateProfile({
             displayName:data.firstname
         })
-        await user.user.sendEmailVerification({
-            url:process.env.NODE_ENV ==='development'?process.env.REACT_APP_LOCAL_URL+'/app/home':process.env.REACT_APP_PROD_URL+'/app/home'
-        })
+        const mailData = {
+            from:'noreply@givitec.com',
+            to:data.email,
+            subject:'Email Verification',
+            firstname:data.firstname,
+            senderName:process.env.REACT_APP_NAME,
+        }
+        mailVerify(mailData)
         return user;
     }
     resendVerification = async(user)=>{
         await user.sendEmailVerification({
-            //url:process.env.NODE_ENV ==='development'?process.env.REACT_APP_LOCAL_URL+'/app/home':process.env.REACT_APP_PROD_URL+'/app/home'
-            url:'https://cribng.netlify.app/app/home'
+            url:process.env.NODE_ENV ==='development'?process.env.REACT_APP_LOCAL_URL+'/app/home':process.env.REACT_APP_PROD_URL+'/app/home'
+            
         })
     }
     storeData = async(data,user)=>{

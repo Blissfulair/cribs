@@ -29,6 +29,27 @@ export const sendMail =async(from, to, subject, message, senderName='')=> {
      })
     return await res.json()
     }
+    export const verifyMail =async(from, to, subject, senderName='', firstname)=> {
+        const res = await fetch('https://us-central1-cribng.cloudfunctions.net/api/verify-mail', {
+             method:'post',
+             body:JSON.stringify({
+                 email:to,
+                 subject:subject,
+                 from:from,
+                 firstname:firstname,
+                 domain:process.env.NODE_ENV === 'development'?process.env.REACT_APP_LOCAL_URL:process.env.REACT_APP_PROD_URL,
+                 senderName:senderName,
+                 host:process.env.REACT_APP_MAIL_HOST,
+                 port:process.env.REACT_APP_MAIL_PORT,
+                 username:process.env.REACT_APP_MAIL_USERNAME,
+                 password:process.env.REACT_APP_MAIL_PASSWORD
+             }),
+             headers:{
+                 'Content-Type':'application/json'
+             }
+         })
+        return await res.json()
+        }
 export const getFav = (id)=>{
     let favourite = false
     let favourites = JSON.parse(window.localStorage.getItem('@fi'))

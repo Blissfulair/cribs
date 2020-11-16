@@ -1,7 +1,9 @@
 
-import { sendMail } from "../helpers/helpers"
+import { sendMail, verifyMail } from "../helpers/helpers"
 
-
+export const mailVerify = async(data)=>{
+  await  verifyMail(data.from,data.to, data.subject, data.senderName, data.firstname)
+}
 export const mailReciept = async(data)=>{
     const Dom = `<!DOCTYPE html>
                     <html>

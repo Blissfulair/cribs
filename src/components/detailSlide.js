@@ -35,7 +35,6 @@ const DetailSlide = ({content})=>{
                         <ArrowRightIcon htmlColor="#fff"/>
                     </div>
                     }
-                    autoPlay={5000}
                     addArrowClickHandler
                     >
                     {content.map((image,index)=>{

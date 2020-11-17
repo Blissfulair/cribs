@@ -6,6 +6,9 @@
 
 // iPad devices
 @include mediaLg {
+    .payment-left{
+        display: none;
+    }
     section{
         width: 55vw;
         margin-right: 0;
@@ -27,7 +30,9 @@
 
 // Tablets and small Laptops
 @include mediaMd {
-  
+  .payment-left{
+      display: none;
+  }
 }
 
 // Smartphones

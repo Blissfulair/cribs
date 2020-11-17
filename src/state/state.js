@@ -342,29 +342,40 @@ const GlobalState= ()=>{
             let results = []
              await firebase.searchProperties(location, checkIn, checkOut, guest)
             .then(docs=>{
-                docs.forEach(doc=>{
+                docs.forEach(async doc=>{
+                    const bookedDates = []
+                    const dates = await firebase.firestore.collection('properties').doc(doc.id).collection('bookedDates').get();
+                    dates.forEach(docs=>bookedDates.push(...docs.data().bookedDates))
                     const result = doc.data()
-                    const checkOutarr = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(checkOut).toDateString())
-                    const checkInarr = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(checkIn).toDateString())
+                    const checkOutarr = bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(checkOut).toDateString())
+                    const checkInarr = bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(checkIn).toDateString())
                     if(checkInarr.length<1 && checkOutarr.length<1)
-                    results.push({id:doc.id,...result})
+                    {
+                        results.push({id:doc.id,...result})
+                        dispatch({type:'GET_RESULTS', payload:{results:results}})   
+                    }
                 })
             })
-            dispatch({type:'GET_RESULTS', payload:{results:results}})
         },
         onLoadSearch:async(data)=>{
             let results = []
            return await firebase.searchProperties(data.location, data.checkIn, data.checkOut, data.guest)
             .then(docs=>{
-                docs.forEach(doc=>{
+                docs.forEach(async doc=>{
+                    const bookedDates = []
+                    const dates = await firebase.firestore.collection('properties').doc(doc.id).collection('bookedDates').get();
+                    dates.forEach(docs=>bookedDates.push(...docs.data().bookedDates))
                     const result = doc.data()
-                    const checkOut = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(data.checkOut).toDateString())
-                    const checkIn = result.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(data.checkIn).toDateString())
+                    const checkOut = bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(data.checkOut).toDateString())
+                    const checkIn = bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(data.checkIn).toDateString())
                     if(checkIn.length<1 && checkOut.length<1)
-                    results.push({id:doc.id,...result})
+                    {
+                        results.push({id:doc.id,...result})
+                        dispatch({type:'GET_RESULTS', payload:{results:results}})
+                    }
                 })
-                dispatch({type:'GET_RESULTS', payload:{results:results}})
-                return results;
+                // dispatch({type:'GET_RESULTS', payload:{results:results}})
+                // return results;
 
             })
         },

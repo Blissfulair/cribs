@@ -193,6 +193,17 @@ class Login extends React.Component{
                             </form>
                         </div>
                     </div>
+                    <div className="signin-left">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="875.21" height="1202.327" viewBox="0 0 875.21 1202.327">
+                        <g id="Group_260" data-name="Group 260" transform="translate(-1160.517 -277.271)">
+                            <g id="Group_259" data-name="Group 259">
+                            <path id="Path_160" data-name="Path 160" d="M367.287,320.458C637.229,15.132,791.728,270.5,791.728,508.272S614.493,938.8,395.864,938.8,0,746.048,0,508.272,97.345,625.783,367.287,320.458Z" transform="translate(1244 96.696)" fill="#00a8c8" opacity="0.42"/>
+                            <path id="Path_161" data-name="Path 161" d="M288.631,281.649c212.133-220.618,333.545-36.1,333.545,135.708S482.9,728.446,311.088,728.446,0,589.167,0,417.358,76.5,502.267,288.631,281.649Z" transform="translate(2083.656 992.028) rotate(115)" fill="#00a8c8" opacity="0.42"/>
+                            </g>
+                        </g>
+                        </svg>
+
+                    </div>
                 </div>
             </>
         );

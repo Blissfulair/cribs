@@ -46,7 +46,7 @@ const Trending = ({classes, color,name, details,favourite})=>{
             <CardActionArea classes={{root:classes.image}}>
                 <CardMedia image={details.featuredImage}
                         component="img"
-                        alt="Contemplative Reptile"
+                        alt={details.name}
                         height="100%"
                 />
                 <div style={{zIndex:34, position:'absolute',height:'94%', width:'98%', top:'3%', left:'1%'}}>

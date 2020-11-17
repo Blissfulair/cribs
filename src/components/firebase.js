@@ -245,14 +245,20 @@ const firebaseConfig = {
     }
 
     getPropertyById = async(id)=>{
+        // const prop = await this.firestore.collection(this.tables.PROPERTIES).doc(id).collection(this.tables.BOOKED).where('propertyID', '==', id).get()
+        // .then(docs=>{
+        //     console.log(docs.docs)
+        // })
+        const dates = [];
         const property = await this.firestore.collection(this.tables.PROPERTIES).doc(id).get();
+        const prop = await this.firestore.collection(this.tables.PROPERTIES).doc(id).collection(this.tables.BOOKED).get();
+        prop.forEach(docs=>dates.push(...docs.data().bookedDates))
         const reviews = []
         await this.firestore.collection(this.tables.NOTIFICATIONS).where('propertyID', '==', property.id).where('type', '==', 'review').get()
         .then(docs=>{
             docs.forEach(doc=>reviews.push({...doc.data()}))
         })
-
-        return {...property.data(), reviews:reviews} 
+        return {...property.data(), reviews:reviews, bookedDates:dates} 
     }
     getHostPropertyById = async(id)=>{
       return await this.firestore.collection(this.tables.PROPERTIES).doc(id)
@@ -340,15 +346,15 @@ const firebaseConfig = {
         
     })
     
-    await this.firestore.collection(this.tables.BOOKED).add({
-        propertyID:reserveData.id,
-        bookedDates:bookedDates,
-    })
+    // await this.firestore.collection(this.tables.BOOKED).add({
+    //     propertyID:reserveData.id,
+    //     bookedDates:bookedDates,
+    // })
 
-    //    await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id)
-    //     .update({
-    //         bookedDates:bookedDates
-    //     })
+       await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id).collection(this.tables.BOOKED)
+        .add({
+            bookedDates:bookedDates
+        })
         .then(async()=>{
             // await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString()).update({
             //     status:'success',

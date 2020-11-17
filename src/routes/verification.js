@@ -6,7 +6,6 @@ import { getDashboard } from '../helpers/helpers';
 const VerifyRoute = ({component: Component,history, ...rest}) => {
     const {state} = useContext(AppContext)
     const dash = getDashboard()
-    console.log(state)
     return (
 
         // Show the component only when the user is logged in

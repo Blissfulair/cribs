@@ -54,7 +54,7 @@ const Search = ({classes, content, rating,name, favourite})=>{
                 <div className={classes.media}>
                     <CardMedia image={content.featuredImage}
                             component="img"
-                            alt="Contemplative Reptile"
+                            alt={content.name}
                             height="100%"
                     />
                     <div style={{zIndex:34, position:'absolute',height:'100%', width:'98%', top:'3%', left:'1%'}}>

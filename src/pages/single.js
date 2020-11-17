@@ -229,8 +229,11 @@ class Single extends Component{
         const id = this.props.location.pathname.split('crib')[1].replace('/','')
         this.context.getPropertyById(id)
         .then((property)=>{
+            const checkOut = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+            const checkIn = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+            const dates = getDates(checkIn,checkOut);
             this.context.storeActivity(property)
-            this.setState({loading:false})
+            this.setState({loading:false, days:dates.length})
         })
         const favourite = getFav(id)
         this.setState({
@@ -560,7 +563,7 @@ class Single extends Component{
                                                         <label htmlFor="check-out">
                                                             <Calendar htmlColor="#00A8C8" fontSize="small" />
                                                         </label>
-                                                        <TextField onChange={(e)=>this.setState({guest:e.target.value})} className="single" id="guest"  label="Guests" variant="outlined" />
+                                                        <TextField value={this.context.state.searchQuery?this.context.state.searchQuery.guest:property.guest} onChange={(e)=>this.setState({guest:e.target.value})} className="single" id="guest"  label="Guests" variant="outlined" />
                                                     </div>
                                                 </div>
                                                 <Grid container spacing={1}>

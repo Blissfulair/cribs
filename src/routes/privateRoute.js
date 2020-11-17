@@ -21,7 +21,14 @@ const RentRoute = ({component: Component,history, ...rest}) => {
 
                 // <Redirect to='/app/dashboard' />
                 :
+                props.location.pathname.includes('payment')?
+                    <Redirect to={{ pathname: "/login", state: { referer: props.location } }} />
+                :
+                props.location.pathname.includes('app')?
                 <Redirect to='/verification' />
+                :
+                <Redirect to="/"/>
+
             // :
             //  <Redirect to={{ pathname: "/login", state: { referer: props.location } }} />
             

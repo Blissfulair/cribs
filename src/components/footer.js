@@ -1,12 +1,14 @@
 import React from "react";
-import {Paper, withStyles,Grid,Typography} from "@material-ui/core"
-import {Facebook, Instagram, Twitter} from "@material-ui/icons"
-import {Link} from "react-router-dom"
-import Subscribe from "./subscribe"
+import {Paper, withStyles,Grid,Typography} from "@material-ui/core";
+import {Facebook, Instagram, Twitter} from "@material-ui/icons";
+import {Link} from "react-router-dom";
+import Subscribe from "./subscribe";
 import AppLogo from "./appLogo";
-import play from "../images/playstore.svg"
-import apple from "../images/apple.svg"
-import SocialIcon from "./socialicon"
+import play from "../images/playstore.svg";
+import apple from "../images/apple.svg";
+import SocialIcon from "./socialicon";
+import './../scss/footer.scss';
+
 const styles = (theme)=>({
     container:{
         minHeight:380,

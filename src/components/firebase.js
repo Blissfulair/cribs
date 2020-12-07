@@ -32,6 +32,8 @@ const firebaseConfig = {
             BOOKED:'bookedDates'
         }
         this.serverTime = firebase.firestore.Timestamp.now().seconds
+        this.google = new firebase.auth.GoogleAuthProvider();
+        this.facebook = new firebase.auth.FacebookAuthProvider();
         // Date.prototype.addDays = function(days) {
         //     let date = new Date(this.valueOf());
         //     date.setDate(date.getDate() + days);
@@ -555,6 +557,47 @@ const firebaseConfig = {
             totalReviewer:Number(property.totalReviewer)+1
 
         })
+    }
+    signUpWithGoogle=async()=>{
+     return await firebase.auth().signInWithPopup(this.google).then(function(result) {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            //const token = result.credential.accessToken;
+            return result;
+            
+            // ...
+          }).catch(function(error) {
+            // Handle Errors here.
+            // var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorMessage)
+            return false
+            // The email of the user's account used.
+            // var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            // var credential = error.credential;
+            // ...
+          });
+    }
+    signUpWithFacebook = async()=>{
+        return firebase.auth().signInWithPopup(this.facebook).then(function(result) {
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            const user = result.user;
+            const mailData = {
+                from:'noreply@givitec.com',
+                to:user.email,
+                subject:'Email Verification',
+                firstname:result.additionalUserInfo.profile.first_name,
+                senderName:process.env.REACT_APP_NAME,
+            }
+            mailVerify(mailData)
+           return result
+            // ...
+          }).catch(function(error) {
+            var errorMessage = error.message;
+            console.log(errorMessage)
+            return false
+            // ...
+          });
     }
 }
 export default new Firebase();

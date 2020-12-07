@@ -290,6 +290,46 @@ const GlobalState= ()=>{
            })
     
         },
+        signUpWithGoogle:async()=>{
+            await firebase.signUpWithGoogle()
+            .then(async user=>{
+                if(user){
+                    let info = user.additionalUserInfo.profile;
+                    const formData = {
+                        firstname:info.given_name,
+                        lastname:info.family_name,
+                        role:0,
+                        email:user.user.email
+                    }
+                    await firebase.storeData(formData,user.user)
+                    await firebase.getUserDetails(user.user.uid)
+                    .then(userData=>{
+                       dispatch({type:'RETRIVE_USER', payload:{user:user.user,userData}})
+                       
+                    })
+                }
+            })
+        },
+        signUpWithFacebook:async()=>{
+            await firebase.signUpWithFacebook()
+            .then(async user=>{
+                if(user){
+                    let info = user.additionalUserInfo.profile;
+                    const formData = {
+                        firstname:info.first_name,
+                        lastname:info.last_name,
+                        role:0,
+                        email:user.user.email
+                    }
+                    await firebase.storeData(formData,user.user)
+                    await firebase.getUserDetails(user.user.uid)
+                    .then(userData=>{
+                       dispatch({type:'RETRIVE_USER', payload:{user:user.user,userData}})
+                       
+                    })
+                }
+            })
+        },
         login:async(data)=>{
             await firebase.login(data)
             .then(async(user)=>{

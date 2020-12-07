@@ -51,6 +51,7 @@ class AddProperty extends React.Component{
             open:false,
             isLoading:false,
             status:false,
+            rooms:[]
         }
     }
 
@@ -147,6 +148,22 @@ class AddProperty extends React.Component{
     //     .catch(error=>error)
     // }
 
+    onAdd=()=>{
+        let add = this.state.rooms;
+        add.push({room:'', price:''});
+        
+        this.setState({rooms:add})
+    }
+    onAddRoom = (e, i)=>{
+        const rooms = [...this.state.rooms]
+        rooms[i].room = e.target.value;
+        this.setState({rooms:rooms}) 
+    }
+    onAddPrice = (e, i)=>{
+        const rooms = [...this.state.rooms]
+        rooms[i].price = e.target.value;
+        this.setState({rooms:rooms}) 
+    }
     onSubmit=(event)=>{
         event.preventDefault();
         if(!this.context.state.userData.status){
@@ -230,6 +247,7 @@ firebase.storeProperty(body)
 
     }
     render(){
+        
         return (
             <>
                 <Backend>
@@ -338,6 +356,40 @@ firebase.storeProperty(body)
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="property-group">
+                                <div style={{display:'flex', alignItems:'center'}}>
+                                    <h3>Add room</h3>
+                                    <button style={{marginLeft:10}} onClick={this.onAdd}>Add</button>
+                                </div>
+                                
+                                {
+                                    this.state.rooms.length>0&&
+                                    this.state.rooms.map((room,i)=>(
+                                        <div key={i} className="property-group-inner">
+                                        <div className="col">
+                                            <label htmlFor="room">Room</label>
+                                            <div className="input">
+                                                <input onChange={(e)=>{this.onAddRoom(e, i)}} placeholder="Eg Room 1" name={`room${i}`}   />
+                                                <span>
+                                                    <div className="angle"></div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <label htmlFor="roomPrice">Room Price</label>
+                                            <div className="input">
+                                                <input onChange={(e)=>{this.onAddPrice(e, i)}} placeholder="Eg 2000" name={`roomPrice${i}`}   />
+                                                <span>
+                                                    <div className="angle"></div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    ))
+                                }
+                            </div>
+
 
                             <div className="property-group">
                                 <h3>Amenities</h3>

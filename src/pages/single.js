@@ -453,7 +453,7 @@ class Single extends Component{
                                         <Grid item>
                                         <Typography className={classes.subTitle}>Availability</Typography>
                                         <Typography>Enter your trip dates for accurate pricing and availability</Typography>
-                                            <BookingCalendar bookings={dates}/>
+                                            {/* <BookingCalendar bookings={dates}/> */}
                                         </Grid>
                                     </Grid> 
                                 </Box>

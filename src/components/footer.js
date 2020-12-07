@@ -1,12 +1,14 @@
 import React from "react";
-import {Paper, withStyles,Grid,Typography} from "@material-ui/core"
-import {Facebook, Instagram, Twitter} from "@material-ui/icons"
-import {Link} from "react-router-dom"
-import Subscribe from "./subscribe"
+import {Paper, withStyles,Grid,Typography} from "@material-ui/core";
+import {Facebook, Instagram, Twitter} from "@material-ui/icons";
+import {Link} from "react-router-dom";
+import Subscribe from "./subscribe";
 import AppLogo from "./appLogo";
-import play from "../images/playstore.svg"
-import apple from "../images/apple.svg"
-import SocialIcon from "./socialicon"
+import play from "../images/playstore.svg";
+import apple from "../images/apple.svg";
+import SocialIcon from "./socialicon";
+import './../scss/footer.scss';
+
 const styles = (theme)=>({
     container:{
         minHeight:380,
@@ -109,8 +111,8 @@ const Footer = ({classes})=>{
                                 </Grid>
                                 <Typography style={{marginBottom:10}} variant="body1" component="p">Download Cribs Mobile App</Typography>
                                 <Grid container>
-                                    <Grid item xs={12} sm={6} md={10}>
-                                        <Grid container>
+                                    <Grid item xs={12} sm={6} md={10} >
+                                        <Grid container spacing={1}>
                                            <Grid item xs={6}>
                                                 <AppLogo name="App" image={apple} href="https://wwww.play.google.com/store/apps/details?id=com.givismartatt" target="_blank" />
                                             </Grid>

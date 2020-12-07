@@ -4,7 +4,7 @@ import {withStyles} from "@material-ui/core"
 const styles =()=>({
     container:{
         height:45,
-        width:170,
+        // width:100,
         backgroundColor:'#000000',
         display:'flex',
         justifyContent:'center',
@@ -13,13 +13,13 @@ const styles =()=>({
     },
     inner:{
         display:'flex',
-        width:'90%',
+        // width:'90%',
         alignItems:'center',
         justifyContent:'center'
     },
     image:{
-        width:25,
-        height:25,
+        width:20,
+        height:20,
         marginRight:10
     },
     paragraphy:{
@@ -30,15 +30,15 @@ const styles =()=>({
 const AppLogo = ({image, name,classes,href, target, status=false})=>{
     return(
         <a style={{textDecoration:'none'}} href={href} target={target}>
-                    <div className={classes.container}>
-            <div className={classes.inner}>
-                <img className={classes.image} src={image} alt=""/>
-                <div>
-                    <p className={classes.paragraphy}>{status?'Download from':'Coming Soon on'}</p>
-                    <h3 className={classes.paragraphy} style={{fontSize:16,marginTop:-4}}>{name} Store</h3>
+            <div className={classes.container}>
+                <div className={classes.inner}>
+                    <img className={classes.image} src={image} alt=""/>
+                    <div>
+                        <p className={classes.paragraphy}>{status?'Download from':'Coming Soon on'}</p>
+                        <h3 className={classes.paragraphy} style={{fontSize:16,marginTop:-4}}>{name} Store</h3>
+                    </div>
                 </div>
             </div>
-        </div>
         </a>
     )
 }

@@ -40,7 +40,7 @@ import { getDates, getFav } from "../helpers/helpers";
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import Share from "../components/share";
 import HostPopUp from "../components/hostPopUp";
-import BookingCalendar from "../react-calender/src/BookingCalendar";
+// import BookingCalendar from "../react-calender/src/BookingCalendar";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 const styles = theme =>({

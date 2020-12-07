@@ -330,7 +330,7 @@ class Single extends Component{
                                         <Tab label="Amenities" />
                                     </a>
                                     <a href="#reviews">
-                                        <Tab label="Reviews & Location" />
+                                        <Tab label="Reviews" />
                                     </a>
                                    <a href="#location">
                                     <Tab label="Location"/>

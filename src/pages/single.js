@@ -151,6 +151,7 @@ class Single extends Component{
         this.state={
             value:0,
             price:0,
+            change:false,
             rooms:null,
             room:[],
             property:null,
@@ -233,25 +234,11 @@ class Single extends Component{
         const id = this.props.location.pathname.split('crib')[1].replace('/','')
         this.context.getPropertyById(id)
         .then((property)=>{
-            let amount = 0
-            let books = []
-            let rooms=null
             const checkOut = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
             const checkIn = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
             const dates = getDates(checkIn,checkOut);
             this.context.storeActivity(property)
-            if(property.rooms !== undefined){
-                property.rooms.forEach(room=>{
-                    amount += Number(room.price) 
-                    books.push(...room.bookedDates)
-                })
-                rooms={
-                    price:amount,
-                    bookedDates:books
-                }
-                this.setState({ price:rooms.price, rooms:rooms}) 
-            }
-        this.setState({loading:false, days:dates.length, price:property.amount, property:property, rooms:rooms})
+        this.setState({loading:false, days:dates.length, price:property.amount, property:property})
         })
         const favourite = getFav(id)
         this.setState({
@@ -301,7 +288,7 @@ class Single extends Component{
             room.push(this.context.state.property.rooms[item.target.value])
         }
 
-        this.setState({price:amount, rooms:rooms, room:room})
+        this.setState({price:amount, rooms:rooms, room:room, change:true})
     }
     render(){   
     const {classes} = this.props
@@ -332,14 +319,26 @@ class Single extends Component{
     let checkOut = []
     let checkIn = []
     let dates = []
-    if(this.state.rooms){
-        
+    if(property){
+        let books = []
+       property.rooms.forEach((room)=>{
+        books.push(...room.bookedDates)
+       })
+       
+       checkOut = books.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
+       checkIn = books.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkIn).toDateString())
+       books.forEach(date=>dates.push(new Date(date.seconds*1000)))
+       dates.sort((a,b)=>new Date(b)-new Date(a))
+    }
+    if(this.state.rooms && this.state.change ){
+      
         checkOut = this.state.rooms.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
         checkIn = this.state.rooms.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkIn).toDateString())
-
+        
         this.state.rooms.bookedDates.forEach(date=>dates.push(new Date(date.seconds*1000)))
         dates.sort((a,b)=>new Date(b)-new Date(a))
    }
+
     if(this.state.loading)
     return <Splash/>
     return(

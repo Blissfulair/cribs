@@ -144,6 +144,7 @@ const firebaseConfig = {
                 hostData:data.hostData,
                 bookedDates:[],
                 rateValue:0,
+                rooms:data.rooms,
                 totalReviewer:0,
                 createdAt:firebase.firestore.FieldValue.serverTimestamp(),
                 updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
@@ -330,30 +331,33 @@ const firebaseConfig = {
        const dates = getDates(reserveData.checkIn, reserveData.checkOut)
     //    const data= await (await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id).get()).data()
        bookedDates.push(...dates)
+  
         await this.firestore.collection(this.tables.BOOKINGS).doc(reserveData.transactionID.toString()).set({
-        checkIn:reserveData.checkIn,
-        checkOut:reserveData.checkOut,
-        amount:reserveData.total+reserveData.refund,
-        propertyID:reserveData.id,
-        email:reserveData.renterEmail,
-        name:reserveData.fullname,
-        transactionID:reserveData.transactionID,
-        userId:reserveData.userId,
-        propertyName:reserveData.propertyName,
-        propertyState:reserveData.propertyState,
-        propertyCity:reserveData.propertyCity,
-        bookedDates:bookedDates,
-        status:'success',
-        creactedAt:firebase.firestore.FieldValue.serverTimestamp(),
-        
-    })
+            checkIn:reserveData.checkIn,
+            checkOut:reserveData.checkOut,
+            amount:reserveData.total+reserveData.refund,
+            propertyID:reserveData.id,
+            email:reserveData.renterEmail,
+            name:reserveData.fullname,
+            transactionID:reserveData.transactionID,
+            userId:reserveData.userId,
+            propertyName:reserveData.propertyName,
+            propertyState:reserveData.propertyState,
+            propertyCity:reserveData.propertyCity,
+            bookedDates:bookedDates,
+            status:'success',
+            creactedAt:firebase.firestore.FieldValue.serverTimestamp(),
+            
+        })
+
+
     
     // await this.firestore.collection(this.tables.BOOKED).add({
     //     propertyID:reserveData.id,
     //     bookedDates:bookedDates,
     // })
-
-       await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id).collection(this.tables.BOOKED)
+    reserveData.rooms.map(async(room,i)=>{
+       await this.firestore.collection(this.tables.PROPERTIES).doc(reserveData.id).collection(room.room)
         .add({
             bookedDates:bookedDates
         })
@@ -383,7 +387,7 @@ const firebaseConfig = {
             })
         })
 
-
+    })
     }
 
     uploadProfilePhoto = async(user, image)=>{
@@ -599,5 +603,33 @@ const firebaseConfig = {
             // ...
           });
     }
+    signInWithFacebook = async()=>{
+        return firebase.auth().signInWithPopup(this.facebook).then(function(result) {
+           return result
+            // ...
+          }).catch(function(error) {
+            var errorMessage = error.message;
+            console.log(errorMessage)
+            return false
+            // ...
+          });
+    }
+    signInWithGoogle=async()=>{
+        return await firebase.auth().signInWithPopup(this.google).then(function(result) {
+
+               
+               // ...
+             }).catch(function(error) {
+               // Handle Errors here.
+               // var errorCode = error.code;
+               var errorMessage = error.message;
+               console.log(errorMessage)
+               // The email of the user's account used.
+               // var email = error.email;
+               // The firebase.auth.AuthCredential type that was used.
+               // var credential = error.credential;
+               // ...
+             });
+       }
 }
 export default new Firebase();

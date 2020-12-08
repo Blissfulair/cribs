@@ -26,7 +26,8 @@ const Payment = ({location}) => {
         lastname:'',
         phone:'',
         hostId:'',
-        photoURL:''
+        photoURL:'',
+        rooms:[],
         
     })
     useEffect(()=>{
@@ -34,6 +35,7 @@ const Payment = ({location}) => {
             setData({
                 name:location.state.name,
                 amount:location.state.amount,
+                rooms:location.state.rooms,
                 nights:location.state.nights,
                 ownerFee:location.state.ownerFee,
                 systemFee:location.state.systemFee,
@@ -64,6 +66,7 @@ const Payment = ({location}) => {
                 setData({
                     name:pay.name,
                     amount:pay.amount,
+                    rooms:pay.rooms,
                     nights:pay.nights,
                     ownerFee:pay.ownerFee,
                     systemFee:pay.systemFee,

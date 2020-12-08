@@ -39,6 +39,7 @@ const PayStack = withRouter(({changeHandler,state,data,history})=>{
             fullname:state.name,
             userId:context.state.user?context.state.user.uid:null,
             propertyName:data.name,
+            rooms:data.rooms,
             propertyState:data.state,
             propertyCity:data.city
         }

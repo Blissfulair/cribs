@@ -330,6 +330,12 @@ const GlobalState= ()=>{
                 }
             })
         },
+        signInWithFacebook:async()=>{
+           await firebase.signInWithFacebook()
+        },
+        signInWithGoogle:async()=>{
+            await firebase.signInWithGoogle()
+         },
         login:async(data)=>{
             await firebase.login(data)
             .then(async(user)=>{
@@ -369,10 +375,27 @@ const GlobalState= ()=>{
             })
         },
         getPropertyById:async(id)=>{
-           return await firebase.getPropertyById(id)
-            .then(property=>{
-                dispatch({type:'GET_PROPERTY', payload:{property:{id:id,...property}}}) 
-                return property;
+           return firebase.getPropertyById(id)
+            .then(async property=>{
+                const props = property
+              
+                if(property.rooms !== undefined){
+              property.rooms.map((room, i)=>{
+                    return firebase.firestore.collection('properties').doc(id).collection(room.room).get()
+                    .then((dates)=>{
+                        const bookedDates = []
+                        dates.forEach(docs=>bookedDates.push(...docs.data().bookedDates))
+                        props.rooms[i].bookedDates = bookedDates
+                        dispatch({type:'GET_PROPERTY', payload:{property:{id:id,...props, bookedDates:bookedDates}}}) 
+                        
+                    })
+ 
+                })
+                  
+                }
+               
+                dispatch({type:'GET_PROPERTY', payload:{property:{id:id,...props}}}) 
+                return  props;
             })
         },
         setSearch:(search)=>{
@@ -383,17 +406,17 @@ const GlobalState= ()=>{
              await firebase.searchProperties(location, checkIn, checkOut, guest)
             .then(docs=>{
                 docs.forEach(async doc=>{
-                    const bookedDates = []
-                    const dates = await firebase.firestore.collection('properties').doc(doc.id).collection('bookedDates').get();
-                    dates.forEach(docs=>bookedDates.push(...docs.data().bookedDates))
-                    const result = doc.data()
-                    const checkOutarr = bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(checkOut).toDateString())
-                    const checkInarr = bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(checkIn).toDateString())
-                    if(checkInarr.length<1 && checkOutarr.length<1)
-                    {
+                    // const bookedDates = []
+                    // const dates = await firebase.firestore.collection('properties').doc(doc.id).collection('bookedDates').get();
+                    // dates.forEach(docs=>bookedDates.push(...docs.data().bookedDates))
+                     const result = doc.data()
+                    // const checkOutarr = bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(checkOut).toDateString())
+                    // const checkInarr = bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(checkIn).toDateString())
+                    // if(checkInarr.length<1 && checkOutarr.length<1)
+                    // {
                         results.push({id:doc.id,...result})
                         dispatch({type:'GET_RESULTS', payload:{results:results}})   
-                    }
+                //     }
                 })
             })
         },

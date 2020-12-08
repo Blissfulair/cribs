@@ -12,6 +12,7 @@ import {
     Avatar,
     Box,
     LinearProgress,
+    NativeSelect,
 } from '@material-ui/core';
 import DetailSlide from "../../components/detailSlide";
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
@@ -149,6 +150,9 @@ class Single extends Component{
         super(props)
         this.state={
             value:0,
+            price:0,
+            rooms:null,
+            room:[],
             property:null,
             checkIn: null,
             checkOut:null,
@@ -229,11 +233,25 @@ class Single extends Component{
         const id = this.props.location.pathname.split('crib')[1].replace('/','')
         this.context.getPropertyById(id)
         .then((property)=>{
+            let amount = 0
+            let books = []
+            let rooms=null
             const checkOut = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
             const checkIn = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
             const dates = getDates(checkIn,checkOut);
             this.context.storeActivity(property)
-            this.setState({loading:false, days:dates.length})
+                if(property.rooms !== undefined){
+                    property.rooms.forEach(room=>{
+                        amount += Number(room.price) 
+                        books.push(...room.bookedDates)
+                    })
+                    rooms={
+                        price:amount,
+                        bookedDates:books
+                    }
+                    this.setState({ price:rooms.price, rooms:rooms}) 
+                }
+            this.setState({loading:false, days:dates.length, price:property.amount, property:property, rooms:rooms})
         })
         const favourite = getFav(id)
         this.setState({
@@ -261,10 +279,36 @@ class Single extends Component{
             state:para
         })
     }
+    onChangeRoom=(item)=>{
+        let amount = 0
+        let books = []
+        let rooms = null
+        let room = []
+        if(item.target.value === '1000'){
+            this.state.property.rooms.forEach(room=>{
+                amount += Number(room.price)
+                books.push(...room.bookedDates)
+            })
+            rooms = {
+                price:amount,
+                bookedDates:books
+            }
+            room.push(...this.context.state.property.rooms)
+        }
+        else{
+            amount = this.context.state.property.rooms[item.target.value].price
+            rooms = this.context.state.property.rooms[item.target.value]
+            room.push(this.context.state.property.rooms[item.target.value])
+        }
+
+        this.setState({price:amount, rooms:rooms, room:room})
+    }
     render(){   
     const {classes} = this.props
     this.propert = this.context.state.property
     const property =this.propert
+    if(property)
+    property.amount = this.state.price
     const summary = {
         checkIn:this.state.checkIn,
         checkOut:this.state.checkOut,
@@ -272,6 +316,7 @@ class Single extends Component{
         guest:this.state.guest,
         amount:property?Number(property.amount):0,
         id:property?property.id:'',
+        rooms:this.state.room.length<1?property?property.rooms:[]:this.state.room,
         name:property?property.name:'',
         state:property?property.state:'',
         city:property?property.city:'',
@@ -287,11 +332,14 @@ class Single extends Component{
     let checkOut = []
     let checkIn = []
     let dates = []
-    if(property){
-         checkOut = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
-         checkIn = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkIn).toDateString())
 
-         property.bookedDates.forEach(date=>dates.push(new Date(date.seconds*1000)))
+
+    if(this.state.rooms){
+        
+         checkOut = this.state.rooms.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
+         checkIn = this.state.rooms.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkIn).toDateString())
+
+         this.state.rooms.bookedDates.forEach(date=>dates.push(new Date(date.seconds*1000)))
          dates.sort((a,b)=>new Date(b)-new Date(a))
     }
     if(this.state.loading)
@@ -563,9 +611,29 @@ class Single extends Component{
                                                         <label htmlFor="check-out">
                                                             <Calendar htmlColor="#00A8C8" fontSize="small" />
                                                         </label>
-                                                        <TextField value={this.context.state.searchQuery?this.context.state.searchQuery.guest:property.guest} onChange={(e)=>this.setState({guest:e.target.value})} className="single" id="guest"  label="Guests" variant="outlined" />
+                                                        <TextField defaultValue={this.context.state.searchQuery?this.context.state.searchQuery.guest:property.guest} onChange={(e)=>this.setState({guest:e.target.value})} className="single" id="guest"  label="Guests" variant="outlined" />
                                                     </div>
                                                 </div>
+                                                {
+                                                    property.rooms !== undefined &&
+                                                    property.rooms.length>1&&
+                                                    <div className={classes.guest}>
+                                                    <div className={classes.checkIn}>
+                                                        <label htmlFor="check-out">
+                                                        <KingBedIcon htmlColor="#00A8C8" fontSize="small"/> 
+                                                        </label>
+                                                        <NativeSelect style={{width:'90%', marginLeft:'10%'}} onChange={this.onChangeRoom}>
+                                                        <option value={1000}>All</option>
+                                                            {
+                                                                property.rooms.map((room,i)=>(
+                                                                    <option value={i}>{room.room}</option>
+                                                                ))
+                                                            }
+                                                            
+                                                        </NativeSelect>
+                                                    </div>
+                                                </div>
+                                                }
                                                 <Grid container spacing={1}>
                                                     <Grid item xs={8}>
                                                         <Typography variant="h5">Total</Typography>

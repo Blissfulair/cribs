@@ -51,7 +51,7 @@ class AddProperty extends React.Component{
             open:false,
             isLoading:false,
             status:false,
-            rooms:[]
+            rooms:[{room:'', price:'',bookedDates:[]}]
         }
     }
 
@@ -150,7 +150,7 @@ class AddProperty extends React.Component{
 
     onAdd=()=>{
         let add = this.state.rooms;
-        add.push({room:'', price:''});
+        add.push({room:'', price:'', bookedDates:[]});
         
         this.setState({rooms:add})
     }
@@ -160,8 +160,11 @@ class AddProperty extends React.Component{
         this.setState({rooms:rooms}) 
     }
     onAddPrice = (e, i)=>{
+        
         const rooms = [...this.state.rooms]
-        rooms[i].price = e.target.value;
+        let pric = Number(e.target.value)
+        rooms[i].price = pric;
+
         this.setState({rooms:rooms}) 
     }
     onSubmit=(event)=>{
@@ -171,19 +174,23 @@ class AddProperty extends React.Component{
             return
         }
         if(this.state.title === '' || this.state.description === '' || this.state.state === ''
-           || this.state.price === '' || this.state.featured_image === null || this.state.guest<1 || other_images.length<1)
+           || this.state.rooms[0].price === '' || this.state.rooms[0].room === '' || this.state.featured_image === null || this.state.guest<1 || other_images.length<1)
            {
             this.setState({message:'All fields must be filled'})
             return false
            }
            this.setState({isLoading:true, message:''})
+    let amount = 0
+    this.state.rooms.forEach(room=>{
+        amount += room.price
+    })
 const body = {
     hostId:this.context.state.user.uid,
     name:this.state.title,
     description:this.state.description,
     featuredImage:this.state.featured_image,
     images:[ ...other_images],
-    amount:this.state.price,
+    amount:amount,
     bedroom:this.state.bedroom,
     discount:this.state.discount,
     smoke:this.state.smoking,
@@ -200,8 +207,10 @@ const body = {
     house:this.state.house,
     city:this.state.city,
     state:this.state.state,
+    rooms:this.state.rooms,
     hostData:{firstname:this.context.state.userData.firstname,lastname:this.context.state.userData.lastname, photoURL:this.context.state.photoURL,phone:this.context.state.userData.phone,email:this.context.state.userData.email}
 }
+console.log(body)
 firebase.storeProperty(body)
 .then(()=>{
     this.setState({
@@ -228,6 +237,7 @@ firebase.storeProperty(body)
         city:'',
         state:'',
         success:true,
+        rooms:[],
         message:'Submitted successfully',
         isLoading:false
     })
@@ -320,11 +330,6 @@ firebase.storeProperty(body)
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <label htmlFor="cat">Address</label>
-                                        <div className="input">
-                                            <input type="text" onChange={(e)=>{this.changeHandler(e);this.getLocation(e.target.value)}} value={this.state.address}   id="cat" name="address" placeholder="45, Benin/Agbor Road" />
-                                            <span><div className="angle"></div></span>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -348,11 +353,13 @@ firebase.storeProperty(body)
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <label htmlFor="price">Price</label>
+                                        <label htmlFor="cat">Address</label>
                                         <div className="input">
-                                            <input type="text" value={this.state.price}  onChange={this.changeHandler}  name="price" id="price" placeholder="E.g 100000" />
+                                            <input type="text" onChange={(e)=>{this.changeHandler(e);this.getLocation(e.target.value)}} value={this.state.address}   id="cat" name="address" placeholder="45, Benin/Agbor Road" />
                                             <span><div className="angle"></div></span>
                                         </div>
+                                    </div>
+                                    <div className="col">
                                     </div>
                                 </div>
                             </div>
@@ -384,6 +391,8 @@ firebase.storeProperty(body)
                                                     <div className="angle"></div>
                                                 </span>
                                             </div>
+                                        </div>
+                                        <div className="col">
                                         </div>
                                     </div>
                                     ))

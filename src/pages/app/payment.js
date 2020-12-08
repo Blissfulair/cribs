@@ -30,13 +30,15 @@ const Payment = ({location}) => {
         hostId:'',
         photoURL:'',
         propertyName:'',
-        propertyState:''
+        propertyState:'',
+        rooms:[],
     })
     useEffect(()=>{
         if(location.state !== undefined){
             setData({
                 name:location.state.name,
                 amount:location.state.amount,
+                rooms:location.state.rooms,
                 nights:location.state.nights,
                 ownerFee:location.state.ownerFee,
                 systemFee:location.state.systemFee,
@@ -65,6 +67,7 @@ const Payment = ({location}) => {
             if(pay){
                 setData({
                     name:pay.name,
+                    rooms:pay.rooms,
                     amount:pay.amount,
                     nights:pay.nights,
                     ownerFee:pay.ownerFee,

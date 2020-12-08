@@ -247,7 +247,7 @@ class SignUp extends React.Component{
                                 </button>
                                 <div className="social-signup">
                                     <button onClick={this.fbSignup} className="col">
-                                        <FacebookIcon/>
+                                        <FacebookIcon htmlColor="#1480ec"/>
                                     </button>
                                     <button onClick={this.googleSignup} className="col">
                                         <div>

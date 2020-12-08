@@ -191,7 +191,7 @@ class Login extends React.Component{
                                 </button>
                                 <div className="social-signup">
                                     <button onClick={this.signInWithFacebook} className="col">
-                                        <FacebookIcon/>
+                                        <FacebookIcon htmlColor="#1480ec"/>
                                     </button>
                                     <button onClick={this.signInWithGoogle} className="col">
                                         <div>

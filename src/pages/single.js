@@ -386,7 +386,7 @@ class Single extends Component{
                                     <Typography style={{ marginBottom:30}} variant="h4" id="overview">{property.name}</Typography>
                                     <Grid spacing={2}>
 
-                                        <div style={{width:'99%'}}>
+                                        <div className='room-section' style={{width:'99%'}}>
                                             <div style={{display:'flex', justifyContent:'space-between'}} >
                                                 <div className={classes.position} > 
                                                     <BusinessIcon htmlColor="#00A8C8" fontSize="large"/>
@@ -540,7 +540,7 @@ class Single extends Component{
                                 </Box>
                                 </Paper>
                             </Grid>
-                            {/* <Grid item xs={12} md={4}>
+                            <Grid item xs={12} md={4}>
                                 <Paper className={classes.payment}>
                                     <Grid container justify="center">
                                         <Grid item xs={11}>
@@ -711,7 +711,7 @@ class Single extends Component{
                                         </Grid>
                                     </Grid>
                                 </Paper>
-                            </Grid> */}
+                            </Grid>
                             <Grid container id="location" justify="flex-end">
                                 <Grid item xs={12} md={10}>
                                     <Paper elevation={0} style={{borderRadius:0, backgroundColor:"#ECECEC", position:'relative', minHeight:1000}}>

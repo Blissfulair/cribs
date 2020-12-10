@@ -695,7 +695,7 @@ class Single extends Component{
                                                 }
 
                                                 <Divider style={{marginTop:15, height:3, backgroundColor:'#DCDCDC'}}/>
-                                                    <Typography variant="h6" style={{textAlign:'center', color:'#000000'}} >Speak to the Host</Typography>
+                                                    <Typography variant="h6" style={{textAlign:'center', color:'#000000', paddingTop:'1rem'}} >Speak to the Host</Typography>
                                                 <Grid container style={{marginTop:10,marginBottom:5}}>
                                                     <Grid item xs={3}>
                                                         <Avatar alt={property.hostData.firstname} style={{width:50, height:50}} src={property.hostData.photoURL}/>
@@ -703,7 +703,7 @@ class Single extends Component{
                                                     <Grid item xs={9}>
                                                         <Typography variant="subtitle1"  component="p">{property.hostData.firstname +' '+ property.hostData.lastname}</Typography>
                                                         <button type="button" style={{background:'transparent', border:'none'}} onClick={this.hostOpen}>
-                                                        <Typography variant="caption"  component="p">Contact host</Typography>
+                                                        <Typography style={{paddingBottom:'1rem'}} variant="caption"  component="p">Contact host</Typography>
                                                         </button>
                                                     </Grid>
                                                 </Grid>

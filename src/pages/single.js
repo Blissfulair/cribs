@@ -41,7 +41,7 @@ import { getDates, getFav } from "../helpers/helpers";
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import Share from "../components/share";
 import HostPopUp from "../components/hostPopUp";
-// import BookingCalendar from "../react-calender/src/BookingCalendar";
+import BookingCalendar from "../react-calender/src/BookingCalendar";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 const styles = theme =>({
@@ -603,7 +603,7 @@ class Single extends Component{
                                         <Grid item>
                                         <Typography className={classes.subTitle}>Availability</Typography>
                                         <Typography>Enter your trip dates for accurate pricing and availability</Typography>
-                                            {/* <BookingCalendar bookings={dates}/> */}
+                                            <BookingCalendar bookings={dates}/>
                                         </Grid>
                                     </Grid> 
                                 </Box>

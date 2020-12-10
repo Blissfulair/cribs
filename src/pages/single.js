@@ -516,8 +516,24 @@ class Single extends Component{
                                     </Grid>
                                     <Divider/>
                                     <Typography className={classes.subTitle}>Bedrooms</Typography>
-                                    <Grid container id='bedrooms'>
-                                        <Grid item xs={5}>
+                                    <Grid id='bedrooms'>
+                                        <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                            <div>
+                                                <div className={classes.position} style={{marginBottom:5}}>
+                                                    <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 1</Typography>
+                                                </div>
+                                                <Typography style={{marginLeft:32}} variant="caption" component="p">1 King Bed</Typography>               
+                                            </div>
+                                            <div>
+                                                <div className={classes.position} style={{marginBottom:5}}>
+                                                    <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 2</Typography>
+                                                </div>
+                                                <Typography style={{marginLeft:32}} variant="caption" component="p">1 King Bed</Typography>
+                                            </div>
+                                        </div>
+                                        {/* <Grid item xs={5}>
                                             <div className={classes.position} style={{marginBottom:5}}>
                                                 <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 1</Typography>
@@ -530,12 +546,23 @@ class Single extends Component{
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 2</Typography>
                                             </div>
                                             <Typography style={{marginLeft:32}} variant="caption" component="p">1 King Bed</Typography>
-                                        </Grid>
+                                        </Grid> */}
                                     </Grid>
 
                                     <Typography className={classes.subTitle}>Bathroom</Typography>
-                                    <Grid container id="bathroom">
-                                        <Grid item xs={5}>
+                                    <Grid id="bathroom">
+                                        <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                            <div className={classes.position} style={{marginBottom:5}}>
+                                                <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 1</Typography>
+                                            </div>
+                                            <div className={classes.position} style={{marginBottom:5}}>
+                                                <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 2</Typography>
+                                            </div>
+                                        </div>
+    
+                                        {/* <Grid item xs={5}>
                                             <div className={classes.position} style={{marginBottom:5}}>
                                                 <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 1</Typography>
@@ -546,7 +573,7 @@ class Single extends Component{
                                                 <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 2</Typography>
                                             </div>
-                                        </Grid>
+                                        </Grid> */}
                                     </Grid>
                                     <Divider style={{marginTop:20}}/>
 

@@ -578,15 +578,25 @@ class Single extends Component{
                                     <Divider style={{marginTop:20}}/>
 
                                     <Typography className={classes.subTitle}>Accessibility</Typography>
-                                    <Grid container id="accessibility" spacing={3}>
-                                        <Grid item xs={5}>
+                                    <Grid id="accessibility">
+                                        <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem',paddingBottom:'1rem'}}>
+                                            <Typography className={classes.textTitle} style={{marginLeft:0}} variant="subtitle1" component="p">GETTING INSIDE</Typography> 
+                                            <Typography className={classes.textTitle} style={{marginLeft:0}} variant="subtitle1" component="p">MOVING AROUND THE SPACE</Typography> 
+                                                                                
+                                        </div>
+
+                                        <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                            <Typography variant="caption" component="p">Well-lit path to entrance Step-free path to entrance</Typography>
+                                            <Typography variant="caption" component="p">No stairs or steps to enter Wide hallways</Typography>
+                                        </div>
+                                        {/* <Grid item xs={5}>
                                             <Typography className={classes.textTitle} style={{marginLeft:0}} variant="subtitle1" component="p">GETTING INSIDE</Typography>  
                                             <Typography variant="caption" component="p">Well-lit path to entrance Step-free path to entrance</Typography>                                    
                                         </Grid>
                                         <Grid item xs={5}>
                                             <Typography className={classes.textTitle} style={{marginLeft:0}} variant="subtitle1" component="p">MOVING AROUND THE SPACE</Typography>
                                             <Typography variant="caption" component="p">No stairs or steps to enter Wide hallways</Typography>
-                                        </Grid>
+                                        </Grid> */}
                                     </Grid>
 
                                      <Grid container id="availability">

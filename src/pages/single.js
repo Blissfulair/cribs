@@ -384,10 +384,10 @@ class Single extends Component{
                                 </Tabs>
                                 <Box p={3}>
                                     <Typography style={{ marginBottom:30}} variant="h4" id="overview">{property.name}</Typography>
-                                    <Grid spacing={2}>
+                                    <Grid>
 
-                                        <div className='room-section' style={{width:'99%'}}>
-                                            <div style={{display:'flex', justifyContent:'space-between'}} >
+                                        <div >
+                                            <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}} >
                                                 <div className={classes.position} > 
                                                     <BusinessIcon htmlColor="#00A8C8" fontSize="large"/>
                                                     <Typography className={classes.textTitle}  variant="subtitle1" component="p">{property.type}</Typography>
@@ -398,7 +398,7 @@ class Single extends Component{
                                                 </div>
                                             </div>
 
-                                            <div style={{display:'flex', justifyContent:'space-between'}}>
+                                            <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
                                                 <div className={classes.position}>
                                                     <PeopleOutlineIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                     <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.guest} Guests</Typography>
@@ -451,9 +451,41 @@ class Single extends Component{
                                     <Typography className={classes.subTitle} id="amenities">
                                             Amenities
                                     </Typography>
-                                    <Grid container>
+                                    <Grid>
+                                        <div >
+                                            <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                                <div className={classes.position} style={{textDecoration:property.kitchen?'none':'line-through'}} > 
+                                                    <KitchenIcon htmlColor="#00A8C8" fontSize="large"/>
+                                                    <Typography className={classes.textTitle}  variant="subtitle1" component="p">Kitchen</Typography>
+                                                </div>
+                                                <div className={classes.position} style={{textDecoration:property.parking?'none':'line-through'}}>
+                                                    <LocalParkingIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Free parking on premises</Typography>
+                                                </div>
+                                            </div>
+                                            <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                                <div className={classes.position} style={{textDecoration:property.wifi?'none':'line-through'}}>
+                                                    <WifiIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">WiFi</Typography>
+                                                </div>
+                                                <div className={classes.position} style={{textDecoration:property.cable?'none':'line-through'}}>
+                                                    <TvIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Cable TV</Typography>
+                                                </div>
+                                            </div>
+                                            <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}} >
+                                                <div className={classes.position} style={{textDecoration:property.smoke?'none':'line-through'}}>
+                                                    <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Smoke Alarm</Typography>
+                                                </div>
+                                                <div className={classes.position} style={{textDecoration:property.smoke?'none':'line-through'}}>
+                                                    <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Carbon Monoxide alarm</Typography>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                        <Grid item xs={5}>
+                                        {/* <Grid item xs={5}>
                                             <div className={classes.position} style={{textDecoration:property.kitchen?'none':'line-through'}} > 
                                             <KitchenIcon htmlColor="#00A8C8" fontSize="large"/>
                                             <Typography className={classes.textTitle}  variant="subtitle1" component="p">Kitchen</Typography>
@@ -467,7 +499,7 @@ class Single extends Component{
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Smoke Alarm</Typography>
                                             </div>
                                         </Grid>
-                                        <Grid item xs={7}>
+                                        <Grid style={{backgroundColor:"#000"}} item xs={7}>
                                             <div className={classes.position} style={{textDecoration:property.parking?'none':'line-through'}}>
                                                 <LocalParkingIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Free parking on premises</Typography>
@@ -480,7 +512,7 @@ class Single extends Component{
                                                 <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Carbon Monoxide alarm</Typography>
                                             </div>
-                                        </Grid>
+                                        </Grid> */}
                                     </Grid>
                                     <Divider/>
                                     <Typography className={classes.subTitle}>Bedrooms</Typography>

@@ -52,7 +52,8 @@ class EditProperty extends React.Component{
             images:[],
             hostId:'',
             id:'',
-            sideLoading:false
+            sideLoading:false,
+            rooms:[{room:'', price:'',bookedDates:[]}]
         }
     }
 
@@ -65,7 +66,6 @@ class EditProperty extends React.Component{
         .then(data=>{
             data.onSnapshot(res=>{
                 const property = res.data()
-                console.log(res.data())
                 this.setState({
                     state:property.state,
                     city:property.city,
@@ -90,6 +90,7 @@ class EditProperty extends React.Component{
                     isLoading:false,
                     id:id,
                     hostId:property.hostId,
+                     rooms:property.rooms
                 })
             })
      
@@ -170,7 +171,25 @@ class EditProperty extends React.Component{
         event.target.nextElementSibling.innerHTML = str < 0 ? 0 + " Characters Left" :str + " Characters Left";
       }
 
+      onAdd=()=>{
+         
+        let add = this.state.rooms;
+        add.push({room:'', price:'', bookedDates:[]});
+        this.setState({rooms:add})
+    }
+    onAddRoom = (e, i)=>{
+        const rooms = [...this.state.rooms]
+        rooms[i].room = e.target.value;
+        this.setState({rooms:rooms}) 
+    }
+    onAddPrice = (e, i)=>{
+        
+        const rooms = [...this.state.rooms]
+        let pric = Number(e.target.value)
+        rooms[i].price = pric;
 
+        this.setState({rooms:rooms}) 
+    }
     onSubmit=(event)=>{
         event.preventDefault();
         const id = this.props.location.pathname.split('edit-property')[1].replace('/','')
@@ -200,6 +219,7 @@ const body = {
     house:this.state.house,
     city:this.state.city,
     state:this.state.state,
+    rooms:this.state.rooms
 }
 firebase.updateProperty(id,body)
 .then(()=>{
@@ -265,15 +285,7 @@ firebase.updateProperty(id,body)
                                     <div className="col">
                                         <label htmlFor="state">State</label>
                                         <div className="input">
-                                            <NativeSelect 
-                                            value={this.state.state}
-                                            className="input-edit-property"
-                                            onChange={this.changeHandler}
-                                            inputProps={{
-                                                name: 'state',
-                                                id:'state'
-                                            }}
-                                            >
+                                            <select name="state" onBlur={this.changeHandler}  id="state">
                                                 <option value="">Select State</option>
                                                 {
                                                     states.map((state, i)=>{
@@ -282,7 +294,7 @@ firebase.updateProperty(id,body)
                                                         )
                                                     })
                                                 }
-                                            </NativeSelect>
+                                            </select>
                                             <span>
                                                 <div className="angle"></div>
                                             </span>
@@ -291,18 +303,13 @@ firebase.updateProperty(id,body)
                                     <div className="col">
                                         <label htmlFor="city">City</label>
                                         <div className="input">
-                                            <input defaultValue={this.state.city} placeholder="Eg Benin" name="city" onChange={this.changeHandler}  id="city"/>
+                                            <input value={this.state.city} placeholder="Eg Benin" name="city" onChange={this.changeHandler}  id="city"/>
                                             <span>
                                                 <div className="angle"></div>
                                             </span>
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <label htmlFor="cat">Address</label>
-                                        <div className="input">
-                                            <input type="text" onChange={this.changeHandler} defaultValue={this.state.address}   id="cat" name="address" placeholder="45, Benin/Agbor Road" />
-                                            <span><div className="angle"></div></span>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -321,20 +328,55 @@ firebase.updateProperty(id,body)
                                     <div className="col">
                                         <label htmlFor="guest">Guest</label>
                                         <div className="input">
-                                            <input type="text" defaultValue={this.state.guest}  onChange={this.changeHandler}  name="guest" id="guest" placeholder="E.g 1" />
+                                            <input type="text" value={this.state.guest}  onChange={this.changeHandler}  name="guest" id="guest" placeholder="E.g 1" />
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div>
                                     <div className="col">
-                                        <label htmlFor="price">Price</label>
+                                        <label htmlFor="cat">Address</label>
                                         <div className="input">
-                                            <input type="text" defaultValue={this.state.price}  onChange={this.changeHandler}  name="price" id="price" placeholder="E.g 100000" />
+                                            <input type="text" onChange={(e)=>{this.changeHandler(e);this.getLocation(e.target.value)}} value={this.state.address}   id="cat" name="address" placeholder="45, Benin/Agbor Road" />
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div>
+                                    <div className="col">
+                                    </div>
                                 </div>
                             </div>
-
+                            <div className="property-group">
+                                <div style={{display:'flex', alignItems:'center'}}>
+                                    <h3>Add room</h3>
+                                    <button type="button" style={{marginLeft:10}} onClick={this.onAdd}>Add</button>
+                                </div>
+                                
+                                {
+                                    this.state.rooms.length>0&&
+                                    this.state.rooms.map((room,i)=>(
+                                        <div key={i} className="property-group-inner">
+                                        <div className="col">
+                                            <label htmlFor="room">Room</label>
+                                            <div className="input">
+                                                <input onChange={(e)=>{this.onAddRoom(e, i)}} defaultValue={room.room} placeholder="Eg Room 1" name={`room${i}`}   />
+                                                <span>
+                                                    <div className="angle"></div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <label htmlFor="roomPrice">Room Price</label>
+                                            <div className="input">
+                                                <input onChange={(e)=>{this.onAddPrice(e, i)}} defaultValue={room.price} placeholder="Eg 2000" name={`roomPrice${i}`}   />
+                                                <span>
+                                                    <div className="angle"></div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                        </div>
+                                    </div>
+                                    ))
+                                }
+                            </div>
                             <div className="property-group">
                                 <h3>Amenities</h3>
                                 <div className="property-group-inner1">

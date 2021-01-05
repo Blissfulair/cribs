@@ -365,14 +365,17 @@ const GlobalState= ()=>{
             })
         },
         getMyProperties:async()=>{
+            
+           await (await firebase.getMyProperties(state.user.uid)).onSnapshot(properties=>{
             let props =[]
-           await firebase.getMyProperties(state.user.uid)
-            .then(properties=>{
-                properties.docs.forEach(doc=>{
-                    props.push({id:doc.id, ...doc.data()})
-                })
-                dispatch({type:'GET_MY_PROPERTIES', payload:{myProperties:props}})
+            properties.docs.forEach(doc=>{
+                props.push({id:doc.id, ...doc.data()})
             })
+            dispatch({type:'GET_MY_PROPERTIES', payload:{myProperties:props}})
+           })
+        },
+        deleteProperty:async(id)=>{
+           await firebase.deleteMyProperty(id)
         },
         getPropertyById:async(id)=>{
            return firebase.getPropertyById(id)

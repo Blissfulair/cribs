@@ -41,12 +41,13 @@ import { getDates, getFav } from "../helpers/helpers";
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import Share from "../components/share";
 import HostPopUp from "../components/hostPopUp";
-// import BookingCalendar from "../react-calender/src/BookingCalendar";
+import BookingCalendar from "../react-calender/src/BookingCalendar";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 const styles = theme =>({
     container:{
-        paddingTop:140
+        paddingTop:140,
+        
     },
     formControl: {
         minWidth: 120,
@@ -116,7 +117,7 @@ const styles = theme =>({
         marginBottom:25
     },
     textTitle:{
-        marginLeft:10
+        marginLeft:10,
     },
     subTitle:{
         color:'#000000',
@@ -343,10 +344,10 @@ class Single extends Component{
     return <Splash/>
     return(
             <Grid container justify="center">
-                <Grid item xs={11} md={10}>
+                <Grid item xs={11} md={10} >
                     <div id="singlepage" className={classes.container}>
                         <Grid container justify="flex-start" style={{position:'relative'}} spacing={3}>
-                            <Grid item xs={12} md={8}>
+                            <Grid item xs={12} md={8} sm={12}>
                                 <Grid container>
                                     <Grid item xs={4}>
                                         <div className={classes.background} id="slideTop" style={{ backgroundImage:`url(${property.featuredImage})`}}>
@@ -382,29 +383,64 @@ class Single extends Component{
                                    </a>
                                 </Tabs>
                                 <Box p={3}>
-                                    <Typography style={{marginBottom:30}} variant="h4" id="overview">{property.name}</Typography>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={5}>
-                                            <div className={classes.position} > 
-                                            <BusinessIcon htmlColor="#00A8C8" fontSize="large"/>
-                                            <Typography className={classes.textTitle}  variant="subtitle1" component="p">{property.type}</Typography>
+                                    <Typography style={{ marginBottom:30}} variant="h4" id="overview">{property.name}</Typography>
+                                    <Grid>
+
+                                        <div >
+                                            <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}} >
+                                                <div className={classes.position} > 
+                                                    <BusinessIcon htmlColor="#00A8C8" fontSize="large"/>
+                                                    <Typography className={classes.textTitle}  variant="subtitle1" component="p">{property.type}</Typography>
+                                                </div>
+                                                <div className={classes.position}>
+                                                    <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bedroom} Bedrooms</Typography>
+                                                </div>
                                             </div>
-                                            <div className={classes.position}>
-                                                <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bedroom} Bedrooms</Typography>
+
+                                            <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                                <div className={classes.position}>
+                                                    <PeopleOutlineIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.guest} Guests</Typography>
+                                                </div>
+                                                <div className={classes.position}>
+                                                    <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bathroom} Bathroms</Typography>
+                                                </div>
                                             </div>
+                                        </div>
+
+                                        {/* <Grid container xs={5}>
+                                            <Grid item sm={6}>
+                                                <div className={classes.position} > 
+                                                <BusinessIcon htmlColor="#00A8C8" fontSize="large"/>
+                                                <Typography className={classes.textTitle}  variant="subtitle1" component="p">{property.type}</Typography>
+                                                </div>
+                                            </Grid>
+                                        
+                                            <Grid item  sm={12}>
+                                                <div className={classes.position}>
+                                                    <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bedroom} Bedrooms</Typography>
+                                                </div>
+                                            </Grid>
                                         </Grid>
                                         <Grid item xs={7}>
-                                            <div className={classes.position}>
-                                                <PeopleOutlineIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.guest} Guests</Typography>
-                                            </div>
-                                            <div className={classes.position}>
-                                                <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bathroom} Bathroms</Typography>
-                                            </div>
-                                        </Grid>
-                                    </Grid>
+                                            <Grid item sm={6}>
+                                                <div className={classes.position}>
+                                                    <PeopleOutlineIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.guest} Guests</Typography>
+                                                </div>
+                                            </Grid>
+
+                                            <Grid item sm={6}>
+                                                <div className={classes.position}>
+                                                    <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bathroom} Bathroms</Typography>
+                                                </div>
+                                            </Grid>
+                                        </Grid> */}
+                                    </Grid> 
                                     <Divider/>
                                     <Typography variant="subtitle1" component="p" style={{margin:'15px 0', fontSize:15, wordWrap:'break-word'}}>
                                         {
@@ -415,9 +451,41 @@ class Single extends Component{
                                     <Typography className={classes.subTitle} id="amenities">
                                             Amenities
                                     </Typography>
-                                    <Grid container>
+                                    <Grid>
+                                        <div >
+                                            <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                                <div className={classes.position} style={{textDecoration:property.kitchen?'none':'line-through'}} > 
+                                                    <KitchenIcon htmlColor="#00A8C8" fontSize="large"/>
+                                                    <Typography className={classes.textTitle}  variant="subtitle1" component="p">Kitchen</Typography>
+                                                </div>
+                                                <div className={classes.position} style={{textDecoration:property.parking?'none':'line-through'}}>
+                                                    <LocalParkingIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Free parking on premises</Typography>
+                                                </div>
+                                            </div>
+                                            <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                                <div className={classes.position} style={{textDecoration:property.wifi?'none':'line-through'}}>
+                                                    <WifiIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">WiFi</Typography>
+                                                </div>
+                                                <div className={classes.position} style={{textDecoration:property.cable?'none':'line-through'}}>
+                                                    <TvIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Cable TV</Typography>
+                                                </div>
+                                            </div>
+                                            <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}} >
+                                                <div className={classes.position} style={{textDecoration:property.smoke?'none':'line-through'}}>
+                                                    <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Smoke Alarm</Typography>
+                                                </div>
+                                                <div className={classes.position} style={{textDecoration:property.smoke?'none':'line-through'}}>
+                                                    <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Carbon Monoxide alarm</Typography>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                        <Grid item xs={5}>
+                                        {/* <Grid item xs={5}>
                                             <div className={classes.position} style={{textDecoration:property.kitchen?'none':'line-through'}} > 
                                             <KitchenIcon htmlColor="#00A8C8" fontSize="large"/>
                                             <Typography className={classes.textTitle}  variant="subtitle1" component="p">Kitchen</Typography>
@@ -431,7 +499,7 @@ class Single extends Component{
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Smoke Alarm</Typography>
                                             </div>
                                         </Grid>
-                                        <Grid item xs={7}>
+                                        <Grid style={{backgroundColor:"#000"}} item xs={7}>
                                             <div className={classes.position} style={{textDecoration:property.parking?'none':'line-through'}}>
                                                 <LocalParkingIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Free parking on premises</Typography>
@@ -444,12 +512,28 @@ class Single extends Component{
                                                 <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Carbon Monoxide alarm</Typography>
                                             </div>
-                                        </Grid>
+                                        </Grid> */}
                                     </Grid>
                                     <Divider/>
                                     <Typography className={classes.subTitle}>Bedrooms</Typography>
-                                    <Grid container id='bedrooms'>
-                                        <Grid item xs={5}>
+                                    <Grid id='bedrooms'>
+                                        <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                            <div>
+                                                <div className={classes.position} style={{marginBottom:5}}>
+                                                    <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 1</Typography>
+                                                </div>
+                                                <Typography style={{marginLeft:32}} variant="caption" component="p">1 King Bed</Typography>               
+                                            </div>
+                                            <div>
+                                                <div className={classes.position} style={{marginBottom:5}}>
+                                                    <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 2</Typography>
+                                                </div>
+                                                <Typography style={{marginLeft:32}} variant="caption" component="p">1 King Bed</Typography>
+                                            </div>
+                                        </div>
+                                        {/* <Grid item xs={5}>
                                             <div className={classes.position} style={{marginBottom:5}}>
                                                 <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 1</Typography>
@@ -462,12 +546,23 @@ class Single extends Component{
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 2</Typography>
                                             </div>
                                             <Typography style={{marginLeft:32}} variant="caption" component="p">1 King Bed</Typography>
-                                        </Grid>
+                                        </Grid> */}
                                     </Grid>
 
                                     <Typography className={classes.subTitle}>Bathroom</Typography>
-                                    <Grid container id="bathroom">
-                                        <Grid item xs={5}>
+                                    <Grid id="bathroom">
+                                        <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                            <div className={classes.position} style={{marginBottom:5}}>
+                                                <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 1</Typography>
+                                            </div>
+                                            <div className={classes.position} style={{marginBottom:5}}>
+                                                <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
+                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 2</Typography>
+                                            </div>
+                                        </div>
+    
+                                        {/* <Grid item xs={5}>
                                             <div className={classes.position} style={{marginBottom:5}}>
                                                 <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 1</Typography>
@@ -478,27 +573,37 @@ class Single extends Component{
                                                 <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Room 2</Typography>
                                             </div>
-                                        </Grid>
+                                        </Grid> */}
                                     </Grid>
                                     <Divider style={{marginTop:20}}/>
 
                                     <Typography className={classes.subTitle}>Accessibility</Typography>
-                                    <Grid container id="accessibility" spacing={3}>
-                                        <Grid item xs={5}>
+                                    <Grid id="accessibility">
+                                        <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem',paddingBottom:'1rem'}}>
+                                            <Typography className={classes.textTitle} style={{marginLeft:0}} variant="subtitle1" component="p">GETTING INSIDE</Typography> 
+                                            <Typography className={classes.textTitle} style={{marginLeft:0}} variant="subtitle1" component="p">MOVING AROUND THE SPACE</Typography> 
+                                                                                
+                                        </div>
+
+                                        <div style={{display:'grid', gridTemplateColumns:'2fr 2fr', columnGap:'1rem'}}>
+                                            <Typography variant="caption" component="p">Well-lit path to entrance Step-free path to entrance</Typography>
+                                            <Typography variant="caption" component="p">No stairs or steps to enter Wide hallways</Typography>
+                                        </div>
+                                        {/* <Grid item xs={5}>
                                             <Typography className={classes.textTitle} style={{marginLeft:0}} variant="subtitle1" component="p">GETTING INSIDE</Typography>  
                                             <Typography variant="caption" component="p">Well-lit path to entrance Step-free path to entrance</Typography>                                    
                                         </Grid>
                                         <Grid item xs={5}>
                                             <Typography className={classes.textTitle} style={{marginLeft:0}} variant="subtitle1" component="p">MOVING AROUND THE SPACE</Typography>
                                             <Typography variant="caption" component="p">No stairs or steps to enter Wide hallways</Typography>
-                                        </Grid>
+                                        </Grid> */}
                                     </Grid>
 
                                      <Grid container id="availability">
                                         <Grid item>
                                         <Typography className={classes.subTitle}>Availability</Typography>
                                         <Typography>Enter your trip dates for accurate pricing and availability</Typography>
-                                            {/* <BookingCalendar bookings={dates}/> */}
+                                            <BookingCalendar bookings={dates}/>
                                         </Grid>
                                     </Grid> 
                                 </Box>
@@ -659,7 +764,7 @@ class Single extends Component{
                                                 }
 
                                                 <Divider style={{marginTop:15, height:3, backgroundColor:'#DCDCDC'}}/>
-                                                    <Typography variant="h6" style={{textAlign:'center', color:'#000000'}} >Speak to the Host</Typography>
+                                                    <Typography variant="h6" style={{textAlign:'center', color:'#000000', paddingTop:'1rem'}} >Speak to the Host</Typography>
                                                 <Grid container style={{marginTop:10,marginBottom:5}}>
                                                     <Grid item xs={3}>
                                                         <Avatar alt={property.hostData.firstname} style={{width:50, height:50}} src={property.hostData.photoURL}/>
@@ -667,7 +772,7 @@ class Single extends Component{
                                                     <Grid item xs={9}>
                                                         <Typography variant="subtitle1"  component="p">{property.hostData.firstname +' '+ property.hostData.lastname}</Typography>
                                                         <button type="button" style={{background:'transparent', border:'none'}} onClick={this.hostOpen}>
-                                                        <Typography variant="caption"  component="p">Contact host</Typography>
+                                                        <Typography style={{paddingBottom:'1rem'}} variant="caption"  component="p">Contact host</Typography>
                                                         </button>
                                                     </Grid>
                                                 </Grid>

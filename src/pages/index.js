@@ -1,4 +1,11 @@
 import React, {Component} from "react";
+import styled from "styled-components";
+import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+import {
+  DatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import NavButton from "../components/Button/NavButton";
 import {withStyles} from "@material-ui/core/styles"
 import bg from "../images/login_bg.png"
 import Paper from '@material-ui/core/Paper';
@@ -17,7 +24,7 @@ import jigsaw from "../images/jigsaw.svg"
 import focus from "../images/focus.svg"
 import Slide from "../components/slider";
 import Explore from "../components/explore";
-import { DatePicker } from "@material-ui/pickers";
+// import { DatePicker } from "@material-ui/pickers";
 import AppContext from "../state/context";
 import { Button, TextField } from "@material-ui/core";
 import house from "../images/house.png"
@@ -28,8 +35,14 @@ import abuja from "../images/abuja.jpg"
 import lagos from "../images/lagos.jpg"
 import kano from "../images/kano.jpeg"
 import cottage from "../images/cottage.png"
+import ShowcaseImage from "../images/showcase.png"
+import cribs from "../images/cribs.svg"
+import SearchIcon from "../images/searchicon.svg"
+import CancelIcon from "../images/cancelicon.svg"
 import Splash from "../components/splash";
 import { getFavs, getDates } from "../helpers/helpers";
+
+
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${bg})`,
@@ -82,6 +95,7 @@ const styles = theme =>({
         borderRadius:'10px',
         paddingLeft:'10px'
     },
+    
     btn:{
         backgroundColor:'#00A8C8',
         color:'#fff',
@@ -110,6 +124,199 @@ const styles = theme =>({
         marginLeft:8
     }
 })
+
+const Showcase = styled.section`
+    height: 100vh;
+    width: 100%;
+    background: url(${ShowcaseImage}) no-repeat center center/cover;
+    margin-left: -0.1vw;
+    position: relative;
+    
+
+    &::after{
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, #02536C 0%, rgba(0, 0, 0, 0) 100%);
+        background: -webkit-gradient(180deg, #02536C 0%, rgba(0, 0, 0, 0) 100%);
+        background: -webkit-linear-gradient(180deg, #02536C 0%, rgba(0, 0, 0, 0) 100%);
+        background: -moz-linear-gradient(180deg, #02536C 0%, rgba(0, 0, 0, 0) 100%);
+        background: -o-linear-gradient(180deg, #02536C 0%, rgba(0, 0, 0, 0) 100%);
+        opacity: 0.5;
+        mix-blend-mode: hard-light;
+        z-index: 1;
+    }
+`
+
+const Header = styled.header`
+    display: flex;
+    padding-top: 57px;
+    width: 80%;
+    margin: auto;
+    justify-content: space-between;
+    position: relative;
+    z-index: 999;
+`
+const LogoContainer = styled.div`
+    flex: 0.6;
+`
+
+const LogoText = styled.a`
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
+    color: #fff;
+    text-transform: uppercase;
+`
+
+const NavContainer = styled.nav`
+    flex: 0.4;
+    display: flex;
+    justify-content: flex-end;
+`
+
+const ShowcaseBottom = styled.div`
+    position: relative;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 80px;
+`
+
+const ShowcaseHeading = styled.img`
+    width: min(80%, 506px);
+    margin-left: auto;
+    margin-right: auto;
+`
+
+const ShowcaseBottomWrapper = styled.div`
+    width: min(90%, 986px);
+    // width: 70%;
+    margin: auto;
+    margin-top: 1rem;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 4px 4px rgba(157, 157, 157, 0.1);
+    backdrop-filter: blur(11px);
+    border-radius: 51.5px;
+`
+
+const Form = styled.form`
+    display: flex;
+    // justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 1rem;
+    // border: solid green;
+`
+
+const LocationInput = styled.div`
+    width: 270px;
+    height: 70px;
+    position: relative;
+    background: #FCFCFC;
+    border-radius: 42.5px;
+    display: flex;
+    // flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 1rem;
+    // border: solid red;
+`
+
+const Label = styled.label`
+    position: absolute;
+    top: 5px;
+	left: 20px;
+	font-size: 16px;
+	color: #fff;	
+    pointer-event: none;
+    transition: all 0.5s ease-in-out;
+    font-family: Poppins;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: #000000;
+`
+
+const Input = styled.input`
+    border: 0; 
+    background: transparent;
+    width: 80%;
+    padding: 8px 0 5px 0;
+    font-size: 16px;
+    color: #8F8F8F;
+    margin-left: 20px;
+    // border: solid blue;
+
+    &:focus{
+        outline: none;
+
+    }
+`
+
+const CheckIn = styled.div`
+    width: 160px;
+    height: 70px;
+    background: #FFFFFF;
+    border-radius: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left:10px;
+`
+
+const SearchButton = styled.button`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 129px;
+    height: 49px;
+    background: #005C9F;
+    border-radius: 63.5px;
+    margin-left: 10px;
+    border: 0;
+    color: #FCFCFC;
+    outline: none;
+`
+const SearchButtonText = styled.p`
+    font-family: Poppins;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: #FCFCFC;
+    margin-left: 9px;
+`
+const Guests = styled.div`
+    width: 173px;
+    height: 70px;
+    background: #FCFCFC;
+    border-radius: 42.5px;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+const GuestsHeading = styled.h2`
+    font-family: Poppins;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: #000;
+`
+const GuestsText = styled.p`
+    font-family: Poppins;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+`
+
 class Index extends Component{
      static contextType = AppContext
     constructor(props){
@@ -168,11 +375,112 @@ class Index extends Component{
     render(){
         const {classes}=this.props
     return(
+        <>
+         {/* <Showcase >
+             <Header>
+                <LogoContainer>
+                    <LogoText href='/'>Cribs NG</LogoText>
+                </LogoContainer>
+                <NavContainer>
+                    <NavButton
+                        color='#fff'
+                        border
+                        borderColor='#fff'
+                        borderRadius='27'
+                        height='44'
+                        width='180'
+                        borderWidth='2'
+                        marginRight='3rem'
+                    >
+                        Host Accomodation
+                    </NavButton>
+                    <NavButton
+                        color='#fff'
+                        backgroundColor='#046FA7'
+                        border
+                        borderRadius='27'
+                        height='44'
+                        width='106'
+                    >
+                        Sign in
+                    </NavButton>
+                </NavContainer>
+             </Header>
+
+             <ShowcaseBottom>
+                 <ShowcaseHeading src={cribs} alt=""/>
+                 <ShowcaseBottomWrapper>
+                    <Form action="" >
+                        <LocationInput>
+                            <Input type="text" name="" id="" placeholder="Where do you want to lodge?"/>
+                            <img 
+                                src={CancelIcon} 
+                                alt="" 
+                                style={{
+                                    marginLeft:'5px',
+                                  }}/>
+                            <Label htmlFor="">Location</Label>
+                        </LocationInput>
+
+                        <CheckIn>
+                            <DatePicker
+                                label="Check In"
+                                format="dd/MM/yyyy"
+                                value={this.state.checkIn}
+                                onChange={(e)=>{
+                                    if(Date.parse(e)>Date.parse(this.state.checkOut))
+                                    this.setState({checkIn:e,checkOut:e},()=>{this.setDays()})
+                                    else
+                                    this.setState({checkIn:e},()=>{this.setDays()})
+                                }}
+                                style={{
+                                    color: 'red',
+                                    width: '70%',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            />
+                        </CheckIn>
+
+                        <CheckIn>
+                            <DatePicker
+                                label="Check Out"
+                                format="dd/MM/yyyy"
+                                value={this.state.checkOut}
+                                onChange={(e)=>{this.setState({checkOut:e})}}
+                                style={{
+                                    color: 'red',
+                                    width: '70%',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            />
+                        </CheckIn>
+
+                        <Guests>
+                            <div>
+                                <GuestsHeading>Guests</GuestsHeading>
+                                <GuestsText>Select Guests</GuestsText>
+                            </div>
+                        </Guests>
+                        <SearchButton type="submit" >
+                            <img src={SearchIcon} alt=""/>
+                            <SearchButtonText>Search</SearchButtonText>
+                        </SearchButton> 
+                    </Form>
+                 </ShowcaseBottomWrapper>
+             </ShowcaseBottom>
+            
+        </Showcase> */}
         <Grid className="home" container justify="center">
             {
                 this.state.loading&&
                 <Splash/>
             }
+
+       
             <Grid item className={classes.loginContainer} >
                 <Grid container justify="center">
                     <Grid item xs={10} md={5}>
@@ -183,6 +491,7 @@ class Index extends Component{
                                     <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
                                     <div style={{width:'100%',height:'90%'}}>
                                     <TextField className="home-location single" name="location" classes={{root:{width:'100%'}}} label="Location" value={this.state.location} onChange={this.changeHandler} placeholder="Search anyplace e.g Lagos"/>
+                                    
                                         {/* <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
                                         <input value={this.state.location} onChange={this.changeHandler} name="location" placeholder="Search anyplace e.g Lagos"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} /> */}
                                     </div>
@@ -315,6 +624,7 @@ class Index extends Component{
                 </Grid>
             </Grid>
         </Grid>
+        </>
     )
 }
 }

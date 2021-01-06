@@ -15,9 +15,11 @@ import {
     Grid,
     Fab,
     Switch,
+    Snackbar, Slide,
     IconButton,
     Typography
 } from "@material-ui/core"
+import {Alert} from "@material-ui/lab"
 import AddIcon from "@material-ui/icons/Add"
 import EditIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -25,6 +27,10 @@ import AppContext from "../../state/context"
 import { currency } from "../../helpers/helpers";
 import Modal from "../../components/modal";
 
+
+const TransitionUp=(props)=>{
+    return <Slide {...props} direction="down" />;
+  }
 export const StyledTableCell = withStyles((theme) => ({
     head: {
       backgroundColor: theme.palette.common.white,
@@ -79,6 +85,10 @@ class Properties extends React.Component{
             page:0,
             rowsPerPage:10,
             loading:true,
+            success:false,
+            message:'',
+            transition:undefined,
+            open:false,
         }
     }
     componentDidMount(){
@@ -88,9 +98,24 @@ class Properties extends React.Component{
         })
 
     }
-
+    handleClick = (Transition) => () => {
+        this.setState({transition:Transition, open:true})
+        };
+    handleCloseSnackBar = (event,reason) => {
+        if (reason === 'clickaway') {
+            return;
+          }
+        this.setState({open:false})
+        }
     changeHandler =e=>{
         this.setState({[e.target.name]:e.target.value})
+    }
+    onDelete=(id)=>{
+        this.setState({loading:true,success:false})
+        this.context.deleteProperty(id)
+        .then(()=>{
+            this.setState({loading:false, message:'Deleted Successfully',success:true})
+        })
     }
     handleChangePage = (event, newPage) => {
 		this.setState({page:newPage});
@@ -121,9 +146,22 @@ class Properties extends React.Component{
         const properties = this.context.state.myProperties
         const {classes} = this.props
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, properties.length - this.state.page * this.state.rowsPerPage);
-
+      
         return (
                 <Layout>
+                                            {
+                                this.state.message&&
+                                <Snackbar
+                                open={this.state.open}
+                                onClose={this.handleCloseSnackBar}
+                                TransitionComponent={this.state.transition}
+                                anchorOrigin={{vertical:'top',horizontal:'right'}}
+                                autoHideDuration={5000}
+                                key={this.state.transition ? this.state.transition.name : ''}
+                                >
+                                    <Alert variant="filled" severity={this.state.success?"success":"error"}>{this.state.message}</Alert>
+                                </Snackbar>
+                            }
                     <Grid container justify="center" classes={{root:classes.container}}>
                         <Grid item xs={11}>
                             <div className="inbox-title">
@@ -183,7 +221,7 @@ class Properties extends React.Component{
                                                         <EditIcon/>
                                                     </IconButton>
                                                 </Link>
-                                               <IconButton>
+                                               <IconButton onClick={()=>{this.onDelete(property.id);this.handleClick(TransitionUp)}}>
                                                     <DeleteIcon/>
                                                </IconButton>
                                             </div>

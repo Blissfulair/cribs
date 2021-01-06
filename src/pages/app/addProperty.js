@@ -210,7 +210,6 @@ const body = {
     rooms:this.state.rooms,
     hostData:{firstname:this.context.state.userData.firstname,lastname:this.context.state.userData.lastname, photoURL:this.context.state.photoURL,phone:this.context.state.userData.phone,email:this.context.state.userData.email}
 }
-console.log(body)
 firebase.storeProperty(body)
 .then(()=>{
     this.setState({
@@ -237,7 +236,7 @@ firebase.storeProperty(body)
         city:'',
         state:'',
         success:true,
-        rooms:[],
+        rooms:[{room:'', price:'',bookedDates:[]}],
         message:'Submitted successfully',
         isLoading:false
     })

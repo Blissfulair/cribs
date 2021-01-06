@@ -153,6 +153,9 @@ class Single extends Component{
             value:0,
             price:0,
             change:false,
+            clear:true,
+            selected:[],
+            values:'1000',
             rooms:null,
             room:[],
             property:null,
@@ -267,12 +270,30 @@ class Single extends Component{
             state:para
         })
     }
-    onChangeRoom=(item)=>{
-        let amount = 0
-        let books = []
+    onDelete=(id)=>{
         let rooms = null
-        let room = []
-        if(item.target.value === '1000'){
+        let amount = 0
+        const books = []
+        let value = null
+        this.state.room.splice(id,1)
+        this.state.room.forEach(room=>{
+            amount += Number(room.price)
+            books.push(...room.bookedDates)
+        })
+        rooms = {
+            price:amount,
+            bookedDates:books
+        }
+        this.state.selected.splice(this.state.selected.indexOf(this.context.state.property.rooms[id].room), 1)
+
+        if(id>=1){
+            value = id-1
+        }
+        else
+        value = id+1
+        if(this.state.room.length<1)
+        {
+            value = '1000'
             this.state.property.rooms.forEach(room=>{
                 amount += Number(room.price)
                 books.push(...room.bookedDates)
@@ -281,15 +302,62 @@ class Single extends Component{
                 price:amount,
                 bookedDates:books
             }
+        }
+        this.setState({room:this.state.room,rooms:rooms, price:amount, values:value})
+    }
+
+    onChangeRoom=(item)=>{
+        let amount = 0
+        let books = []
+        let rooms = null
+        let room = []
+        let value = null
+        let selected = ''
+        // if(item.target.value === '1000'){
+        //     this.state.property.rooms.forEach(room=>{
+        //         amount += Number(room.price)
+        //         books.push(...room.bookedDates)
+        //     })
+        //     rooms = {
+        //         price:amount,
+        //         bookedDates:books
+        //     }
+        //     room.push(...this.context.state.property.rooms)
+        // }
+        // else{
+            // amount = this.context.state.property.rooms[item.target.value].price
+            // rooms = this.context.state.property.rooms[item.target.value]
+        //     room.push(this.context.state.property.rooms[item.target.value])
+        // }
+
+        // this.setState({price:amount, rooms:rooms, room:room, change:true})
+        if(item.target.value === '1000'){
+            this.state.property.rooms.forEach(room=>{
+                amount += Number(room.price)
+                books.push(...room.bookedDates)
+            })
+            value = item.target.value
             room.push(...this.context.state.property.rooms)
+
         }
         else{
-            amount = this.context.state.property.rooms[item.target.value].price
-            rooms = this.context.state.property.rooms[item.target.value]
+            this.state.room.forEach(room=>{
+                amount += Number(room.price)
+                books.push(...room.bookedDates)
+            })
+            amount += this.context.state.property.rooms[item.target.value].price
+            books.push(...this.context.state.property.rooms[item.target.value].bookedDates)
             room.push(this.context.state.property.rooms[item.target.value])
-        }
+            value = item.target.value
+            selected= this.context.state.property.rooms[item.target.value].room
 
-        this.setState({price:amount, rooms:rooms, room:room, change:true})
+        }
+        rooms = {
+            price:amount,
+            bookedDates:books
+        }
+        this.setState({change:true,room:[...this.state.room, ...room],rooms:rooms, price:amount, values:value,selected:[...this.state.selected, selected] })
+
     }
     render(){   
     const {classes} = this.props
@@ -724,16 +792,32 @@ class Single extends Component{
                                                         <label htmlFor="check-out">
                                                         <KingBedIcon htmlColor="#00A8C8" fontSize="small"/> 
                                                         </label>
-                                                        <NativeSelect style={{width:'90%', marginLeft:'10%'}} onChange={this.onChangeRoom}>
+                                                        <NativeSelect multiple={true}  style={{width:'90%', marginLeft:'10%'}} onChange={this.onChangeRoom} value={this.state.values}>
                                                         <option value={1000}>All</option>
                                                             {
-                                                                property.rooms.map((room,i)=>(
-                                                                    <option value={i}>{room.room}</option>
-                                                                ))
+                                                                property.rooms.map((room,i)=>{
+                                                                    if(!this.state.selected.includes(room.room)){
+                                                                        return(
+                                                                            <option value={i}>{room.room}</option>
+                                                                        )
+                                                                    }                                                               else 
+                                                                    return null
+                                                                })  
+
                                                             }
                                                             
                                                         </NativeSelect>
                                                     </div>
+                                                    {
+                                                        this.state.room.length>0&&
+                                                        <div style={{display:'flex', flexWrap:'wrap', justifyContent:'center', marginTop:10}}>
+                                                        {
+                                                            this.state.room.map((room,i)=>{
+                                                            return <button onClick={()=>this.onDelete(i)} className="cancelBtn" type="button" style={{border:'none', borderRadius:20, backgroundColor:'#4caf50', color:'#fff', margin:5}} key={i}>{room.room}</button>
+                                                            })
+                                                        }
+                                                    </div>
+                                                    }
                                                 </div>
                                                 }
                                                 <Grid container spacing={1}>

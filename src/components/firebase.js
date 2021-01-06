@@ -99,9 +99,10 @@ const firebaseConfig = {
         return properties;
     }
     getMyProperties = async(hostId)=>{
-        let properties = null
-        properties = await this.firestore.collection(this.tables.PROPERTIES).where('hostId', '==', hostId).get();
-        return properties; 
+        return this.firestore.collection(this.tables.PROPERTIES).where('hostId', '==', hostId);
+    }
+    deleteMyProperty = async(id)=>{
+        return this.firestore.collection(this.tables.PROPERTIES).doc(id).delete();
     }
     storeProperty = async(data)=>{
         let searchIndex = [];
@@ -205,7 +206,8 @@ const firebaseConfig = {
                 city:data.city.toLowerCase(),
                 state:data.state,
                 updatedAt:firebase.firestore.FieldValue.serverTimestamp(),
-                keywords:searchIndex
+                keywords:searchIndex,
+                rooms:data.rooms
     
             })
 

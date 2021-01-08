@@ -800,7 +800,8 @@ class Single extends Component{
                                                                         return(
                                                                             <option value={i}>{room.room}</option>
                                                                         )
-                                                                    }                                                               else 
+                                                                    }
+                                                                    else 
                                                                     return null
                                                                 })  
 
@@ -813,7 +814,7 @@ class Single extends Component{
                                                         <div style={{display:'flex', flexWrap:'wrap', justifyContent:'center', marginTop:10}}>
                                                         {
                                                             this.state.room.map((room,i)=>{
-                                                            return <button onClick={()=>this.onDelete(i)} className="cancelBtn" type="button" style={{border:'none', borderRadius:20, backgroundColor:'#4caf50', color:'#fff', margin:5}} key={i}>{room.room}</button>
+                                                            return <button onClick={()=>this.onDelete(i)} className="cancelBtn" type="button" style={{border:'none', borderRadius:20, color:'#fff', margin:5}} key={i}>{room.room}</button>
                                                             })
                                                         }
                                                     </div>

@@ -27,6 +27,7 @@ const firebaseConfig = {
             TRANSACTIONS:'transactions',
             BOOKINGS:'bookings',
             ACTIVITIES:'activities',
+            AMENITIES:'amenities',
             NOTIFICATIONS:'notifications',
             PAYMENTS:'payments',
             BOOKED:'bookedDates'
@@ -101,12 +102,18 @@ const firebaseConfig = {
     getMyProperties = async(hostId)=>{
         return this.firestore.collection(this.tables.PROPERTIES).where('hostId', '==', hostId);
     }
+    getAdminProperties = async()=>{
+        return this.firestore.collection(this.tables.PROPERTIES).orderBy('createdAt', 'desc')
+    }
     deleteMyProperty = async(id)=>{
+        return this.firestore.collection(this.tables.PROPERTIES).doc(id).delete();
+    }
+    deleteAdminProperty = async(id)=>{
         return this.firestore.collection(this.tables.PROPERTIES).doc(id).delete();
     }
     storeProperty = async(data)=>{
         let searchIndex = [];
-        const allString = data.address+' '+data.city+' '+data.state
+        const allString = data.address+' '+data.city+' '+data.state +' '+ data.type+' '+data.name
         const string = allString.toLowerCase().split(' ');
         string.forEach(word=>{
             let newWord = ''
@@ -174,6 +181,15 @@ const firebaseConfig = {
         // return property.get()
     }
 
+    addAmenities = async(amenity)=>{
+        await this.firestore.collection(this.tables.AMENITIES).add({
+            name:amenity,
+            updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+
+        })
+
+
+    }
 
     updateProperty = async(id,data)=>{
         let searchIndex = [];
@@ -469,6 +485,10 @@ const firebaseConfig = {
 
     getHistories = (userId)=>{
         return  this.firestore.collection(this.tables.BOOKINGS).where('userId','==',userId)
+    
+    }
+    getAmenity = ()=>{
+        return  this.firestore.collection(this.tables.AMENITIES)
     
     }
     deleteHistory =async(ids)=>{

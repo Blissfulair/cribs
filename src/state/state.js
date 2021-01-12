@@ -10,12 +10,14 @@ const GlobalState= ()=>{
         properties:[],
         property:null,
         myProperties:[],
+        amenities:[],
         results:[],
         searchQuery:null,
         dashboard:true,
         photoURL:null,
         env:null,
         latestProperties:[],
+        adminProperties:[],
         favourite:[],
         activities:[],
         notifications:[],
@@ -73,6 +75,11 @@ const GlobalState= ()=>{
                     ...prevState,
                     favourite:action.payload.favourite
                 }
+            case 'GET_ADMIN_PROPERTIES':
+                return{
+                    ...prevState,
+                    adminProperties:action.payload.adminProperties
+                }
             case 'GET_ENV':
                 return{
                     ...prevState,
@@ -113,6 +120,11 @@ const GlobalState= ()=>{
                     ...prevState,
                     myProperties:action.payload.myProperties
                 }
+            case 'GET_AMENITIES':
+                return{
+                    ...prevState,
+                    amenities:action.payload.amenities
+                }
             case 'GET_DASHBOARD':
                 return{
                     ...prevState,
@@ -123,7 +135,8 @@ const GlobalState= ()=>{
         }
     }
     const [state, dispatch] = useReducer(reducer,initialState)
-   const getProperties=(userId)=>{
+
+    const getProperties=(userId)=>{
         let props =[]
         firebase.getHostProperties(userId)
         .then(properties=>{
@@ -133,6 +146,17 @@ const GlobalState= ()=>{
             dispatch({type:'GET_PROPERTIES', payload:{properties:props}})
         })
     }
+    const getAmenities=async()=>{
+        await  firebase.getAmenity()
+         .onSnapshot(snap=>{ 
+            const data = []
+            snap.docs.forEach(doc=>{
+                data.push({...doc.data(), id:doc.id})
+            })
+            dispatch({type:'GET_AMENITIES', payload:{amenities:data}}) 
+            
+        })
+     }
     const getLatestProperties=(userId)=>{
         let props =[]
         firebase.getLatestProperties(userId)
@@ -244,6 +268,11 @@ const GlobalState= ()=>{
                         dispatch({type:'GET_DASHBOARD', payload:{dashboard:dash}})
                         dispatch({type:'GET_EARNINGS', payload:{earnings:{ balance:userData.balance, pending:userData.pending}}})
                     }
+                    else if(userData.role ===3)
+                    {
+                        dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                    }
+
 
                     dispatch({type:'SET_STATE', payload:{initializing:false}})
                     //load the latest properties
@@ -251,6 +280,7 @@ const GlobalState= ()=>{
                     getProperties(user.uid)
                     getHostNotifications(user.uid)
                     getActivities(user.uid)
+                    getAmenities(user.uid)
                     
                 })
             }
@@ -351,7 +381,21 @@ const GlobalState= ()=>{
                     const dash = getDashboard()
                     dispatch({type:'GET_DASHBOARD', payload:{dashboard:dash}})
                    }
+                   else if(userData.role ===3)
+                   {
+                    dispatch({type:'GET_DASHBOARD', payload:{dashboard:false}})
+                   }
                 })
+            })
+        },
+         getAdminProperties:async()=>{
+           await (await firebase.getAdminProperties())
+            .onSnapshot(properties=>{
+                let props =[]
+                properties.docs.forEach(doc=>{
+                    props.push({id:doc.id, ...doc.data()})
+                })
+                dispatch({type:'GET_ADMIN_PROPERTIES', payload:{adminProperties:props}})
             })
         },
         getProperties:()=>{
@@ -377,6 +421,9 @@ const GlobalState= ()=>{
         deleteProperty:async(id)=>{
            await firebase.deleteMyProperty(id)
         },
+        deleteAdminProperty:async(id)=>{
+            await firebase.deleteAdminProperty(id)
+         },
         getPropertyById:async(id)=>{
            return firebase.getPropertyById(id)
             .then(async property=>{

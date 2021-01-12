@@ -1,28 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
     Grid, 
     Paper,
     Avatar,
     Typography
 } from '@material-ui/core'
-import Chart from "../../../components/chart";
-import City from "../../../components/city";
-import image from "../../../images/login_bg.png"
-const Progress = ({value}) => (
-    <div style={{
-        width: 155,
-        height: 155,
-        borderRadius: '50%',
-        border: '15px solid transparent',
-        backgroundSize: '100% 100%, 100% 100%',
-        backgroundRepeat: 'no-repeat',
-        backgroundImage: `linear-gradient(white, white),linear-gradient(30deg, #046FA7 ${value}%, #00A8C8 ${value}%)`,
-        backgroundOrigin: 'content-box, border-box',
-        backgroundClip: 'content-box, border-box',
-        transform: 'rotate(150deg)'
-    }}></div>
-)
+import Chart from "../../components/chart";
+import AppContext from "../../state/context";
+
 const RenterDashboard = ({classes, context})=>{
+    const {state} = useContext(AppContext)
         return (
             <>
                 <Grid container  justify="space-between">
@@ -44,30 +31,14 @@ const RenterDashboard = ({classes, context})=>{
                     <Paper classes={{root:classes.impression}}>
                         <Grid container style={{marginBottom:15}}>
                             <Grid item xs={5}>
-                                <Typography variant="subtitle1" style={{fontWeight:'bold', color:'#046FA7',fontSize:15}} component="p">Overview</Typography>
+                                <Typography variant="subtitle1" style={{fontWeight:'bold', color:'#046FA7',fontSize:15}} component="p">Hosted Properties</Typography>
                                 <Grid container justify="center" alignItems="center" style={{height:'100%'}}>
-                                    <Progress value={40}/>
+                                    <Typography variant="h4" style={{fontSize:60,color:'#00A8C8'}} >{state.properties.length}</Typography>
                                 </Grid>
                             </Grid>
                             <Grid item xs={7}>
                                 <Typography variant="subtitle1" style={{fontWeight:'bold', color:'#046FA7',fontSize:15}} component="p">Activity</Typography>
-                                <Chart type="bar"/>
-                            </Grid>
-                        </Grid>
-                    </Paper>
-                    <Paper style={{margin:'30px 0'}} classes={{root:classes.impression}}>
-                        <Grid container spacing={3}>
-                            <Grid item lg={4}>
-                                <City color="#000" height={240} image={image} name="Marg" description="this is it"/>
-                                <p className={classes.sublet}>Promote Property</p>
-                            </Grid>
-                            <Grid item lg={4}>
-                                <City color="#000" height={240}  image={image} name="Marg" description="this is it"/>
-                                <p className={classes.sublet}>Share property link</p>
-                            </Grid>
-                            <Grid item lg={4}>
-                                <City color="#000" height={240}  image={image} name="Marg" description="this is it"/>
-                                <p className={classes.sublet}>Refer a friend</p>
+                                <Chart monthly={context.state.chart.monthly} weekly={context.state.chart.weekly}  yearly={context.state.chart.yearly} type="bar"/>
                             </Grid>
                         </Grid>
                     </Paper>

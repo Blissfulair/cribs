@@ -43,7 +43,7 @@ class AddProperty extends React.Component{
             around:'',
             guest:1,
             featured_image:null,
-            type:'house',
+            type:'',
             other_images:[],
             success:false,
             message:'',
@@ -51,7 +51,7 @@ class AddProperty extends React.Component{
             open:false,
             isLoading:false,
             status:false,
-            rooms:[{room:'', price:'',bookedDates:[]}]
+            rooms:[{room:'', price:'',bed:1,bathroom:0,bookedDates:[]}]
         }
     }
 
@@ -59,6 +59,7 @@ class AddProperty extends React.Component{
         const dom = document.querySelector('#properties');
         if(dom !== null)
         dom.setAttribute('class', 'is-active')
+        
 
     }
 
@@ -150,13 +151,30 @@ class AddProperty extends React.Component{
 
     onAdd=()=>{
         let add = this.state.rooms;
-        add.push({room:'', price:'', bookedDates:[]});
+        add.push({room:'', price:'',bed:1, bathroom:0, bookedDates:[]});
         
         this.setState({rooms:add})
+    }
+    remove=(id)=>{
+       this.state.rooms.splice(id,1)
+        // console.log(rooms)
+        // console.log(this.state.rooms)
+        // // console.log(this.state.rooms[id])
+        this.setState({rooms:this.state.rooms})
     }
     onAddRoom = (e, i)=>{
         const rooms = [...this.state.rooms]
         rooms[i].room = e.target.value;
+        this.setState({rooms:rooms}) 
+    }
+    onAddBed = (e, i)=>{
+        const rooms = [...this.state.rooms]
+        rooms[i].bed = e.target.value;
+        this.setState({rooms:rooms}) 
+    }
+    onAddBathRoom = (e, i)=>{
+        const rooms = [...this.state.rooms]
+        rooms[i].bathroom = e.target.value;
         this.setState({rooms:rooms}) 
     }
     onAddPrice = (e, i)=>{
@@ -181,8 +199,12 @@ class AddProperty extends React.Component{
            }
            this.setState({isLoading:true, message:''})
     let amount = 0
+    let bathroom = 0
+    let bed = 0
     this.state.rooms.forEach(room=>{
         amount += room.price
+        bathroom += room.bathroom
+        bed += room.bed
     })
 const body = {
     hostId:this.context.state.user.uid,
@@ -191,19 +213,19 @@ const body = {
     featuredImage:this.state.featured_image,
     images:[ ...other_images],
     amount:amount,
-    bedroom:this.state.bedroom,
+    bedroom:bed,
     discount:this.state.discount,
     smoke:this.state.smoking,
     wifi:this.state.wifi,
     parking:this.state.parking,
     cable:this.state.cable,
-    bathroom:this.state.bathroom,
+    bathroom:bathroom,
     kitchen:this.state.kitchen,
     inside:this.state.inside,
     around:this.state.around,
     address:this.state.address,
     guest:this.state.guest,
-    type:this.state.type,
+    type:this.state.type !== ''?this.state.type:this.context.state.amenities[0].name,
     house:this.state.house,
     city:this.state.city,
     state:this.state.state,
@@ -236,7 +258,7 @@ firebase.storeProperty(body)
         city:'',
         state:'',
         success:true,
-        rooms:[{room:'', price:'',bookedDates:[]}],
+        rooms:[{room:'', price:'', bed:1,bathroom:0,bookedDates:[]}],
         message:'Submitted successfully',
         isLoading:false
     })
@@ -256,7 +278,6 @@ firebase.storeProperty(body)
 
     }
     render(){
-        
         return (
             <>
                 <Backend>
@@ -376,7 +397,7 @@ firebase.storeProperty(body)
                                         <div className="col">
                                             <label htmlFor="room">Room</label>
                                             <div className="input">
-                                                <input onChange={(e)=>{this.onAddRoom(e, i)}} placeholder="Eg Room 1" name={`room${i}`}   />
+                                                <input defaultValue={room.room} onChange={(e)=>{this.onAddRoom(e, i)}} placeholder="Eg Room 1" name={`room${i}`}   />
                                                 <span>
                                                     <div className="angle"></div>
                                                 </span>
@@ -385,13 +406,32 @@ firebase.storeProperty(body)
                                         <div className="col">
                                             <label htmlFor="roomPrice">Room Price</label>
                                             <div className="input">
-                                                <input onChange={(e)=>{this.onAddPrice(e, i)}} placeholder="Eg 2000" name={`roomPrice${i}`}   />
+                                                <input type="number" defaultValue={room.price} onChange={(e)=>{this.onAddPrice(e, i)}} placeholder="Eg 2000" name={`roomPrice${i}`}   />
                                                 <span>
                                                     <div className="angle"></div>
                                                 </span>
                                             </div>
                                         </div>
                                         <div className="col">
+                                            <label htmlFor="numberofbeds">Beds</label>
+                                            <div className="input">
+                                                <input type="number"  onChange={(e)=>{this.onAddBed(e, i)}} placeholder="Eg 1" defaultValue={room.bed} name={`numberofbeds${i}`}   />
+                                                <span>
+                                                    <div className="angle"></div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <label htmlFor="bathroom">Bathroom</label>
+                                            <div className="input">
+                                                <input type="number" defaultValue={room.bathroom} onChange={(e)=>{this.onAddBathRoom(e, i)}} placeholder="Eg 0" name={`bathroom${i}`}   />
+                                                <span>
+                                                    <div className="angle"></div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <span aria-hidden={true} onClick={()=>this.remove(i)} className='prop-remove'>Remove</span>
                                         </div>
                                     </div>
                                     ))
@@ -402,7 +442,7 @@ firebase.storeProperty(body)
                             <div className="property-group">
                                 <h3>Amenities</h3>
                                 <div className="property-group-inner1">
-                                    <div className="col">
+                                    {/* <div className="col">
                                         <label htmlFor="bedroom">Bedroom</label>
                                         <div className="input">
                                             <select name="bedroom"  onBlur={this.changeHandler}  id="bedroom">
@@ -429,7 +469,7 @@ firebase.storeProperty(body)
                                             </select>
                                             <span><div className="angle"></div></span>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     {/* <div className="col">
                                         <label htmlFor="toilet">Toilet</label>
                                         
@@ -506,15 +546,24 @@ firebase.storeProperty(body)
                                 <div className="property-group">
                                     <h3>Type</h3>
                                     <ul className="prop-type">
-                                        <li>
-                                            <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="house"  name="type" id="house" />
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="house">House</label>
-                                        </li>
+                                        {
+                                            this.context.state.amenities.map((amenity,i)=>(
+                                            <li key={i}>
+                                                <label className="radio">
+                                                    {
+                                                        i===0?
+                                                        <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue={amenity.name}  name="type" id={amenity.id} />
+                                                        :
+                                                        <input type="radio" onChange={this.changeHandler}  defaultValue={amenity.name}  name="type" id={amenity.id} />
+                                                    }
+                                                    <span className="radio-mark"></span>
+                                                </label>
+                                                <label style={{textTransform:'capitalize'}} htmlFor={amenity.id}>{amenity.name}</label>
+                                            </li>
+                                            ))
+                                        }
 
-                                        <li>
+                                        {/* <li>
                                             <label className="radio">
                                                 <input type="radio" onChange={this.changeHandler} defaultValue="duplex"  name="type" id="apartment" />
                                                 <span className="radio-mark"></span>
@@ -556,7 +605,7 @@ firebase.storeProperty(body)
                                                 <span className="radio-mark"></span>
                                             </label>
                                             <label htmlFor="storage">Storage</label>
-                                        </li>
+                                        </li> */}
                                     </ul>
                                 </div>
 

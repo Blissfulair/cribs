@@ -7,6 +7,7 @@ import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 // import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
 import EventOutlinedIcon from '@material-ui/icons/EventOutlined';
 // import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
+import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 
@@ -23,7 +24,7 @@ const Sidebar = ()=>{
 
                         
                         <NavLink  onClick={Sidebar.active}  activeClassName="is-active" to="/admin/amenities"><li><EventOutlinedIcon/>Amenities</li></NavLink>
-
+                        <NavLink onClick={Sidebar.active}  activeClassName="is-active"   to="/admin/users"><li><PeopleOutlineIcon/>Users</li></NavLink>
                         <NavLink onClick={Sidebar.active}  activeClassName="is-active" id="profiles"  to="/admin/profile"><li><PersonOutlineOutlinedIcon/>Profile</li></NavLink>
                         <NavLink onClick={Sidebar.active}  activeClassName="is-active"   to="/admin/settings"><li><SettingsOutlinedIcon/>Settings</li></NavLink>
                     </ul>

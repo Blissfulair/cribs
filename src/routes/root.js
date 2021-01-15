@@ -38,6 +38,8 @@ import AdminDashboard from "../pages/admin/dashboard";
 import Amenities from "../pages/admin/amenities";
 import AdminProperties from "../pages/admin/properties";
 import RootAdmin from "./rootAdmin";
+import AdminProfile from "../pages/admin/profile";
+import users from "../pages/admin/users";
 
 class Root extends Component{
 
@@ -71,6 +73,8 @@ class Root extends Component{
             <RootAdmin exact path='/admin/login' component={AdminLogin} />
             <AdminRoute exact path='/admin/amenities' component={Amenities} />
             <AdminRoute exact path='/admin/properties' component={AdminProperties} />
+            <AdminRoute exact path='/admin/profile' component={AdminProfile} />
+            <AdminRoute exact path='/admin/users' component={users} />
 
 
             <PublicRoute exact path='/payment' component={Payment} />

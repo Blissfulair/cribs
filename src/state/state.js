@@ -12,6 +12,7 @@ const GlobalState= ()=>{
         myProperties:[],
         amenities:[],
         results:[],
+        users:[],
         searchQuery:null,
         dashboard:true,
         photoURL:null,
@@ -79,6 +80,11 @@ const GlobalState= ()=>{
                 return{
                     ...prevState,
                     adminProperties:action.payload.adminProperties
+                }
+            case 'GET_ADMIN_USERS':
+                return{
+                    ...prevState,
+                    users:action.payload.users
                 }
             case 'GET_ENV':
                 return{
@@ -398,6 +404,16 @@ const GlobalState= ()=>{
                 dispatch({type:'GET_ADMIN_PROPERTIES', payload:{adminProperties:props}})
             })
         },
+        getUsers:async()=>{
+            await (await firebase.getUsers())
+             .onSnapshot(users=>{
+                 let props =[]
+                 users.forEach(doc=>{
+                     props.push({id:doc.id, ...doc.data()})
+                 })
+                 dispatch({type:'GET_ADMIN_USERS', payload:{users:props}})
+             })
+         },
         getProperties:()=>{
             let props =[]
             firebase.getHostProperties()

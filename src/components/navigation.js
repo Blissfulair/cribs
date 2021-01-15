@@ -22,7 +22,15 @@ const Navigation =()=>{
                                 <Root user={state.userData}/>
 
                         </ScrollTop>
-                    <Footer/>
+                        {
+                            state.userData?
+                            state.userData.role !== 3?
+                            <Footer/>
+                            :null
+                            :
+                            <Footer/>
+                        }
+                   
                 </>
             }
         </Router>

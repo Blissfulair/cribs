@@ -105,6 +105,9 @@ const firebaseConfig = {
     getAdminProperties = async()=>{
         return this.firestore.collection(this.tables.PROPERTIES).orderBy('createdAt', 'desc')
     }
+    getUsers = async()=>{
+        return this.firestore.collection(this.tables.USERS).orderBy('email', 'asc')
+    }
     deleteMyProperty = async(id)=>{
         return this.firestore.collection(this.tables.PROPERTIES).doc(id).delete();
     }
@@ -263,6 +266,24 @@ const firebaseConfig = {
 
     login = async(data)=>{
         return await this.auth.signInWithEmailAndPassword(data.email, data.password);
+    }
+    changePassword = async(data)=>{
+        return await this.auth.signInWithEmailAndPassword(data.email, data.password)
+         .then(async(user)=>{
+           return user.user.updatePassword(data.newPassword)
+           .then(()=>{
+               return true
+           })
+           .catch((e)=>{
+               return e.message
+           })
+         })
+         .catch((e)=>{
+             if(e.code === "auth/wrong-password"){
+                return 'Old password is not correct!'  
+             }
+             return 'An error occourred, try again.'
+         })
     }
 
     getPropertyById = async(id)=>{

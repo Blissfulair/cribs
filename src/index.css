@@ -529,7 +529,8 @@ font-size: 19px;
 }
 .cancelBtn{
   position: relative;
-  padding:10px 30px 10px 15px
+  padding:10px 30px 10px 15px;
+  background-color: #00a8c8;
 }
 .cancelBtn::after{
   position: absolute;

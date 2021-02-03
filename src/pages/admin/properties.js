@@ -1,5 +1,5 @@
 import React from "react";
-import "./inbox.css"
+import "../app/inbox.css"
 import {Link} from "react-router-dom"
 import Layout from "./layout"
 import {
@@ -13,7 +13,6 @@ import {
     TableRow,
     withStyles,
     Grid,
-    Fab,
     Switch,
     Snackbar, Slide,
     IconButton,
@@ -21,8 +20,7 @@ import {
     Button
 } from "@material-ui/core"
 import {Alert} from "@material-ui/lab"
-import AddIcon from "@material-ui/icons/Add"
-import EditIcon from '@material-ui/icons/EditOutlined';
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AppContext from "../../state/context"
 import { currency } from "../../helpers/helpers";
@@ -32,6 +30,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
@@ -99,7 +98,7 @@ class Properties extends React.Component{
         }
     }
     componentDidMount(){
-        this.context.getMyProperties()
+        this.context.getAdminProperties()
         .then(()=>{
             this.setState({loading:false})
         })
@@ -124,9 +123,9 @@ class Properties extends React.Component{
     changeHandler =e=>{
         this.setState({[e.target.name]:e.target.value})
     }
-    onDelete=(id)=>{
+    onDelete=()=>{
         this.setState({loading:true,success:false})
-        this.context.deleteProperty(id)
+        this.context.deleteProperty(this.state.deleted)
         .then(()=>{
             this.setState({loading:false, message:'Deleted Successfully',success:true})
         })
@@ -157,63 +156,53 @@ class Properties extends React.Component{
         }
       };
     render(){
-        const properties = this.context.state.myProperties
+        let properties = this.context.state.adminProperties
+        // properties = [this.context.state.adminProperties]
         const {classes} = this.props
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, properties.length - this.state.page * this.state.rowsPerPage);
       
         return (
                 <Layout>
-                    <Dialog
-                        open={this.state.dialogOpen}
-                        TransitionComponent={TransitionUp}
-                        keepMounted
-                        onClose={this.handleClose}
-                        aria-labelledby="alert-dialog-slide-title"
-                        aria-describedby="alert-dialog-slide-description"
-                    >
-                        <DialogTitle id="alert-dialog-delete">{"Confirm!!"}</DialogTitle>
-                        <DialogContent>
-                        <DialogContentText id="alert-dialog-delete-description">
-                        Are sure you want to delete this property?
-                        </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={()=>{this.handleClose();this.onDelete()}} color="primary">
-                            Continue
-                        </Button>
-                        </DialogActions>
-                    </Dialog>
-                                            {
-                                this.state.message&&
-                                <Snackbar
-                                open={this.state.open}
-                                onClose={this.handleCloseSnackBar}
-                                TransitionComponent={this.state.transition}
-                                anchorOrigin={{vertical:'top',horizontal:'right'}}
-                                autoHideDuration={5000}
-                                key={this.state.transition ? this.state.transition.name : ''}
-                                >
-                                    <Alert variant="filled" severity={this.state.success?"success":"error"}>{this.state.message}</Alert>
-                                </Snackbar>
-                            }
+        <Dialog
+        open={this.state.dialogOpen}
+        TransitionComponent={TransitionUp}
+        keepMounted
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-delete">{"Confirm!!"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-delete-description">
+          Are sure you want to delete this property?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={()=>{this.handleClose();this.onDelete()}} color="primary">
+            Continue
+          </Button>
+        </DialogActions>
+      </Dialog>
+                    {
+                        this.state.message&&
+                        <Snackbar
+                        open={this.state.open}
+                        onClose={this.handleCloseSnackBar}
+                        TransitionComponent={this.state.transition}
+                        anchorOrigin={{vertical:'top',horizontal:'right'}}
+                        autoHideDuration={5000}
+                        key={this.state.transition ? this.state.transition.name : ''}
+                        >
+                            <Alert variant="filled" severity={this.state.success?"success":"error"}>{this.state.message}</Alert>
+                        </Snackbar>
+                    }
                     <Grid container justify="center" classes={{root:classes.container}}>
                         <Grid item xs={11}>
                             <div className="inbox-title">
-                                <h4>Property Listing</h4>
-                            </div>
-                            <div >
-                                <div>
-                                    <div  style={{margin:'30px 0'}}>
-                                        <Link style={{textDecoration:'underline',color:'#74D8EB'}} id="add" to="/app/add-property">Add Property to Cribs
-                                            <Fab classes={{sizeSmall:classes.btn,root:classes.btnRoot}} size="small"  aria-label="add">
-                                                <AddIcon fontSize="small" />
-                                            </Fab>
-                                        </Link>
-                                    </div>
-                                </div>
+                                <h4>All Properties</h4>
                             </div>
                             <TableContainer className="property-table" style={{position:'relative'}} component={Paper} >
                                 <Modal loading={this.state.loading} />
@@ -224,7 +213,7 @@ class Properties extends React.Component{
                                     <StyledTableCell classes={{root:classes.tdHead}} align="left">Property Description</StyledTableCell>
                                     <StyledTableCell classes={{root:classes.tdHead}} align="left">Amount</StyledTableCell>
                                     <StyledTableCell classes={{root:classes.tdHead}} align="left">Date Added</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdHead}} align="left">Updated</StyledTableCell>
+                                    <StyledTableCell classes={{root:classes.tdHead}} align="left">Host</StyledTableCell>
                                     <StyledTableCell classes={{root:classes.tdHead}} align="center">Availability</StyledTableCell>
                                     <StyledTableCell classes={{root:classes.tdHead}} align="center"> </StyledTableCell>
                                 </TableRow>
@@ -235,9 +224,7 @@ class Properties extends React.Component{
                                 properties.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((property, i) =>{
                                         const date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
                                         const avail = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === date.toDateString())
-                                        const update = new Date(property.updatedAt.seconds*1000);
                                         const created = new Date(property.createdAt.seconds*1000);
-                                        const updatedAt = update.getDate()+'/'+(update.getMonth()+1)+'/'+update.getFullYear() 
                                         const createdAt = created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
                                     return(
                                         <StyledTableRow classes={{root:classes.trRoot}} key={i}>
@@ -247,15 +234,15 @@ class Properties extends React.Component{
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{this.str_length(property.description, 30)}</StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{currency(property.amount)}</StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{createdAt}</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{updatedAt}</StyledTableCell>
+                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{property.hostData.firstname+' '+property.hostData.lastname}</StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="center">
                                             <Switch name={property.id} checked={!avail.length}/>
                                         </StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="center">
                                             <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>
-                                                <Link to={`/app/edit-property/${property.id}`}>
+                                                <Link to={`/admin/edit-property/${property.id}`}>
                                                     <IconButton>
-                                                        <EditIcon/>
+                                                        <VisibilityOutlinedIcon/>
                                                     </IconButton>
                                                 </Link>
                                                <IconButton onClick={()=>{this.handleClickOpen(TransitionUp,property.id)}}>

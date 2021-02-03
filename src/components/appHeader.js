@@ -70,7 +70,8 @@ const AppHeader = ({classes, history})=>{
                                 <MenuIcon/>
                             </Button>
                             {
-                                context.state.dashboard?
+                             context.state.userData&&   
+                                context.state.dashboard && context.state.userData.role?
                                 <Grid container alignItems="center">
                                     <Grid lg={1} item>
                                         <Typography className="dashboard-mobile-menu" variant="h5" style={{color:'#707070', fontWeight:'bold', whiteSpace:'nowrap'}}>{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME.toUpperCase():'React App'}</Typography>
@@ -100,9 +101,13 @@ const AppHeader = ({classes, history})=>{
                                         </Grid>
                                         :
                                         <Grid container>
-                                            <Button onClick={becomeHost} style={{textTransform:'lowercase', color:'#375FA5'}} variant="text">
-                                                {loading?'please wait a minute...':`Become a ${context.state.dashboard?'host':'renter'} on Crib`}
-                                            </Button>
+                                            {
+                                                context.state.userData&&
+                                                context.state.userData.role !== 3&&
+                                                <Button onClick={becomeHost} style={{textTransform:'lowercase', color:'#375FA5'}} variant="text">
+                                                    {loading?'please wait a minute...':`Become a ${context.state.dashboard?'host':'renter'} on Crib`}
+                                                </Button>
+                                            }
                                         </Grid>
                                     }
                                 </Typography>

@@ -84,7 +84,7 @@ const Header = (props)=>{
     return(
         <>
             {
-                props.location.pathname.includes('app')?
+                props.location.pathname.includes('app') || props.location.pathname.includes('admin')?
                 <AppHeader classes={classes}/>
 
                 :

@@ -505,92 +505,23 @@ firebase.updateProperty(id,body)
                                 <div className="property-group">
                                     <h3>Type</h3>
                                     <ul className="prop-type">
-                                        <li>
-                                            <label className="radio">
-                                                {
-                                                    this.state.type === 'house'?
-                                                    <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="house"  name="type" id="house" />
-                                                    :
-                                                    <input type="radio" onChange={this.changeHandler}  defaultValue="house"  name="type" id="house" />
-                                                }
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="house">House</label>
-                                        </li>
-
-                                        <li>
-                                            <label className="radio">
-                                                {
-                                                    this.state.type === 'duplex'?
-                                                    <input type="radio" onChange={this.changeHandler} defaultValue="duplex" defaultChecked  name="type" id="apartment" />
-                                                    :
-                                                    <input type="radio" onChange={this.changeHandler} defaultValue="duplex"  name="type" id="apartment" />
-                                                }
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="apartment">Duplex</label>
-                                        </li>
-
-                                        <li>
-                                            <label className="radio">
-                                                {
-                                                    this.state.type === 'flat'?
-                                                    <input type="radio" onChange={this.changeHandler} defaultValue="flat" defaultChecked name="type" id="condos" />
-                                                    :
-                                                    <input type="radio" onChange={this.changeHandler} defaultValue="flat" name="type" id="condos" />
-                                                }
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="condos">Flat</label>
-                                        </li>
-                                        <li>
-                                            <label className="radio">
-                                                {
-                                                    this.state.type === 'bungalow'?
-                                                    <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="bungalow" name="type" id="bungalows" />
-                                                    :
-                                                    <input type="radio" onChange={this.changeHandler} defaultValue="bungalow" name="type" id="bungalows" />
-                                                }
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="bungalows">Bungalow</label>
-                                        </li>
-                                        <li>
-                                            <label className="radio">
-                                                {
-                                                    this.state.type === 'hotel'?
-                                                    <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="hotel" name="type" id="hotel" />
-                                                    :
-                                                    <input type="radio" onChange={this.changeHandler} defaultValue="hotel" name="type" id="hotel" />
-                                                }
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="hotel">Hotel</label>
-                                        </li>
-                                        <li>
-                                            <label className="radio">
-                                                {
-                                                    this.state.type === 'warehouse'?
-                                                    <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="warehouse" name="type" id="warehouse" />
-                                                    :
-                                                    <input type="radio" onChange={this.changeHandler} defaultValue="warehouse" name="type" id="warehouse" />
-                                                }
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="warehouse">Warehouse</label>
-                                        </li>
-                                        <li>
-                                            <label className="radio">
-                                                {
-                                                    this.state.type === 'storage'?
-                                                    <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue="storage" name="type" id="storage" />
-                                                    :
-                                                    <input type="radio" onChange={this.changeHandler} defaultValue="storage" name="type" id="storage" />
-                                                }
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="storage">Storage</label>
-                                        </li>
+                                    {
+                                            this.context.state.amenities.map((amenity,i)=>(
+                                            <li key={i}>
+                                                <label className="radio">
+                                                    {
+                                                        amenity.name===this.state.type?
+                                                        <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue={amenity.name}  name="type" id={amenity.id} />
+                                                        :
+                                                        <input type="radio" onChange={this.changeHandler}  defaultValue={amenity.name}  name="type" id={amenity.id} />
+                                                    }
+                                                    <span className="radio-mark"></span>
+                                                </label>
+                                                <label style={{textTransform:'capitalize'}} htmlFor={amenity.id}>{amenity.name}</label>
+                                            </li>
+                                            ))
+                                        }
+                                       
                                     </ul>
                                 </div>
 

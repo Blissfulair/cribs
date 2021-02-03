@@ -104,8 +104,15 @@ textarea::-webkit-scrollbar{
 }
 .property-group-inner{
     display: grid;
-    grid-template-columns: 20% 20% 35% 15%;
+    grid-template-columns: 15% 15% 15% 15% 15%;
     grid-column-gap: 5%;
+    align-items: center;
+}
+.property-group-inner .prop-remove{
+    cursor: pointer;
+    color: red;
+    margin-top: 20px;
+
 }
 .property-group-inner1{
     display: grid;

@@ -196,7 +196,7 @@ const ShowcaseHeading = styled.img`
 `
 
 const ShowcaseBottomWrapper = styled.div`
-    width: min(90%, 986px);
+    width: min(95%, 986px);
     // width: 70%;
     margin: auto;
     margin-top: 1rem;
@@ -376,7 +376,15 @@ class Index extends Component{
         const {classes}=this.props
     return(
         <>
-         {/* <Showcase >
+
+
+         <Grid className="home" container justify="center">
+            {
+                this.state.loading&&
+                <Splash/>
+            }
+
+            <Showcase >
              <Header>
                 <LogoContainer>
                     <LogoText href='/'>Cribs NG</LogoText>
@@ -473,15 +481,8 @@ class Index extends Component{
                  </ShowcaseBottomWrapper>
              </ShowcaseBottom>
             
-        </Showcase> */}
-        <Grid className="home" container justify="center">
-            {
-                this.state.loading&&
-                <Splash/>
-            }
-
-       
-            <Grid item className={classes.loginContainer} >
+            </Showcase>
+           {/* <Grid item className={classes.loginContainer} >
                 <Grid container justify="center">
                     <Grid item xs={10} md={5}>
                         <Paper style={{backgroundColor:'#14adc5a8',minHeight:'350px', width:'100%'}}>
@@ -490,11 +491,11 @@ class Index extends Component{
                                 <div className={classes.location}>
                                     <LocationOnIcon htmlColor="#046FA7" fontSize="default"/>
                                     <div style={{width:'100%',height:'90%'}}>
-                                    <TextField className="home-location single" name="location" classes={{root:{width:'100%'}}} label="Location" value={this.state.location} onChange={this.changeHandler} placeholder="Search anyplace e.g Lagos"/>
+                                    <TextField className="home-location single" name="location" classes={{root:{width:'100%'}}} label="Location" value={this.state.location} onChange={this.changeHandler} placeholder="Search anyplace e.g Lagos"/> */}
                                     
                                         {/* <label htmlFor="location" style={{height:'20%', marginLeft:'10px'}} >Location</label>
                                         <input value={this.state.location} onChange={this.changeHandler} name="location" placeholder="Search anyplace e.g Lagos"  style={{width:'100%',height:'60%',border:'none',padding:'5px 10px 10px 10px', borderRadius:'0 10px 10px 0', outline:0}} /> */}
-                                    </div>
+                                    {/* </div>
                                 </div>
 
                                 <div className={classes.row1}>
@@ -546,7 +547,7 @@ class Index extends Component{
                         </Paper>
                     </Grid>
                 </Grid>
-            </Grid>
+            </Grid> */}
             <Grid container justify="center" >
                 <Grid item xs={11} md={10} >
                 <Typography classes={{root:classes.title}} variant="h3">Where would you like to stay?</Typography>

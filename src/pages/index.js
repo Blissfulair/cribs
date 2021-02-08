@@ -42,6 +42,7 @@ import SearchIcon from "../images/searchicon.svg"
 import CancelIcon from "../images/cancelicon.svg"
 import Splash from "../components/splash";
 import { getFavs, getDates } from "../helpers/helpers";
+import LocationCard from "../components/Cards/LocationCard";
 
 
 const styles = theme => ({
@@ -126,104 +127,6 @@ const styles = theme => ({
     }
 })
 
-
-
-
-
-
-
-
-const ShowcaseBottom = styled.div`
-    position: relative;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-top: 80px;
-`
-
-const ShowcaseHeading = styled.img`
-    width: min(80%, 506px);
-    margin-left: auto;
-    margin-right: auto;
-`
-
-const ShowcaseBottomWrapper = styled.div`
-    width: min(90%, 986px);
-    // width: 70%;
-    margin: auto;
-    margin-top: 1rem;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 0px 4px 4px rgba(157, 157, 157, 0.1);
-    backdrop-filter: blur(11px);
-    border-radius: 51.5px;
-`
-
-const Form = styled.form`
-    display: flex;
-    // justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-top: 1rem;
-    // border: solid green;
-`
-
-const LocationInput = styled.div`
-    width: 270px;
-    height: 70px;
-    position: relative;
-    background: #FCFCFC;
-    border-radius: 42.5px;
-    display: flex;
-    // flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    margin-left: 1rem;
-    // border: solid red;
-`
-
-const Label = styled.label`
-    position: absolute;
-    top: 5px;
-	left: 20px;
-	font-size: 16px;
-	color: #fff;	
-    pointer-event: none;
-    transition: all 0.5s ease-in-out;
-    font-family: Poppins;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 21px;
-    color: #000000;
-`
-
-const Input = styled.input`
-    border: 0; 
-    background: transparent;
-    width: 80%;
-    padding: 8px 0 5px 0;
-    font-size: 16px;
-    color: #8F8F8F;
-    margin-left: 20px;
-    // border: solid blue;
-
-    &:focus{
-        outline: none;
-
-    }
-`
-
-const CheckIn = styled.div`
-    width: 160px;
-    height: 70px;
-    background: #FFFFFF;
-    border-radius: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left:10px;
-`
 
 const SearchButton = styled.button`
     display: flex;
@@ -369,23 +272,24 @@ class Index extends Component {
 
                         </div>
 
+                        <div className="showcase__bottom">
+                            <img src={cribs} alt="cribs ng for everyone" />
 
-                        <ShowcaseBottom>
-                            <ShowcaseHeading src={cribs} alt="" />
-                            <ShowcaseBottomWrapper>
-                                <Form action="" >
-                                    <LocationInput>
-                                        <Input type="text" name="" id="" placeholder="Where do you want to lodge?" />
+                            <div className="form__wrapper">
+                                <LocationCard />
+                                <form action="">
+                                    <div className="location">
+                                        <input className='location__input' type="text" name="" id="" placeholder="Where do you want to lodge?" />
                                         <img
                                             src={CancelIcon}
                                             alt=""
                                             style={{
                                                 marginLeft: '5px',
                                             }} />
-                                        <Label htmlFor="">Location</Label>
-                                    </LocationInput>
+                                        <label className='location__text' htmlFor="">Location</label>
+                                    </div>
 
-                                    <CheckIn>
+                                    <div className="checkin">
                                         <DatePicker
                                             label="Check In"
                                             format="dd/MM/yyyy"
@@ -404,9 +308,9 @@ class Index extends Component {
                                                 alignItems: 'center',
                                             }}
                                         />
-                                    </CheckIn>
+                                    </div>
 
-                                    <CheckIn>
+                                    <div className="checkin">
                                         <DatePicker
                                             label="Check Out"
                                             format="dd/MM/yyyy"
@@ -420,7 +324,7 @@ class Index extends Component {
                                                 alignItems: 'center',
                                             }}
                                         />
-                                    </CheckIn>
+                                    </div>
 
                                     <Guests>
                                         <div>
@@ -432,9 +336,10 @@ class Index extends Component {
                                         <img src={SearchIcon} alt="" />
                                         <SearchButtonText>Search</SearchButtonText>
                                     </SearchButton>
-                                </Form>
-                            </ShowcaseBottomWrapper>
-                        </ShowcaseBottom>
+                                </form>
+                            </div>
+                        </div>
+
                     </section>
 
 

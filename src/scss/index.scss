@@ -1,5 +1,5 @@
 .showcase {
-	height: 100vh;
+	height: 130vh;
 	width: 100%;
 	background: url("../images/showcase.png") no-repeat center center/cover;
 	margin-left: -0.1vw;
@@ -36,7 +36,6 @@
 	}
 
 	&__logo {
-
 		a {
 			font-family: Poppins;
 			font-style: normal;
@@ -50,7 +49,100 @@
 
 	&__nav {
 		display: flex;
-        margin-left: auto;
+		margin-left: auto;
 		justify-content: flex-end;
+	}
+
+	&__bottom {
+		position: relative;
+		z-index: 999;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding-top: 80px;
+
+		> img {
+			width: #{"min(80%, 506px)"};
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.form__wrapper {
+			width: #{"min(90%, 986px)"};
+			position: relative;
+			// width: 70%;
+			margin: auto;
+			margin-top: 1rem;
+			height: 100px;
+			background: rgba(255, 255, 255, 0.5);
+			box-shadow: 0px 4px 4px rgba(157, 157, 157, 0.1);
+			backdrop-filter: blur(11px);
+			border-radius: 51.5px;
+		}
+
+		form {
+			display: flex;
+			// justify-content: space-between;
+			align-items: center;
+			width: 100%;
+			margin-top: 1rem;
+			// border: solid green;
+		}
+
+		.location {
+			width: 270px;
+			height: 70px;
+			position: relative;
+			background: #fcfcfc;
+			border-radius: 42.5px;
+			display: flex;
+			// flex-direction: column;
+			justify-content: flex-start;
+			align-items: center;
+			margin-left: 1rem;
+			// border: solid red;
+
+			&__input {
+				border: 0;
+				background: transparent;
+				width: 80%;
+				margin-top: 16px;
+				padding: 8px 0 5px 0;
+				font-size: 16px;
+				color: #8f8f8f;
+				margin-left: 20px;
+				// border: solid blue;
+
+				&:focus {
+					outline: none;
+				}
+			}
+		}
+
+		.checkin {
+			width: 160px;
+			height: 70px;
+			background: #ffffff;
+			border-radius: 48px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-left: 10px;
+		}
+
+		label {
+			position: absolute;
+			top: 12px;
+			left: 20px;
+			font-size: 16px;
+			color: #fff;
+			pointer-event: none;
+			transition: all 0.5s ease-in-out;
+			font-family: Poppins;
+			font-weight: 500;
+			font-size: 14px;
+			line-height: 21px;
+			color: #000000;
+		}
 	}
 }

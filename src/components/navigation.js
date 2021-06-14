@@ -12,9 +12,9 @@ const Navigation =()=>{
     return(
         <Router>
             {
-                state.initializing && state.userData === undefined?
-                <Splash/>
-                :
+                // state.initializing && state.userData === undefined?
+                // <Splash/>
+                // :
                 <>
                     <Header/>
                         <ScrollTop>

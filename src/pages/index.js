@@ -244,7 +244,7 @@ class Index extends Component {
                             <div className="showcase__logo">
                                 <a href="/">Cribs NG</a>
                             </div>
-                            <nav className="showcase__nav">
+                            <nav className="showcase__nav hidden">
                                 <NavButton
                                     color='#fff'
                                     border

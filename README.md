@@ -71,3 +71,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 ### UI Design
 
 https://www.figma.com/file/JCybWVLJnwkNLSs7IKlEnS/Cribs-Landing-page-redesign?node-id=4%3A29
+
+### deployed 
+
+https://cribng.netlify.app/

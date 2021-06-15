@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import '../scss/index.scss';
 import styled from "styled-components";
-import DateFnsUtils from '@date-io/date-fns'; // choose your lib
+// import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 // import {
 //   DatePicker,
 //   MuiPickersUtilsProvider,
@@ -9,11 +9,11 @@ import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 import NavButton from "../components/Button/NavButton";
 import { withStyles } from "@material-ui/core/styles"
 import bg from "../images/login_bg.png"
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import Typography from "@material-ui/core/Typography"
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import Calendar from "@material-ui/icons/Today"
-import People from "@material-ui/icons/PeopleOutline"
+// import LocationOnIcon from '@material-ui/icons/LocationOn';
+// import Calendar from "@material-ui/icons/Today"
+// import People from "@material-ui/icons/PeopleOutline"
 import Grid from "@material-ui/core/Grid"
 import Container from '@material-ui/core/Container';
 import { Link, withRouter } from "react-router-dom"
@@ -27,7 +27,7 @@ import Slide from "../components/slider";
 import Explore from "../components/explore";
 import { DatePicker } from "@material-ui/pickers";
 import AppContext from "../state/context";
-import { Button, TextField } from "@material-ui/core";
+// import { Button, TextField } from "@material-ui/core";
 import house from "../images/house.png"
 import bangalow from "../images/bangalow.png"
 import condos from "../images/condos.png"
@@ -36,7 +36,7 @@ import abuja from "../images/abuja.jpg"
 import lagos from "../images/lagos.jpg"
 import kano from "../images/kano.jpeg"
 import cottage from "../images/cottage.png"
-import ShowcaseImage from "../images/showcase.png"
+// import ShowcaseImage from "../images/showcase.png"
 import cribs from "../images/cribs.svg"
 import SearchIcon from "../images/searchicon.svg"
 import CancelIcon from "../images/cancelicon.svg"
@@ -240,7 +240,7 @@ class Index extends Component {
                         <Splash />
                     }
 
-                    <section class="showcase">
+                    <div class="showcase">
                         <div className="showcase__header">
                             <div className="showcase__logo">
                                 <a href="/">Cribs NG</a>
@@ -340,7 +340,7 @@ class Index extends Component {
                             </div>
                         </div>
 
-                    </section>
+                    </div>
 
 
 

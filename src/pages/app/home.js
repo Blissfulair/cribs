@@ -23,6 +23,7 @@ import kano from "../../images/kano.jpeg"
 import { Paper } from "@material-ui/core";
 import SlideBanner from "../../components/slideBanner";
 import { getFavs } from "../../helpers/helpers";
+import {connect} from "react-redux"
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${cottage})`,
@@ -80,13 +81,13 @@ class Home extends Component{
     //     })
     // },[context])
     componentDidMount(){
-        const favourites = getFavs()
-        this.setState({
-            favourites :favourites,
-            location:this.context.state.searchQuery?this.context.state.searchQuery.location:'',
-            checkIn:this.context.state.searchQuery?this.context.state.searchQuery.checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut:this.context.state.searchQuery?this.context.state.searchQuery.checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-        })
+        // const favourites = getFavs()
+        // this.setState({
+        //     favourites :favourites,
+        //     location:this.context.state.searchQuery?this.context.state.searchQuery.location:'',
+        //     checkIn:this.context.state.searchQuery?this.context.state.searchQuery.checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        //     checkOut:this.context.state.searchQuery?this.context.state.searchQuery.checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+        // })
     }
 
      changeHandler=(e)=>{
@@ -111,7 +112,7 @@ class Home extends Component{
                         </Grid>
                         <Grid item xs={12} lg={4}>
                             <Paper style={{height:200,padding:'20px 8px'}}>
-                                <Typography style={{fontSize:40, color:'#707070'}} variant="h3">Hi, {this.context.state.userData.firstname}</Typography>
+                                <Typography style={{fontSize:40, color:'#707070'}} variant="h3">Hi, {this.props.firstname}</Typography>
                                 <Typography style={{color:'#707070', fontSize:15,marginTop:22}} variant="subtitle1" component="p">
                                 Check your inbox so as not to miss clients requests.
                                 </Typography>
@@ -133,7 +134,7 @@ class Home extends Component{
                     </Grid>
                 </Grid>
 
-                    {
+                    {/* {
                         this.context.state.properties.length>0?
                         <>
                             <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
@@ -164,7 +165,7 @@ class Home extends Component{
                             <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>
                         </>
                         :''
-                    }
+                    } */}
 
                 <Typography variant="h4" classes={{root:classes.title}} style={{marginTop:90}} align="center">Reasons to Explore With Us</Typography>
                 <Container >
@@ -195,4 +196,7 @@ class Home extends Component{
     )
 }
 }
-export default withRouter(withStyles(styles)(Home));
+const mapStateToProps=state=>({
+    ...state
+})
+export default connect(mapStateToProps)( withRouter(withStyles(styles)(Home)));

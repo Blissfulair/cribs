@@ -23,10 +23,12 @@
     "react-charts": "^2.0.0-beta.7",
     "react-dom": "^16.13.1",
     "react-paystack": "^3.0.2",
+    "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.4",
     "react-sharingbuttons": "^1.0.0",
     "react-swipeable-views": "^0.13.9",
+    "redux": "^4.1.0",
     "styled-components": "^5.2.1"
   },
   "scripts": {
@@ -52,5 +54,6 @@
   },
   "devDependencies": {
     "file-loader": "^6.1.0"
-  }
+  },
+  "proxy":"https://cribs.cbtservices.com.ng"
 }

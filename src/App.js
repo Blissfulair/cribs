@@ -4,8 +4,7 @@ import {CssBaseline,Paper} from "@material-ui/core"
 import Navigation from './components/navigation';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import AppContext from './state/context'
-import globalState from './state/state';
+
 
 
 function App() {
@@ -30,7 +29,6 @@ function App() {
   })
       theme = responsiveFontSizes(theme)
   return (
-    <AppContext.Provider value={globalState()}>
             <MuiThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Paper square>
@@ -40,7 +38,6 @@ function App() {
               </Paper>
             </MuiPickersUtilsProvider>
           </MuiThemeProvider>
-    </AppContext.Provider>
   );
 }
 

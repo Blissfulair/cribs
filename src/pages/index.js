@@ -36,10 +36,7 @@ import abuja from "../images/abuja.jpg"
 import lagos from "../images/lagos.jpg"
 import kano from "../images/kano.jpeg"
 import cottage from "../images/cottage.png"
-<<<<<<< HEAD
-=======
 // import ShowcaseImage from "../images/showcase.png"
->>>>>>> 59ab5cd4a91546b4532c92184148ea2217559863
 import cribs from "../images/cribs.svg"
 import SearchIcon from "../images/searchicon.svg"
 import CancelIcon from "../images/cancelicon.svg"

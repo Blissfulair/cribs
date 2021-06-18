@@ -6,6 +6,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import AppContext from './state/context'
 import globalState from './state/state';
+import LandingPage from './pages/landing page/LandingPage';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       theme = responsiveFontSizes(theme)
   return (
     <AppContext.Provider value={globalState()}>
+      {/* <LandingPage /> */}
             <MuiThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Paper square>

@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap');
 
 *{
   padding:0;
@@ -17,6 +17,8 @@
   --red: #c50000;
   --black: #000;
 }
+
+
 .react-calendar{
   border: none !important;
   min-width: 400px !important;
@@ -572,3 +574,9 @@ font-size: 19px;
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  bg{
+    @apply bg-[#E5E5E5];
+  }
+}

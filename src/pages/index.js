@@ -43,6 +43,9 @@ import CancelIcon from "../images/cancelicon.svg"
 import Splash from "../components/splash";
 import { getFavs, getDates } from "../helpers/helpers";
 import LocationCard from "../components/Cards/LocationCard";
+import { connect } from "react-redux";
+import {setAuth} from "../state/actions"
+
 
 
 const styles = theme => ({
@@ -195,13 +198,13 @@ class Index extends Component {
     //     })
     // },[context])
     componentDidMount() {
-        const favourites = getFavs()
-        this.setState({
-            favourites: favourites,
-            location: this.context.state.searchQuery ? this.context.state.searchQuery.location : '',
-            checkIn: this.context.state.searchQuery ? this.context.state.searchQuery.checkIn : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut: this.context.state.searchQuery ? this.context.state.searchQuery.checkOut : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-        })
+        // const favourites = getFavs()
+        // this.setState({
+        //     favourites: favourites,
+        //     location: this.context.state.searchQuery ? this.context.state.searchQuery.location : '',
+        //     checkIn: this.context.state.searchQuery ? this.context.state.searchQuery.checkIn : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        //     checkOut: this.context.state.searchQuery ? this.context.state.searchQuery.checkOut : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+        // })
     }
     setDays = () => {
         const dates = getDates(this.state.checkIn, this.state.checkOut)
@@ -228,8 +231,14 @@ class Index extends Component {
                 this.setState({ loading: false })
             })
     }
+    search(e,props){
+        e.preventDefault()
+        props.setAuth(true)
+    }
     render() {
+        
         const { classes } = this.props
+        
         return (
             <>
 
@@ -240,7 +249,7 @@ class Index extends Component {
                         <Splash />
                     }
 
-                    <div class="showcase">
+                    <div className="showcase">
                         <div className="showcase__header">
                             <div className="showcase__logo">
                                 <a href="/">Cribs NG</a>
@@ -265,6 +274,7 @@ class Index extends Component {
                                     borderRadius={27}
                                     height='44'
                                     width='106'
+                                    
                                 >
                                     Sign in
                                 </NavButton>
@@ -277,7 +287,7 @@ class Index extends Component {
 
                             <div className="form__wrapper">
                                 <LocationCard />
-                                <form action="">
+                                <form onSubmit={(e)=>{this.search(e, this.props)}}>
                                     <div className="location">
                                         <input className='location__input' type="text" name="" id="" placeholder="Where do you want to lodge?" />
                                         <img
@@ -332,7 +342,7 @@ class Index extends Component {
                                             <GuestsText>Select Guests</GuestsText>
                                         </div>
                                     </Guests>
-                                    <SearchButton type="submit" >
+                                    <SearchButton  type="submit" >
                                         <img src={SearchIcon} alt="" />
                                         <SearchButtonText>Search</SearchButtonText>
                                     </SearchButton>
@@ -428,7 +438,7 @@ class Index extends Component {
                                 </Grid>
                             </Grid>
 
-                            {
+                            {/* {
                                 this.context.state.properties.length > 0 ?
                                     <>
                                         <Typography classes={{ root: classes.title }} variant="h3">Trending Cribs</Typography>
@@ -459,7 +469,7 @@ class Index extends Component {
                                         <Link className={classes.link} to={{ pathname: '/more-cribs', search: 'recommended' }}>See more</Link>
                                     </>
                                     : ''
-                            }
+                            } */}
 
                             <Typography variant="h4" classes={{ root: classes.title }} style={{ marginTop: 90 }} align="center">Reasons to Explore With Us</Typography>
                             <Container >
@@ -491,4 +501,10 @@ class Index extends Component {
         )
     }
 }
-export default withRouter(withStyles(styles)(Index));
+const mapStateToProps = state => {
+    return state
+  };
+const mapDispatchToProps = dispatch => ({
+    setAuth: (payload) => dispatch(setAuth(payload))
+  });
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Index)));

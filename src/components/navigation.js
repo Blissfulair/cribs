@@ -4,11 +4,11 @@ import Footer from './footer';
 // import Header from './header';
 import Root from "../routes/root";
 import ScrollTop from "./scrollTop";
-import AppContext from "../state/context";
+// import AppContext from "../state/context";
 // import Splash from "./splash";
 
 const Navigation =()=>{
-    const {state} = useContext(AppContext)
+    // const {state} = useContext(AppContext)
     return(
         <Router>
             {
@@ -19,15 +19,15 @@ const Navigation =()=>{
                     {/* <Header/> */}
                         <ScrollTop>
 
-                                <Root user={state.userData}/>
+                                <Root user={null}/>
 
                         </ScrollTop>
                         {
-                            state.userData?
-                            state.userData.role !== 3?
-                            <Footer/>
-                            :null
-                            :
+                            // state.userData?
+                            // state.userData.role !== 3?
+                            // <Footer/>
+                            // :null
+                            // :
                             <Footer/>
                         }
                    

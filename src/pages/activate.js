@@ -1,41 +1,52 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./signup.css"
 import "./login.css"
 import { Button} from "@material-ui/core";
+import { connect } from "react-redux";
 import AppContext from "../state/context";
-import { mailVerify } from "../emailTemplates/receipt";
+import { verifyEmail } from "../apis/server";
+import { setUser } from "../state/actions";
 
 
-const  Activate = ()=>{
+
+const  Activate = (props)=>{
     const [message, setMessage]=useState('')
     const [loading, setLoading]=useState(false)
     const [status, setStatus]=useState(true)
-    const {state} = useContext(AppContext)
+
+    
     const onResend = ()=>{
         setLoading(true)
-        const data = {
-            from:'noreply@givitec.com',
-            to:state.user.email,
-            subject:'Email Verification',
-            firstname:state.userData.firstname,
-            senderName:process.env.REACT_APP_NAME,
-        }
-        mailVerify(data)
-        .then(()=>{
-            setLoading(false)
-            setStatus(true)
-            setMessage('Verification link has been sent successfully!')
-        })
-        .catch(e=>{
-            setLoading(false)
-            setStatus(false)
-            setMessage('Failed to send link, please try again.')
-        })
+        // const data = {
+        //     from:'noreply@givitec.com',
+        //     to:state.user.email,
+        //     subject:'Email Verification',
+        //     firstname:state.userData.firstname,
+        //     senderName:process.env.REACT_APP_NAME,
+        // }
+        // mailVerify(data)
+        // .then(()=>{
+        //     setLoading(false)
+        //     setStatus(true)
+        //     setMessage('Verification link has been sent successfully!')
+        // })
+        // .catch(e=>{
+        //     setLoading(false)
+        //     setStatus(false)
+        //     setMessage('Failed to send link, please try again.')
+        // })
 
         setTimeout(()=>{
             setMessage('')
         }, 3000)
     }
+    useEffect(()=>{
+        const cleanup = async()=>{
+            const user = await verifyEmail(props.token)
+            setUser(user)
+        }
+       cleanup()
+    },[])
         return (
             <>
                 <div className="label"></div>
@@ -43,10 +54,10 @@ const  Activate = ()=>{
                     <div style={{height:300,display:'grid', alignContent:'center'}}>
                         {
                             message !== ''&&
-                            <p style={{textAlign:'center', color:status?'green':'red', fontSize:17}}>{message}</p>
+                            <p style={{textAlign:'center', color:'red', fontSize:17}}>{message}</p>
                         }
                         
-                        <p style={{textAlign:'center', color:'#00A8C8', fontSize:20}}>Verification link has been sent to {state.user.email}</p>
+                        <p style={{textAlign:'center', color:'#00A8C8', fontSize:20}}>Verification link has been sent to {props.email}</p>
                         <p  style={{textAlign:'center', marginTop:15, marginBottom:15}}>Check your inbox or spam folder for the email, if you do not receive the email, click on the button below.</p>
                         {
                             loading?
@@ -59,4 +70,10 @@ const  Activate = ()=>{
             </>
         );
     }
-export default Activate;
+    const mapStateToProps = state => {
+        return state
+      };
+    // const mapDispatchToProps = dispatch => ({
+    //     setAuth: (payload) => dispatch(setAuth(payload))
+    //   });
+    export default connect(mapStateToProps)(Activate);

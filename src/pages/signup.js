@@ -9,6 +9,8 @@ import {Alert} from "@material-ui/lab"
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppContext from "../state/context";
+import { registerUser } from "../apis/server";
+import { setUser } from "../state/actions";
 //import firebase from "../components/firebase"
 
 
@@ -100,16 +102,17 @@ class SignUp extends React.Component{
                 password:this.state.password,
                 firstname:this.state.firstname,
                 lastname:this.state.lastname,
-                type:false,
-                loading:false,
-                transition:undefined,
-                open:false,
-                role:this.state.role
+                // type:false,
+                // loading:false,
+                // transition:undefined,
+                // open:false,
+                // role:this.state.role
             }
-            this.context.register(body)
-            .then(()=>{
+            registerUser(body)
+            .then((user)=>{
+                setUser(user)
                 this.setState({loading:false})
-                this.props.history.push('/app/home')
+                //this.props.history.push('/app/home')
             })
             .catch((err=>{
                 this.setState({loading:false,

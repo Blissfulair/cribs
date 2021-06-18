@@ -1,12 +1,9 @@
 import React, {useContext} from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import AppContext from '../state/context';
-import { getDashboard } from '../helpers/helpers';
+import {connect} from "react-redux"
 import {withRouter} from "react-router-dom"
 
 const RentRoute = ({component: Component,history, ...rest}) => {
-    const {state} = useContext(AppContext)
-    const dash = getDashboard()
     return (
 
         // Show the component only when the user is logged in
@@ -15,7 +12,7 @@ const RentRoute = ({component: Component,history, ...rest}) => {
 
 
                 // state.user && state.user.emailVerified?
-                Boolean(state.userData)&&dash && state.user.emailVerified?
+                rest.emailVerify?
                 <Component {...props} />
                 // :
 
@@ -35,5 +32,7 @@ const RentRoute = ({component: Component,history, ...rest}) => {
         )} />
     );
 };
-
-export default withRouter(RentRoute);
+const mapStateToProps=state=>({
+    ...state
+})
+export default connect(mapStateToProps)(withRouter(RentRoute));

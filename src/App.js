@@ -42,7 +42,6 @@ function App() {
               </Paper>
             </MuiPickersUtilsProvider>
           </MuiThemeProvider>
-    </AppContext.Provider>
   );
 }
 

@@ -44,7 +44,7 @@ import Splash from "../components/splash";
 import { getFavs, getDates } from "../helpers/helpers";
 import LocationCard from "../components/Cards/LocationCard";
 import { connect } from "react-redux";
-import {setAuth} from "../state/actions"
+import { setAuth } from "../state/actions"
 
 
 
@@ -231,14 +231,14 @@ class Index extends Component {
                 this.setState({ loading: false })
             })
     }
-    search(e,props){
+    search(e, props) {
         e.preventDefault()
         props.setAuth(true)
     }
     render() {
-        
+
         const { classes } = this.props
-        
+
         return (
             <>
 
@@ -274,7 +274,7 @@ class Index extends Component {
                                     borderRadius={27}
                                     height='44'
                                     width='106'
-                                    
+
                                 >
                                     Sign in
                                 </NavButton>
@@ -287,7 +287,7 @@ class Index extends Component {
 
                             <div className="form__wrapper">
                                 <LocationCard />
-                                <form onSubmit={(e)=>{this.search(e, this.props)}}>
+                                <form onSubmit={(e) => { this.search(e, this.props) }}>
                                     <div className="location">
                                         <input className='location__input' type="text" name="" id="" placeholder="Where do you want to lodge?" />
                                         <img
@@ -342,7 +342,7 @@ class Index extends Component {
                                             <GuestsText>Select Guests</GuestsText>
                                         </div>
                                     </Guests>
-                                    <SearchButton  type="submit" >
+                                    <SearchButton type="submit" >
                                         <img src={SearchIcon} alt="" />
                                         <SearchButtonText>Search</SearchButtonText>
                                     </SearchButton>
@@ -503,8 +503,8 @@ class Index extends Component {
 }
 const mapStateToProps = state => {
     return state
-  };
+};
 const mapDispatchToProps = dispatch => ({
     setAuth: (payload) => dispatch(setAuth(payload))
-  });
+});
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Index)));

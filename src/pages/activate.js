@@ -3,13 +3,12 @@ import "./signup.css"
 import "./login.css"
 import { Button} from "@material-ui/core";
 import { connect } from "react-redux";
-import AppContext from "../state/context";
 import { verifyEmail } from "../apis/server";
 import { setUser } from "../state/actions";
 
 
 
-const  Activate = (props)=>{
+const  Activate = ({user})=>{
     const [message, setMessage]=useState('')
     const [loading, setLoading]=useState(false)
     const [status, setStatus]=useState(true)
@@ -42,8 +41,8 @@ const  Activate = (props)=>{
     }
     useEffect(()=>{
         const cleanup = async()=>{
-            const user = await verifyEmail(props.token)
-            setUser(user)
+            const userData = await verifyEmail(user.token)
+            setUser(userData)
         }
        cleanup()
     },[])
@@ -57,7 +56,7 @@ const  Activate = (props)=>{
                             <p style={{textAlign:'center', color:'red', fontSize:17}}>{message}</p>
                         }
                         
-                        <p style={{textAlign:'center', color:'#00A8C8', fontSize:20}}>Verification link has been sent to {props.email}</p>
+                        <p style={{textAlign:'center', color:'#00A8C8', fontSize:20}}>Verification link has been sent to {user.email}</p>
                         <p  style={{textAlign:'center', marginTop:15, marginBottom:15}}>Check your inbox or spam folder for the email, if you do not receive the email, click on the button below.</p>
                         {
                             loading?
@@ -70,9 +69,9 @@ const  Activate = (props)=>{
             </>
         );
     }
-    const mapStateToProps = state => {
-        return state
-      };
+    const mapStateToProps = state => ({
+        user:state.user
+    });
     // const mapDispatchToProps = dispatch => ({
     //     setAuth: (payload) => dispatch(setAuth(payload))
     //   });

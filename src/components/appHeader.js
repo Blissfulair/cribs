@@ -10,10 +10,49 @@ import { Grid,IconButton} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import {withRouter} from "react-router-dom";
+import {withStyles} from "@material-ui/core/styles"
 import {MiniSearch} from "../components/searchForm"
-
-const AppHeader = ({classes, history})=>{
-    const context = useContext(AppContext)
+import { connect } from "react-redux";
+import { chooseDashboard, setUser } from "../state/actions";
+import { makeHost } from "../apis/server";
+const styles = theme=>({
+    container:{
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'space-between'
+    },
+    menu:{
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+        listStyle:'none'
+    },
+    menuItems:{
+        marginLeft:'15px'
+    },
+    menuList:{
+        fontSize:12
+    },
+    brand:{
+        textDecoration:'none'
+    },
+    searchItem:{
+        color:'#979797'
+    },
+    app:{
+        borderTop:'2px solid #00A8C8',
+        borderBottom:'2px solid #00A8C8',
+        backgroundColor:'#fff',
+    },
+    active:{
+        color:'#00A8C8',
+        fontWeight:'bold'
+    },
+    inactive:{
+        color:'#707070'
+    },
+})
+const AppHeader = ({classes, history,user,dashboard, chooseDashboard})=>{
     const [logout, setLogout] = useState(false);
     const [loading, setLoading] = useState(false)
     const prevOpen = useRef(logout);
@@ -24,11 +63,18 @@ const AppHeader = ({classes, history})=>{
       };
       const becomeHost = ()=>{
         setLoading(true)
-        context.makeHost()
-        .then(()=>{
+        makeHost(user.id)
+        .then((res)=>{
+            chooseDashboard(!dashboard)
+            setUser(res)
             setLoading(false)
+            if(history.location.pathname.includes('crib') || history.location.pathname.includes('search') || !history.location.pathname.includes('payment') || history.location.pathname.includes('history'))
+            history.push('/app/dashboard')
+            else
+            history.push(history.location.pathname+history.location.search)
         })
         .catch((e)=>{
+            console.log(e)
             setLoading(false)
         })
     }
@@ -41,9 +87,8 @@ const AppHeader = ({classes, history})=>{
       }, [logout]);
 
     const  changeDashboard=()=>{
-            context.chooseDashboard()
-            .then((res)=>{
-                if(res)
+            chooseDashboard(!dashboard)
+                if(!dashboard)
                 {
                     if(history.location.pathname.includes('calendar') || history.location.pathname.includes('inbox') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('property') || history.location.pathname.includes('add-property') || history.location.pathname.includes('edit-property'))
                     history.push('/app/home')
@@ -57,10 +102,10 @@ const AppHeader = ({classes, history})=>{
                     else
                     history.push(history.location.pathname+history.location.search)
                 }
-            })
       }
     return(
         <AppBar elevation={0} classes={{root:classes.app}} position="fixed"  color="primary">
+            
         <Toolbar style={{padding:0}}>
             <Grid container justify="center" alignItems="center">
                 <Grid item xs={11} lg={10} >
@@ -70,8 +115,9 @@ const AppHeader = ({classes, history})=>{
                                 <MenuIcon/>
                             </Button>
                             {
-                             context.state.userData&&   
-                                context.state.dashboard && context.state.userData.role?
+                             user&&   
+                                // context.state.dashboard && context.state.userData.role?
+                                dashboard ?
                                 <Grid container alignItems="center">
                                     <Grid lg={1} item>
                                         <Typography className="dashboard-mobile-menu" variant="h5" style={{color:'#707070', fontWeight:'bold', whiteSpace:'nowrap'}}>{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME.toUpperCase():'React App'}</Typography>
@@ -90,24 +136,20 @@ const AppHeader = ({classes, history})=>{
                             <Grid container alignItems="center" justify="flex-end">
                                 <Typography className="dashboard-mobile-menu" component="div">
                                     {
-                                        context.state.userData&&
-                                        context.state.userData.role===2?
+                                        user&&
+                                        user.role===true?
                                         <Grid component="label" container alignItems="center" spacing={1}>
-                                        <Grid item className={!context.state.dashboard?classes.active:classes.inactive}>Hosting</Grid>
+                                        <Grid item className={dashboard?classes.active:classes.inactive}>Hosting</Grid>
                                         <Grid item>
-                                            <Switch checked={context.state.dashboard} onChange={()=>{changeDashboard()}} name="checkedC" />
+                                            <Switch checked={dashboard} onChange={()=>{changeDashboard()}} name="checkedC" />
                                         </Grid>
-                                        <Grid item className={!context.state.dashboard?classes.inactive:classes.active}>Renting</Grid>
+                                        <Grid item className={dashboard?classes.inactive:classes.active}>Renting</Grid>
                                         </Grid>
                                         :
                                         <Grid container>
-                                            {
-                                                context.state.userData&&
-                                                context.state.userData.role !== 3&&
                                                 <Button onClick={becomeHost} style={{textTransform:'lowercase', color:'#375FA5'}} variant="text">
-                                                    {loading?'please wait a minute...':`Become a ${context.state.dashboard?'host':'renter'} on Crib`}
+                                                    {loading?'please wait a minute...':`Become a ${dashboard?'host':'renter'} on Crib`}
                                                 </Button>
-                                            }
                                         </Grid>
                                     }
                                 </Typography>
@@ -119,13 +161,13 @@ const AppHeader = ({classes, history})=>{
                                 style={{marginLeft:40}}
                                 >
                                 {
-                                    context.state.user&&
+                                    user&&
                                     <>
                                         {
-                                            context.state.user.photoURL?
-                                            <Avatar style={{ width:25,height:25}} src={context.state.user.photoURL} alt="user"/>
+                                            user.image?
+                                            <Avatar style={{ width:25,height:25}} src={user.image} alt="user"/>
                                             :
-                                            <Avatar style={{ width:25,height:25}}  alt="">{context.state.userData.firstname.charAt(0)+context.state.userData.lastname.charAt(0)}</Avatar>
+                                            <Avatar style={{ width:25,height:25}}  alt="">{user.firstname.charAt(0)+user.lastname.charAt(0)}</Avatar>
                                         }
                                     </>
                                 }
@@ -140,4 +182,11 @@ const AppHeader = ({classes, history})=>{
     </AppBar>
     )
 }
-export default withRouter(AppHeader)
+const mapStateToProps =state=>({
+    dashboard:state.dashboard,
+    user:state.user
+})
+const mapDispatchToProps = dispatch => ({
+    chooseDashboard: (payload) => dispatch(chooseDashboard(payload))
+  });
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(AppHeader)))

@@ -79,12 +79,12 @@ const SearchForm = (props)=>{
     const [locationF, setLocationF]=useState(false)
     const [guestF, setGuestF]=useState(false)
     const [loading, setLoading] = useState(false)
-    const {searchProperties,setSearch,state}=useContext(AppContext)
+    //const {searchProperties,setSearch,state}=useContext(AppContext)
     const [data, setData]=useState({
-        location:state.searchQuery?state.searchQuery.location:'',
-        checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-        checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-        guest:state.searchQuery?state.searchQuery.guest:'',
+        location:'',//state.searchQuery?state.searchQuery.location:'',
+        checkIn: new Date(), //state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        checkOut: new Date(),//state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        guest:''//state.searchQuery?state.searchQuery.guest:'',
 
     })
   
@@ -92,28 +92,28 @@ const SearchForm = (props)=>{
     const onSubmit =(e)=>{
         e.preventDefault()
         setLoading(true)
-        setSearch(data);
-        searchProperties(data.location, data.checkIn,data.checkOut,data.guest)
-        .then(()=>{
-            setLoading(false)
-            props.history.push({
-                pathname: '/search',
-                search: `?location=${data.location}&check-in=${data.checkIn}&check-out=${data.checkOut}&guest=${data.guest}`
-            })
-        })
-        .catch((er)=>{
-            setLoading(false)
-        })
+        // setSearch(data);
+        // searchProperties(data.location, data.checkIn,data.checkOut,data.guest)
+        // .then(()=>{
+        //     setLoading(false)
+        //     props.history.push({
+        //         pathname: '/search',
+        //         search: `?location=${data.location}&check-in=${data.checkIn}&check-out=${data.checkOut}&guest=${data.guest}`
+        //     })
+        // })
+        // .catch((er)=>{
+        //     setLoading(false)
+        // })
     }
     useEffect(()=>{
-        setData({
-            days:1,
-            location:state.searchQuery?state.searchQuery.location:'',
-            checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            guest:state.searchQuery?state.searchQuery.guest:''
-        })
-    },[state.searchQuery])
+        // setData({
+        //     days:1,
+        //     location:state.searchQuery?state.searchQuery.location:'',
+        //     checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        //     checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        //     guest:state.searchQuery?state.searchQuery.guest:''
+        // })
+    },[])
     return(
         <>
         {
@@ -192,40 +192,40 @@ export const MiniSearch = withRouter(withStyles(styles)((props)=>{
     const {classes} = props
     const [locationF, setLocationF]=useState(false)
     const [loading, setLoading] = useState(false)
-    const {searchProperties,setSearch,state}=useContext(AppContext)
+    //const {searchProperties,setSearch,state}=useContext(AppContext)
     const [data, setData]=useState({
         days:1,
-        location:state.searchQuery?state.searchQuery.location:'',
-        checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-        checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-        guest:state.searchQuery?state.searchQuery.guest:'',
+        location: '', //state.searchQuery?state.searchQuery.location:'',
+        checkIn: new Date(), //state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        checkOut: new Date(),//state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        guest: '' //state.searchQuery?state.searchQuery.guest:'',
 
     })
     // const [checkIn, setCheckIn]=useState(false)
     const onSubmit =(e)=>{
         e.preventDefault()
         setLoading(true)
-        setSearch(data);
-        searchProperties(data.location, data.checkIn,data.checkOut,data.guest)
-        .then(()=>{
-            setLoading(false)
-            props.history.push({
-                pathname: '/app/search',
-                search: `?location=${data.location}&check-in=${data.checkIn}&check-out=${data.checkOut}&guest=${data.guest}`
-            })
-        })
-        .catch((er)=>{
-            setLoading(false)
-        })
+        // setSearch(data);
+        // searchProperties(data.location, data.checkIn,data.checkOut,data.guest)
+        // .then(()=>{
+        //     setLoading(false)
+        //     props.history.push({
+        //         pathname: '/app/search',
+        //         search: `?location=${data.location}&check-in=${data.checkIn}&check-out=${data.checkOut}&guest=${data.guest}`
+        //     })
+        // })
+        // .catch((er)=>{
+        //     setLoading(false)
+        // })
     }
     useEffect(()=>{
-        setData({
-            location:state.searchQuery?state.searchQuery.location:'',
-            checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            guest:state.searchQuery?state.searchQuery.guest:''
-        })
-    },[state.searchQuery])
+        // setData({
+        //     location:state.searchQuery?state.searchQuery.location:'',
+        //     checkIn:state.searchQuery?new Date(state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        //     checkOut:state.searchQuery?new Date(state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        //     guest:state.searchQuery?state.searchQuery.guest:''
+        // })
+    },[])
     return(
         <>
         {

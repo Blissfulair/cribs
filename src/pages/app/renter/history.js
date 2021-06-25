@@ -22,7 +22,7 @@ import {
  } from "@material-ui/core";
  import Rating from '@material-ui/lab/Rating';
 import { fade } from '@material-ui/core/styles';
-import AppContext from "../../../state/context";
+import AppHeader from "../../../components/appHeader";
 import { StyledTableCell, StyledTableRow } from './../properties';
 import { getMonthInWord } from "../../../helpers/helpers";
 import Modal from "../../../components/modal";
@@ -32,6 +32,7 @@ import Tab from '@material-ui/core/Tab';
 import SwipeableViews from 'react-swipeable-views';
 import Box from '@material-ui/core/Box';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import { connect } from "react-redux";
 const styles = (theme)=>({
     inputRoot: {
         color: 'inherit',
@@ -111,7 +112,6 @@ const TabPanel=(props)=>{
     };
   }
 class History extends React.Component{
-    static contextType = AppContext
     constructor(props){
         super(props);
         this.state = {
@@ -147,10 +147,10 @@ class History extends React.Component{
     }
 
     componentDidMount(){
-        this.context.getHistories(this.context.state.user.uid)
-        .then(()=>{
-            this.setState({loading:false, histories:this.context.state.histories})
-        })
+        // this.context.getHistories(this.context.state.user.uid)
+        // .then(()=>{
+        //     this.setState({loading:false, histories:this.props.histories})
+        // })
     }
 	handleClickOpen = (history) => {
 		this.setState({open:true, history:history});
@@ -160,7 +160,7 @@ class History extends React.Component{
     }
     onSearch = (text)=>{
         if(text !== ''){
-        const histories = this.context.state.histories.filter(history=>{
+        const histories = this.props.histories.filter(history=>{
             if(history.propertyName.toLowerCase().includes(text.toLowerCase()) || history.propertyState.toLowerCase().includes(text.toLowerCase()) || history.propertyCity.toLowerCase().includes(text.toLowerCase()) || history.amount.toString().includes(text.toLowerCase()))
             return history
             else
@@ -169,7 +169,7 @@ class History extends React.Component{
         
         this.setState({histories})
     }   
-    else this.setState({histories:this.context.state.histories})
+    else this.setState({histories:this.props.histories})
     }
 
     onSelect = (id, checked)=>{
@@ -189,11 +189,11 @@ class History extends React.Component{
       };
     onDelete = ()=>{
         this.setState({deleteStatus:true})
-        this.context.deleteHistory(this.state.selected)
-        .then(()=>{
-            const histories = this.state.histories.filter(history=>!this.state.selected.includes(history.transactionID))
-            this.setState({histories,deleteStatus:false})
-        })
+        // this.context.deleteHistory(this.state.selected)
+        // .then(()=>{
+        //     const histories = this.state.histories.filter(history=>!this.state.selected.includes(history.transactionID))
+        //     this.setState({histories,deleteStatus:false})
+        // })
     }
     onDisplayUsers = e=>{
         e.preventDefault();
@@ -211,9 +211,9 @@ class History extends React.Component{
             return false
        }
        this.setState({err:'', reviewLoading:true})
-        const {userData,user} = this.context.state
+        const {user} = this.props
         const data ={
-            name:userData.firstname+' '+userData.lastname,
+            name:user.firstname+' '+user.lastname,
             checkIn:this.state.history.checkIn,
             checkOut:this.state.history.checkOut,
             photoURL:user.photoURL,
@@ -221,20 +221,19 @@ class History extends React.Component{
             amount:this.state.history.amount,
             review:this.state.review,
             rating:this.state.rating,
-            email:userData.email,
+            email:user.email,
             historyId:this.state.history.transactionID
             // hostId:
         }
-        this.context.sendReview(data)
-        .then(()=>{
-            this.handleClose()
-            this.setState({review:'',reviewLoading:false})
-        })
+        // this.context.sendReview(data)
+        // .then(()=>{
+        //     this.handleClose()
+        //     this.setState({review:'',reviewLoading:false})
+        // })
     }
     render(){
         const {history} = this.state
-        const {classes} =this.props
-        const {histories} = this.context.state
+        const {classes,histories} =this.props
         const inbox = (
             <>
             {histories.length>0?histories.map((history,i)=>{
@@ -262,6 +261,8 @@ class History extends React.Component{
         )
 
         return (
+            <>
+            <AppHeader/>
             <Grid container justify ="center">
                 { this.state.history&&
                 <WithdrawPopUp open={this.state.open} title="" handleClose={this.handleClose} className="history-modal">
@@ -502,7 +503,12 @@ class History extends React.Component{
                     </div>
                 </Grid>
             </Grid>
+            </>
         )
     }
 }
-export default withStyles(styles,{withTheme:true})(History);
+const mapStateToProps=state=>({
+    histories:state.histories,
+    user:state.user
+})
+export default connect(mapStateToProps)(withStyles(styles,{withTheme:true})(History));

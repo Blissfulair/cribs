@@ -24,6 +24,8 @@ import { Paper } from "@material-ui/core";
 import SlideBanner from "../../components/slideBanner";
 import { getFavs } from "../../helpers/helpers";
 import {connect} from "react-redux"
+import AppHeader from "../../components/appHeader";
+import { HomeSkeleton as Skeleton } from "../../components/skeleton/index";
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${cottage})`,
@@ -103,6 +105,8 @@ class Home extends Component{
     render(){
         const {classes}=this.props
     return(
+        <>
+        <AppHeader/>
         <Grid id="app-home-page" style={{paddingTop:90}} className="home" container justify="center">
             <Grid container justify="center" >
                 <Grid item xs={11} md={10} >
@@ -112,7 +116,7 @@ class Home extends Component{
                         </Grid>
                         <Grid item xs={12} lg={4}>
                             <Paper style={{height:200,padding:'20px 8px'}}>
-                                <Typography style={{fontSize:40, color:'#707070'}} variant="h3">Hi, {this.props.firstname}</Typography>
+                                <Typography style={{fontSize:40, color:'#707070'}} variant="h3">Hi, {this.props.user.firstname}</Typography>
                                 <Typography style={{color:'#707070', fontSize:15,marginTop:22}} variant="subtitle1" component="p">
                                 Check your inbox so as not to miss clients requests.
                                 </Typography>
@@ -133,39 +137,60 @@ class Home extends Component{
                         </div>
                     </Grid>
                 </Grid>
-
-                    {/* {
-                        this.context.state.properties.length>0?
-                        <>
                             <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
                             <div style={{marginBottom:10}}>
                                 <Grid  container spacing={2}>
                                     {
-                                        this.context.state.properties.map((property, i)=>{
-                                            return(
-                                                <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                    <Link to={`/app/crib/${property.id}`}>
-                                                        <Trending favourite={this.state.favourites.includes(property.id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
-                                                    </Link>
-                                                </Grid>
-                                            )
-                                        })
+                                        this.props.properties.length>0?
+                                        ''
+                                        // this.context.state.properties.map((property, i)=>{
+                                        //     return(
+                                        //         <Grid item xs={12} sm={6} md={3} lg={3} >
+                                        //             <Link to={`/app/crib/${property.id}`}>
+                                        //                 <Trending favourite={this.state.favourites.includes(property.id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
+                                        //             </Link>
+                                        //         </Grid>
+                                        //     )
+                                        // })
+                                        :
+                                        [1,2,3.4,5].map((value,i)=>(
+                                            <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Skeleton key={i} />
+                                            </Grid>
+                                        ))
+
+
                                     }
                                 </Grid>
                             </div>
-                            <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'trending'}}>See more</Link>
+                            {
+                                this.props.properties.length>0&&
+                                <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'trending'}}>See more</Link>
+                            }
 
                             
                             <div style={{marginTop:50}}>
                                 <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
-                                <Grid style={{position:'relative'}}  container >
-                                    <Slide favourites={this.state.favourites} content={this.context.state.latestProperties}/>
+                                <Grid style={{position:'relative'}}  container spacing={2}>
+                                    {
+                                        this.props.properties.length>0?
+                                        ''
+                                        // <Slide favourites={this.state.favourites} content={this.context.state.latestProperties}/>
+                                        :
+                                        [1,2,3.4,5].map((value,i)=>(
+                                            <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Skeleton key={i} />
+                                            </Grid>
+                                        ))
+                                    }
                                 </Grid>
                             </div>
-                            <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>
-                        </>
-                        :''
-                    } */}
+                            {
+                                this.props.properties.length>0&&
+                                <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>
+                            }
+
+                       
 
                 <Typography variant="h4" classes={{root:classes.title}} style={{marginTop:90}} align="center">Reasons to Explore With Us</Typography>
                 <Container >
@@ -193,10 +218,13 @@ class Home extends Component{
                 </Grid>
             </Grid>
         </Grid>
+        </>
     )
 }
 }
 const mapStateToProps=state=>({
-    ...state
+   properties:state.properties,
+   user:state.user
 })
+
 export default connect(mapStateToProps)( withRouter(withStyles(styles)(Home)));

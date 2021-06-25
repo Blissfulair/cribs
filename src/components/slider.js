@@ -1,13 +1,13 @@
-import React, { useContext } from "react"
+import React from "react"
 import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import Trending from "./trending"
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import {Link} from "react-router-dom"
-import AppContext from "../state/context";
-const Slide = ({content,favourites})=>{
-    const {state}=useContext(AppContext)
+import { connect } from "react-redux";
+import { Grid } from "@material-ui/core";
+const Slide = ({content,favourites,user})=>{
     return(
         <>
             
@@ -43,9 +43,11 @@ const Slide = ({content,favourites})=>{
                     >
                     {content.map((property,index)=>{
                     return (
-                        <Link to={state.userData?`/app/crib/${property.id}`:`/crib/${property.id}`} key={index}>
-                            <Trending favourite={favourites.includes(property.id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
+                        <Grid item xs={12} sm={6} md={3} lg={3} >
+                        <Link to={user?`/app/crib/${property._id}`:`/crib/${property._id}`} key={index}>
+                            <Trending favourite={favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
                         </Link>
+                        </Grid>
                     )
                     })
                     }
@@ -59,4 +61,7 @@ const Slide = ({content,favourites})=>{
         </>
     )
 }
-export default Slide;
+const mapStateToProps=state=>({
+    user:state.user
+})
+export default connect()(Slide);

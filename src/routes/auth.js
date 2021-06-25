@@ -1,11 +1,11 @@
-import React, {useContext} from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import AppContext from '../state/context';
 import { getDashboard } from '../helpers/helpers';
 
 const HostRoute = ({component: Component, ...rest}) => {
-    const {state} = useContext(AppContext)
-    const dash = getDashboard()
+    const dashboard = getDashboard()
+    console.log(dashboard)
     return (
 
         // Show the component only when the user is logged in
@@ -13,10 +13,13 @@ const HostRoute = ({component: Component, ...rest}) => {
         <Route {...rest} render={props => (
             // state.user && state.user.emailVerified?
             //  Boolean(state.userData)?
-            Boolean(state.userData)&& !dash && state.user.emailVerified?
+            Boolean(rest.user)?
+                !dashboard && rest.user.emailVerify?
                 <Component {...props} />
                 :
-                <Redirect to="/verification"  />
+                <Redirect to="/app/home"  />
+                :
+                <Redirect to="/"  />
                 // :
                 // <Redirect to="/verification"  />
             // : <Redirect to={{ pathname: "/login", state: { referer: props.location } }}  />
@@ -26,5 +29,8 @@ const HostRoute = ({component: Component, ...rest}) => {
         )} />
     );
 };
-
-export default HostRoute;
+const mapStateToProps=state=>({
+    user:state.user,
+    dashboard:state.dashboard
+})
+export default connect(mapStateToProps)(HostRoute);

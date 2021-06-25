@@ -24,7 +24,7 @@ import {Alert} from "@material-ui/lab"
 import AddIcon from "@material-ui/icons/Add"
 import EditIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AppContext from "../../state/context"
+import AppHeader from "../../components/appHeader"
 import { currency } from "../../helpers/helpers";
 import Modal from "../../components/modal";
 import Dialog from '@material-ui/core/Dialog';
@@ -32,6 +32,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { connect } from "react-redux";
+import { getProperties } from "../../apis/server";
+import { setProperties } from "../../state/actions";
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
@@ -81,7 +84,6 @@ export const styles = (theme)=>({
 })
 
 class Properties extends React.Component{
-    static contextType = AppContext
     constructor(prop){
         super(prop)
         this.state ={
@@ -99,8 +101,9 @@ class Properties extends React.Component{
         }
     }
     componentDidMount(){
-        this.context.getMyProperties()
-        .then(()=>{
+        getProperties(this.props.user.id)
+        .then(properties=>{
+            this.props.setProperties(properties)
             this.setState({loading:false})
         })
 
@@ -126,10 +129,10 @@ class Properties extends React.Component{
     }
     onDelete=(id)=>{
         this.setState({loading:true,success:false})
-        this.context.deleteProperty(id)
-        .then(()=>{
-            this.setState({loading:false, message:'Deleted Successfully',success:true})
-        })
+        // this.context.deleteProperty(id)
+        // .then(()=>{
+        //     this.setState({loading:false, message:'Deleted Successfully',success:true})
+        // })
     }
     handleChangePage = (event, newPage) => {
 		this.setState({page:newPage});
@@ -157,11 +160,12 @@ class Properties extends React.Component{
         }
       };
     render(){
-        const properties = this.context.state.myProperties
-        const {classes} = this.props
+        // const properties = this.context.state.myProperties
+        const {classes,properties} = this.props
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, properties.length - this.state.page * this.state.rowsPerPage);
-      
         return (
+            <>
+                <AppHeader/>
                 <Layout>
                     <Dialog
                         open={this.state.dialogOpen}
@@ -234,11 +238,11 @@ class Properties extends React.Component{
                                 properties.length>0?
                                 properties.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((property, i) =>{
                                         const date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-                                        const avail = property.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === date.toDateString())
-                                        const update = new Date(property.updatedAt.seconds*1000);
-                                        const created = new Date(property.createdAt.seconds*1000);
-                                        const updatedAt = update.getDate()+'/'+(update.getMonth()+1)+'/'+update.getFullYear() 
-                                        const createdAt = created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
+                                        const avail = property.bookedDates.filter(item=>new Date(item.date).toDateString() === date.toDateString())
+                                        // const update = new Date(property.updatedAt.seconds*1000);
+                                        // const created = new Date(property.createdAt.seconds*1000);
+                                        const updatedAt = new Date(property.updatedAt).toDateString() //update.getDate()+'/'+(update.getMonth()+1)+'/'+update.getFullYear() 
+                                        const createdAt = new Date(property.createdAt).toDateString() //created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
                                     return(
                                         <StyledTableRow classes={{root:classes.trRoot}} key={i}>
                                         <StyledTableCell classes={{root:classes.tdRoot}} component="th" scope="row">
@@ -249,16 +253,16 @@ class Properties extends React.Component{
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{createdAt}</StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{updatedAt}</StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="center">
-                                            <Switch name={property.id} checked={!avail.length}/>
+                                            <Switch name={property.id} checked={!avail.length} />
                                         </StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="center">
                                             <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>
-                                                <Link to={`/app/edit-property/${property.id}`}>
+                                                <Link to={`/app/edit-property/${property._id}`}>
                                                     <IconButton>
                                                         <EditIcon/>
                                                     </IconButton>
                                                 </Link>
-                                               <IconButton onClick={()=>{this.handleClickOpen(TransitionUp,property.id)}}>
+                                               <IconButton onClick={()=>{this.handleClickOpen(TransitionUp,property._id)}}>
                                                     <DeleteIcon/>
                                                </IconButton>
                                             </div>
@@ -290,7 +294,15 @@ class Properties extends React.Component{
 
                     </Grid> 
                 </Layout>
+            </>
         )
     }
 }
-export default withStyles(styles)(Properties);
+const mapStateToProps=state=>({
+    properties:state.properties,
+    user:state.user
+})
+const mapDispatchToProps=dispatch=>({
+    setProperties:(payload) => dispatch(setProperties(payload))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Properties));

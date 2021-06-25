@@ -11,6 +11,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppContext from "../state/context";
 import { registerUser } from "../apis/server";
 import { setUser } from "../state/actions";
+import Head from "../components/head";
 //import firebase from "../components/firebase"
 
 
@@ -111,8 +112,9 @@ class SignUp extends React.Component{
             registerUser(body)
             .then((user)=>{
                 setUser(user)
+                console.log(user)
                 this.setState({loading:false})
-                //this.props.history.push('/app/home')
+                this.props.history.push('/verification')
             })
             .catch((err=>{
                 this.setState({loading:false,
@@ -154,6 +156,7 @@ class SignUp extends React.Component{
     render(){
         return (
             <>
+                <Head color={'#046FA7'}/>
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div className="signin">

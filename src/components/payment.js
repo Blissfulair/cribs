@@ -2,15 +2,15 @@ import React, {Component, useContext, useState} from "react"
 import { PaystackConsumer } from 'react-paystack';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Button, MenuItem, Select, TextField } from '@material-ui/core';
-import {Elements,CardNumberElement,CardCvcElement} from '@stripe/react-stripe-js';
+// import {Elements,CardNumberElement,CardCvcElement} from '@stripe/react-stripe-js';
 import AppContext from '../state/context';
-import {loadStripe} from '@stripe/stripe-js';
+// import {loadStripe} from '@stripe/stripe-js';
 import {mailReciept} from "../emailTemplates/receipt"
 import {withRouter} from "react-router-dom"
 import Splash from "./splash";
 // import emailjs from 'emailjs-com';
 
-const stripePromise = loadStripe('pk_test_51Hg8hoK2fIb9aYwzRl3MOcLEWpgHCGKnqkXzl8emOzsoNn5ii8oMMuKRAyjV1tanLgvOBuRvFFDu0MK9frmDdDuZ00uaY2DWuF');
+//const stripePromise = loadStripe('pk_test_51Hg8hoK2fIb9aYwzRl3MOcLEWpgHCGKnqkXzl8emOzsoNn5ii8oMMuKRAyjV1tanLgvOBuRvFFDu0MK9frmDdDuZ00uaY2DWuF');
 
 const PayStack = withRouter(({changeHandler,state,data,history})=>{
     const context = useContext(AppContext)
@@ -109,119 +109,119 @@ const PayStack = withRouter(({changeHandler,state,data,history})=>{
 
     </form>
 })
-const Card = ({state, changeMonth,changeYear})=>{
-return    <form>
-    <Elements stripe={stripePromise}>
+// const Card = ({state, changeMonth,changeYear})=>{
+// return    <form>
+//     <Elements stripe={stripePromise}>
 
-        <div className="card-name">
-            <p>Name on Card</p>
-            <TextField placeholder="Richard Belfast" fullWidth />
-        </div>
-        <div className="card-name">
-            <p>Card Number</p>
-            {/* <TextField
-                type="password"
-                fullWidth
-                inputProps={{
-                    maxLength: cardNumberLimit,
-                }}
-            /> */}
-            <CardNumberElement options={{classes:{base:'cardinput', invalid:'card-error', complete:'card-success'}, style:{
-                        base:{
-                            color:'#fff', 
-                            fontSize:'16px',
-                            '::placeholder': {
-                                color: '#707070',
-                            },
-                        }
-                    }
-                }}
-            />
-        </div>
+//         <div className="card-name">
+//             <p>Name on Card</p>
+//             <TextField placeholder="Richard Belfast" fullWidth />
+//         </div>
+//         <div className="card-name">
+//             <p>Card Number</p>
+//             {/* <TextField
+//                 type="password"
+//                 fullWidth
+//                 inputProps={{
+//                     maxLength: cardNumberLimit,
+//                 }}
+//             /> */}
+//             <CardNumberElement options={{classes:{base:'cardinput', invalid:'card-error', complete:'card-success'}, style:{
+//                         base:{
+//                             color:'#fff', 
+//                             fontSize:'16px',
+//                             '::placeholder': {
+//                                 color: '#707070',
+//                             },
+//                         }
+//                     }
+//                 }}
+//             />
+//         </div>
 
-        <div className="expire">
-            <div className="date-expire">
-                <div className="picker">
-                    <div>
-                        <p>Expiration Date</p>
-                        <div>
-                            <Select
-                                labelId="card-month-label"
-                                id="card-month"
-                                value={state.cardMonth}
-                                IconComponent={ExpandMoreIcon}
+//         <div className="expire">
+//             <div className="date-expire">
+//                 <div className="picker">
+//                     <div>
+//                         <p>Expiration Date</p>
+//                         <div>
+//                             <Select
+//                                 labelId="card-month-label"
+//                                 id="card-month"
+//                                 value={state.cardMonth}
+//                                 IconComponent={ExpandMoreIcon}
                                 
-                                onChange={(e) => {
-                                  changeMonth(e)  
-                                }}
-                            >
-                                <MenuItem value={0}>MM</MenuItem>
-                                <MenuItem value={1}>Jan</MenuItem>
-                                <MenuItem value={2}>Feb</MenuItem>
-                                <MenuItem value={3}>Mar</MenuItem>
-                                <MenuItem value={4}>Apr</MenuItem>
-                                <MenuItem value={5}>May</MenuItem>
-                                <MenuItem value={6}>Jun</MenuItem>
-                                <MenuItem value={7}>Jul</MenuItem>
-                                <MenuItem value={8}>Aug</MenuItem>
-                                <MenuItem value={9}>Sep</MenuItem>
-                                <MenuItem value={10}>Oct</MenuItem>
-                                <MenuItem value={11}>Nov</MenuItem>
-                                <MenuItem value={12}>Dec</MenuItem>
-                            </Select>
-                            <Select
-                                labelId="card-year-label"
-                                id="card-year"
-                                IconComponent={ExpandMoreIcon}
-                                value={state.year}
-                                onChange={(e) => {
-                                    changeYear(e)
-                                }}
-                            >
-                                <MenuItem value={0}>YYYY</MenuItem>
-                                {
-                                state.years.length>0&&
-                                 state.years.map((year,i)=>(
-                                    <MenuItem value={i+1}>{year}</MenuItem>
-                                 ))   
-                                }
-                            </Select>
-                        </div>
+//                                 onChange={(e) => {
+//                                   changeMonth(e)  
+//                                 }}
+//                             >
+//                                 <MenuItem value={0}>MM</MenuItem>
+//                                 <MenuItem value={1}>Jan</MenuItem>
+//                                 <MenuItem value={2}>Feb</MenuItem>
+//                                 <MenuItem value={3}>Mar</MenuItem>
+//                                 <MenuItem value={4}>Apr</MenuItem>
+//                                 <MenuItem value={5}>May</MenuItem>
+//                                 <MenuItem value={6}>Jun</MenuItem>
+//                                 <MenuItem value={7}>Jul</MenuItem>
+//                                 <MenuItem value={8}>Aug</MenuItem>
+//                                 <MenuItem value={9}>Sep</MenuItem>
+//                                 <MenuItem value={10}>Oct</MenuItem>
+//                                 <MenuItem value={11}>Nov</MenuItem>
+//                                 <MenuItem value={12}>Dec</MenuItem>
+//                             </Select>
+//                             <Select
+//                                 labelId="card-year-label"
+//                                 id="card-year"
+//                                 IconComponent={ExpandMoreIcon}
+//                                 value={state.year}
+//                                 onChange={(e) => {
+//                                     changeYear(e)
+//                                 }}
+//                             >
+//                                 <MenuItem value={0}>YYYY</MenuItem>
+//                                 {
+//                                 state.years.length>0&&
+//                                  state.years.map((year,i)=>(
+//                                     <MenuItem value={i+1}>{year}</MenuItem>
+//                                  ))   
+//                                 }
+//                             </Select>
+//                         </div>
 
-                    </div>
-                    <div>
-                        <p>CVV</p>
-                        {/* <TextField
-                            type="password"
-                            inputProps={{
-                                maxLength: cvvNumberLimit,
-                            }}
-                        /> */}
-                        <CardCvcElement
+//                     </div>
+//                     <div>
+//                         <p>CVV</p>
+//                         {/* <TextField
+//                             type="password"
+//                             inputProps={{
+//                                 maxLength: cvvNumberLimit,
+//                             }}
+//                         /> */}
+//                         <CardCvcElement
                             
-                            options={{
-                                classes:{
-                                    base:'cvcinput', invalid:'card-error'
-                                },
-                                style:{
-                                    base:{
-                                        fontSize:'15px',
-                                        color:'#fff'
-                                    }
-                                },
+//                             options={{
+//                                 classes:{
+//                                     base:'cvcinput', invalid:'card-error'
+//                                 },
+//                                 style:{
+//                                     base:{
+//                                         fontSize:'15px',
+//                                         color:'#fff'
+//                                     }
+//                                 },
                                 
-                            }}
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-        </Elements>
+//                             }}
+//                         />
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//         </Elements>
 
-        <Button>Pay</Button>
+//         <Button>Pay</Button>
 
-    </form>
-}
+//     </form>
+// }
 class PaymentCard extends Component{
     static contextType = AppContext
     constructor(props){
@@ -278,9 +278,9 @@ class PaymentCard extends Component{
         </div>
         {/* <div className="user-card-details"> */}
         {
-            this.state.method === 'card'?
-            <Card state={this.state} changeMonth={this.changeMonth} changeYear={this.changeYear}/>
-            :
+            // this.state.method === 'card'?
+            // <Card state={this.state} changeMonth={this.changeMonth} changeYear={this.changeYear}/>
+            // :
             <PayStack changeHandler={this.changeHandler} data={this.props.data} state={this.state}/>
 
         }

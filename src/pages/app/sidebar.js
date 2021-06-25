@@ -10,10 +10,9 @@ import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceW
 // import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
-import AppContext from "../../state/context";
+import {connect} from "react-redux";
 let toggle = false;
-const Sidebar = ()=>{
-    const {state} =useContext(AppContext)
+const Sidebar = ({dashboard})=>{
     return(
         <>
             <div className="sidebar">
@@ -21,7 +20,7 @@ const Sidebar = ()=>{
                     <ul className="s-menu">
                         <NavLink onClick={Sidebar.active} activeClassName="is-active" to="/app/dashboard"><li><DashboardOutlinedIcon/> Dashboard</li></NavLink>
                             {
-                                !state.dashboard&&
+                                !dashboard&&
                                 <NavLink onClick={Sidebar.active} activeClassName="is-active"  id="properties" to="/app/property"><li><HomeOutlinedIcon/> Property </li></NavLink>
                             }
                         
@@ -37,7 +36,7 @@ const Sidebar = ()=>{
                         
                         <NavLink  onClick={Sidebar.active}  activeClassName="is-active" to="/app/calendar"><li><EventOutlinedIcon/>Calendar</li></NavLink>
                             {
-                                !state.dashboard&&
+                                !dashboard&&
                                 <>
                                     <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/withdraws"><li><AccountBalanceWalletOutlinedIcon/>Payments</li></NavLink>
                                     {/* <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/reviews"><li><AccountTreeOutlinedIcon/>Reviews</li></NavLink> */}
@@ -88,5 +87,7 @@ Sidebar.propTypes = {
 Sidebar.defaultProps = {
     siteTitle: ``,
   }
-  
-export default Sidebar;
+  const mapStateToProps=state=>({
+      dashboard:state.dashboard
+  })
+export default connect(mapStateToProps)(Sidebar);

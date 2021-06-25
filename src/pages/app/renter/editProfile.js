@@ -3,13 +3,14 @@ import "./../inbox.css"
 import "./../properties.css"
 import "./../add-property.css"
 import "./../profile.css"
-import AppContext from "../../../state/context";
+import AppHeader from "../../../components/appHeader";
 import { NativeSelect, Button,Snackbar, Slide, Grid } from "@material-ui/core";
 import Activity from "../../../components/activity"
 import {Alert} from "@material-ui/lab"
 import {withRouter} from "react-router-dom"
+import { connect } from "react-redux";
 
-const EditProfileDom = ({state, handleCloseSnackBar, context, changeHandler,onSubmit,handleClick})=>{
+const EditProfileDom = ({state, handleCloseSnackBar, user, env, changeHandler,onSubmit,handleClick})=>{
     return(
         <>
             <Activity loading={state.loading} />
@@ -41,37 +42,37 @@ const EditProfileDom = ({state, handleCloseSnackBar, context, changeHandler,onSu
                                 <tbody>
                                     <tr>
                                     <td>Address: <span style={{color:'red'}}>*</span></td>
-                                        <td><input onChange={(e)=>changeHandler(e)} name="address" defaultValue={context.state.userData.address?context.state.userData.address:''} /></td>
+                                        <td><input onChange={(e)=>changeHandler(e)} name="address" defaultValue={user.address?user.address:''} /></td>
                                     </tr>
                                     <tr>
                                         <td>Phone: <span style={{color:'red'}}>*</span></td>
                                         <td>
-                                            <img alt="flag" src={`https://www.countryflags.io/${context.state.env?context.state.env.country_code.toLowerCase():'us'}/shiny/32.png`}/>
-                                            <input type="text" onChange={(e)=>changeHandler(e)} name="phone" defaultValue={context.state.userData.phone?context.state.userData.phone:context.state.env.country_calling_code} />
+                                            <img alt="flag" src={`https://www.countryflags.io/${env?env.country_code.toLowerCase():'us'}/shiny/32.png`}/>
+                                            <input type="text" onChange={(e)=>changeHandler(e)} name="phone" defaultValue={user.phone?user.phone: env&&env.country_calling_code} />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Facebook:</td>
                                         <td>
-                                            <input type="text" onChange={(e)=>changeHandler(e)} name="facebook" defaultValue={context.state.userData.facebook?context.state.userData.facebook:''} />
+                                            <input type="text" onChange={(e)=>changeHandler(e)} name="facebook" defaultValue={user.facebook?user.facebook:''} />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>LinkedIn:</td>
                                         <td>
-                                            <input type="text" onChange={(e)=>changeHandler(e)} name="linkedin" defaultValue={context.state.userData.linkedin?context.state.userData.linkedin:''} />
+                                            <input type="text" onChange={(e)=>changeHandler(e)} name="linkedin" defaultValue={user.linkedin?user.linkedin:''} />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Date of Birth: <span style={{color:'red'}}>*</span></td>
                                         <td>
-                                            <input type="text" onChange={(e)=>changeHandler(e)} name="dob" defaultValue={context.state.userData.dob?context.state.userData.dob:''} />
+                                            <input type="text" onChange={(e)=>changeHandler(e)} name="dob" defaultValue={user.dob?user.dob:''} />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Gender: <span style={{color:'red'}}>*</span></td>
                                         <td>
-                                            <NativeSelect defaultValue={context.state.userData.gender?context.state.userData.gender:''} onBlur={changeHandler} name="gender" id="">
+                                            <NativeSelect defaultValue={user.gender?user.gender:''} onBlur={changeHandler} name="gender" id="">
                                                 <option value="">Choose</option>
                                                 <option value="Male">Male</option>
                                                 <option value="Female">Female</option>
@@ -81,7 +82,7 @@ const EditProfileDom = ({state, handleCloseSnackBar, context, changeHandler,onSu
                                     <tr>
                                         <td>Bio: <span style={{color:'red'}}>*</span></td>
                                         <td>
-                                            <textarea onChange={(e)=>changeHandler(e)} defaultValue={context.state.userData.bio?context.state.userData.bio:''} name="bio"  />
+                                            <textarea onChange={(e)=>changeHandler(e)} defaultValue={user.bio?user.bio:''} name="bio"  />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -100,7 +101,6 @@ const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
 class EditProfile extends React.Component{
-    static contextType =AppContext
     constructor(props){
         super(props);
         this.state = {
@@ -124,13 +124,13 @@ class EditProfile extends React.Component{
         if(dom !== null)
         dom.setAttribute('class', 'is-active')
         this.setState({
-            phone:this.context.state.userData.phone,
-            address:this.context.state.userData.address,
-            bio:this.context.state.userData.bio,
-            linkedin:this.context.state.userData.linkedin === undefined?null:this.context.state.userData.linkedin,
-            facebook:this.context.state.userData.facebook === undefined?null:this.context.state.userData.facebook,
-            dob:this.context.state.userData.dob,
-            gender:this.context.state.userData.gender
+            phone:this.props.user.phone,
+            address:this.props.user.address,
+            bio:this.props.user.bio,
+            linkedin:this.props.user.linkedin === undefined?null:this.props.user.linkedin,
+            facebook:this.props.user.facebook === undefined?null:this.props.user.facebook,
+            dob:this.props.user.dob,
+            gender:this.props.user.gender
         })
     }
 
@@ -181,14 +181,14 @@ class EditProfile extends React.Component{
             dob:this.state.dob,
             gender:this.state.gender
         }
-        this.context.updateProfile(data)
-        .then(()=>{
-            this.setState({loading:false,success:true, message:'Profile has been updated'})
-            this.props.history.push('/app/myprofile')
-        })
-        .catch((e)=>{
-            this.setState({loading:false,success:false, message:'Oops! failed to complete the operation. Please try again.'}) 
-        })
+        // this.context.updateProfile(data)
+        // .then(()=>{
+        //     this.setState({loading:false,success:true, message:'Profile has been updated'})
+        //     this.props.history.push('/app/myprofile')
+        // })
+        // .catch((e)=>{
+        //     this.setState({loading:false,success:false, message:'Oops! failed to complete the operation. Please try again.'}) 
+        // })
         // axios.post(`${api}/profile`,data,{headers:headers})
         // .then(res=>{
         //     document.querySelector('.hide').style.display ="block"
@@ -199,10 +199,11 @@ class EditProfile extends React.Component{
     render(){
         return (
             <>
+                <AppHeader/>
                     <Grid container justify="center">
                         <Grid item md={11}>
                             <Grid container>
-                                <EditProfileDom state={this.state} onSubmit={this.onSubmit} context={this.context} handleClick={this.handleClick} changeHandler={this.changeHandler} handleCloseSnackBar={this.handleCloseSnackBar} />
+                                <EditProfileDom state={this.state} onSubmit={this.onSubmit} user={this.props.user} env={this.props.env} handleClick={this.handleClick} changeHandler={this.changeHandler} handleCloseSnackBar={this.handleCloseSnackBar} />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -210,4 +211,8 @@ class EditProfile extends React.Component{
         )
     }
 }
-export default withRouter(EditProfile);
+const mapStateToProps=state=>({
+    user:state.user,
+    env:state.env
+})
+export default connect(mapStateToProps)(withRouter(EditProfile));

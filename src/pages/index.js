@@ -44,7 +44,10 @@ import Splash from "../components/splash";
 import { getFavs, getDates } from "../helpers/helpers";
 import LocationCard from "../components/Cards/LocationCard";
 import { connect } from "react-redux";
-import {setAuth} from "../state/actions"
+import {setAuth, setTrendingAndBestCribs} from "../state/actions"
+import {HomeSkeleton as Skeleton} from "../components/skeleton/index"
+import Head from "../components/head";
+import { getTrendingAndBestCribs } from "../apis/server";
 
 
 
@@ -198,6 +201,10 @@ class Index extends Component {
     //     })
     // },[context])
     componentDidMount() {
+        getTrendingAndBestCribs()
+        .then(cribs=>{
+            this.props.setTrendingAndBestCribs(cribs)
+        })
         // const favourites = getFavs()
         // this.setState({
         //     favourites: favourites,
@@ -237,7 +244,7 @@ class Index extends Component {
     }
     render() {
         
-        const { classes } = this.props
+        const { classes, trendingCribs, bestCribs } = this.props
         
         return (
             <>
@@ -250,37 +257,7 @@ class Index extends Component {
                     }
 
                     <div className="showcase">
-                        <div className="showcase__header">
-                            <div className="showcase__logo">
-                                <a href="/">Cribs NG</a>
-                            </div>
-                            <nav className="showcase__nav">
-                                <NavButton
-                                    color='#fff'
-                                    border
-                                    borderColor='#fff'
-                                    borderRadius={27}
-                                    height='44'
-                                    width='180'
-                                    borderWidth={2}
-                                    marginRight='3rem'
-                                >
-                                    Host Accomodation
-                                </NavButton>
-                                <NavButton
-                                    color='#fff'
-                                    backgroundColor='#046FA7'
-                                    border
-                                    borderRadius={27}
-                                    height='44'
-                                    width='106'
-                                    
-                                >
-                                    Sign in
-                                </NavButton>
-                            </nav>
-
-                        </div>
+                        <Head/>
 
                         <div className="showcase__bottom">
                             <img src={cribs} alt="cribs ng for everyone" />
@@ -422,21 +399,26 @@ class Index extends Component {
             </Grid> */}
                     <Grid container justify="center" >
                         <Grid item xs={11} md={10} >
-                            <Typography classes={{ root: classes.title }} variant="h3">Where would you like to stay?</Typography>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6} md={3} lg={3} >
-                                    <Stays title="House" link={`/search?type=house`} image={house} available={1000} color={'#DF6C08'} />
+                            {
+                                this.props.propertyTypes.length>=3&&
+                                <>
+                                <Typography classes={{ root: classes.title }} variant="h3">Where would you like to stay?</Typography>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6} md={3} lg={3} >
+                                        <Stays title={this.props.propertyTypes[0].name} link={`/search?type=${this.props.propertyTypes[0].name}`} image={house} available={1000} color={'#DF6C08'} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={3} lg={3}>
+                                        <Stays title={this.props.propertyTypes[1].name}  link={`/search?type=${this.props.propertyTypes[1].name}`} image={bangalow} available={1000} />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={3} lg={3}>
+                                        <Stays title={this.props.propertyTypes[2].name}  link={`/search?type=${this.props.propertyTypes[2].name}`} image={condos} available={1000} color="#DF0808" />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6} md={3} lg={3}>
+                                        <Stays title="Wharehouse" link={`/search?type=waraehouse`} image={cottage} available={1000} color="#000000" />
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={12} sm={6} md={3} lg={3}>
-                                    <Stays title="Bungalows" link={`/search?type=bungalow`} image={bangalow} available={1000} />
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={3} lg={3}>
-                                    <Stays title="Hotels" link={`/search?type=hotel`} image={condos} available={1000} color="#DF0808" />
-                                </Grid>
-                                <Grid item xs={12} sm={6} md={3} lg={3}>
-                                    <Stays title="Duplex" link={`/search?type=duplex`} image={cottage} available={1000} color="#000000" />
-                                </Grid>
-                            </Grid>
+                                </>
+                            }
 
                             {/* {
                                 this.context.state.properties.length > 0 ?
@@ -470,6 +452,56 @@ class Index extends Component {
                                     </>
                                     : ''
                             } */}
+                            <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
+                            <div style={{marginBottom:10}}>
+                                <Grid  container spacing={2}>
+                                    {
+                                        trendingCribs.length>0?
+                                        trendingCribs.map((property, i)=>{
+                                            return(
+                                                <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Link to={`/crib/${property._id}`}>
+                                                        <Trending favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
+                                                    </Link>
+                                                </Grid>
+                                            )
+                                        })
+                                        :
+                                        [1,2,3.4,5].map((value,i)=>(
+                                            <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Skeleton key={i} />
+                                            </Grid>
+                                        ))
+
+
+                                    }
+                                </Grid>
+                            </div>
+                            {
+                                trendingCribs.length>0&&
+                                <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'trending'}}>See more</Link>
+                            }
+
+                            
+                            <div style={{marginTop:50}}>
+                                <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
+                                <Grid style={{position:'relative'}}  container spacing={2}>
+                                    {
+                                        bestCribs.length>0?
+                                        <Slide favourites={this.state.favourites} content={bestCribs}/>
+                                        :
+                                        [1,2,3.4,5].map((value,i)=>(
+                                            <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Skeleton key={i} />
+                                            </Grid>
+                                        ))
+                                    }
+                                </Grid>
+                            </div>
+                            {
+                                bestCribs.length>0&&
+                                <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>
+                            }
 
                             <Typography variant="h4" classes={{ root: classes.title }} style={{ marginTop: 90 }} align="center">Reasons to Explore With Us</Typography>
                             <Container >
@@ -501,10 +533,14 @@ class Index extends Component {
         )
     }
 }
-const mapStateToProps = state => {
-    return state
-  };
+const mapStateToProps = state => ({
+    properties:state.properties,
+    user:state.user,
+    propertyTypes:state.propertyTypes,
+    trendingCribs:state.trendingCribs,
+    bestCribs:state.bestCribs
+});
 const mapDispatchToProps = dispatch => ({
-    setAuth: (payload) => dispatch(setAuth(payload))
+    setTrendingAndBestCribs: (payload) => dispatch(setTrendingAndBestCribs(payload))
   });
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Index)));

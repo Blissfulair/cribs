@@ -63,6 +63,7 @@ export const getFav = (id)=>{
 }
 export const setDashboard = (dashboard)=>{
     try{
+        console.log(dashboard)
         window.sessionStorage.setItem('@dash', JSON.stringify(dashboard))
     }
     catch(e){}
@@ -71,6 +72,7 @@ export const setDashboard = (dashboard)=>{
 export const getDashboard = ()=>{
     try{
        let dashboard = JSON.parse(window.sessionStorage.getItem('@dash'))
+       console.log(dashboard, 'helper')
        dashboard = dashboard === null?true:dashboard
        return dashboard;
     }

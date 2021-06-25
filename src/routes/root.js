@@ -24,7 +24,7 @@ import Home from "../pages/app/home";
 import PrivateSearch from "../pages/app/search";
 import PrivateSingle from "../pages/app/single";
 import PrivatePayment from "../pages/app/payment";
-import Favourites from "../pages/app/host/favourites";
+import Favourites from "../pages/app/renter/favourites";
 import History from "../pages/app/renter/history";
 import Activates from "../pages/activate";
 import PublicRoute from "./publicRoute";

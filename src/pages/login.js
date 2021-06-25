@@ -9,6 +9,10 @@ import {Alert} from "@material-ui/lab"
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppContext from "../state/context"
+import Head from "../components/head";
+import { loginUser } from "../apis/server";
+import { setUser } from "../state/actions";
+import {withRouter} from "react-router-dom"
 
 const styles = ()=>({
     label:{
@@ -71,8 +75,10 @@ class Login extends React.Component{
                 password:this.state.password,
                 remember:this.state.remember
             }
-            this.context.login(body)
-            .then(()=>{
+            loginUser(body)
+            .then((user)=>{
+                setUser(user)
+                this.props.history.push('/app/home')
                 this.setState({loading:false})
             })
             .catch((err)=>[
@@ -120,6 +126,7 @@ class Login extends React.Component{
     render(){
         return (
             <>
+                <Head color={'#046FA7'}/>
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div className="signin">
@@ -222,4 +229,4 @@ class Login extends React.Component{
         );
     }
 }
-export default withStyles(styles)(Login);
+export default withStyles(styles)(withRouter(Login));

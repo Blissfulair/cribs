@@ -8,12 +8,11 @@ import {Alert} from "@material-ui/lab"
 import VisibilityIcon from '@material-ui/icons/VisibilityOutlined';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOffOutlined';
 import { IconButton } from "@material-ui/core";
-import AppContext from "../../../state/context";
+import AppHeader from "../../../components/appHeader";
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
 class Setting extends React.Component{
-    static contextType = AppContext
     constructor(props){
         super(props)
         this.state ={
@@ -131,6 +130,7 @@ class Setting extends React.Component{
             )
         return (
             <>
+                    <AppHeader/>
                     <Grid container justify="center">
                         <Grid item md={11}>
                             <Grid container>

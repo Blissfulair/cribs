@@ -12,19 +12,47 @@ const RentRoute = ({component: Component,history, ...rest}) => {
 
 
                 // state.user && state.user.emailVerified?
-                rest.emailVerify?
+                rest.user?
+                rest.user.emailVerify?
                 <Component {...props} />
-                // :
-
-                // <Redirect to='/app/dashboard' />
                 :
-                props.location.pathname.includes('payment')?
-                    <Redirect to={{ pathname: "/login", state: { referer: props.location } }} />
-                :
-                props.location.pathname.includes('app')?
                 <Redirect to='/verification' />
                 :
                 <Redirect to="/"/>
+
+            // :
+            //  <Redirect to={{ pathname: "/login", state: { referer: props.location } }} />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // state.user && state.user.emailVerified?
+                // rest.user?
+                // rest.user.emailVerify&&
+                // <Component {...props} />
+                // // :
+
+                // // <Redirect to='/app/dashboard' />
+                // :
+                // props.location.pathname.includes('payment')?
+                //     <Redirect to={{ pathname: "/login", state: { referer: props.location } }} />
+                // :
+                // props.location.pathname.includes('app')?
+                // <Redirect to='/verification' />
+                // :
+                // <Redirect to="/"/>
 
             // :
             //  <Redirect to={{ pathname: "/login", state: { referer: props.location } }} />

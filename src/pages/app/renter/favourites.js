@@ -6,12 +6,13 @@ import Splash from "../../../components/splash"
 import Explore from "../../../components/explore";
 import  MapContainer  from "../../../components/map";
 import {withRouter} from "react-router-dom"
-import Context from "../../../state/context"
+import AppHeader from "../../../components/appHeader"
 import benin from "../../../images/benin.jpeg"
 import abuja from "../../../images/abuja.jpg"
 import lagos from "../../../images/lagos.jpg"
 import kano from "../../../images/kano.jpeg"
 import { getFavs } from "../../../helpers/helpers";
+import { connect } from "react-redux";
 const styles = theme =>({
     container:{
         paddingTop:100
@@ -40,7 +41,6 @@ const styles = theme =>({
     }
 })
 class Favourites extends Component{
-    static contextType = Context
     constructor(props){
         super(props)
         this.state={
@@ -55,11 +55,11 @@ class Favourites extends Component{
     }
     componentDidMount(){
         let properties = JSON.parse(window.localStorage.getItem('@fi'))
-        const favourites =getFavs()
-        this.context.getFavourite(properties)
-        .then(()=>{
-            this.setState({isLoading:false, favourites})
-        })
+        // const favourites =getFavs()
+        // this.context.getFavourite(properties)
+        // .then(()=>{
+        //     this.setState({isLoading:false, favourites})
+        // })
     }
 
      handleChange = (event) => {
@@ -71,10 +71,11 @@ class Favourites extends Component{
 
     return(
         <>
-            {
+            {/* {
                 this.state.isLoading&&
                     <Splash />
-            }
+            } */}
+            <AppHeader/>
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
                     <div className={classes.container}>
@@ -82,7 +83,7 @@ class Favourites extends Component{
                             <Grid item xs={12} md={6}>
 
                                 {
-                                    this.context.state.favourite.length>0?
+                                    this.props.favourites.length>0?
                                     <>
                                     <Grid container justify="space-between">
                                     <Grid item>
@@ -104,7 +105,7 @@ class Favourites extends Component{
                                     </Grid>
                                 </Grid>
                                     {
-                                        this.context.state.favourite.map((result,index)=>{
+                                        this.props.favourites.map((result,index)=>{
                                                 return(
                                                     <Searchs favourite={this.state.favourites.includes(result.id)} content={result}   name={`rating${index}`} key={index}/>
                                                 )
@@ -137,4 +138,7 @@ class Favourites extends Component{
     )
 }
 }
-export default withRouter(withStyles(styles)(Favourites));
+const mapStateToProps=state=>({
+    favourites:state.favourites
+})
+export default connect(mapStateToProps)(withRouter(withStyles(styles)(Favourites)));

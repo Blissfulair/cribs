@@ -7,9 +7,10 @@ import "./../profile.css"
 import { Grid, Typography,withStyles, IconButton, Avatar } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import AppContext from "../../../state/context";
+import AppHeader from "../../../components/appHeader"
+import { connect } from "react-redux";
 
-const ProfileDetails = ({context,uploadImage})=>{
+const ProfileDetails = ({user,uploadImage})=>{
     return(
         <div style={{paddingTop:80}} className="inbox">
         <div className="inbox-head dashboard-mt">
@@ -21,8 +22,8 @@ const ProfileDetails = ({context,uploadImage})=>{
         <div className="profile">
             <div className="profile-img">
                 {
-                    context.state.photoURL?
-                    <img id="img" src={context.state.photoURL} alt={context.state.userData.firstname} />
+                    user.image?
+                    <img id="img" src={user.image} alt={user.firstname} />
                     :
                     <Avatar/>
                 }
@@ -34,7 +35,7 @@ const ProfileDetails = ({context,uploadImage})=>{
                     </label>
             </div>
             <div className="profile-details">
-                <h4 className="title">{context.state.userData.firstname + ' '+ context.state.userData.lastname}</h4>
+                <h4 className="title">{user.firstname + ' '+ user.lastname}</h4>
                 <p className="review"> Reviews</p>
                 <Grid container alignItems="center">
                     <Typography style={{color:'#00A8C8', fontSize:20, fontWeight:'bold', marginRight:10}}>6.6</Typography>
@@ -61,8 +62,8 @@ const ProfileDetails = ({context,uploadImage})=>{
                 <Typography variant="h5" className="underline-title">Bio</Typography>
                 <p>
                     {
-                        context.state.userData.bio?
-                        context.state.userData.bio
+                        user.bio?
+                        user.bio
                         :'Write something about yourself'
                     }
                 </p>
@@ -74,23 +75,23 @@ const ProfileDetails = ({context,uploadImage})=>{
                     <tbody>
                         <tr>
                             <td>Phone:</td>
-                            <td>{context.state.userData.phone }</td>
+                            <td>{user.phone }</td>
                         </tr>
                         <tr>
                             <td>Address:</td>
-                            <td>{context.state.userData.address }</td>
+                            <td>{user.address }</td>
                         </tr>
                         <tr>
                             <td>Email:</td>
-                            <td>{context.state.userData.email }</td>
+                            <td>{user.email }</td>
                         </tr>
                         <tr>
                             <td>Facebook:</td>
-                            <td>{context.state.userData.facebook }</td>
+                            <td>{user.facebook }</td>
                         </tr>
                         <tr>
                             <td>LinkedIn:</td>
-                            <td>{context.state.userData.linkedin }</td>
+                            <td>{user.linkedin }</td>
                         </tr>
                     </tbody>
                 </table>
@@ -99,11 +100,11 @@ const ProfileDetails = ({context,uploadImage})=>{
                     <tbody>
                         <tr>
                             <td>Date of Birth:</td>
-                            <td>{context.state.userData.dob }</td>
+                            <td>{user.dob }</td>
                         </tr>
                         <tr>
                             <td>Gender:</td>
-                            <td>{context.state.userData.gender }</td>
+                            <td>{user.gender }</td>
                         </tr>
                     </tbody>
                 </table>
@@ -122,7 +123,6 @@ const StyledRating = withStyles({
     },
   })(Rating);
 class Profile extends React.Component{
-    static contextType = AppContext
     constructor(props){
         super(props);
         this.state = {
@@ -158,20 +158,21 @@ class Profile extends React.Component{
     }
     uploadImage = (e)=>{
         let image = e.target.files[0];
-        this.context.uploadProfilePhoto(image)
-        .then(()=>{
-            // con
-        })
+        // this.context.uploadProfilePhoto(image)
+        // .then(()=>{
+        //     // con
+        // })
     }
 
 
     render(){
         return (
             <>
+                    <AppHeader/>
                     <Grid container justify="center">
                         <Grid item md={11}>
                             <Grid container>
-                                <ProfileDetails context={this.context} uploadImage={this.uploadImage}/>
+                                <ProfileDetails user={this.props.user} uploadImage={this.uploadImage}/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -179,5 +180,8 @@ class Profile extends React.Component{
         )
     }
 }
-export default Profile;
+const mapStateToProps=state=>({
+    user:state.user
+})
+export default connect(mapStateToProps)(Profile);
 

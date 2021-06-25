@@ -107,6 +107,10 @@ textarea::-webkit-scrollbar{
     grid-template-columns: 15% 15% 15% 15% 15%;
     grid-column-gap: 5%;
     align-items: center;
+    margin-bottom: 15px;
+}
+.property-group:nth-child(3) .property-group-inner{
+    grid-template-columns: 15% 15% 15% 30%;
 }
 .property-group-inner .prop-remove{
     cursor: pointer;
@@ -194,22 +198,22 @@ textarea::-webkit-scrollbar{
 .other-images{
     margin: 34px 0;
 }
-.other-images label{
+.other-images label, .property-group{
     position: relative;
 }
-.other-images label .add-image{
+.other-images label .add-image, .property-group .add-room{
     width: 30px;
     height: 30px;
     position: absolute;
     right: -45px;
     top: -10px;
     border-radius: 50%;
-    background: #02D480;
+    background: #02D480 !important;
 }
-.other-images label .add-image::after{
+.other-images label .add-image::after, .property-group .add-room::after{
     position: absolute;
     content: '+';
-    font-size: 30px;
+    font-size: 30px !important;
     left: 0;
     top: 0;
     height: 100%;
@@ -342,6 +346,11 @@ textarea::-webkit-scrollbar{
 } */
 .rememberme input:checked ~ .checkmark::after{
     border-color: #0B6EA7 !important;
+}
+.property-form .property-group .add-room{
+    top: inherit;
+    left: 100px;
+    padding: 0;
 }
 /* .rememberme input {
     color:  #0B6EA7 !important;

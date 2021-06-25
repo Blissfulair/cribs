@@ -6,11 +6,13 @@ import image from  "../../images/placeholder.jpg"
 import {Snackbar, Slide } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Backend from "./layout"
-import AppContext from "../../state/context";
+import AppHeader from "../../components/appHeader";
 import Activity from '../../components/activity'
-import firebase from "../../components/firebase"
 import {states} from "../../icons/options"
 import {withRouter} from "react-router-dom"
+import { connect } from "react-redux";
+import { addProperty, propertyTypes } from "../../apis/server";
+import { setPropertyTypes } from "../../state/actions";
 
 
 const TransitionUp=(props)=>{
@@ -19,7 +21,6 @@ const TransitionUp=(props)=>{
 let images =[]
 let other_images =[]
 class AddProperty extends React.Component{
-    static contextType = AppContext
     constructor(props){
         super(props)
         this.state ={
@@ -37,7 +38,7 @@ class AddProperty extends React.Component{
             wifi:false,
             smoking:false,
             cable:false,
-            jaccuzi:0,
+            jaccuzi:false,
             kitchen:false,
             inside:'',
             around:'',
@@ -60,7 +61,10 @@ class AddProperty extends React.Component{
         if(dom !== null)
         dom.setAttribute('class', 'is-active')
         
-
+        propertyTypes()
+        .then(types=>{
+            this.props.setPropertyTypes(types)
+        })
     }
 
     uploadImage = (e)=>{
@@ -115,7 +119,7 @@ class AddProperty extends React.Component{
         const name = e.target.name;
         this.setState({[name]:e.target.value})
         if(e.target.value === 'on')
-        this.setState({[name]:1})
+        this.setState({[name]:true})
     }
     maxStringLength = (event,leng = 80)=>{
         const value = event.target.value;
@@ -185,12 +189,18 @@ class AddProperty extends React.Component{
 
         this.setState({rooms:rooms}) 
     }
+    onInput(e){
+        e.target.value = e.target.value.replace(/[^0-9]/g, '')
+    }
+    onInputAmount(e){
+        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g,'$1')
+    }
     onSubmit=(event)=>{
         event.preventDefault();
-        if(!this.context.state.userData.status){
-            this.setState({message:'Profile must be updated before you can publish a crib.', status:true})
-            return
-        }
+        // if(!this.props.user.phone){
+        //     this.setState({message:'Profile must be updated before you can publish a crib.', status:true})
+        //     return
+        // }
         if(this.state.title === '' || this.state.description === '' || this.state.state === ''
            || this.state.rooms[0].price === '' || this.state.rooms[0].room === '' || this.state.featured_image === null || this.state.guest<1 || other_images.length<1)
            {
@@ -206,80 +216,102 @@ class AddProperty extends React.Component{
         bathroom += room.bathroom
         bed += room.bed
     })
-const body = {
-    hostId:this.context.state.user.uid,
-    name:this.state.title,
-    description:this.state.description,
-    featuredImage:this.state.featured_image,
-    images:[ ...other_images],
-    amount:amount,
-    bedroom:bed,
-    discount:this.state.discount,
-    smoke:this.state.smoking,
-    wifi:this.state.wifi,
-    parking:this.state.parking,
-    cable:this.state.cable,
-    bathroom:bathroom,
-    kitchen:this.state.kitchen,
-    inside:this.state.inside,
-    around:this.state.around,
-    address:this.state.address,
-    guest:this.state.guest,
-    type:this.state.type !== ''?this.state.type:this.context.state.amenities[0].name,
-    house:this.state.house,
-    city:this.state.city,
-    state:this.state.state,
-    rooms:this.state.rooms,
-    hostData:{firstname:this.context.state.userData.firstname,lastname:this.context.state.userData.lastname, photoURL:this.context.state.photoURL,phone:this.context.state.userData.phone,email:this.context.state.userData.email}
-}
-firebase.storeProperty(body)
-.then(()=>{
-    this.setState({
-        title:'',
-        description:'',
-        house:'',
-        address:'',
-        price:'',
-        bedroom:1,
-        discount:0,
-        bathroom:0,
-        parking:false,
-        wifi:false,
-        smoking:false,
-        cable:false,
-        jaccuzi:0,
-        kitchen:false,
-        inside:'',
-        around:'',
-        guest:1,
-        featured_image:null,
-        type:'house',
-        other_images:[],
-        city:'',
-        state:'',
-        success:true,
-        rooms:[{room:'', price:'', bed:1,bathroom:0,bookedDates:[]}],
-        message:'Submitted successfully',
-        isLoading:false
-    })
+    const formData = new FormData();
+    formData.append('hostId', this.props.user.id)
+    formData.append('name', this.state.title)
+    formData.append('description', this.state.description)
+    formData.append('featuredImage', this.state.featured_image)
+    console.log(other_images)
+    Array.from(other_images).forEach(image => {
+        formData.append("images", image);
+    });
+    formData.append('amount', amount)
+    formData.append('bedroom', bed)
+    formData.append('discount', this.state.discount)
+    formData.append('smoke', this.state.smoking)
+    formData.append('wifi', this.state.wifi)
+    formData.append('parking', this.state.parking)
+    formData.append('cable', this.state.cable)
+    formData.append('bathroom', bathroom)
+    formData.append('kitchen', this.state.kitchen)
+    formData.append('address', this.state.address)
+    formData.append('guest', this.state.guest)
+    formData.append('type', 'duplex')
+    formData.append('house', this.state.house)
+    formData.append('city', this.state.city)
+    formData.append('state', this.state.state)
+    //formData.append('rooms[]',this.state.rooms)
+    formData.append('rooms', JSON.stringify(this.state.rooms))
+    formData.append('hostData', JSON.stringify({firstname:this.props.user.firstname,lastname:this.props.user.lastname, image:this.props.user.image,phone:this.props.user.phone,email:this.props.user.email}))
+// const body = {
 
-        const elements = document.querySelectorAll('.viewing')
-        for(let i =0 ; i< elements.length ; i++){
+//     kitchen:this.state.kitchen,
+//     inside:this.state.inside,
+//     around:this.state.around,
+//     address:this.state.address,
+//     guest:this.state.guest,
+//     type:'duplex',//this.state.type !== ''?this.state.type:this.props.amenities[0].name,
+//     house:this.state.house,
+//     city:this.state.city,
+//     state:this.state.state,
+//     rooms:this.state.rooms,
+//     hostData:{firstname:this.props.user.firstname,lastname:this.props.user.lastname, image:this.props.user.image,phone:this.props.user.phone,email:this.props.user.email}
+// }
+addProperty(formData)
+.then((res)=>{
+    this.setState({isLoading:false})
+    console.log(res)
+})
+.catch(e=>{console.log(e)})
+// firebase.storeProperty(body)
+// .then(()=>{
+//     this.setState({
+//         title:'',
+//         description:'',
+//         house:'',
+//         address:'',
+//         price:'',
+//         bedroom:1,
+//         discount:0,
+//         bathroom:0,
+//         parking:false,
+//         wifi:false,
+//         smoking:false,
+//         cable:false,
+//         jaccuzi:0,
+//         kitchen:false,
+//         inside:'',
+//         around:'',
+//         guest:1,
+//         featured_image:null,
+//         type:'house',
+//         other_images:[],
+//         city:'',
+//         state:'',
+//         success:true,
+//         rooms:[{room:'', price:'', bed:1,bathroom:0,bookedDates:[]}],
+//         message:'Submitted successfully',
+//         isLoading:false
+//     })
+
+//         const elements = document.querySelectorAll('.viewing')
+//         for(let i =0 ; i< elements.length ; i++){
             
-            elements[i].remove()
+//             elements[i].remove()
 
-        }
-        this.refs.form.reset();
-     })
-     .catch(err=>{
-         console.log(err)
-         this.setState({message:'Failed to submit', isLoading:false})
-     })
+//         }
+//         this.refs.form.reset();
+//      })
+//      .catch(err=>{
+//          console.log(err)
+//          this.setState({message:'Failed to submit', isLoading:false})
+//      })
 
     }
     render(){
         return (
             <>
+                <AppHeader/>
                 <Backend>
                     <Activity loading={this.state.isLoading}/>
                     <div className="inbox">
@@ -293,7 +325,7 @@ firebase.storeProperty(body)
 
                     {/* <!-- form --> */}
                     <div className="property-form dashboard-mt">
-                        <form ref='form' onSubmit={event=>{this.onSubmit(event)}} method="post" encType="multipart/form-data">
+                        <form  onSubmit={event=>{this.onSubmit(event)}} method="post" encType="multipart/form-data">
                         {
                                 this.state.message&&
                                 <Snackbar
@@ -350,6 +382,18 @@ firebase.storeProperty(body)
                                         </div>
                                     </div>
                                     <div className="col">
+                                        <label htmlFor="guest">Guest</label>
+                                        <div className="input">
+                                            <input type="text" onInput={this.onInput.bind()} value={this.state.guest}  onChange={this.changeHandler}  name="guest" id="guest" placeholder="E.g 1" />
+                                            <span><div className="angle"></div></span>
+                                        </div>
+                                    </div>
+                                    <div className="col">
+                                        <label htmlFor="cat">Address</label>
+                                        <div className="input">
+                                            <input type="text" onChange={(e)=>{this.changeHandler(e);this.getLocation(e.target.value)}} value={this.state.address}   id="cat" name="address" placeholder="45, Benin/Agbor Road" />
+                                            <span><div className="angle"></div></span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -365,20 +409,7 @@ firebase.storeProperty(body)
                                             <span><div className="angle"></div></span>
                                         </div>
                                     </div> */}
-                                    <div className="col">
-                                        <label htmlFor="guest">Guest</label>
-                                        <div className="input">
-                                            <input type="text" value={this.state.guest}  onChange={this.changeHandler}  name="guest" id="guest" placeholder="E.g 1" />
-                                            <span><div className="angle"></div></span>
-                                        </div>
-                                    </div>
-                                    <div className="col">
-                                        <label htmlFor="cat">Address</label>
-                                        <div className="input">
-                                            <input type="text" onChange={(e)=>{this.changeHandler(e);this.getLocation(e.target.value)}} value={this.state.address}   id="cat" name="address" placeholder="45, Benin/Agbor Road" />
-                                            <span><div className="angle"></div></span>
-                                        </div>
-                                    </div>
+
                                     <div className="col">
                                     </div>
                                 </div>
@@ -387,7 +418,7 @@ firebase.storeProperty(body)
                             <div className="property-group">
                                 <div style={{display:'flex', alignItems:'center'}}>
                                     <h3>Add room</h3>
-                                    <button style={{marginLeft:10}} onClick={this.onAdd}>Add</button>
+                                    <button className="add-room" style={{marginLeft:10}} onClick={this.onAdd}></button>
                                 </div>
                                 
                                 {
@@ -406,7 +437,7 @@ firebase.storeProperty(body)
                                         <div className="col">
                                             <label htmlFor="roomPrice">Room Price</label>
                                             <div className="input">
-                                                <input type="number" defaultValue={room.price} onChange={(e)=>{this.onAddPrice(e, i)}} placeholder="Eg 2000" name={`roomPrice${i}`}   />
+                                                <input type="text" onInput={this.onInputAmount.bind()} defaultValue={room.price} onChange={(e)=>{this.onAddPrice(e, i)}} placeholder="Eg 2000" name={`roomPrice${i}`}   />
                                                 <span>
                                                     <div className="angle"></div>
                                                 </span>
@@ -415,7 +446,7 @@ firebase.storeProperty(body)
                                         <div className="col">
                                             <label htmlFor="numberofbeds">Beds</label>
                                             <div className="input">
-                                                <input type="number"  onChange={(e)=>{this.onAddBed(e, i)}} placeholder="Eg 1" defaultValue={room.bed} name={`numberofbeds${i}`}   />
+                                                <input type="text" onInput={this.onInput.bind()} onChange={(e)=>{this.onAddBed(e, i)}} placeholder="Eg 1" defaultValue={room.bed} name={`numberofbeds${i}`}   />
                                                 <span>
                                                     <div className="angle"></div>
                                                 </span>
@@ -424,15 +455,20 @@ firebase.storeProperty(body)
                                         <div className="col">
                                             <label htmlFor="bathroom">Bathroom</label>
                                             <div className="input">
-                                                <input type="number" defaultValue={room.bathroom} onChange={(e)=>{this.onAddBathRoom(e, i)}} placeholder="Eg 0" name={`bathroom${i}`}   />
+                                                <input type="text" onInput={this.onInput.bind()} defaultValue={room.bathroom} onChange={(e)=>{this.onAddBathRoom(e, i)}} placeholder="Eg 0" name={`bathroom${i}`}   />
                                                 <span>
                                                     <div className="angle"></div>
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className="col">
-                                            <span aria-hidden={true} onClick={()=>this.remove(i)} className='prop-remove'>Remove</span>
-                                        </div>
+
+                                            <div className="col">
+                                            {
+                                            i>0&&
+                                                <span aria-hidden={true} onClick={()=>this.remove(i)} className='prop-remove'>Remove</span>
+                                            }
+                                            </div>
+                                      
                                     </div>
                                     ))
                                 }
@@ -547,18 +583,18 @@ firebase.storeProperty(body)
                                     <h3>Type</h3>
                                     <ul className="prop-type">
                                         {
-                                            this.context.state.amenities.map((amenity,i)=>(
+                                            this.props.propertyTypes.map((amenity,i)=>(
                                             <li key={i}>
                                                 <label className="radio">
                                                     {
                                                         i===0?
-                                                        <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue={amenity.name}  name="type" id={amenity.id} />
+                                                        <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue={amenity.name}  name="type" id={amenity._id} />
                                                         :
-                                                        <input type="radio" onChange={this.changeHandler}  defaultValue={amenity.name}  name="type" id={amenity.id} />
+                                                        <input type="radio" onChange={this.changeHandler}  defaultValue={amenity.name}  name="type" id={amenity._id} />
                                                     }
                                                     <span className="radio-mark"></span>
                                                 </label>
-                                                <label style={{textTransform:'capitalize'}} htmlFor={amenity.id}>{amenity.name}</label>
+                                                <label style={{textTransform:'capitalize'}} htmlFor={amenity._id}>{amenity.name}</label>
                                             </li>
                                             ))
                                         }
@@ -669,4 +705,12 @@ firebase.storeProperty(body)
         )
     }
 }
-export default withRouter(AddProperty);
+const mapStateToProps=state=>({
+    user:state.user,
+    states:state.states,
+    propertyTypes:state.propertyTypes
+})
+const mapDispatchToProps=dispatch=>({
+    setPropertyTypes:(payload) => dispatch(setPropertyTypes(payload))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(AddProperty));

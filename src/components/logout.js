@@ -1,4 +1,4 @@
-import React,{useContext} from 'react';
+import React from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
@@ -10,17 +10,18 @@ import MenuList from '@material-ui/core/MenuList';
 // import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 // import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {withRouter} from "react-router-dom"
-import AppContext from '../state/context';
 // import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import { Divider } from '@material-ui/core';
+import { signOut } from '../apis/server';
+import { setUser } from '../state/actions';
+import { connect } from 'react-redux';
 const styles = () => ({
     item:{
         marginLeft:10
     }
 });
 
-const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
-  const {signOut,state} = useContext(AppContext)
+const LogoutModal=({logout, logoutRef, setLogout,classes,history, dashboard})=>{
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -37,8 +38,10 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
 
   const onLogout = ()=>{
     signOut()
-    .then(()=>{
+    .then((res)=>{
+      setUser(null)
       window.sessionStorage.removeItem('@dash')
+      history.push('/login')
     })
   }
   return (
@@ -53,7 +56,7 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
                 <ClickAwayListener onClickAway={closeLogout}>
                   <MenuList autoFocusItem={logout} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     {
-                      state.dashboard?
+                      dashboard?
                         <>
                           <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/myprofile')}}>Profile</MenuItem>
                           <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/favourites')}}>Favourites</MenuItem>
@@ -85,5 +88,7 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history})=>{
       </div>
   );
 }
-
-export default withRouter(withStyles(styles)(LogoutModal))
+const mapStateToProps=state=>({
+  dashboard:state.dashboard
+})
+export default connect(mapStateToProps)(withRouter(withStyles(styles)(LogoutModal)))

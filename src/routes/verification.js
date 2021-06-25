@@ -6,6 +6,7 @@ import AppContext from '../state/context';
 const VerifyRoute = ({component: Component,history, ...rest}) => {
     // const {state} = useContext(AppContext)
     // const dash = getDashboard()
+    
     return (
 
         // Show the component only when the user is logged in

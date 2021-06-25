@@ -1,5 +1,6 @@
 import React from "react";
 import '../../scss/NavButton.scss';
+import {Link} from "react-router-dom"
 
 // const Wrapper = styled.div`
 //     display: flex;
@@ -39,7 +40,7 @@ const Button = ({
         href,
     }) => {
     return (
-        <a href={href} style={{
+        <Link to={href} style={{
             color:`${color}`,
             backgroundColor:`${backgroundColor}`,
             marginRight:`${marginRight}`,
@@ -55,7 +56,7 @@ const Button = ({
 
         }}>
             {children}
-        </a>
+        </Link>
         // <Wrapper 
         //     color={color}
         //     backgroundColor={backgroundColor}

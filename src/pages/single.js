@@ -44,6 +44,9 @@ import HostPopUp from "../components/hostPopUp";
 import BookingCalendar from "../react-calender/src/BookingCalendar";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import { connect } from "react-redux";
+import { setCrib } from "../state/actions";
+import { getCribById } from "../apis/server";
 const styles = theme =>({
     container:{
         paddingTop:140,
@@ -236,21 +239,29 @@ class Single extends Component{
     }
     componentDidMount(){
         const id = this.props.location.pathname.split('crib')[1].replace('/','')
-        this.context.getPropertyById(id)
-        .then((property)=>{
-            const checkOut = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-            const checkIn = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        getCribById(id)
+        .then(crib=>{
+            this.props.setCrib(crib)
+            const checkIn = new Date()
+            const checkOut = new Date()
             const dates = getDates(checkIn,checkOut);
-            this.context.storeActivity(property)
-        this.setState({loading:false, days:dates.length, price:property.amount, property:property})
+            this.setState({loading:false, days:dates.length, price:crib.amount, property:crib})
         })
+        // this.context.getPropertyById(id)
+        // .then((property)=>{
+        //     const checkOut = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        //     const checkIn = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        //     const dates = getDates(checkIn,checkOut);
+        //     this.context.storeActivity(property)
+        // this.setState({loading:false, days:dates.length, price:property.amount, property:property})
+        // })
         const favourite = getFav(id)
         this.setState({
             favourite:favourite,
-            property:this.context.state.property,
-            guest:this.context.state.searchQuery?this.context.state.searchQuery.guest:1,
-            checkIn:this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut:this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+            property:this.props.crib,
+            guest:1,//this.context.state.searchQuery?this.context.state.searchQuery.guest:1,
+            checkIn:new Date(),//this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkOut:new Date()//this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
         })
     }
     // useEffect(()=>{
@@ -361,8 +372,9 @@ class Single extends Component{
     }
     render(){   
     const {classes} = this.props
-    this.propert = this.context.state.property
+    this.propert = this.state.property
     const property =this.propert
+    console.log(property)
     if(property)
     property.amount = this.state.price
     const summary = {
@@ -371,16 +383,16 @@ class Single extends Component{
         nights:this.state.days,
         guest:this.state.guest,
         amount:property?Number(property.amount):0,
-        id:property?property.id:'',
+        id:property?property._id:'',
         name:property?property.name:'',
         rooms:this.state.room.length<1?property?property.rooms:[]:this.state.room,
         state:property?property.state:'',
         city:property?property.city:'',
         image:property?property.featuredImage:'',
-        firstname:property?property.hostData.firstname:'',
-        lastname:property?property.hostData.lastname:'',
-        phone:property?property.hostData.phone:'',
-        hostEmail:property?property.hostData.email:'',
+        firstname:property?property.host.firstname:'',
+        lastname:property?property.host.lastname:'',
+        phone:property?property.host.phone:'',
+        hostEmail:property?property.host.email:'',
         photoURL:null,
         address:property?property.address:'',
         hostId:property?property.hostId:'',
@@ -394,17 +406,17 @@ class Single extends Component{
         books.push(...room.bookedDates)
        })
        
-       checkOut = books.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
-       checkIn = books.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkIn).toDateString())
-       books.forEach(date=>dates.push(new Date(date.seconds*1000)))
+       checkOut = books.filter(item=>new Date(item.date).toDateString() === new Date(this.state.checkOut).toDateString())
+       checkIn = books.filter(item=>new Date(item.date).toDateString() === new Date(this.state.checkIn).toDateString())
+       books.forEach(date=>dates.push(new Date(date.date)))
        dates.sort((a,b)=>new Date(b)-new Date(a))
     }
     if(this.state.rooms && this.state.change ){
       
-        checkOut = this.state.rooms.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkOut).toDateString())
-        checkIn = this.state.rooms.bookedDates.filter(item=>new Date(item.seconds*1000).toDateString() === new Date(this.state.checkIn).toDateString())
+        checkOut = this.state.rooms.bookedDates.filter(item=>new Date(item.date).toDateString() === new Date(this.state.checkOut).toDateString())
+        checkIn = this.state.rooms.bookedDates.filter(item=>new Date(item.date).toDateString() === new Date(this.state.checkIn).toDateString())
         
-        this.state.rooms.bookedDates.forEach(date=>dates.push(new Date(date.seconds*1000)))
+        this.state.rooms.bookedDates.forEach(date=>dates.push(new Date(date.date)))
         dates.sort((a,b)=>new Date(b)-new Date(a))
    }
 
@@ -413,6 +425,8 @@ class Single extends Component{
     return(
             <Grid container justify="center">
                 <Grid item xs={11} md={10} >
+                    {
+                        property&&
                     <div id="singlepage" className={classes.container}>
                         <Grid container justify="flex-start" style={{position:'relative'}} spacing={3}>
                             <Grid item xs={12} md={8} sm={12}>
@@ -757,7 +771,7 @@ class Single extends Component{
                                                         <label htmlFor="check-out">
                                                             <Calendar htmlColor="#00A8C8" fontSize="small" />
                                                         </label>
-                                                        <TextField defaultValue={this.context.state.searchQuery?this.context.state.searchQuery.guest:property.guest} onChange={(e)=>this.setState({guest:e.target.value})} className="single" id="guest"  label="Guests" variant="outlined" />
+                                                        <TextField defaultValue={property.guest} onChange={(e)=>this.setState({guest:e.target.value})} className="single" id="guest"  label="Guests" variant="outlined" />
                                                     </div>
                                                 </div>
                                                 {
@@ -809,8 +823,8 @@ class Single extends Component{
                                                             <Typography variant="caption" style={{cursor:'pointer'}} component="p" onClick={this.handleClickOpen}>view details</Typography>
                                                         }
                                                         <PopUP onReserved={this.onReserved} summary={summary} open={this.state.open} handleClose={this.handleClose} />
-                                                        <Share text={property.name+'-'+property.description} url={'http://localhost:3000/crib/'+property.id.replace('/','')} triger={this.state.triger} close={this.shareClose} />
-                                                        <HostPopUp host={property.hostData}  triger={this.state.hostTriger} close={this.hostClose} />
+                                                        <Share text={property.name+'-'+property.description} url={'http://localhost:3000/crib/'+property._id.replace('/','')} triger={this.state.triger} close={this.shareClose} />
+                                                        <HostPopUp host={property.host}  triger={this.state.hostTriger} close={this.hostClose} />
                                                     </Grid>
                                                 </Grid>
                                                 {
@@ -828,10 +842,10 @@ class Single extends Component{
                                                     <Typography variant="h6" style={{textAlign:'center', color:'#000000', paddingTop:'1rem'}} >Speak to the Host</Typography>
                                                 <Grid container style={{marginTop:10,marginBottom:5}}>
                                                     <Grid item xs={3}>
-                                                        <Avatar alt={property.hostData.firstname} style={{width:50, height:50}} src={property.hostData.photoURL}/>
+                                                        <Avatar alt={property.host.firstname} style={{width:50, height:50}} src={property.host.image}/>
                                                     </Grid>
                                                     <Grid item xs={9}>
-                                                        <Typography variant="subtitle1"  component="p">{property.hostData.firstname +' '+ property.hostData.lastname}</Typography>
+                                                        <Typography variant="subtitle1"  component="p">{property.host.firstname +' '+ property.host.lastname}</Typography>
                                                         <button type="button" style={{background:'transparent', border:'none'}} onClick={this.hostOpen}>
                                                         <Typography style={{paddingBottom:'1rem'}} variant="caption"  component="p">Contact host</Typography>
                                                         </button>
@@ -903,10 +917,17 @@ class Single extends Component{
                             </Grid>
                         </Grid>
                     </div>
+                    }
                 </Grid>
             </Grid>
   
     )
 }
 }
-export default withRouter(withStyles(styles)(Single));
+const mapStateToProps=state=>({
+    crib:state.crib
+})
+const mapDispatchToProps = dispatch => ({
+    setCrib: (payload) => dispatch(setCrib(payload))
+  });
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(withStyles(styles)(Single)));

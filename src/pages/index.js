@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import '../scss/index.scss';
+// import '../scss/index.scss';
 import styled from "styled-components";
 // import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 // import {
@@ -9,10 +9,11 @@ import styled from "styled-components";
 import NavButton from "../components/Button/NavButton";
 import { withStyles } from "@material-ui/core/styles"
 import bg from "../images/login_bg.png"
+import Search from "../images/search.png"
 // import Paper from '@material-ui/core/Paper';
 import Typography from "@material-ui/core/Typography"
 // import LocationOnIcon from '@material-ui/icons/LocationOn';
-// import Calendar from "@material-ui/icons/Today"
+import Calendar from "@material-ui/icons/Today"
 // import People from "@material-ui/icons/PeopleOutline"
 import Grid from "@material-ui/core/Grid"
 import Container from '@material-ui/core/Container';
@@ -30,12 +31,14 @@ import AppContext from "../state/context";
 // import { Button, TextField } from "@material-ui/core";
 import house from "../images/house.png"
 import bangalow from "../images/bangalow.png"
+import UnderlineIcon from "../images/underline.png"
 import condos from "../images/condos.png"
 import benin from "../images/benin.jpeg"
 import abuja from "../images/abuja.jpg"
 import lagos from "../images/lagos.jpg"
 import kano from "../images/kano.jpeg"
 import cottage from "../images/cottage.png"
+import showcase from "../images/showcase.png"
 // import ShowcaseImage from "../images/showcase.png"
 import cribs from "../images/cribs.svg"
 import SearchIcon from "../images/searchicon.svg"
@@ -45,6 +48,7 @@ import { getFavs, getDates } from "../helpers/helpers";
 import LocationCard from "../components/Cards/LocationCard";
 import { connect } from "react-redux";
 import { setAuth } from "../state/actions"
+import GuestCard from "../components/Cards/GuestCard";
 
 
 
@@ -248,8 +252,59 @@ class Index extends Component {
                         this.state.loading &&
                         <Splash />
                     }
+                    <ShowCase className="w-full pt-4">
+                        {/* header */}
+                        <div className="flex items-center justify-between w-11/12 mx-auto">
+                            <Logo className="text-[#FCFCFC] text-lg md:text-2xl font-poppins font-bold">Cribs NG</Logo>
+                            <div className="flex">
+                                <Accommodation href="/" className="text-[#FCFCFC] text-sm hidden md:flex font-poppins font-medium mr-14 rounded-3xl border-2 border-[#FCFCFC]">Host Accomodation</Accommodation>
+                                <Signin href="/" className="text-[#FCFCFC] md:text-sm font-poppins font-medium flex bg-[#046FA7] hover:opacity-90 w-24 rounded-3xl justify-center">Sign in</Signin>
+                            </div>
+                        </div>
+                        <div className="flex justify-center pt-16 mb-4 md:mb-8">
+                            <Heading className="text-2xl md:text-5xl text-[#FCFCFC] font-poppins relative">
+                                HOME FOR EVERYONE
+                                <UnderLine className="absolute bottom-1 md:-bottom-4 right-0 w-32 md:w-56" src={UnderlineIcon} alt="" />
+                            </Heading>
+                        </div>
 
-                    <div className="showcase">
+                        {/* Form */}
+                        <FormCard className="py-4 xl:rounded-[52px] select-none">
+                            <Form autocomplete="off" className=" px-3 xl:flex justify-between items-center">
+                                <FormField className="bg-[#FCFCFC] flex flex-col rounded-[42px] flex-auto mr-2 py-2 px-5 z-[9999] xl:w-72 h-[70] relative">
+                                    {/* Location card shows only on screen size of 1280px and above */}
+                                    <LocationCard />
+                                    <label htmlFor="location" className="text-black text-sm font-poppins font-medium">
+                                        Location
+                                    </label>
+                                    <Input className="text-[#8F8F8F] bg-transparent font-poppins text-sm font-medium outline-none" type="text" name="" id="location" placeholder="Where do you want to lodge?" autocomplete="off" />
+                                </FormField>
+                                <div className="grid grid-cols-2 gap-x-2 mt-3 xl:mt-0 mr-2">
+                                    <FormField className="bg-[#FCFCFC] flex flex-col rounded-[42px] py-2 px-5 xl:w-40 h-[70]">
+                                        <h1 className="text-sm font-poppins font-medium text-black">Check In</h1>
+                                        <small className="text-xs xl:text-sm font-poppins font-medium text-[#8F8F8F]">Pick Dates</small>
+                                    </FormField>
+                                    <FormField className="bg-[#FCFCFC] flex flex-col rounded-[42px] py-2 px-5 xl:w-40 h-[70]">
+                                        <h1 className="text-sm font-poppins font-medium text-black">Check Out</h1>
+                                        <small className="text-xs xl:text-sm  font-poppins font-medium text-[#8F8F8F]">Pick Dates</small>
+                                    </FormField>
+                                </div>
+                                <div className="grid grid-cols-2 gap-x-2 mt-3 xl:mt-0">
+                                    <FormField className="bg-[#FCFCFC] flex flex-col rounded-[42px] py-2 px-5 xl:w-[173] h-[70] relative">
+                                        <GuestCard />
+                                        <h1 className="text-sm font-poppins font-medium text-black">Guests</h1>
+                                        <small className="text-xs font-poppins font-medium text-[#8F8F8F]">Select Guests</small>
+                                    </FormField>
+                                    <FormField className="bg-[#005C9F] flex items-center rounded-[42px] justify-center h-[70] cursor-pointer">
+                                        <img src={SearchIcon} alt="" />
+                                        <p className="text-white font-poppins text-sm font-medium ml-2">Search</p>
+                                    </FormField>
+                                </div>
+                            </Form>
+                        </FormCard>
+                    </ShowCase>
+
+                    {/* <div className="showcase">
                         <div className="showcase__header">
                             <div className="showcase__logo">
                                 <a href="/">Cribs NG</a>
@@ -350,7 +405,7 @@ class Index extends Component {
                             </div>
                         </div>
 
-                    </div>
+                    </div> */}
 
 
 
@@ -508,3 +563,79 @@ const mapDispatchToProps = dispatch => ({
     setAuth: (payload) => dispatch(setAuth(payload))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Index)));
+
+const ShowCase = styled.main`
+    background:url(${showcase}) no-repeat center center/cover;
+    background: #000;
+    height: 100vh;
+    position: relative;
+    &:before{
+        content:'';
+        position: absolute;
+        z-index: -1;
+        top:0;
+        left:0;
+        height: 100%;
+        width: 100%;
+        background: linear-gradient(180deg, #02536C 0%, rgba(0, 0, 0, 0) 100%);
+        
+    }
+`;
+
+const Logo = styled.h1`
+    z-index: 9999;
+`;
+
+const Accommodation = styled.a`
+    &&& {
+        z-index: 9999;
+    }
+    `;
+
+const Signin = styled.a`
+    z-index: 9999;
+    line-height: 21px;
+`;
+
+const Heading = styled.h6`
+    z-index: 9999;
+    line-height: 72px;
+    &&{
+        color: #ffffff;
+    }
+`;
+
+const UnderLine = styled.img`
+    z-index: 9999;
+`;
+
+const FormCard = styled.div`
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 4px 4px rgba(157, 157, 157, 0.1);
+    backdrop-filter: blur(11px);
+    width:min(90%, 986px);
+    margin: auto;
+    height: fit-content;
+    z-index: 9999999999999999;
+`;
+
+const Form = styled.form`
+    &&{
+        z-index: 9999999999999999;
+    }
+`;
+const FormField = styled.div`
+    &&{
+        z-index: 9999;
+    }
+`;
+
+const Input = styled.input`
+z-index: 9999;
+  :-webkit-autofill,
+  :-webkit-autofill:hover,
+  :-webkit-autofill:focus,
+  :-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #FCFCFC inset !important;
+  }
+`;

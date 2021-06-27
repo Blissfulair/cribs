@@ -15,7 +15,7 @@ const TrendingCribsCard = ({ Image, city, place, address }) => {
 					src={FavoriteIcon}
 					alt=""
 				/>
-				<div className="absolute flex bottom-2 left-[17px]">
+				<div className="absolute flex bottom-[20px] left-[17px]">
 					{starList.map((Icon, index) => (
 						<img src={Icon} key={index} alt="" />
 					))}

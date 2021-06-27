@@ -49,6 +49,7 @@ import LocationCard from "../components/Cards/LocationCard";
 import { connect } from "react-redux";
 import { setAuth } from "../state/actions"
 import GuestCard from "../components/Cards/GuestCard";
+import TrendingCribs from "../components/TrendingCribs";
 
 
 
@@ -475,6 +476,7 @@ class Index extends Component {
                     </Grid>
                 </Grid>
             </Grid> */}
+            
                     <Grid container justify="center" >
                         <Grid item xs={11} md={10} >
                             <Typography classes={{ root: classes.title }} variant="h3">Where would you like to stay?</Typography>
@@ -492,6 +494,8 @@ class Index extends Component {
                                     <Stays title="Duplex" link={`/search?type=duplex`} image={cottage} available={1000} color="#000000" />
                                 </Grid>
                             </Grid>
+
+                            <TrendingCribs/>
 
                             {/* {
                                 this.context.state.properties.length > 0 ?

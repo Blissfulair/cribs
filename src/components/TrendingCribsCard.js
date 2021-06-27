@@ -1,12 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import CribsDetails from "./CribsDetails";
+import FavoriteIcon from "../images/favorite.png";
+import StarIcon from "../images/star.png";
 
-const TrendingCribsCard = ({Image, city, place, address}) => {
+const TrendingCribsCard = ({ Image, city, place, address }) => {
+	const starList = new Array(5).fill(StarIcon);
 	return (
 		<Card className="py-5 px-2 mt-12">
-			<div>
+			<div className="relative">
 				<img className="w-full" src={Image} alt="" />
+				<img
+					className="absolute top-[14px] left-[17px]"
+					src={FavoriteIcon}
+					alt=""
+				/>
+				<div className="absolute flex bottom-2 left-[17px]">
+					{starList.map((Icon, index) => (
+						<img src={Icon} key={index} alt="" />
+					))}
+				</div>
 			</div>
 
 			<div className="mt-9 pl-4">

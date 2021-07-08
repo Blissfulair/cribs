@@ -22,8 +22,8 @@ const LandingPage = () => {
 
 export default LandingPage;
 
-const ShowCase = styled.section`
-	/* background: url(${showcase}) no-repeat center center/cover; */
-	/* position: relative; */
-	/* height: 130vh; */
-`;
+// const ShowCase = styled.section`
+// 	/* background: url(${showcase}) no-repeat center center/cover; */
+// 	/* position: relative; */
+// 	/* height: 130vh; */
+// `;

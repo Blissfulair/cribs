@@ -8,7 +8,6 @@ import { CssBaseline, Paper } from "@material-ui/core";
 import Navigation from "./components/navigation";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import LandingPage from "./pages/landing page/LandingPage";
 
 function App() {
 	let theme = createMuiTheme({

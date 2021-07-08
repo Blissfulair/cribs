@@ -5,6 +5,7 @@
   "dependencies": {
     "@brainhubeu/react-carousel": "^1.19.26",
     "@date-io/date-fns": "^1.3.13",
+    "@heroicons/react": "^1.0.1",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
@@ -57,5 +58,5 @@
   "devDependencies": {
     "file-loader": "^6.1.0"
   },
-  "proxy": "http://services.cribng.com"
+  "proxy": "https://services.cribng.com"
 }

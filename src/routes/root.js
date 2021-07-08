@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {Switch} from "react-router-dom"
 import Payment from "../pages/Payment";
 import Index from "../pages/index"
-import LandingPage from "../pages/landing page/LandingPage"
 import  Search from "../pages/search";
 import Single from "../pages/single";
 import Login from "../pages/login";

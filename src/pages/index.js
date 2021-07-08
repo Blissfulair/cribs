@@ -244,10 +244,10 @@ class Index extends Component {
         searchProperties({search:this.state.location})
         .then((res) => {
             console.log(res)
-            this.props.history.push({
-                pathname: '/search',
-                search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
-            })
+            // this.props.history.push({
+            //     pathname: '/search',
+            //     search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
+            // })
             this.setState({ loading: false })
         })
         .catch(e => {

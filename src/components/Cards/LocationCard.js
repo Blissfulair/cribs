@@ -26,3 +26,15 @@ const LocationCard = ({results}) => {
 }
 
 export default LocationCard;
+
+// const Card = styled.div`
+// z-index: 999999;
+// `;
+
+// const DropDownIcon = styled.div`
+// 	height: 0;
+// 	width: 0;
+// 	border-left: 20px solid transparent;
+// 	border-right: 20px solid transparent;
+// 	border-bottom: 20px solid #fff;
+// `;

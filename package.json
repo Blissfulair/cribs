@@ -57,5 +57,5 @@
   "devDependencies": {
     "file-loader": "^6.1.0"
   },
-  "proxy": "https://services.cribng.com"
+  "proxy": "http://services.cribng.com"
 }

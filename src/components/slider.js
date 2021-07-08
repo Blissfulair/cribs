@@ -64,4 +64,4 @@ const Slide = ({content,favourites,user})=>{
 const mapStateToProps=state=>({
     user:state.user
 })
-export default connect()(Slide);
+export default connect(mapStateToProps)(Slide);

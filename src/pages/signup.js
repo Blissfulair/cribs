@@ -12,6 +12,7 @@ import AppContext from "../state/context";
 import { registerUser } from "../apis/server";
 import { setUser } from "../state/actions";
 import Head from "../components/head";
+import { connect } from "react-redux";
 //import firebase from "../components/firebase"
 
 
@@ -111,8 +112,7 @@ class SignUp extends React.Component{
             }
             registerUser(body)
             .then((user)=>{
-                setUser(user)
-                console.log(user)
+                this.props.setUser(user)
                 this.setState({loading:false})
                 this.props.history.push('/verification')
             })
@@ -284,4 +284,10 @@ class SignUp extends React.Component{
         );
     }
 }
-export default withRouter(withStyles(styles)(SignUp));
+const mapDispatchToProps=dispatch=>({
+    setUser: (payload) => dispatch(setUser(payload))
+})
+const mapStateToProps=state=>({
+    user:state.user
+})
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(SignUp)));

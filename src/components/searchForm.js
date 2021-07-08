@@ -1,5 +1,5 @@
 
-import React,{useState,useContext, useEffect} from "react";
+import React,{useState, useEffect} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Calendar from "@material-ui/icons/Today"
@@ -8,9 +8,11 @@ import {Grid, TextField, Button} from "@material-ui/core"
 import { DatePicker } from "@material-ui/pickers";
 import "../scss/header.scss"
 import {withRouter} from "react-router-dom"
-import AppContext from "../state/context";
 import Splash from "./splash";
 import { getDates } from "../helpers/helpers";
+import { searchProperties } from "../apis/server";
+import { connect } from "react-redux";
+import { search } from "../state/actions";
 const styles = theme =>({
 
     location:{
@@ -93,17 +95,18 @@ const SearchForm = (props)=>{
         e.preventDefault()
         setLoading(true)
         // setSearch(data);
-        // searchProperties(data.location, data.checkIn,data.checkOut,data.guest)
-        // .then(()=>{
-        //     setLoading(false)
-        //     props.history.push({
-        //         pathname: '/search',
-        //         search: `?location=${data.location}&check-in=${data.checkIn}&check-out=${data.checkOut}&guest=${data.guest}`
-        //     })
-        // })
-        // .catch((er)=>{
-        //     setLoading(false)
-        // })
+        searchProperties({search:data.location})
+        .then((res)=>{
+            props.search(res)
+            setLoading(false)
+            props.history.push({
+                pathname: '/search',
+                search: `?location=${data.location}&check-in=${data.checkIn}&check-out=${data.checkOut}&guest=${data.guest}`
+            })
+        })
+        .catch((er)=>{
+            setLoading(false)
+        })
     }
     useEffect(()=>{
         // setData({
@@ -185,10 +188,16 @@ const SearchForm = (props)=>{
         </>
     )
 }
-export default withRouter(withStyles(styles)(SearchForm));
+const mapStateToProps=state=>({
+    user:state.user
+})
+const mapDispatchToProps=dispatch=>({
+    search:(payload)=>dispatch(search(payload))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(withStyles(styles)(SearchForm)));
 
 
-export const MiniSearch = withRouter(withStyles(styles)((props)=>{
+export const MiniSearch = connect(mapStateToProps,mapDispatchToProps)(withRouter(withStyles(styles)((props)=>{
     const {classes} = props
     const [locationF, setLocationF]=useState(false)
     const [loading, setLoading] = useState(false)
@@ -206,17 +215,17 @@ export const MiniSearch = withRouter(withStyles(styles)((props)=>{
         e.preventDefault()
         setLoading(true)
         // setSearch(data);
-        // searchProperties(data.location, data.checkIn,data.checkOut,data.guest)
-        // .then(()=>{
-        //     setLoading(false)
-        //     props.history.push({
-        //         pathname: '/app/search',
-        //         search: `?location=${data.location}&check-in=${data.checkIn}&check-out=${data.checkOut}&guest=${data.guest}`
-        //     })
-        // })
-        // .catch((er)=>{
-        //     setLoading(false)
-        // })
+        searchProperties({search:data.location})
+        .then(()=>{
+            setLoading(false)
+            props.history.push({
+                pathname: '/app/search',
+                search: `?location=${data.location}&check-in=${data.checkIn}&check-out=${data.checkOut}&guest=${data.guest}`
+            })
+        })
+        .catch((er)=>{
+            setLoading(false)
+        })
     }
     useEffect(()=>{
         // setData({
@@ -291,4 +300,4 @@ export const MiniSearch = withRouter(withStyles(styles)((props)=>{
         </Grid>
         </>
     )
-}))
+})))

@@ -6,12 +6,15 @@ import Splash from "../components/splash"
 import Explore from "../components/explore";
 import  MapContainer  from "../components/map";
 import {withRouter} from "react-router-dom"
-import Context from "../state/context"
+import AppHeader from "../components/header"
 import benin from "../images/benin.jpeg"
 import abuja from "../images/abuja.jpg"
 import lagos from "../images/lagos.jpg"
 import kano from "../images/kano.jpeg"
 import { getFavs } from "../helpers/helpers";
+import { connect } from "react-redux";
+import { searchProperties } from "../apis/server";
+import { search } from "../state/actions";
 const styles = theme =>({
     container:{
         paddingTop:200
@@ -40,7 +43,6 @@ const styles = theme =>({
     }
 })
 class Search extends Component{
-    static contextType = Context
     constructor(props){
         super(props)
         this.state={
@@ -70,10 +72,11 @@ class Search extends Component{
                 checkOut,
                 guest
             }
-            this.context.setSearch(data)
-                this.context.onLoadSearch(data)
-                .then(()=>{
-                    console.log(address)
+            this.setState({isLoading:false})
+            // this.context.setSearch(data)
+                searchProperties({search:data.location})
+                .then((res)=>{
+                    this.props.search(res)
                     this.setState({
                         isLoading:false,
                         checkOut:checkOut,
@@ -90,24 +93,24 @@ class Search extends Component{
                 })
         }
         else if(type.length>0){
-            const ty = type[0].split('=')[1]
-            this.context.getPropertiesByType(ty)
-            .then(()=>{
-                this.setState({
-                    isLoading:false,
-                    favourites:favourites
-                })
-            })
+            //const ty = type[0].split('=')[1]
+            // this.context.getPropertiesByType(ty)
+            // .then(()=>{
+            //     this.setState({
+            //         isLoading:false,
+            //         favourites:favourites
+            //     })
+            // })
         } 
         else if(city.length>0){
-            const cy = city[0].split('=')[1]
-            this.context.getPropertiesByCity(cy)
-            .then(()=>{
-                this.setState({
-                    isLoading:false,
-                    favourites:favourites
-                })
-            })
+            //const cy = city[0].split('=')[1]
+            // this.context.getPropertiesByCity(cy)
+            // .then(()=>{
+            //     this.setState({
+            //         isLoading:false,
+            //         favourites:favourites
+            //     })
+            // })
         }   
     }
     componentDidUpdate(prevProps){
@@ -125,9 +128,12 @@ class Search extends Component{
                     checkOut,
                     guest
                 }
-                this.context.setSearch(data)
-                this.context.onLoadSearch(data)
-                .then(()=>{
+                console.log('here')
+                // this.context.setSearch(data)
+                searchProperties({search:data.location})
+                .then((res)=>{
+                    this.props.search(res)
+                    console.log(res)
                     this.setState({
                         isLoading:false,
                         checkOut:checkOut,
@@ -150,13 +156,13 @@ class Search extends Component{
     };
 
     render(){
-    const {classes} = this.props
-    const {state} = this.context
+    const {classes, searches} = this.props
 
     if(this.state.isLoading)
      return <Splash />
     return(
         <>
+            <AppHeader/>
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
                     <div id="search-page" className={classes.container}>
@@ -164,7 +170,7 @@ class Search extends Component{
                             <Grid item xs={12} md={6}>
 
                                 {
-                                    state.results.length>0?
+                                    searches.length>0?
                                     <>
                                     <Grid container justify="space-between">
                                     <Grid item>
@@ -186,10 +192,10 @@ class Search extends Component{
                                     </Grid>
                                 </Grid>
                                 {
-                                        state.results.map((result,index)=>{
+                                        searches.map((search,index)=>{
 
                                                 return(
-                                                    <Searchs favourite={this.state.favourites.includes(result.id)} content={result}   name={`rating${index}`} key={index}/>
+                                                    <Searchs favourite={this.state.favourites.includes(search._id)} content={search}   name={`rating${index}`} key={index}/>
                                                 )
                                         })
                                     }
@@ -220,4 +226,10 @@ class Search extends Component{
     )
 }
 }
-export default withRouter(withStyles(styles)(Search));
+const mapStateToProps=state=>({
+    searches:state.searches
+})
+const mapDispatchToProps=dispatch=>({
+    search:(payload)=>dispatch(search(payload))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(withStyles(styles)(Search)));

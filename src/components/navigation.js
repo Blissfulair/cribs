@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React from "react";
 import {BrowserRouter as Router} from "react-router-dom"
 import Footer from './footer';
 // import Header from './header';

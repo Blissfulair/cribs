@@ -10,9 +10,10 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppContext from "../state/context"
 import Head from "../components/head";
-import { loginUser } from "../apis/server";
-import { setUser } from "../state/actions";
+import { changeRole, loginUser } from "../apis/server";
+import { chooseDashboard, setUser } from "../state/actions";
 import {withRouter} from "react-router-dom"
+import { connect } from "react-redux";
 
 const styles = ()=>({
     label:{
@@ -77,8 +78,27 @@ class Login extends React.Component{
             }
             loginUser(body)
             .then((user)=>{
-                setUser(user)
-                this.props.history.push('/app/home')
+                this.props.setUser(user)
+                if(this.props.location.state !== undefined){
+                    this.props.chooseDashboard(false)
+                    changeRole(user.id, {role:false})
+                    .then(()=>{
+                        this.props.history.push({
+                            pathname: '/app/payment',
+                            search: this.props.location.state.referer.search,
+                            state:this.props.location.state.referer.state
+                        })
+                    })
+                    .catch((e)=>{
+                        console.log(e)
+                    })
+
+                }
+                else{
+                    console.log('home')
+                    this.props.history.push('/app/home')
+                }
+
                 this.setState({loading:false})
             })
             .catch((err)=>[
@@ -229,4 +249,11 @@ class Login extends React.Component{
         );
     }
 }
-export default withStyles(styles)(withRouter(Login));
+const mapDispatchToProps=dispatch=>({
+    setUser: (payload) => dispatch(setUser(payload)),
+    chooseDashboard: (payload) => dispatch(chooseDashboard(payload)),
+})
+const mapStateToProps=state=>({
+    user:state.user
+})
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(withRouter(Login)));

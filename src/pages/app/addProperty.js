@@ -9,9 +9,9 @@ import Backend from "./layout"
 import AppHeader from "../../components/appHeader";
 import Activity from '../../components/activity'
 import {states} from "../../icons/options"
-import {withRouter} from "react-router-dom"
+import {withRouter, Link} from "react-router-dom"
 import { connect } from "react-redux";
-import { addProperty, propertyTypes } from "../../apis/server";
+import { addProperty } from "../../apis/server";
 import { setPropertyTypes } from "../../state/actions";
 
 
@@ -54,6 +54,7 @@ class AddProperty extends React.Component{
             status:false,
             rooms:[{room:'', price:'',bed:1,bathroom:0,bookedDates:[]}]
         }
+        this.form = null
     }
 
     componentDidMount(){
@@ -61,10 +62,9 @@ class AddProperty extends React.Component{
         if(dom !== null)
         dom.setAttribute('class', 'is-active')
         
-        propertyTypes()
-        .then(types=>{
-            this.props.setPropertyTypes(types)
-        })
+
+            this.setState({type:this.props.propertyTypes[0].name})
+
     }
 
     uploadImage = (e)=>{
@@ -118,8 +118,13 @@ class AddProperty extends React.Component{
     changeHandler =(e)=>{
         const name = e.target.name;
         this.setState({[name]:e.target.value})
-        if(e.target.value === 'on')
+    }
+    changeType =(e)=>{
+        const name = e.target.name;
+        if(e.target.checked)
         this.setState({[name]:true})
+        else
+        this.setState({[name]:false})
     }
     maxStringLength = (event,leng = 80)=>{
         const value = event.target.value;
@@ -173,12 +178,12 @@ class AddProperty extends React.Component{
     }
     onAddBed = (e, i)=>{
         const rooms = [...this.state.rooms]
-        rooms[i].bed = e.target.value;
+        rooms[i].bed = Number(e.target.value);
         this.setState({rooms:rooms}) 
     }
     onAddBathRoom = (e, i)=>{
         const rooms = [...this.state.rooms]
-        rooms[i].bathroom = e.target.value;
+        rooms[i].bathroom = Number(e.target.value);
         this.setState({rooms:rooms}) 
     }
     onAddPrice = (e, i)=>{
@@ -197,16 +202,54 @@ class AddProperty extends React.Component{
     }
     onSubmit=(event)=>{
         event.preventDefault();
-        // if(!this.props.user.phone){
-        //     this.setState({message:'Profile must be updated before you can publish a crib.', status:true})
-        //     return
-        // }
-        if(this.state.title === '' || this.state.description === '' || this.state.state === ''
-           || this.state.rooms[0].price === '' || this.state.rooms[0].room === '' || this.state.featured_image === null || this.state.guest<1 || other_images.length<1)
+        if(!this.state.title)
            {
-            this.setState({message:'All fields must be filled'})
-            return false
+            this.setState({message:'Crib title is required'})
+            return
            }
+        else if(!this.state.description){
+            this.setState({message:'Crib description is required'})
+            return
+        }
+        else if(!this.state.state){
+            this.setState({message:'Crib state is required'})
+            return
+        }
+        else if(!this.state.city){
+            this.setState({message:'Crib city is required'})
+            return
+        }
+        else if(!this.state.guest){
+            this.setState({message:'Guest is required'})
+            return
+        }
+        else if(!this.state.address){
+            this.setState({message:'Crib\'s address  is required'})
+            return
+        }
+        else if(!this.state.rooms[0].room){
+            this.setState({message:'Crib room name is required'})
+            return
+        }
+        else if(!this.state.rooms[0].price){
+            this.setState({message:'Crib price is required'})
+            return
+        }
+        else if(!this.state.inside || !this.state.around){
+            this.setState({message:'Crib\'s accessibility fields  are required'})
+            return
+        }
+        else if(!this.state.featured_image){
+            this.setState({message:'Crib featured image is required'})
+            return
+        }
+
+
+
+        else if(other_images.length<2){
+            this.setState({message:'At least two side images are required'})
+            return
+        }
            this.setState({isLoading:true, message:''})
     let amount = 0
     let bathroom = 0
@@ -221,10 +264,10 @@ class AddProperty extends React.Component{
     formData.append('name', this.state.title)
     formData.append('description', this.state.description)
     formData.append('featuredImage', this.state.featured_image)
-    console.log(other_images)
-    Array.from(other_images).forEach(image => {
+    other_images.forEach(image => {
         formData.append("images", image);
     });
+    
     formData.append('amount', amount)
     formData.append('bedroom', bed)
     formData.append('discount', this.state.discount)
@@ -234,65 +277,88 @@ class AddProperty extends React.Component{
     formData.append('cable', this.state.cable)
     formData.append('bathroom', bathroom)
     formData.append('kitchen', this.state.kitchen)
+    formData.append('inside', this.state.inside)
+    formData.append('around', this.state.around)
     formData.append('address', this.state.address)
     formData.append('guest', this.state.guest)
-    formData.append('type', 'duplex')
+    formData.append('type',   this.state.type)
     formData.append('house', this.state.house)
     formData.append('city', this.state.city)
     formData.append('state', this.state.state)
-    //formData.append('rooms[]',this.state.rooms)
     formData.append('rooms', JSON.stringify(this.state.rooms))
     formData.append('hostData', JSON.stringify({firstname:this.props.user.firstname,lastname:this.props.user.lastname, image:this.props.user.image,phone:this.props.user.phone,email:this.props.user.email}))
-// const body = {
 
-//     kitchen:this.state.kitchen,
-//     inside:this.state.inside,
-//     around:this.state.around,
-//     address:this.state.address,
-//     guest:this.state.guest,
-//     type:'duplex',//this.state.type !== ''?this.state.type:this.props.amenities[0].name,
-//     house:this.state.house,
-//     city:this.state.city,
-//     state:this.state.state,
-//     rooms:this.state.rooms,
-//     hostData:{firstname:this.props.user.firstname,lastname:this.props.user.lastname, image:this.props.user.image,phone:this.props.user.phone,email:this.props.user.email}
-// }
 addProperty(formData)
 .then((res)=>{
-    this.setState({isLoading:false})
-    console.log(res)
+    
+    this.setState({
+        title:'',
+        description:'',
+        house:'',
+        address:'',
+        price:'',
+        bedroom:1,
+        discount:0,
+        bathroom:0,
+        parking:false,
+        wifi:false,
+        smoking:false,
+        cable:false,
+        jaccuzi:0,
+        kitchen:false,
+        inside:'',
+        around:'',
+        guest:1,
+        featured_image:null,
+        type:'house',
+        other_images:[],
+        city:'',
+        state:'',
+        success:true,
+        rooms:[{room:'', price:'', bed:1,bathroom:0,bookedDates:[]}],
+        message:'Submitted successfully',
+        isLoading:false
+    })
+    other_images=[]
+    const elements = document.querySelectorAll('.viewing')
+    for(let i =0 ; i< elements.length ; i++){
+        
+        elements[i].remove()
+
+    }
+    this.form.reset()
 })
 .catch(e=>{console.log(e)})
 // firebase.storeProperty(body)
 // .then(()=>{
-//     this.setState({
-//         title:'',
-//         description:'',
-//         house:'',
-//         address:'',
-//         price:'',
-//         bedroom:1,
-//         discount:0,
-//         bathroom:0,
-//         parking:false,
-//         wifi:false,
-//         smoking:false,
-//         cable:false,
-//         jaccuzi:0,
-//         kitchen:false,
-//         inside:'',
-//         around:'',
-//         guest:1,
-//         featured_image:null,
-//         type:'house',
-//         other_images:[],
-//         city:'',
-//         state:'',
-//         success:true,
-//         rooms:[{room:'', price:'', bed:1,bathroom:0,bookedDates:[]}],
-//         message:'Submitted successfully',
-//         isLoading:false
-//     })
+    // this.setState({
+    //     title:'',
+    //     description:'',
+    //     house:'',
+    //     address:'',
+    //     price:'',
+    //     bedroom:1,
+    //     discount:0,
+    //     bathroom:0,
+    //     parking:false,
+    //     wifi:false,
+    //     smoking:false,
+    //     cable:false,
+    //     jaccuzi:0,
+    //     kitchen:false,
+    //     inside:'',
+    //     around:'',
+    //     guest:1,
+    //     featured_image:null,
+    //     type:'house',
+    //     other_images:[],
+    //     city:'',
+    //     state:'',
+    //     success:true,
+    //     rooms:[{room:'', price:'', bed:1,bathroom:0,bookedDates:[]}],
+    //     message:'Submitted successfully',
+    //     isLoading:false
+    // })
 
 //         const elements = document.querySelectorAll('.viewing')
 //         for(let i =0 ; i< elements.length ; i++){
@@ -325,7 +391,14 @@ addProperty(formData)
 
                     {/* <!-- form --> */}
                     <div className="property-form dashboard-mt">
-                        <form  onSubmit={event=>{this.onSubmit(event)}} method="post" encType="multipart/form-data">
+                        {
+                            !this.props.user.phone&&
+                            <div className="profile-info">
+                                Profile Information must be updated before you post a property.
+                                <Link to="/app/edit-profile">Click here</Link> to update profile.
+                            </div>
+                        }
+                        <form ref={(ref)=>this.form=ref}  onSubmit={event=>{this.onSubmit(event)}} method="post" encType="multipart/form-data">
                         {
                                 this.state.message&&
                                 <Snackbar
@@ -477,94 +550,53 @@ addProperty(formData)
 
                             <div className="property-group">
                                 <h3>Amenities</h3>
-                                <div className="property-group-inner1">
-                                    {/* <div className="col">
-                                        <label htmlFor="bedroom">Bedroom</label>
-                                        <div className="input">
-                                            <select name="bedroom"  onBlur={this.changeHandler}  id="bedroom">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
-                                            <span>
-                                                <div className="angle"></div>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="col">
-                                        <label htmlFor="bathroom">Bathroom</label>
-                                        <div className="input">
-                                            <select   name="bathroom" onBlur={this.changeHandler}  id="bathroom">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                            </select>
-                                            <span><div className="angle"></div></span>
-                                        </div>
-                                    </div> */}
-                                    {/* <div className="col">
-                                        <label htmlFor="toilet">Toilet</label>
-                                        
-                                        <div className="input">
-                                            <select name="toilet" onBlur={this.changeHandler}  id="toilet">
-                                                <option value="1">1</option>
-                                            </select>
-                                            <span><div className="angle"></div></span>
-                                        </div>
-                                    </div> */}
-                                    {/* <div className="col">
-                                        <label htmlFor="packing">Parking</label>
-                                        <div className="input">
-                                            <select name="parking" onBlur={this.changeHandler}  id="packing">
-                                                <option value="1">1</option>
-                                            </select>
-                                            <span><div className="angle"></div></span>
-                                        </div>
-                                    </div> */}
-                                </div>
 
                                 <div className="property-group-inner2">
                                     <div className="col">
                                         <label className="rememberme">
-                                                <input  type="checkbox" onChange={this.changeHandler}  name="wifi" id="pool" />
+                                                <input  type="checkbox" onChange={this.changeType}  name="wifi" id="pool" />
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="pool">Wifi</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                                <input type="checkbox" onChange={this.changeHandler}  name="parking" id="smoking" />
+                                                <input type="checkbox" onChange={this.changeType}  name="parking" id="smoking" />
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="smoking">parking</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                                <input type="checkbox" onChange={this.changeHandler}  name="smoke" id="jaccuzi" />
+                                                <input type="checkbox" onChange={this.changeType}  name="smoking" id="jaccuzi" />
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="jaccuzi">Smoke Alarm</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                            <input type="checkbox" onChange={this.changeHandler}  name="cable" id="water" />
+                                            <input type="checkbox" onChange={this.changeType}  name="cable" id="water" />
                                             <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="water">Cable Tv</label>
                                     </div>
                                     <div className="col">
                                         <label className="rememberme">
-                                            <input type="checkbox" onChange={this.changeHandler}  name="kitchen" id="kitchen" />
+                                            <input type="checkbox" onChange={this.changeType}  name="kitchen" id="kitchen" />
                                             <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="kitchen">Kitchen</label>
                                     </div>
                                 </div>
-
+                                <div className="property-group">
+                                    <h3>Accessibility</h3>
+                                    <label htmlFor="inside">Getting Inside</label>
+                                    <textarea name="inside" value={this.state.inside}  onKeyUp={event=>{this.maxStringLength(event,300)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="inside" cols="30" rows="5" />
+                                    <p>300 Characters</p>
+                                    <label htmlFor="outside">Moving around the space</label>
+                                    <textarea name="around" value={this.state.around}  onKeyUp={event=>{this.maxStringLength(event,300)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="outside" cols="30" rows="5" />
+                                    <p>300 Characters</p>
+                                </div>
                                 {/* <div className="property-group">
                                     <h3>Discounts</h3>
                                     <div className="property-group-inner">
@@ -587,10 +619,7 @@ addProperty(formData)
                                             <li key={i}>
                                                 <label className="radio">
                                                     {
-                                                        i===0?
-                                                        <input type="radio" onChange={this.changeHandler} defaultChecked defaultValue={amenity.name}  name="type" id={amenity._id} />
-                                                        :
-                                                        <input type="radio" onChange={this.changeHandler}  defaultValue={amenity.name}  name="type" id={amenity._id} />
+                                                        <input type="radio" onChange={this.changeHandler} defaultChecked={i===0?true:false}  defaultValue={amenity.name}  name="type" id={amenity._id} />
                                                     }
                                                     <span className="radio-mark"></span>
                                                 </label>
@@ -599,49 +628,7 @@ addProperty(formData)
                                             ))
                                         }
 
-                                        {/* <li>
-                                            <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="duplex"  name="type" id="apartment" />
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="apartment">Duplex</label>
-                                        </li>
-
-                                        <li>
-                                            <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="flat" name="type" id="condos" />
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="condos">Flat</label>
-                                        </li>
-                                        <li>
-                                            <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="bungalow" name="type" id="bungalows" />
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="bungalows">Bungalow</label>
-                                        </li>
-                                        <li>
-                                            <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="hotel" name="type" id="hotel" />
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="hotel">Hotel</label>
-                                        </li>
-                                        <li>
-                                            <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="Warehouse" name="type" id="warehouse" />
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="warehouse">Warehouse</label>
-                                        </li>
-                                        <li>
-                                            <label className="radio">
-                                                <input type="radio" onChange={this.changeHandler} defaultValue="storage" name="type" id="storage" />
-                                                <span className="radio-mark"></span>
-                                            </label>
-                                            <label htmlFor="storage">Storage</label>
-                                        </li> */}
+                                      
                                     </ul>
                                 </div>
 
@@ -670,31 +657,33 @@ addProperty(formData)
 
                                 <div className="property-group">
                                     {
-                                        !this.state.status?
+                                        this.props.user.phone?
                                         <button onClick={this.handleClick(TransitionUp)}>Save and Preview</button>
                                         :
-                                        <button style={{backgroundColor:'green'}} type="button" onClick={()=>this.props.history.push({pathname:'/app/edit-profile',state:{detail:{    name:this.state.title,
-                                            description:this.state.description,
-                                            featuredImage:this.state.featured_image,
-                                            images:[ ...other_images],
-                                            amount:this.state.price,
-                                            bedroom:this.state.bedroom,
-                                            discount:this.state.discount,
-                                            smoke:this.state.smoking,
-                                            wifi:this.state.wifi,
-                                            parking:this.state.parking,
-                                            cable:this.state.cable,
-                                            bathroom:this.state.bathroom,
-                                            kitchen:this.state.kitchen,
-                                            inside:this.state.inside,
-                                            around:this.state.around,
-                                            address:this.state.address,
-                                            guest:this.state.guest,
-                                            type:this.state.type,
-                                            house:this.state.house,
-                                            city:this.state.city,
-                                            state:this.state.state
-                                            }}})} >Update Profile</button>
+                                        <button style={{backgroundColor:"rgb(186, 186, 186)", cursor:'default'}}>Save and Preview</button>
+                                        // :
+                                        // <button style={{backgroundColor:'green'}} type="button" onClick={()=>this.props.history.push({pathname:'/app/edit-profile',state:{detail:{    name:this.state.title,
+                                        //     description:this.state.description,
+                                        //     featuredImage:this.state.featured_image,
+                                        //     images:[ ...other_images],
+                                        //     amount:this.state.price,
+                                        //     bedroom:this.state.bedroom,
+                                        //     discount:this.state.discount,
+                                        //     smoke:this.state.smoking,
+                                        //     wifi:this.state.wifi,
+                                        //     parking:this.state.parking,
+                                        //     cable:this.state.cable,
+                                        //     bathroom:this.state.bathroom,
+                                        //     kitchen:this.state.kitchen,
+                                        //     inside:this.state.inside,
+                                        //     around:this.state.around,
+                                        //     address:this.state.address,
+                                        //     guest:this.state.guest,
+                                        //     type:this.state.type,
+                                        //     house:this.state.house,
+                                        //     city:this.state.city,
+                                        //     state:this.state.state
+                                        //     }}})} >Update Profile</button>
                                     }
                                 </div>
                             </div>

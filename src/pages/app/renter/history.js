@@ -211,20 +211,20 @@ class History extends React.Component{
             return false
        }
        this.setState({err:'', reviewLoading:true})
-        const {user} = this.props
-        const data ={
-            name:user.firstname+' '+user.lastname,
-            checkIn:this.state.history.checkIn,
-            checkOut:this.state.history.checkOut,
-            photoURL:user.photoURL,
-            propertyID:this.state.history.propertyID,
-            amount:this.state.history.amount,
-            review:this.state.review,
-            rating:this.state.rating,
-            email:user.email,
-            historyId:this.state.history.transactionID
-            // hostId:
-        }
+        // const {user} = this.props
+        // const data ={
+        //     name:user.firstname+' '+user.lastname,
+        //     checkIn:this.state.history.checkIn,
+        //     checkOut:this.state.history.checkOut,
+        //     photoURL:user.photoURL,
+        //     propertyID:this.state.history.propertyID,
+        //     amount:this.state.history.amount,
+        //     review:this.state.review,
+        //     rating:this.state.rating,
+        //     email:user.email,
+        //     historyId:this.state.history.transactionID
+        //     // hostId:
+        // }
         // this.context.sendReview(data)
         // .then(()=>{
         //     this.handleClose()

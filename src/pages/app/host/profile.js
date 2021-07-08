@@ -10,6 +10,8 @@ import { Grid, Typography,withStyles, IconButton, Avatar } from "@material-ui/co
 import Rating from "@material-ui/lab/Rating";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import {connect} from "react-redux";
+import AppHeader from "../../../components/appHeader"
+
 
 const ProfileDetails = ({user,uploadImage})=>{
     return(
@@ -158,7 +160,7 @@ class Profile extends React.Component{
         // })
     }
     uploadImage = (e)=>{
-        let image = e.target.files[0];
+        //let image = e.target.files[0];
         // this.context.uploadProfilePhoto(image)
         // .then(()=>{
         //     // con
@@ -169,6 +171,7 @@ class Profile extends React.Component{
     render(){
         return (
             <>
+                    <AppHeader/>
                     <Backend>
                         <ProfileDetails user={this.props.user} uploadImage={this.uploadImage}/>
                     </Backend>

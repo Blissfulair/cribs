@@ -1,41 +1,28 @@
 import React from 'react';
 import '../../scss/LocationCard.scss';
-import LocationResultImage from '../../images/location_result.png'
+import {Link} from "react-router-dom"
 
-const LocationCard = () => {
+const LocationCard = ({results}) => {
+    if(results.length>0)
     return (
         <div className="location__card">
-            <div className="location__result">
-                <div className="image">
-                    <img src={LocationResultImage} alt=""/>
-                </div>
-                <div className="details">
-                    <h1>Lagos Concervation Centre, Ikeja</h1>
-                    <small>Lagos, Nigeria</small>
-                </div>
-            </div>
 
-            <div className="location__result">
-                <div className="image">
-                    <img src={LocationResultImage} alt=""/>
-                </div>
-                <div className="details">
-                    <h1>Lagos Concervation Centre, Ikeja</h1>
-                    <small>Lagos, Nigeria</small>
-                </div>
-            </div>
-
-            <div className="location__result">
-                <div className="image">
-                    <img src={LocationResultImage} alt=""/>
-                </div>
-                <div className="details">
-                    <h1>Lagos Concervation Centre, Ikeja</h1>
-                    <small>Lagos, Nigeria</small>
-                </div>
-            </div>
+            {
+                results.map((result,i)=>(
+                    <Link key={i} to={`/crib/${result._id}`} className="location__result">
+                        <div className="image">
+                            <img src={process.env.REACT_APP_BACKEND_URL+'/'+result.featuredImage} alt={result.name}/>
+                        </div>
+                        <div className="details">
+                            <h1>{result.name}</h1>
+                            <small>{result.city}, Nigeria</small>
+                        </div>
+                    </Link>
+                ))
+            }
         </div>
     );
+    return ''
 }
 
 export default LocationCard;

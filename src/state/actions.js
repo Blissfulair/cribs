@@ -13,8 +13,7 @@ export const setUser = (payload) => {
   }
 }
 export const chooseDashboard = (payload) => {
-  console.log(payload, 'action')
-  // setDashboard(payload)
+  setDashboard(payload)
   return {
     type: "DASHBOARD",
     payload
@@ -41,6 +40,19 @@ export const setTrendingAndBestCribs = (payload) => {
 export const setCrib = (payload) => {
   return {
     type: "CRIB",
+    payload
+  }
+}
+
+export const setFavourite = (payload) => {
+  return {
+    type: "FAVOURITES",
+    payload
+  }
+}
+export const search = (payload) => {
+  return {
+    type: "SEARCH",
     payload
   }
 }

@@ -39,7 +39,7 @@ const DetailSlide = ({content})=>{
                     >
                     {content.map((image,index)=>{
                     return (
-                        <img key={index} style={{width:'100%'}} id="slide-cover-img" src={image} alt=""/>
+                        <img key={index} style={{width:'100%'}} id="slide-cover-img" src={`${process.env.REACT_APP_BACKEND_URL}/${image}`} alt=""/>
                     )
                     })
                     }

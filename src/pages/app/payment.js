@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react';
 import './../../scss/payment.scss';
 import {withRouter} from "react-router-dom"
 import PaymentCard from '../../components/payment';
+import AppHeader from "../../components/appHeader"
 
 const Payment = ({location}) => {
 
@@ -95,6 +96,8 @@ const Payment = ({location}) => {
         }
     },[location])
     return (
+        <>
+        <AppHeader/>
         <div style={{position:'relative'}}>
 			<section>
 				<div className="house-payment-details">
@@ -162,6 +165,7 @@ const Payment = ({location}) => {
 
                 </div>
         </div>
+        </>
 		);
 }
 

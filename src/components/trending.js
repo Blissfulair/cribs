@@ -44,7 +44,7 @@ const Trending = ({classes, color,name, details,favourite})=>{
     return(
         <Card className="trending-card" elevation={3} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.image}}>
-                <CardMedia image={details.featuredImage}
+                <CardMedia image={`${process.env.REACT_APP_BACKEND_URL}/${details.featuredImage}`}
                         component="img"
                         alt={details.name}
                         height="100%"

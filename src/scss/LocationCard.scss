@@ -4,8 +4,9 @@
 	background: #ffffff;
 	border-radius: 10px;
 	width: 364px;
-	height: 257px;
+	height: auto;
 	padding-top: 2rem;
+	padding-bottom: 2rem;
 
 	&::before {
 		position: absolute;
@@ -21,6 +22,13 @@
         // border-left: 30px solid transparent;
         // border-right: 30px solid transparent;
         // border-bottom: 100px solid #c4c4c4;
+	}
+	.image{
+		height: 50px;
+		width: 50px;
+		img{
+			width: 100%;
+		}
 	}
 }
 

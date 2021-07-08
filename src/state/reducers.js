@@ -20,6 +20,11 @@ export default (state, action) => {
           ...state,
           properties: action.payload
         };
+      case "SEARCH":
+        return {
+          ...state,
+          searches: action.payload
+        };
         case "PROPERTY_TYPES":
           return {
             ...state,
@@ -35,6 +40,11 @@ export default (state, action) => {
           return {
             ...state,
             crib: action.payload.property
+          };
+        case "FAVOURITES":
+          return {
+            ...state,
+            favourites: action.payload
           };
       default:
         return state;

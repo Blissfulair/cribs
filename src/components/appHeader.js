@@ -1,5 +1,4 @@
-import React, { useContext, useRef,useState } from "react"
-import AppContext from "../state/context";
+import React, { useRef,useState } from "react"
 import Switch from '@material-ui/core/Switch';
 import Avatar from '@material-ui/core/Avatar';
 import LogoutModal from "./logout";
@@ -14,7 +13,7 @@ import {withStyles} from "@material-ui/core/styles"
 import {MiniSearch} from "../components/searchForm"
 import { connect } from "react-redux";
 import { chooseDashboard, setUser } from "../state/actions";
-import { makeHost } from "../apis/server";
+import { changeRole, makeHost } from "../apis/server";
 const styles = theme=>({
     container:{
         display:'flex',
@@ -52,7 +51,7 @@ const styles = theme=>({
         color:'#707070'
     },
 })
-const AppHeader = ({classes, history,user,dashboard, chooseDashboard})=>{
+const AppHeader = ({classes, history,user,dashboard, chooseDashboard, setUser})=>{
     const [logout, setLogout] = useState(false);
     const [loading, setLoading] = useState(false)
     const prevOpen = useRef(logout);
@@ -66,7 +65,8 @@ const AppHeader = ({classes, history,user,dashboard, chooseDashboard})=>{
         makeHost(user.id)
         .then((res)=>{
             chooseDashboard(!dashboard)
-            setUser(res)
+            setUser(res.user)
+
             setLoading(false)
             if(history.location.pathname.includes('crib') || history.location.pathname.includes('search') || !history.location.pathname.includes('payment') || history.location.pathname.includes('history'))
             history.push('/app/dashboard')
@@ -88,7 +88,13 @@ const AppHeader = ({classes, history,user,dashboard, chooseDashboard})=>{
 
     const  changeDashboard=()=>{
             chooseDashboard(!dashboard)
-                if(!dashboard)
+            changeRole(user.id, {role:!dashboard})
+            .then((res)=>{
+            })
+            .catch((e)=>{
+                console.log(e)
+            })
+                if(dashboard)
                 {
                     if(history.location.pathname.includes('calendar') || history.location.pathname.includes('inbox') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('property') || history.location.pathname.includes('add-property') || history.location.pathname.includes('edit-property'))
                     history.push('/app/home')
@@ -117,7 +123,7 @@ const AppHeader = ({classes, history,user,dashboard, chooseDashboard})=>{
                             {
                              user&&   
                                 // context.state.dashboard && context.state.userData.role?
-                                dashboard ?
+                                !dashboard ?
                                 <Grid container alignItems="center">
                                     <Grid lg={1} item>
                                         <Typography className="dashboard-mobile-menu" variant="h5" style={{color:'#707070', fontWeight:'bold', whiteSpace:'nowrap'}}>{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME.toUpperCase():'React App'}</Typography>
@@ -134,25 +140,29 @@ const AppHeader = ({classes, history,user,dashboard, chooseDashboard})=>{
                         </Grid>
                         <Grid item  xs={5} lg={4}> 
                             <Grid container alignItems="center" justify="flex-end">
-                                <Typography className="dashboard-mobile-menu" component="div">
+                                {
+                                    (history.location.pathname.includes('home') || history.location.pathname.includes('dashboard')) &&
+                                    <Typography className="dashboard-mobile-menu" component="div">
                                     {
                                         user&&
-                                        user.role===true?
+                                        user.type==='host'?
                                         <Grid component="label" container alignItems="center" spacing={1}>
-                                        <Grid item className={dashboard?classes.active:classes.inactive}>Hosting</Grid>
+                                        <Grid item className={!dashboard?classes.active:classes.inactive}>Renting</Grid>
                                         <Grid item>
                                             <Switch checked={dashboard} onChange={()=>{changeDashboard()}} name="checkedC" />
                                         </Grid>
-                                        <Grid item className={dashboard?classes.inactive:classes.active}>Renting</Grid>
+                                        <Grid item className={!dashboard?classes.inactive:classes.active}>Hosting</Grid>
                                         </Grid>
                                         :
                                         <Grid container>
                                                 <Button onClick={becomeHost} style={{textTransform:'lowercase', color:'#375FA5'}} variant="text">
-                                                    {loading?'please wait a minute...':`Become a ${dashboard?'host':'renter'} on Crib`}
+                                                    {loading?'please wait a minute...':`Become a ${!dashboard?'host':'renter'} on Crib`}
                                                 </Button>
                                         </Grid>
                                     }
                                 </Typography>
+                                }
+
                                 <IconButton
                                 ref={logoutRef}
                                 aria-controls={logout ? 'menu-list-grow' : undefined}
@@ -187,6 +197,7 @@ const mapStateToProps =state=>({
     user:state.user
 })
 const mapDispatchToProps = dispatch => ({
-    chooseDashboard: (payload) => dispatch(chooseDashboard(payload))
+    chooseDashboard: (payload) => dispatch(chooseDashboard(payload)),
+    setUser: (payload) => dispatch(setUser(payload))
   });
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(AppHeader)))

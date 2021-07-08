@@ -26,6 +26,8 @@ import { getFavs } from "../../helpers/helpers";
 import {connect} from "react-redux"
 import AppHeader from "../../components/appHeader";
 import { HomeSkeleton as Skeleton } from "../../components/skeleton/index";
+import { setTrendingAndBestCribs } from "../../state/actions";
+import { getTrendingAndBestCribs } from "../../apis/server";
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${cottage})`,
@@ -83,13 +85,17 @@ class Home extends Component{
     //     })
     // },[context])
     componentDidMount(){
-        // const favourites = getFavs()
-        // this.setState({
-        //     favourites :favourites,
-        //     location:this.context.state.searchQuery?this.context.state.searchQuery.location:'',
-        //     checkIn:this.context.state.searchQuery?this.context.state.searchQuery.checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-        //     checkOut:this.context.state.searchQuery?this.context.state.searchQuery.checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-        // })
+        const favourites = getFavs()
+        getTrendingAndBestCribs()
+        .then(cribs=>{
+            this.props.setTrendingAndBestCribs(cribs)
+        })
+        this.setState({
+            favourites :favourites,
+            location:'',//this.context.state.searchQuery?this.context.state.searchQuery.location:'',
+            checkIn:new Date(),//this.context.state.searchQuery?this.context.state.searchQuery.checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkOut: new Date()//this.context.state.searchQuery?this.context.state.searchQuery.checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+        })
     }
 
      changeHandler=(e)=>{
@@ -141,17 +147,16 @@ class Home extends Component{
                             <div style={{marginBottom:10}}>
                                 <Grid  container spacing={2}>
                                     {
-                                        this.props.properties.length>0?
-                                        ''
-                                        // this.context.state.properties.map((property, i)=>{
-                                        //     return(
-                                        //         <Grid item xs={12} sm={6} md={3} lg={3} >
-                                        //             <Link to={`/app/crib/${property.id}`}>
-                                        //                 <Trending favourite={this.state.favourites.includes(property.id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
-                                        //             </Link>
-                                        //         </Grid>
-                                        //     )
-                                        // })
+                                        this.props.trendingCribs.length>0?
+                                        this.props.trendingCribs.map((property, i)=>{
+                                            return(
+                                                <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Link to={`/app/crib/${property._id}`}>
+                                                        <Trending favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
+                                                    </Link>
+                                                </Grid>
+                                            )
+                                        })
                                         :
                                         [1,2,3.4,5].map((value,i)=>(
                                             <Grid item xs={12} sm={6} md={3} lg={3} >
@@ -164,7 +169,7 @@ class Home extends Component{
                                 </Grid>
                             </div>
                             {
-                                this.props.properties.length>0&&
+                                this.props.trendingCribs.length>0&&
                                 <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'trending'}}>See more</Link>
                             }
 
@@ -173,9 +178,8 @@ class Home extends Component{
                                 <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
                                 <Grid style={{position:'relative'}}  container spacing={2}>
                                     {
-                                        this.props.properties.length>0?
-                                        ''
-                                        // <Slide favourites={this.state.favourites} content={this.context.state.latestProperties}/>
+                                        this.props.bestCribs.length>0?
+                                        <Slide favourites={this.state.favourites} content={this.props.bestCribs}/>
                                         :
                                         [1,2,3.4,5].map((value,i)=>(
                                             <Grid item xs={12} sm={6} md={3} lg={3} >
@@ -186,7 +190,7 @@ class Home extends Component{
                                 </Grid>
                             </div>
                             {
-                                this.props.properties.length>0&&
+                                this.props.bestCribs.length>0&&
                                 <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>
                             }
 
@@ -224,7 +228,11 @@ class Home extends Component{
 }
 const mapStateToProps=state=>({
    properties:state.properties,
+   trendingCribs:state.trendingCribs,
+   bestCribs:state.bestCribs,
    user:state.user
 })
-
-export default connect(mapStateToProps)( withRouter(withStyles(styles)(Home)));
+const mapDispatchToProps = dispatch => ({
+    setTrendingAndBestCribs: (payload) => dispatch(setTrendingAndBestCribs(payload))
+  });
+export default connect(mapStateToProps,mapDispatchToProps)( withRouter(withStyles(styles)(Home)));

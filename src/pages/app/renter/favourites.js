@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import {Select, FormControl,Grid,MenuItem, Typography,Paper} from '@material-ui/core';
 import Searchs from "../../../components/search"
-import Splash from "../../../components/splash"
+// import Splash from "../../../components/splash"
 import Explore from "../../../components/explore";
 import  MapContainer  from "../../../components/map";
 import {withRouter} from "react-router-dom"
@@ -54,11 +54,11 @@ class Favourites extends Component{
         }
     }
     componentDidMount(){
-        let properties = JSON.parse(window.localStorage.getItem('@fi'))
-        // const favourites =getFavs()
+        //let properties = JSON.parse(window.localStorage.getItem('@fi'))
+        const favourites =getFavs()
         // this.context.getFavourite(properties)
         // .then(()=>{
-        //     this.setState({isLoading:false, favourites})
+            this.setState({isLoading:false, favourites})
         // })
     }
 

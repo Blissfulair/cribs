@@ -352,6 +352,14 @@ textarea::-webkit-scrollbar{
     left: 100px;
     padding: 0;
 }
+.profile-info{
+    margin-bottom: 22px;
+    padding: 10px 6px;
+    background: #ea8000;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 16px;
+}
 /* .rememberme input {
     color:  #0B6EA7 !important;
     opacity: 1 !important;

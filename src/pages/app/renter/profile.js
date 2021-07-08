@@ -157,7 +157,7 @@ class Profile extends React.Component{
         // })
     }
     uploadImage = (e)=>{
-        let image = e.target.files[0];
+        //let image = e.target.files[0];
         // this.context.uploadProfilePhoto(image)
         // .then(()=>{
         //     // con

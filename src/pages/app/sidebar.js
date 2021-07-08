@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React from "react";
 import {NavLink} from "react-router-dom";
 import "./sidebar.css";
 import PropTypes from "prop-types"
@@ -20,7 +20,7 @@ const Sidebar = ({dashboard})=>{
                     <ul className="s-menu">
                         <NavLink onClick={Sidebar.active} activeClassName="is-active" to="/app/dashboard"><li><DashboardOutlinedIcon/> Dashboard</li></NavLink>
                             {
-                                !dashboard&&
+                                dashboard&&
                                 <NavLink onClick={Sidebar.active} activeClassName="is-active"  id="properties" to="/app/property"><li><HomeOutlinedIcon/> Property </li></NavLink>
                             }
                         
@@ -36,7 +36,7 @@ const Sidebar = ({dashboard})=>{
                         
                         <NavLink  onClick={Sidebar.active}  activeClassName="is-active" to="/app/calendar"><li><EventOutlinedIcon/>Calendar</li></NavLink>
                             {
-                                !dashboard&&
+                                dashboard&&
                                 <>
                                     <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/withdraws"><li><AccountBalanceWalletOutlinedIcon/>Payments</li></NavLink>
                                     {/* <NavLink  onClick={Sidebar.active}  activeClassName="is-active"  to="/app/reviews"><li><AccountTreeOutlinedIcon/>Reviews</li></NavLink> */}

@@ -1,19 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useState } from "react";
 import "./signup.css"
 import "./login.css"
 import { Button} from "@material-ui/core";
 import { connect } from "react-redux";
-import { verifyEmail } from "../apis/server";
 import { setUser } from "../state/actions";
 
 
 
-const  Activate = ({user})=>{
+const  Activate = ({user,setUser, history, location})=>{
     const [message, setMessage]=useState('')
     const [loading, setLoading]=useState(false)
-    const [status, setStatus]=useState(true)
 
-    
     const onResend = ()=>{
         setLoading(true)
         // const data = {
@@ -39,13 +36,17 @@ const  Activate = ({user})=>{
             setMessage('')
         }, 3000)
     }
-    useEffect(()=>{
-        const cleanup = async()=>{
-            const userData = await verifyEmail(user.token)
-            setUser(userData)
-        }
-       cleanup()
-    },[])
+        // useEffect(()=>{
+        //     const cleanup = async()=>{
+        //         const userData = await verifyEmail(user.token)
+        //         .then(()=>{
+        //             setUser(userData)
+        //             history.push('/app/home')
+        //         })
+                
+        //     }
+        // cleanup()
+        // },[])
         return (
             <>
                 <div className="label"></div>
@@ -72,7 +73,7 @@ const  Activate = ({user})=>{
     const mapStateToProps = state => ({
         user:state.user
     });
-    // const mapDispatchToProps = dispatch => ({
-    //     setAuth: (payload) => dispatch(setAuth(payload))
-    //   });
-    export default connect(mapStateToProps)(Activate);
+    const mapDispatchToProps = dispatch => ({
+        setUser: (payload) => dispatch(setUser(payload))
+      });
+    export default connect(mapStateToProps,mapDispatchToProps)(Activate);

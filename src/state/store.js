@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from "redux";
 import rootReducer from "./reducers";
 import { loadingBarMiddleware } from 'react-redux-loading-bar'
-import { getDashboard, setDashboard } from "../helpers/helpers";
+import {setDashboard } from "../helpers/helpers";
 
 function configureStore(preload) {
   if(preload.user)
@@ -17,6 +17,7 @@ function configureStore(preload) {
     bestCribs:[],
     propertyTypes:[],
     notifications:[],
+    searches:[],
     crib:null,
     amenities:[],
     states:[],
@@ -25,7 +26,7 @@ function configureStore(preload) {
       weekly:[],
       yearly:[]
     },
-    dashboard:getDashboard(),
+    dashboard:false,
     ...preload,
    }
   return createStore(rootReducer,state,applyMiddleware(loadingBarMiddleware()));

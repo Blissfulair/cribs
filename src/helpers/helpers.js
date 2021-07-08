@@ -50,9 +50,10 @@ export const sendMail =async(from, to, subject, message, senderName='')=> {
          })
         return await res.json()
         }
-export const getFav = (id)=>{
+export const getFav = (id,user)=>{
     let favourite = false
-    let favourites = JSON.parse(window.localStorage.getItem('@fi'))
+    let item = user?user.id:'fi'
+    let favourites = JSON.parse(window.localStorage.getItem(`@${item}`))
     if(favourites !== null){
         favourites.forEach(propId=>{
             if(propId === id)
@@ -63,7 +64,6 @@ export const getFav = (id)=>{
 }
 export const setDashboard = (dashboard)=>{
     try{
-        console.log(dashboard)
         window.sessionStorage.setItem('@dash', JSON.stringify(dashboard))
     }
     catch(e){}
@@ -72,7 +72,6 @@ export const setDashboard = (dashboard)=>{
 export const getDashboard = ()=>{
     try{
        let dashboard = JSON.parse(window.sessionStorage.getItem('@dash'))
-       console.log(dashboard, 'helper')
        dashboard = dashboard === null?true:dashboard
        return dashboard;
     }

@@ -1,75 +1,77 @@
-import React, {Component, useContext, useState} from "react"
+import React, {Component, useState} from "react"
 import { PaystackConsumer } from 'react-paystack';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Button, MenuItem, Select, TextField } from '@material-ui/core';
+// import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+// import { Button, MenuItem, Select, TextField } from '@material-ui/core';
+
+import { Button, TextField } from '@material-ui/core';
 // import {Elements,CardNumberElement,CardCvcElement} from '@stripe/react-stripe-js';
-import AppContext from '../state/context';
-// import {loadStripe} from '@stripe/stripe-js';
-import {mailReciept} from "../emailTemplates/receipt"
+
 import {withRouter} from "react-router-dom"
 import Splash from "./splash";
+import { reserveCrib } from "../apis/server";
+import { connect } from "react-redux";
+import { getDates } from "../helpers/helpers";
 // import emailjs from 'emailjs-com';
 
 //const stripePromise = loadStripe('pk_test_51Hg8hoK2fIb9aYwzRl3MOcLEWpgHCGKnqkXzl8emOzsoNn5ii8oMMuKRAyjV1tanLgvOBuRvFFDu0MK9frmDdDuZ00uaY2DWuF');
 
-const PayStack = withRouter(({changeHandler,state,data,history})=>{
-    const context = useContext(AppContext)
+const PayStack = withRouter(({changeHandler,state,data,history,user})=>{
     const [loading, setLoading] = useState(false)
     const config = {
         reference: (new Date()).getTime(),
-        email: state.email,
-        amount: (data.total+data.refund)*100,
+        email: user.email,
+        amount:Math.ceil((data.total+data.refund)*100),
         publicKey: process.env.REACT_APP_PAYSTACK_PUBLIC_KEY,
     };
-
     const handleSubmit =()=> {
         setLoading(true)
-        const mailData = {
-            from:'noreply@givitec.com',
-            to:state.email,
-            subject:'Reciept of Payment',
-            senderName:process.env.REACT_APP_NAME,
-            message:{...data, id:data.id.replace('/',''), tranxID:config.reference, clientName:state.name}
-        }
-        const reserve = {
-            ...data,
-            id:data.id.replace('/',''),
-            transactionID:config.reference,
-            renterEmail:state.email,
-            fullname:state.name,
-            userId:context.state.user?context.state.user.uid:null,
-            propertyName:data.name,
-            rooms:data.rooms,
-            propertyState:data.state,
-            propertyCity:data.city
-        }
-        context.reserveCrib(reserve)
-        .then(()=>{
-            context.notifications(data.hostId, {
-                name:state.name,
-                email:state.email,
-                hostEmail:data.hostEmail,
-                id:data.id,
+        const dates = getDates(data.checkIn, data.checkOut)
+        const id = data.id.replace('/','')
+            const reserve = {
+                reference:config.reference,
+                renter:{
+                    email:user.email,
+                    firstname:user.firstname,
+                    lastname:user.lastname
+                },
+                refund:data.refund,
+                amount:data.total,
+                renter_id:user?user.id:null,
+                propertyName:data.name,
+                rooms:data.rooms,
+                state:data.state,
+                city:data.city,
+                image:data.image,
+                nights:data.nights,
+                systemFee:data.systemFee,
+                ownerFee:data.ownerFee,
+                tax:data.tax,
+                address:data.address,
                 checkIn:data.checkIn,
                 checkOut:data.checkOut,
-                photoURL:data.photoURL,
-            }, 'booking')
-            mailReciept(mailData)
+                host_id:data.hostId,
+                dates:dates,
+                host:{
+                    firstname:data.firstname,
+                    lastname:data.lastname,
+                    email:data.hostEmail,
+                    phone:data.phone,
+                    image:data.photoURL
+                }
+            }
+            reserveCrib(reserve, id)
             .then(()=>{
 
-                window.sessionStorage.removeItem('@py')
-                setLoading(false)
-                if(context.state.userData)
-                history.push('/app/home')
-                else
-                history.push('/')
-            })
-
+                    window.sessionStorage.removeItem('@py')
+                    setLoading(false)
+                    if(user)
+                    history.push('/app/home')
+                    else
+                    history.push('/')
+                })
             
-        })
         
-    
-        // sendMail(templateId, {to_name:state.name,message: 'Your transaction ID on Crib NG is '+config.reference, from_name: 'Crib NG', reply_to: state.email})
+            // sendMail(templateId, {to_name:state.name,message: 'Your transaction ID on Crib NG is '+config.reference, from_name: 'Crib NG', reply_to: state.email})
       }
     const componentProps = {
         ...config,
@@ -223,7 +225,6 @@ const PayStack = withRouter(({changeHandler,state,data,history})=>{
 //     </form>
 // }
 class PaymentCard extends Component{
-    static contextType = AppContext
     constructor(props){
         super(props)
         this.state ={
@@ -240,11 +241,11 @@ class PaymentCard extends Component{
     }
 
     componentDidMount(){
-        if(this.context.state.userData){
+        if(this.props.user){
             this.setState({
-                name:this.context.state.userData.firstname+ ' '+this.context.state.userData.lastname,
-                phone:this.context.state.userData.phone,
-                email:this.context.state.userData.email,
+                name:this.props.user.firstname+ ' '+this.props.user.lastname,
+                phone:this.props.user.phone,
+                email:this.props.user.email,
             })
         }
         let today = new Date();
@@ -268,6 +269,7 @@ class PaymentCard extends Component{
     }
     render(){
     return(
+        <>
         <div className="card-details">
         <div className="payment-type">
             <button onClick={()=>this.setState({method:'card'})} className={this.state.method === 'card'?'active':''}>Card</button>
@@ -281,13 +283,17 @@ class PaymentCard extends Component{
             // this.state.method === 'card'?
             // <Card state={this.state} changeMonth={this.changeMonth} changeYear={this.changeYear}/>
             // :
-            <PayStack changeHandler={this.changeHandler} data={this.props.data} state={this.state}/>
+            <PayStack changeHandler={this.changeHandler} data={this.props.data} user={this.props.user} state={this.state}/>
 
         }
 
         {/* </div> */}
     </div>
+    </>
     )
 }
 }
-export default PaymentCard
+const mapStateToProps=state=>({
+    user:state.user
+})
+export default connect(mapStateToProps)(PaymentCard)

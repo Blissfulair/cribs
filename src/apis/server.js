@@ -1,4 +1,3 @@
-import trending from "../components/trending";
 
 export const checkLoggedIn = async () => {
     const [response] = await Promise.all([
@@ -6,6 +5,8 @@ export const checkLoggedIn = async () => {
                                         ])
 
     const { user } = await response.json();
+    if(user === undefined)
+    return null
     if (user)
     return user;
     return null
@@ -56,12 +57,37 @@ export const checkLoggedIn = async () => {
     if (user)
     return user;
   };
+  export const changeRole = async (id, data) => {
+    const response = await fetch(`/api/user/change_role/${id}`,{
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+    const  user = await response.json();
+
+    if (user)
+    return user;
+  };
 
 
   //property
   export const addProperty = async (data) => {
     const response = await fetch('/api/property/add_property',{
       method:'POST',
+      body:data,
+      // headers:{
+      //   'Content-Type':'multipart/form-data'
+      // }
+    });
+    const  user= await response.json();
+    return user;
+  };
+
+  export const editProperty = async (data,id) => {
+    const response = await fetch('/api/property/edit_property/'+id,{
+      method:'PATCH',
       body:data,
       // headers:{
       //   'Content-Type':'multipart/form-data'
@@ -99,4 +125,51 @@ export const checkLoggedIn = async () => {
 
     const { property } = await response.json();
     return property
+  };
+
+
+  export const reserveCrib = async (data, id) => {
+    const response = await fetch('/api/property/book/'+id,{
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+    const  {transaction}= await response.json();
+    return transaction;
+  };
+
+
+
+  export const updateHost = async (data, id) => {
+    const response = await fetch(`/api/user/host_profile/${id}`,{
+      method:'PATCH',
+      body:JSON.stringify(data),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+    const  user = await response.json();
+    console.log(user)
+    if (user)
+    return user;
+  };
+
+  export const deleteProperty = async (id) => {
+    const response = await fetch('/api/property/delete_property/'+id,{method:"DELETE"});
+    return await response.json();
+  };
+
+  export const searchProperties = async (data) => {
+    const response = await fetch('/api/property/search_property', {
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{
+        "Content-Type":"application/json"
+      }
+    });
+
+    const { properties } = await response.json();
+    return properties
   };

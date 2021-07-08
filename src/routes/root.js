@@ -27,6 +27,7 @@ import PrivatePayment from "../pages/app/payment";
 import Favourites from "../pages/app/renter/favourites";
 import History from "../pages/app/renter/history";
 import Activates from "../pages/activate";
+import Verify from "../pages/verify";
 import PublicRoute from "./publicRoute";
 import RentRoute from "./privateRoute";
 import HostRoute from "./auth";
@@ -68,6 +69,7 @@ class Root extends Component{
             <HostRoute exact path='/app/inbox' component={Inbox} />
             <HostRoute exact path='/app/calendar' component={DashboardCalendar} />
             <VerifyRoute exact path='/verification' component={Activates} />
+            <VerifyRoute exact path='/verification/:token' component={Verify} />
             
             <AdminRoute exact path='/admin/dashboard' component={AdminDashboard} />
             <RootAdmin exact path='/admin/login' component={AdminLogin} />

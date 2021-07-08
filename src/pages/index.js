@@ -6,7 +6,7 @@ import styled from "styled-components";
 //   DatePicker,
 //   MuiPickersUtilsProvider,
 // } from '@material-ui/pickers';
-import NavButton from "../components/Button/NavButton";
+// import NavButton from "../components/Button/NavButton";
 import { withStyles } from "@material-ui/core/styles"
 import bg from "../images/login_bg.png"
 // import Paper from '@material-ui/core/Paper';
@@ -42,12 +42,12 @@ import SearchIcon from "../images/searchicon.svg"
 import CancelIcon from "../images/cancelicon.svg"
 import Splash from "../components/splash";
 import { getFavs, getDates } from "../helpers/helpers";
-import LocationCard from "../components/Cards/LocationCard";
+import  LocationCard from "../components/Cards/LocationCard";
 import { connect } from "react-redux";
-import {setAuth, setTrendingAndBestCribs} from "../state/actions"
+import { setTrendingAndBestCribs} from "../state/actions"
 import {HomeSkeleton as Skeleton} from "../components/skeleton/index"
 import Head from "../components/head";
-import { getTrendingAndBestCribs } from "../apis/server";
+import { getTrendingAndBestCribs, searchProperties } from "../apis/server";
 
 
 
@@ -191,6 +191,8 @@ class Index extends Component {
             loading: false,
             favourites: [],
             days: 1,
+            quickSeach:[],
+            quickLoading:false
         }
     }
     // useEffect(()=>{
@@ -205,13 +207,13 @@ class Index extends Component {
         .then(cribs=>{
             this.props.setTrendingAndBestCribs(cribs)
         })
-        // const favourites = getFavs()
-        // this.setState({
-        //     favourites: favourites,
-        //     location: this.context.state.searchQuery ? this.context.state.searchQuery.location : '',
-        //     checkIn: this.context.state.searchQuery ? this.context.state.searchQuery.checkIn : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-        //     checkOut: this.context.state.searchQuery ? this.context.state.searchQuery.checkOut : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-        // })
+        const favourites = getFavs()
+        this.setState({
+            favourites: favourites,
+            // location: this.context.state.searchQuery ? this.context.state.searchQuery.location : '',
+            // checkIn: this.context.state.searchQuery ? this.context.state.searchQuery.checkIn : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            // checkOut: this.context.state.searchQuery ? this.context.state.searchQuery.checkOut : new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+        })
     }
     setDays = () => {
         const dates = getDates(this.state.checkIn, this.state.checkOut)
@@ -222,25 +224,52 @@ class Index extends Component {
             [e.target.name]: e.target.value
         })
     }
+    onKeyPres=()=>{
+        this.setState({quickLoading:true})
+        const data ={
+            search:this.state.location,
+            limit:4
+        }
+        searchProperties(data)
+        .then(res=>{
+            this.setState({quickLoading:false, quickSeach:res})
+        }) 
+        .catch(e=>{
+            this.setState({quickLoading:false})
+        })
+    }
     onSubmit = (e) => {
         e.preventDefault();
         this.setState({ loading: true })
-        this.context.setSearch(this.state);
-        this.context.searchProperties(this.state.location, this.state.checkIn, this.state.checkOut, this.state.guest)
-            .then(() => {
-                this.props.history.push({
-                    pathname: '/search',
-                    search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
-                })
-                this.setState({ loading: false })
+        searchProperties({search:this.state.location})
+        .then((res) => {
+            console.log(res)
+            this.props.history.push({
+                pathname: '/search',
+                search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
             })
-            .catch(e => {
-                this.setState({ loading: false })
-            })
+            this.setState({ loading: false })
+        })
+        .catch(e => {
+            this.setState({ loading: false })
+        })
+        // this.context.setSearch(this.state);
+        // this.context.searchProperties(this.state.location, this.state.checkIn, this.state.checkOut, this.state.guest)
+        //     .then(() => {
+        //         this.props.history.push({
+        //             pathname: '/search',
+        //             search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
+        //         })
+        //         this.setState({ loading: false })
+        //     })
+        //     .catch(e => {
+        //         this.setState({ loading: false })
+        //     })
     }
     search(e,props){
         e.preventDefault()
-        props.setAuth(true)
+        console.log(e)
+        // props.setAuth(true)
     }
     render() {
         
@@ -263,10 +292,10 @@ class Index extends Component {
                             <img src={cribs} alt="cribs ng for everyone" />
 
                             <div className="form__wrapper">
-                                <LocationCard />
-                                <form onSubmit={(e)=>{this.search(e, this.props)}}>
+                                <LocationCard results={this.state.quickSeach} />
+                                <form onSubmit={(e)=>{this.onSubmit(e)}}>
                                     <div className="location">
-                                        <input className='location__input' type="text" name="" id="" placeholder="Where do you want to lodge?" />
+                                        <input onKeyUp={this.onKeyPres} className='location__input' type="text" name="location" onChange={this.changeHandler} id="" placeholder="Where do you want to lodge?" />
                                         <img
                                             src={CancelIcon}
                                             alt=""

@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 
 import configureStore from "./state/store";
 import { checkLoggedIn, propertyTypes } from "./apis/server";
+import { getDashboard } from './helpers/helpers';
 
 // ReactDOM.render(
 //   <React.StrictMode>
@@ -15,9 +16,9 @@ import { checkLoggedIn, propertyTypes } from "./apis/server";
 //   document.getElementById('root')
 // );
 
-const renderApp = (preloadedState, types) => {
+const renderApp = (preloadedState, types, dashboard) => {
 
-  const store = configureStore({user:preloadedState, propertyTypes:types});
+  const store = configureStore({user:preloadedState, propertyTypes:types, dashboard:dashboard});
   ReactDOM.render(
     <Provider store={store}>
       <React.StrictMode>
@@ -27,7 +28,7 @@ const renderApp = (preloadedState, types) => {
     document.getElementById("root")
   );
 };
-(async () => renderApp(await checkLoggedIn(), await propertyTypes()))();
+(async () => renderApp(await checkLoggedIn(), await propertyTypes(), getDashboard()))();
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA

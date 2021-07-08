@@ -172,15 +172,15 @@ class EditProfile extends React.Component{
             return
         }
         this.setState({loading:true})
-        const data = {
-            phone:this.state.phone,
-            address:this.state.address,
-            bio:this.state.bio,
-            linkedin:this.state.linkedin,
-            facebook:this.state.facebook,
-            dob:this.state.dob,
-            gender:this.state.gender
-        }
+        // const data = {
+        //     phone:this.state.phone,
+        //     address:this.state.address,
+        //     bio:this.state.bio,
+        //     linkedin:this.state.linkedin,
+        //     facebook:this.state.facebook,
+        //     dob:this.state.dob,
+        //     gender:this.state.gender
+        // }
         // this.context.updateProfile(data)
         // .then(()=>{
         //     this.setState({loading:false,success:true, message:'Profile has been updated'})

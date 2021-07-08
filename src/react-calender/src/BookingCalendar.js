@@ -49,6 +49,7 @@ export default class BookingCalendar extends Component {
     }
   }
   onChangeValue =(day)=> {
+    if(this.props.onChangeValue)
     this.props.onChangeValue(day.date._d)
     this.setState({ selected: day.date });
   }
@@ -77,7 +78,7 @@ export default class BookingCalendar extends Component {
         month={this.state.month}
         selected={this.state.selected}
         selectHandler={this.handleSelect}
-        onChangeValue={this.onChangeValue}
+        onChangeValue={(e)=>this.onChangeValue(e)}
       />);
       date.add(1, 'w');
       done = count > 2 && monthIndex !== date.month();

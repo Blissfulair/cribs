@@ -21,7 +21,7 @@ const styles = () => ({
     }
 });
 
-const LogoutModal=({logout, logoutRef, setLogout,classes,history, dashboard})=>{
+const LogoutModal=({logout, logoutRef, setLogout,classes,history, dashboard, setUser})=>{
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -41,7 +41,7 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history, dashboard})=>{
     .then((res)=>{
       setUser(null)
       window.sessionStorage.removeItem('@dash')
-      history.push('/login')
+      history.push('/')
     })
   }
   return (
@@ -56,7 +56,7 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history, dashboard})=>{
                 <ClickAwayListener onClickAway={closeLogout}>
                   <MenuList autoFocusItem={logout} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     {
-                      dashboard?
+                      !dashboard?
                         <>
                           <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/myprofile')}}>Profile</MenuItem>
                           <MenuItem onClick={(e)=>{closeLogout(e); history.push('/app/favourites')}}>Favourites</MenuItem>
@@ -91,4 +91,7 @@ const LogoutModal=({logout, logoutRef, setLogout,classes,history, dashboard})=>{
 const mapStateToProps=state=>({
   dashboard:state.dashboard
 })
-export default connect(mapStateToProps)(withRouter(withStyles(styles)(LogoutModal)))
+const mapDispatchToProps = dispatch => ({
+  setUser: (payload) => dispatch(setUser(payload))
+});
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(withStyles(styles)(LogoutModal)))

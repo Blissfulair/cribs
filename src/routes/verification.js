@@ -1,6 +1,5 @@
-import React, {useContext} from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import AppContext from '../state/context';
+import React from 'react';
+import { Route } from 'react-router-dom';
 //import { getDashboard } from '../helpers/helpers';
 
 const VerifyRoute = ({component: Component,history, ...rest}) => {

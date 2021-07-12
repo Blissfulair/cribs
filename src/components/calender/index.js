@@ -34,6 +34,9 @@ class Calendar extends Component{
             this.top.current.style.height="0"
         }
     }
+    componentDidUpdate(props, prev){
+        console.log(props, prev)
+    }
     render(){
         return(
             <>

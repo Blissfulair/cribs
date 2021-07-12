@@ -25,7 +25,7 @@ import jigsaw from "../images/jigsaw.svg"
 import focus from "../images/focus.svg"
 import Slide from "../components/slider";
 import Explore from "../components/explore";
-import { DatePicker } from "@material-ui/pickers";
+// import { DatePicker } from "@material-ui/pickers";
 import AppContext from "../state/context";
 // import { Button, TextField } from "@material-ui/core";
 import house from "../images/house.png"

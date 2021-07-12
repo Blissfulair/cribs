@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 // import moment from 'moment';
 import "./calendar.scss"
 class Dates extends Component{
-    constructor(props){
-        super(props)
-    }
+
 
     render(){
         return(

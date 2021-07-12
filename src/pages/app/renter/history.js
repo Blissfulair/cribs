@@ -33,6 +33,8 @@ import SwipeableViews from 'react-swipeable-views';
 import Box from '@material-ui/core/Box';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { connect } from "react-redux";
+import { deleteHistory, getHistoriesByUserId } from "../../../apis/server";
+import { setHistories } from "../../../state/actions";
 const styles = (theme)=>({
     inputRoot: {
         color: 'inherit',
@@ -147,10 +149,11 @@ class History extends React.Component{
     }
 
     componentDidMount(){
-        // this.context.getHistories(this.context.state.user.uid)
-        // .then(()=>{
-        //     this.setState({loading:false, histories:this.props.histories})
-        // })
+        getHistoriesByUserId(this.props.user.id)
+        .then((histories)=>{
+            this.props.setHistories(histories)
+            this.setState({loading:false, histories:this.props.histories})
+        })
     }
 	handleClickOpen = (history) => {
 		this.setState({open:true, history:history});
@@ -188,12 +191,19 @@ class History extends React.Component{
         this.setState({value:index});
       };
     onDelete = ()=>{
+       
+        if(this.state.selected.length<1)
+        return
         this.setState({deleteStatus:true})
-        // this.context.deleteHistory(this.state.selected)
-        // .then(()=>{
-        //     const histories = this.state.histories.filter(history=>!this.state.selected.includes(history.transactionID))
-        //     this.setState({histories,deleteStatus:false})
-        // })
+        deleteHistory(this.state.selected)
+        .then(()=>{
+            const histories = this.props.histories.filter(history=>!this.state.selected.includes(history.reference))
+            this.props.setHistories(histories)
+            this.setState({histories,deleteStatus:false})
+        })
+        .catch(e=>{
+            this.setState({deleteStatus:false})
+        })
     }
     onDisplayUsers = e=>{
         e.preventDefault();
@@ -222,7 +232,7 @@ class History extends React.Component{
         //     review:this.state.review,
         //     rating:this.state.rating,
         //     email:user.email,
-        //     historyId:this.state.history.transactionID
+        //     historyId:this.state.history.reference
         //     // hostId:
         // }
         // this.context.sendReview(data)
@@ -242,7 +252,7 @@ class History extends React.Component{
                     <StyledTableRow  classes={{root:classes.trRoot}} key={i}>
                     <StyledTableCell classes={{root:classes.tdRoot}} className="history"  component="th" scope="row">
                         <label  htmlFor={history.id} className="radio">
-                            <input onChange={(e)=>this.onSelect(history.transactionID, e.target.checked)}  type="checkbox" value={history.id} name="" id={history.id}/>
+                            <input onChange={(e)=>this.onSelect(history.reference, e.target.checked)}  type="checkbox" value={history.id} name="" id={history.id}/>
                             <span className="radio-mark"></span>
                         </label>
                     </StyledTableCell>
@@ -311,7 +321,7 @@ class History extends React.Component{
                                </tr>
                                <tr>
                                    <td>Transaction ID</td>
-                                   <td>{history.transactionID}</td>
+                                   <td>{history.reference}</td>
                                </tr>
                                {/* <tr>
                                    <td>Total</td>
@@ -511,4 +521,7 @@ const mapStateToProps=state=>({
     histories:state.histories,
     user:state.user
 })
-export default connect(mapStateToProps)(withStyles(styles,{withTheme:true})(History));
+const mapDispatchToProps=dispatch=>({
+    setHistories:(payload)=>dispatch(setHistories(payload))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles,{withTheme:true})(History));

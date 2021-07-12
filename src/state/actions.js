@@ -12,6 +12,12 @@ export const setUser = (payload) => {
     payload
   }
 }
+export const setHistories = (payload) => {
+  return {
+    type: "HISTORY",
+    payload
+  }
+}
 export const chooseDashboard = (payload) => {
   setDashboard(payload)
   return {

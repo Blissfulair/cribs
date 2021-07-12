@@ -173,3 +173,34 @@ export const checkLoggedIn = async () => {
     const { properties } = await response.json();
     return properties
   };
+
+  export const getHistoriesByUserId = async (id) => {
+    const response = await fetch('/api/user/history/'+id);
+
+    const { histories } = await response.json();
+    return histories
+  };
+
+  export const deleteHistory = async (data) => {
+    const response = await fetch('/api/user/delete_history', {
+      method:'DELETE',
+      body:JSON.stringify(data),
+      headers:{
+        "Content-Type":"application/json"
+      }
+    })
+    const { message } = await response.json();
+    return message
+  }
+
+  export const getFavourite = async (data) => {
+    const response = await fetch('/api/user/favourites', {
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{
+        "Content-Type":"application/json"
+      }
+    })
+    const { favourites } = await response.json();
+    return favourites
+  }

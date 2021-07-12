@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {withStyles} from "@material-ui/core/styles"
 import {Select, FormControl,Grid,MenuItem, Typography,Paper} from '@material-ui/core';
 import Searchs from "../../../components/search"
-// import Splash from "../../../components/splash"
+import Splash from "../../../components/splash"
 import Explore from "../../../components/explore";
 import  MapContainer  from "../../../components/map";
 import {withRouter} from "react-router-dom"
@@ -13,6 +13,8 @@ import lagos from "../../../images/lagos.jpg"
 import kano from "../../../images/kano.jpeg"
 import { getFavs } from "../../../helpers/helpers";
 import { connect } from "react-redux";
+import { setFavourite } from "../../../state/actions";
+import { getFavourite } from "../../../apis/server";
 const styles = theme =>({
     container:{
         paddingTop:100
@@ -55,11 +57,12 @@ class Favourites extends Component{
     }
     componentDidMount(){
         //let properties = JSON.parse(window.localStorage.getItem('@fi'))
-        const favourites =getFavs()
-        // this.context.getFavourite(properties)
-        // .then(()=>{
+        const favourites =getFavs(this.props.user)
+        getFavourite({favourites})
+        .then((res)=>{
+            this.props.setFavourite(res)
             this.setState({isLoading:false, favourites})
-        // })
+        })
     }
 
      handleChange = (event) => {
@@ -71,10 +74,10 @@ class Favourites extends Component{
 
     return(
         <>
-            {/* {
+            {
                 this.state.isLoading&&
                     <Splash />
-            } */}
+            }
             <AppHeader/>
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
@@ -107,7 +110,7 @@ class Favourites extends Component{
                                     {
                                         this.props.favourites.map((result,index)=>{
                                                 return(
-                                                    <Searchs favourite={this.state.favourites.includes(result.id)} content={result}   name={`rating${index}`} key={index}/>
+                                                    <Searchs favourite={this.state.favourites.includes(result._id)} content={result}   name={`rating${index}`} key={index}/>
                                                 )
                                         })
                                     }
@@ -116,7 +119,7 @@ class Favourites extends Component{
                                     :
                                     <Grid container justify="space-between">
                                     <Grid style={{marginTop:40}} item>
-                                        <p className={classes.text} style={{fontSize:19, color:'#7E7E7E'}}>No crib matches the search</p>
+                                        <p className={classes.text} style={{fontSize:19, color:'#7E7E7E'}}>No crib in your favourite</p>
                                     </Grid>
                                 </Grid>
                                 }
@@ -139,6 +142,10 @@ class Favourites extends Component{
 }
 }
 const mapStateToProps=state=>({
-    favourites:state.favourites
+    favourites:state.favourites,
+    user:state.user
 })
-export default connect(mapStateToProps)(withRouter(withStyles(styles)(Favourites)));
+const mapDispatchToProps=dispatch=>({
+    setFavourite:(payload)=>dispatch(setFavourite(payload))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(withStyles(styles)(Favourites)));

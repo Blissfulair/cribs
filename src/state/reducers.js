@@ -25,6 +25,11 @@ export default (state, action) => {
           ...state,
           searches: action.payload
         };
+      case "HISTORY":
+        return {
+          ...state,
+          histories: action.payload
+        };
         case "PROPERTY_TYPES":
           return {
             ...state,

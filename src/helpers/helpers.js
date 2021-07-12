@@ -95,9 +95,10 @@ export const currency=(amount, decimal, decSeperator, thouSeperator)=> {
     }
 
 
-export const getFavs = ()=>{
+export const getFavs = (user)=>{
     let data = [];
-    let favourites = JSON.parse(window.localStorage.getItem('@fi'))
+    let item = user?user.id:'fi'
+    let favourites = JSON.parse(window.localStorage.getItem('@'+item))
     if(favourites !== null){
         data = [...favourites]
     }

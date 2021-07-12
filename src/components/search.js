@@ -46,12 +46,13 @@ const styles = ()=>({
     }
 })
 const Search = ({classes, content, rating,name, favourite, user})=>{
+    console.log(content)
     return(
     <Link to={user?`/app/crib/${content._id}`:`/crib/${content._id}`}>
         <Card className="fav-search" elevation={3} style={{margin:'15px 0'}} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.root}}>
                 <div className={classes.media}>
-                    <CardMedia image={content.featuredImage}
+                    <CardMedia image={`${process.env.REACT_APP_BACKEND_URL}/`+content.featuredImage}
                             component="img"
                             alt={content.name}
                             height="100%"

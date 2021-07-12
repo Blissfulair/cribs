@@ -241,7 +241,6 @@ class Single extends Component {
         const id = this.props.location.pathname.split('crib')[1].replace('/', '')
         getCribById(id)
             .then(crib => {
-                console.log(crib.reviews)
                 this.props.setCrib(crib)
                 const checkIn = new Date()
                 const checkOut = new Date()

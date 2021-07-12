@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 // import moment from 'moment';
 import "./calendar.scss"
 class Dates extends Component{
+    constructor(props){
+        super(props)
+    }
 
     render(){
         return(
-            <div style={{animationIterationCount: this.props.count}} className="calendar-display">
+            <div ref={this.props.refs}  className="calendar-display">
+                
                 <div>{this.props.day}</div>
             </div>
         )
@@ -18,7 +22,8 @@ Dates.propTypes = {
     onSelect: PropTypes.func,
     width:PropTypes.number,
     height:PropTypes.number,
-    count:PropTypes.any
+    count:PropTypes.any,
+    onClick:PropTypes.func
   };
   
   Dates.defaultProps = {
@@ -26,6 +31,7 @@ Dates.propTypes = {
     onSelect:null,
     width:0,
     height:0,
-    count:0
+    count:0,
+    onClick:null
   };
 

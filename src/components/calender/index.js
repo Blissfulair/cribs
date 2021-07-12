@@ -12,21 +12,38 @@ class Calendar extends Component{
             height:0,
             count:'unset'
         }
+        this.dates = React.createRef();
+        this.top = React.createRef();
     }
     onClick=()=>{
+        this.setState({onOpen:!this.state.onOpen})
         if(this.state.onOpen){
-            this.setState({width:0, onOpen:false, height:0, count:'unset'})
+            
+           this.dates.current.style.width = '70%'
+           this.dates.current.style.height = '300px'
+           this.dates.current.style.left = '15%'
+            this.top.current.style.width="30px"
+            this.top.current.style.height="30px"
         }
         else
-        this.setState({width:200, onOpen:true, height:250, count:2})
+        {
+           this.dates.current.style.width = '0px'
+           this.dates.current.style.height = '0px'
+           this.dates.current.style.left = '35%'
+            this.top.current.style.width="0"
+            this.top.current.style.height="0"
+        }
     }
     render(){
         return(
+            <>
             <div onClick={this.onClick} className="search-calendar">
                 <div>{this.props.label}</div>
-                <div>{this.props.value?new Date(this.props.value).getUTCDate():this.props.format}</div>
-                <Dates width={this.state.width} height={this.state.height} count={this.state.count}/>
+                <div>{this.props.value?new Date(this.props.value).getUTCDate():this.props.placeholder}</div>
+                <div ref={this.top}  className="top"></div>
             </div>
+            <Dates refs={this.dates}  width={this.state.width} height={this.state.height} count={this.state.count}/>
+            </>
         )
     }
 }
@@ -34,6 +51,7 @@ export default Calendar
 Calendar.propTypes = {
     format: PropTypes.string,
     label: PropTypes.string,
+    placeholder: PropTypes.string,
     value: PropTypes.instanceOf(moment).isRequired,
     onClick: PropTypes.func,
   };
@@ -41,7 +59,8 @@ Calendar.propTypes = {
   Calendar.defaultProps = {
     format: 'dd/MM/yyyy',
     label:'',
-    value: moment().startOf('day'),
+    placeholder:'',
+    value: '',
     onClick:null
   };
 

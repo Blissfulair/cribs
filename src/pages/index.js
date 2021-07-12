@@ -311,6 +311,7 @@ class Index extends Component {
                                             label="Check In"
                                             format="dd/MM/yyyy"
                                             value={this.state.checkIn}
+                                            placeholder="Pick Dates"
                                             onChange={(e) => {
                                                 if (Date.parse(e) > Date.parse(this.state.checkOut))
                                                     this.setState({ checkIn: e, checkOut: e }, () => { this.setDays() })
@@ -328,9 +329,10 @@ class Index extends Component {
                                     </div>
 
                                     <div className="checkin">
-                                        <DatePicker
+                                        <Calendar
                                             label="Check Out"
                                             format="dd/MM/yyyy"
+                                            placeholder="Pick Dates"
                                             value={this.state.checkOut}
                                             onChange={(e) => { this.setState({ checkOut: e }) }}
                                             style={{

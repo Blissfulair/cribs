@@ -48,6 +48,7 @@ import { setTrendingAndBestCribs} from "../state/actions"
 import {HomeSkeleton as Skeleton} from "../components/skeleton/index"
 import Head from "../components/head";
 import { getTrendingAndBestCribs, searchProperties } from "../apis/server";
+import Calendar from "../components/calender";
 
 
 
@@ -306,7 +307,7 @@ class Index extends Component {
                                     </div>
 
                                     <div className="checkin">
-                                        <DatePicker
+                                        <Calendar
                                             label="Check In"
                                             format="dd/MM/yyyy"
                                             value={this.state.checkIn}

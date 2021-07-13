@@ -1,7 +1,7 @@
 
 export const checkLoggedIn = async () => {
     const [response] = await Promise.all([
-                                        fetch('/api/user/auth')
+                                        fetch(process.env.REACT_APP_BACKEND_URL+'/api/user/auth')
                                         ])
 
     const { user } = await response.json();

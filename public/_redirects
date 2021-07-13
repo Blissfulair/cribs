@@ -1,3 +1,4 @@
-/*    /index.html   200
 
-/api/user/auth https://api.cribng.com/api/user/auth
+
+/api/* https://api.cribng.com/api/:splat 200
+/* /index.html 200  

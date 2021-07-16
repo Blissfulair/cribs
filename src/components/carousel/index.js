@@ -42,11 +42,11 @@ const Carousel =({children})=>{
     },[track])
     return(
         <div className="carousel-main-container">
-            <button onClick={prev}>prev</button>
+            <button onClick={prev}></button>
             <div ref={track} className="carousel-main-container-track">
                 {children}
             </div>
-            <button onClick={next}>next</button>
+            <button onClick={next}></button>
         </div>
     )
 }

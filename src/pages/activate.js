@@ -41,9 +41,9 @@ const  Activate = ({user,setUser})=>{
     useEffect(()=>{
        return ()=>{
            setTimer(null)
-           setUser(null)
+           //setUser(null)
        } 
-    }, [setTimer, timer, setUser])
+    }, [setTimer, timer])
         return (
             <>
                 <div className="label"></div>

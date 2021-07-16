@@ -62,3 +62,10 @@ export const search = (payload) => {
     payload
   }
 }
+
+export const storeSearchData = (payload) => {
+  return {
+    type: "SEARCH_DATA",
+    payload
+  }
+}

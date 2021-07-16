@@ -4,10 +4,11 @@ import {
 	createMuiTheme,
 	responsiveFontSizes,
 } from "@material-ui/core/styles";
-import { CssBaseline, Paper } from "@material-ui/core";
+import { CssBaseline } from "@material-ui/core";
 import Navigation from "./components/navigation";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import "./scss/index.scss"
 
 function App() {
 	let theme = createMuiTheme({
@@ -34,10 +35,10 @@ function App() {
 		// <LandingPage/>
 		<MuiThemeProvider theme={theme}>
 			<MuiPickersUtilsProvider utils={DateFnsUtils}>
-				<Paper square>
+				<div className="main-site-content">
 					<CssBaseline />
 					<Navigation />
-				</Paper>
+				</div>
 			</MuiPickersUtilsProvider>
 		</MuiThemeProvider>
 	);

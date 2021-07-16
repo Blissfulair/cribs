@@ -7,7 +7,6 @@ import {
     Paper,
     Tabs,
     Tab,
-    TextField,
     Divider,
     Avatar,
     Box,
@@ -29,7 +28,7 @@ import WifiIcon from '@material-ui/icons/Wifi';
 import Rating from '@material-ui/lab/Rating';
 import Calendar from "@material-ui/icons/Today"
 import SmokeFreeIcon from '@material-ui/icons/SmokeFree';
-import { DatePicker } from "@material-ui/pickers";
+import  DatePicker  from "../../components/calender/index";
 import MapContainer from "../../components/map";
 import Review from "../../components/review"
 import { withRouter } from "react-router-dom"
@@ -40,13 +39,14 @@ import { getDates, getFav } from "../../helpers/helpers";
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import Share from "../../components/share";
 import HostPopUp from "../../components/hostPopUp";
-import BookingCalendar from "../../react-calender/src/BookingCalendar";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { connect } from "react-redux";
 import { setCrib } from "../../state/actions";
 import { getCribById } from "../../apis/server";
 import AppHeader from "../../components/appHeader";
+import Guest from "../../components/guest";
+import Booking from "../../components/booking";
 const styles = theme => ({
     container: {
         paddingTop: 140,
@@ -177,6 +177,10 @@ class Single extends Component {
                 4: 'Excellent',
                 5: 'Excellent'
             },
+            pet:false,
+            adult:0,
+            children:0,
+            infant:0
         }
         this.propert = null
     }
@@ -419,14 +423,14 @@ class Single extends Component {
             this.state.rooms.bookedDates.forEach(date => dates.push(new Date(date)))
             dates.sort((a, b) => new Date(b) - new Date(a))
         }
-        
+
         if (this.state.loading)
             return <Splash />
         return (
             <>
-                <AppHeader />
+                 <AppHeader/>
                 <Grid container justify="center">
-                    <Grid item xs={11} md={10} >
+                    <Grid item xs={12} md={10} >
                         {
                             property &&
                             <div id="singlepage" className={classes.container}>
@@ -558,45 +562,18 @@ class Single extends Component {
                                                             </div>
                                                         </div>
                                                         <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', columnGap: '1rem' }} >
-                                                            <div className={classes.position} style={{ textDecoration: property.smoking ? 'none' : 'line-through' }}>
+                                                            <div className={classes.position} style={{ textDecoration: property.smoke ? 'none' : 'line-through' }}>
                                                                 <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Smoke Alarm</Typography>
                                                             </div>
-                                                            <div className={classes.position} style={{ textDecoration: property.smoking ? 'none' : 'line-through' }}>
+                                                            <div className={classes.position} style={{ textDecoration: property.smoke ? 'none' : 'line-through' }}>
                                                                 <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Carbon Monoxide alarm</Typography>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    {/* <Grid item xs={5}>
-                                            <div className={classes.position} style={{textDecoration:property.kitchen?'none':'line-through'}} > 
-                                            <KitchenIcon htmlColor="#00A8C8" fontSize="large"/>
-                                            <Typography className={classes.textTitle}  variant="subtitle1" component="p">Kitchen</Typography>
-                                            </div>
-                                            <div className={classes.position} style={{textDecoration:property.wifi?'none':'line-through'}}>
-                                                <WifiIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">WiFi</Typography>
-                                            </div>
-                                            <div className={classes.position} style={{textDecoration:property.smoke?'none':'line-through'}}>
-                                                <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">Smoke Alarm</Typography>
-                                            </div>
-                                        </Grid>
-                                        <Grid style={{backgroundColor:"#000"}} item xs={7}>
-                                            <div className={classes.position} style={{textDecoration:property.parking?'none':'line-through'}}>
-                                                <LocalParkingIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">Free parking on premises</Typography>
-                                            </div>
-                                            <div className={classes.position} style={{textDecoration:property.cable?'none':'line-through'}}>
-                                                <TvIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">Cable TV</Typography>
-                                            </div>
-                                            <div className={classes.position} style={{textDecoration:property.smoke?'none':'line-through'}}>
-                                                <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                <Typography className={classes.textTitle} variant="subtitle1" component="p">Carbon Monoxide alarm</Typography>
-                                            </div>
-                                        </Grid> */}
+                                               
                                                 </Grid>
                                                 <Divider />
                                                 <Typography className={classes.subTitle}>Bedrooms</Typography>
@@ -649,21 +626,13 @@ class Single extends Component {
                                                         <Typography variant="caption" component="p">{property.inside}</Typography>
                                                         <Typography variant="caption" component="p">{property.around}</Typography>
                                                     </div>
-                                                    {/* <Grid item xs={5}>
-                                            <Typography className={classes.textTitle} style={{marginLeft:0}} variant="subtitle1" component="p">GETTING INSIDE</Typography>  
-                                            <Typography variant="caption" component="p">Well-lit path to entrance Step-free path to entrance</Typography>                                    
-                                        </Grid>
-                                        <Grid item xs={5}>
-                                            <Typography className={classes.textTitle} style={{marginLeft:0}} variant="subtitle1" component="p">MOVING AROUND THE SPACE</Typography>
-                                            <Typography variant="caption" component="p">No stairs or steps to enter Wide hallways</Typography>
-                                        </Grid> */}
                                                 </Grid>
 
                                                 <Grid container id="availability">
                                                     <Grid item>
                                                         <Typography className={classes.subTitle}>Availability</Typography>
-                                                        <Typography>Enter your trip dates for accurate pricing and availability</Typography>
-                                                        <BookingCalendar on bookings={dates} />
+                                                        <Typography style={{marginBottom:40}}>Enter your trip dates for accurate pricing and availability</Typography>
+                                                        <Booking bookings={[]}/>
                                                     </Grid>
                                                 </Grid>
                                             </Box>
@@ -732,11 +701,12 @@ class Single extends Component {
                                                     <form autoComplete="off">
                                                         <Grid container spacing={1}>
                                                             <Grid item xs={6}>
-                                                                <div className={classes.checkIn}>
+                                                                <div  className={classes.checkIn}>
                                                                     <label htmlFor="check-in">
                                                                         <Calendar htmlColor="#00A8C8" fontSize="small" />
                                                                     </label>
                                                                     <DatePicker
+                                                                        right="-12.5vw"
                                                                         className="single"
                                                                         id="check-in"
                                                                         label="Check-In"
@@ -753,11 +723,12 @@ class Single extends Component {
                                                                 </div>
                                                             </Grid>
                                                             <Grid item xs={6}>
-                                                                <div className={classes.checkIn}>
+                                                                <div className={classes.checkIn} >
                                                                     <label htmlFor="check-out">
                                                                         <Calendar htmlColor="#00A8C8" fontSize="small" />
                                                                     </label>
                                                                     <DatePicker
+                                                                        right="0"
                                                                         className="single"
                                                                         id="check-out"
                                                                         label="Check-Out"
@@ -773,7 +744,17 @@ class Single extends Component {
                                                                 <label htmlFor="check-out">
                                                                     <Calendar htmlColor="#00A8C8"  fontSize="small" />
                                                                 </label>
-                                                                <TextField defaultValue={property.guest} onChange={(e) => this.setState({ guest: e.target.value })} className="single" id="guest" label="Guests" variant="outlined" />
+                                                                <Guest
+                                                                    label="Guests"
+                                                                    placeholder="Select guests"
+                                                                    onChange={(e)=>{this.setState({guest:e.adult+e.children, adult:e.adult,children:e.children, infant:e.infant})}}
+                                                                    onCheck={(e)=>this.setState({pet:e})}
+                                                                    checked={this.state.pet}
+                                                                    adult={this.state.adult}
+                                                                    childrens={this.state.children}
+                                                                    infant={this.state.infant}
+                                                                />
+                                                                {/* <TextField defaultValue={property.guest} onChange={(e) => this.setState({ guest: e.target.value })} className="single" id="guest" label="Guests" variant="outlined" /> */}
                                                             </div>
                                                         </div>
                                                         {

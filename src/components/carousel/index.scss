@@ -1,0 +1,13 @@
+.carousel-main-container{
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scrollbar-width: none;
+
+    .carousel-main-container-track{
+        display: flex;
+        > *{
+            margin: 0 20px;
+        }
+    }
+}

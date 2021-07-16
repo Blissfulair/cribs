@@ -1,5 +1,5 @@
 import React from "react"
-import Carousel from '@brainhubeu/react-carousel';
+// import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import Trending from "./trending"
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft'
@@ -7,6 +7,7 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight'
 import {Link} from "react-router-dom"
 import { connect } from "react-redux";
 import { Grid } from "@material-ui/core";
+import Carousel from "./carousel";
 const Slide = ({content,favourites,user})=>{
     return(
         <>

@@ -111,4 +111,19 @@ export const getWeekNumber = ()=>{
     const weekNumber = Math.ceil( (((today.getTime() - onejan.getTime()) / 86400000) + onejan.getDay() + 1) / 7 )
     return weekNumber
 }
-    
+   
+export const isDescendant=(parent, child)=> {
+    var node = child.parentNode;
+    if(child.className === 'qsearch1'){
+        return true
+    }
+        
+    while (node) {
+        if (node === parent) {
+            return true;
+        }
+        
+        node = node.parentNode;
+    }
+    return false;
+}

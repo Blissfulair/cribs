@@ -1,16 +1,8 @@
 import React from "react";
-import {Paper, Typography} from "@material-ui/core"
+import { Typography} from "@material-ui/core"
 import {withStyles} from "@material-ui/core/styles"
 const styles=()=>({
-    root:{
-        height:180,
-        width:'100%',
-        border: "1.5px solid #CFCFCF",
-        borderRadius:25,
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'flex-end'
-    },
+
     image:{
         height:80,
         width:80,
@@ -23,22 +15,18 @@ const styles=()=>({
     content:{
         marginBottom:25
     },
-    text:{
-        marginTop:2,
-        fontSize:'1.45rem',
-        textAlign:'center'
-    }
 })
-const IconBox = ({classes,name,image})=>{
+const IconBox = ({classes,name,image, content})=>{
     return(
-        <Paper classes={{root:classes.root}} elevation={2}>
+        <div className="icon-box" >
             <div className={classes.content}>
                 <div className={classes.imageContainer}> 
                     <img className={classes.image} src={image} alt=""/>
                 </div>
-                <Typography color="textSecondary" classes={{root:classes.text}}>{name}</Typography>
+                <Typography className="text" variant="subtitle1" >{name}</Typography>
+                <p className="content">{content}</p>
             </div>
-        </Paper>
+        </div>
     )
 }
 export default withStyles(styles)(IconBox);

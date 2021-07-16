@@ -20,10 +20,11 @@ const styles = ()=>({
     },
     root:{
         borderRadius:16,
-        height:340,
-        minWidth:265,
+        height:300,
+        minWidth:249,
         position:'relative',
-        marginBottom:20
+        marginBottom:20,
+       
     },
     image:{
         borderRadius:16,
@@ -42,7 +43,8 @@ const styles = ()=>({
 })
 const Trending = ({classes, color,name, details,favourite})=>{
     return(
-        <Card className="trending-card" elevation={3} classes={{root:classes.root}}>
+        <div style={{ border:'1px solid #0066FF', padding:'20px 8px', borderRadius:16}} >
+        <Card className="trending-card" elevation={0} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.image}}>
                 <CardMedia image={`${process.env.REACT_APP_BACKEND_URL}/${details.featuredImage}`}
                         component="img"
@@ -81,6 +83,7 @@ const Trending = ({classes, color,name, details,favourite})=>{
                 </CardContent>
             </CardActionArea>
         </Card>
+        </div>
     )
 }
 export default withStyles(styles)(Trending)

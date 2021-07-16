@@ -8,44 +8,105 @@ class Calendar extends Component{
         super(props)
         this.state={
             onOpen:false,
-            width:0,
-            height:0,
-            count:'unset'
+            update:false,
+            deviceWidth:0,
+            sm:760
         }
         this.dates = React.createRef();
         this.top = React.createRef();
+        this.container = React.createRef();
+    }
+    handleClick=   (e)=>{
+        if(this.dates.current && this.container.current)
+       if(!this.dates.current.contains(e.target) && this.state.onOpen && !this.container.current.contains(e.target)){
+
+         this.onClose()
+       }
+    }
+
+    handleResize=e=>{
+        this.setState({deviceWidth:e.target.innerWidth})
+    }
+
+componentDidMount(){
+    window.addEventListener('resize',this.handleResize)
+    this.setState({deviceWidth:window.innerWidth})
+}
+componentDidUpdate(prevProp, prevState){
+        if(!prevState.onOpen && this.state.onOpen){
+            document.addEventListener('click', (e)=>this.handleClick(e) )
+        }
+
+    }
+    componentWillUnmount(){
+       document.removeEventListener('click',this.handleClick)
+       window.removeEventListener('resize',this.handleResize)
     }
     onClick=()=>{
-        this.setState({onOpen:!this.state.onOpen})
-        if(this.state.onOpen){
+        this.dates.current.parentElement.style.position="relative" 
+        this.setState({onOpen:!this.state.onOpen}, ()=>{
+            if(this.state.onOpen){
             
-           this.dates.current.style.width = '70%'
-           this.dates.current.style.height = '300px'
-           this.dates.current.style.left = '15%'
-            this.top.current.style.width="30px"
-            this.top.current.style.height="30px"
-        }
-        else
-        {
-           this.dates.current.style.width = '0px'
-           this.dates.current.style.height = '0px'
-           this.dates.current.style.left = '35%'
-            this.top.current.style.width="0"
-            this.top.current.style.height="0"
-        }
+            this.setState({update:true})
+                //this.container.current.classList.add('active')
+                this.dates.current.style.width = '50vw'
+                this.dates.current.style.height = '390px'
+                this.dates.current.style.right = this.props.right
+                
+                
+     
+                 setTimeout(()=>{
+                     this.dates.current.firstChild.style.display="flex"
+                     this.top.current.style.width="30px"
+                     this.top.current.style.height="30px"
+                     this.dates.current.style.opacity = '1'
+                     this.dates.current.style.visibility = 'visible'
+                     this.dates.current.firstChild.style.opacity="1"
+                 },100)
+             }
+             else
+             {
+                //this.container.current.classList.remove('active')
+                 this.dates.current.style.opacity = '0'
+                 this.dates.current.firstChild.style.opacity="0"
+                this.dates.current.style.width = '0px'
+                this.dates.current.style.height = '0px'
+             //    this.dates.current.style.left = '35%'
+                 this.top.current.style.width="0"
+                 this.top.current.style.height="0"
+                 this.dates.current.style.visibility = 'hidden'
+                 this.dates.current.firstChild.style.display="none"
+                 
+             }
+        })
+
     }
-    componentDidUpdate(props, prev){
-        console.log(props, prev)
+
+    onClose=()=>{
+        this.setState({onOpen:!this.state.onOpen}, ()=>{
+            this.container.current.classList.remove('active')
+                 this.dates.current.style.opacity = '0'
+                 this.dates.current.firstChild.style.opacity="0"
+                this.dates.current.style.width = '0px'
+                this.dates.current.style.height = '0px'
+             //    this.dates.current.style.left = '35%'
+                 this.top.current.style.width="0"
+                 this.top.current.style.height="0"
+                 this.dates.current.style.visibility = 'hidden'
+                 this.dates.current.firstChild.style.display="none"
+                 
+        })
+
     }
     render(){
         return(
             <>
-            <div onClick={this.onClick} className="search-calendar">
+            <div onClick={this.onClick} ref={this.container} className="search-calendar">
                 <div>{this.props.label}</div>
-                <div>{this.props.value?new Date(this.props.value).getUTCDate():this.props.placeholder}</div>
-                <div ref={this.top}  className="top"></div>
+                <div>{this.props.value?moment(this.props.value).format('D/M/yyyy'):this.props.placeholder}</div>
+                <div ref={this.top} style={{bottom:this.props.caret}}   className="top"></div>
             </div>
-            <Dates refs={this.dates}  width={this.state.width} height={this.state.height} count={this.state.count}/>
+            <Dates refs={this.dates} label={this.props.label} onClose={this.onClose} top={this.props.top} onChange={this.props.onChange}  deviceWidth={this.state.deviceWidth} sm={this.state.sm} count={this.state.count}/>
             </>
         )
     }
@@ -57,6 +118,10 @@ Calendar.propTypes = {
     placeholder: PropTypes.string,
     value: PropTypes.instanceOf(moment).isRequired,
     onClick: PropTypes.func,
+    onChange: PropTypes.func,
+    right: PropTypes.any,
+    top:PropTypes.any,
+    caret:PropTypes.any
   };
   
   Calendar.defaultProps = {
@@ -64,6 +129,10 @@ Calendar.propTypes = {
     label:'',
     placeholder:'',
     value: '',
-    onClick:null
+    right:'15%',
+    top:'120%',
+    caret:'-70%',
+    onClick:null,
+    onChange:null
   };
 

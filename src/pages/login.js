@@ -146,7 +146,7 @@ class Login extends React.Component{
     render(){
         return (
             <>
-                <Head color={'#046FA7'}/>
+                <Head top={30} color={'#046FA7'}/>
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div className="signin">

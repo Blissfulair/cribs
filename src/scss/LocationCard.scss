@@ -1,3 +1,4 @@
+@import "config";
 .location__card {
 	position: absolute;
 	top: 120px;
@@ -63,4 +64,10 @@
 			color: #000000;
 		}
 	}
+}
+@include mediaSm {
+.location__card{
+	display: none;
+}
+
 }

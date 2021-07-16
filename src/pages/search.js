@@ -6,7 +6,7 @@ import Splash from "../components/splash"
 import Explore from "../components/explore";
 import  MapContainer  from "../components/map";
 import {withRouter} from "react-router-dom"
-import AppHeader from "../components/header"
+import Header from "../components/head"
 import benin from "../images/benin.jpeg"
 import abuja from "../images/abuja.jpg"
 import lagos from "../images/lagos.jpg"
@@ -17,7 +17,7 @@ import { searchProperties } from "../apis/server";
 import { search } from "../state/actions";
 const styles = theme =>({
     container:{
-        paddingTop:200
+        paddingTop:125
     },
     formControl: {
         minWidth: 120,
@@ -162,7 +162,7 @@ class Search extends Component{
      return <Splash />
     return(
         <>
-            <AppHeader/>
+            <Header sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF" quickSearch={true} openQuickSearch={true}/>
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
                     <div id="search-page" className={classes.container}>

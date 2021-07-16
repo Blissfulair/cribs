@@ -1,4 +1,4 @@
 
 
-/api/* https://api.cribng.com/api/:splat 200
+#/api/* https://api.cribng.com/api/:splat 200
 /* /index.html 200  

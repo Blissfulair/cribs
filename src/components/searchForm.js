@@ -5,7 +5,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Calendar from "@material-ui/icons/Today"
 import People from "@material-ui/icons/PeopleOutline"
 import {Grid, TextField, Button} from "@material-ui/core"
-import { DatePicker } from "@material-ui/pickers";
+import DatePicker  from "../components/calender/index";
 import "../scss/header.scss"
 import {withRouter} from "react-router-dom"
 import Splash from "./splash";
@@ -137,11 +137,12 @@ const SearchForm = (props)=>{
                     </div>
 
                     <div className={classes.row1}>
-                        <div className={classes.checkIn}>
+                        <div className={classes.checkIn} style={{position:'relative'}}>
                             <label style={{cursor:'pointer',marginRight:10}} htmlFor="begin">
                                 <Calendar htmlColor="#046FA7" fontSize="default"/>
                             </label>
                             <DatePicker
+                            right="-25vw"
                             id="begin"
                             label="Check In"
                             format="dd/MM/yyyy"
@@ -158,11 +159,12 @@ const SearchForm = (props)=>{
                     </div>
                     
                     <div className={classes.row1}>
-                        <div className={classes.checkIn}>
+                        <div className={classes.checkIn} style={{position:'relative'}}>
                             <label style={{cursor:'pointer',marginRight:10}} htmlFor="end">
                                 <Calendar htmlColor="#046FA7" fontSize="default"/>
                             </label>
                             <DatePicker
+                            right="-11vw"
                             id="end"
                             label="Check Out"
                             format="dd/MM/yyyy"
@@ -260,6 +262,7 @@ export const MiniSearch = connect(mapStateToProps,mapDispatchToProps)(withRouter
                                 <Calendar htmlColor="#046FA7" fontSize="default"/>
                             </label>
                             <DatePicker
+                            right="-25vw"
                             id="begin"
                             label="Check In"
                             format="dd/MM/yyyy"
@@ -282,6 +285,7 @@ export const MiniSearch = connect(mapStateToProps,mapDispatchToProps)(withRouter
                                 <Calendar htmlColor="#046FA7" fontSize="default"/>
                             </label>
                             <DatePicker
+                            right="-11vw"
                             id="end"
                             label="Check Out"
                             format="dd/MM/yyyy"

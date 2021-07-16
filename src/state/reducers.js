@@ -25,6 +25,11 @@ export default (state, action) => {
           ...state,
           searches: action.payload
         };
+        case "SEARCH_DATA":
+          return {
+            ...state,
+            searchData: action.payload
+          };
       case "HISTORY":
         return {
           ...state,

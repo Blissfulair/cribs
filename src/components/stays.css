@@ -1,7 +1,12 @@
 .card-link{
     position: relative;
     height: 300px;
-    width:100%
+    width:100%;
+
+
+}
+.card-link .card:hover{
+    transform: scale(1.1);
 }
 /* .card-link::after{
     width: 100%;
@@ -13,6 +18,30 @@
     background:#DF0808;
     opacity: 0.55;
 } */
+.card-link .image{
+    border-radius: 10px;
+    height: 100%;
+   
+    
+}
+
+.card-link .card{
+    position: relative;
+    border: 1px solid #DCDCDC;
+    border-radius: 10px;    
+    transition: transform 0.5s ;
+    transform: scale(1);
+}
+.card-link .card .overlay{
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height:100%;
+    width:100%;
+    opacity:0.55;
+    color: black;
+}
 .card-link-bottom{
     position: absolute;
     bottom: 20px;

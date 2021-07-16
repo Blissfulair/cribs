@@ -1,52 +1,49 @@
-import React, {  useState } from "react";
+import React, {  useState,useEffect } from "react";
 import "./signup.css"
 import "./login.css"
 import { Button} from "@material-ui/core";
 import { connect } from "react-redux";
 import { setUser } from "../state/actions";
+import { resendEmail } from "../apis/server";
 
 
 
-const  Activate = ({user,setUser, history, location})=>{
+const  Activate = ({user,setUser})=>{
     const [message, setMessage]=useState('')
     const [loading, setLoading]=useState(false)
+    const [status, setStatus]=useState(true)
+    const [timer, setTimer] = useState(null)
 
     const onResend = ()=>{
         setLoading(true)
-        // const data = {
-        //     from:'noreply@givitec.com',
-        //     to:state.user.email,
-        //     subject:'Email Verification',
-        //     firstname:state.userData.firstname,
-        //     senderName:process.env.REACT_APP_NAME,
-        // }
-        // mailVerify(data)
-        // .then(()=>{
-        //     setLoading(false)
-        //     setStatus(true)
-        //     setMessage('Verification link has been sent successfully!')
-        // })
-        // .catch(e=>{
-        //     setLoading(false)
-        //     setStatus(false)
-        //     setMessage('Failed to send link, please try again.')
-        // })
+        const data = {
+            email:user.email
+        }
+        resendEmail(data)
+        .then((res)=>{
+            setLoading(false)
+            setStatus(true)
+            setUser(res)
+            setMessage('Verification link has been sent successfully!')
+        })
+        .catch(e=>{
+            setLoading(false)
+            setStatus(false)
+            setMessage('Failed to send link, please try again.')
+        })
 
-        setTimeout(()=>{
+        const time = setTimeout(()=>{
             setMessage('')
         }, 3000)
+        setTimer(time)
     }
-        // useEffect(()=>{
-        //     const cleanup = async()=>{
-        //         const userData = await verifyEmail(user.token)
-        //         .then(()=>{
-        //             setUser(userData)
-        //             history.push('/app/home')
-        //         })
-                
-        //     }
-        // cleanup()
-        // },[])
+
+    useEffect(()=>{
+       return ()=>{
+           setTimer(null)
+           setUser(null)
+       } 
+    }, [setTimer, timer, setUser])
         return (
             <>
                 <div className="label"></div>
@@ -54,7 +51,7 @@ const  Activate = ({user,setUser, history, location})=>{
                     <div style={{height:300,display:'grid', alignContent:'center'}}>
                         {
                             message !== ''&&
-                            <p style={{textAlign:'center', color:'red', fontSize:17}}>{message}</p>
+                            <p style={{textAlign:'center', color:status?'green':'red', fontSize:17}}>{message}</p>
                         }
                         
                         <p style={{textAlign:'center', color:'#00A8C8', fontSize:20}}>Verification link has been sent to {user.email}</p>

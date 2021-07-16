@@ -14,14 +14,14 @@ const  Verify = ({user,setUser, history, location})=>{
         const cleanup = async()=>{
             const userData = await verifyEmail(token)
            if(userData){
-            this.props.setUser(userData)
+            setUser(userData)
             history.push('/app/home')
            }
 
             
         }
        cleanup()
-    },[location,history])
+    },[location,history, setUser])
         return (
             <>
                 <div className="label"></div>

@@ -24,6 +24,18 @@ export const checkLoggedIn = async () => {
     return user;
   };
 
+  export const resendEmail = async (data) => {
+    const response = await fetch('/api/user/resend',{
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+    const  user= await response.json();
+    return user;
+  };
+
   export const loginUser = async (data) => {
     const response = await fetch('/api/user/login',{
       method:'POST',

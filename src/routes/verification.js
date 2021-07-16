@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Route, Redirect } from 'react-router-dom';
 //import { getDashboard } from '../helpers/helpers';
 
 const VerifyRoute = ({component: Component,history, ...rest}) => {
@@ -11,10 +12,10 @@ const VerifyRoute = ({component: Component,history, ...rest}) => {
         // Show the component only when the user is logged in
         // Otherwise, redirect the user to /signin page
         <Route {...rest} render={props => (
-            // state.user?
-            //     !state.user.emailVerified?
+                rest.user?
                 <Component {...props} />
-            //     :
+                    :
+                <Redirect to="/register" />
             //     dash?
             //         <Redirect to='/app/home' />
             //         :
@@ -29,4 +30,7 @@ const VerifyRoute = ({component: Component,history, ...rest}) => {
     );
 };
 
-export default VerifyRoute;
+const mapStateToProps=state=>({
+    user:state.user
+})
+export default connect(mapStateToProps)(VerifyRoute);

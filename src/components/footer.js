@@ -29,6 +29,13 @@ const styles = (theme)=>({
     }
 })
 const Footer = ({classes})=>{
+    const handleChange=value=>{
+        console.log(value)
+    }
+    const onSubmit =e=>{
+        e.preventDefault()
+        console.log(e)
+    }
     return(
         <Paper className="footer" classes={{root:classes.container}} square>
             <Grid container className="inner">
@@ -77,7 +84,7 @@ const Footer = ({classes})=>{
                                 <Typography className="subtitle newsletter" variant="body1" component="p">
                                     To get updates on discounts. Sign up to our Newsletter.
                                 </Typography>
-                                <Subscribe/>
+                                <Subscribe onChangeValue={handleChange} onSubmit={onSubmit}/>
                                 <Grid container justify="center">
                                     <Grid item xs={6} md={8}>
                                     <ul className={classes.social}>

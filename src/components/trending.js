@@ -1,6 +1,5 @@
 import React from "react";
 import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -9,6 +8,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Rating from '@material-ui/lab/Rating';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import "./trending.scss"
 
 const styles = ()=>({
     para:{
@@ -18,14 +18,6 @@ const styles = ()=>({
         fontSize:12,
         marginBottom:7
     },
-    root:{
-        borderRadius:16,
-        height:300,
-        minWidth:249,
-        position:'relative',
-        marginBottom:20,
-       
-    },
     image:{
         borderRadius:16,
         height:'65%',
@@ -33,23 +25,18 @@ const styles = ()=>({
         position:'relative'
     },
     overlay:{
-        position:'absolute',
-        top:0,
-        left:0,
-        height:'100%',
-        width:'100%',
-        opacity: 0.35
+
     }
 })
 const Trending = ({classes, color,name, details,favourite})=>{
     return(
-        <div style={{ border:'1px solid #0066FF', padding:'20px 8px', borderRadius:16}} >
-        <Card className="trending-card" elevation={0} classes={{root:classes.root}}>
+        <div className="card" >
+        <Card className="trending-card" elevation={0}>
             <CardActionArea classes={{root:classes.image}}>
-                <CardMedia image={`${process.env.REACT_APP_BACKEND_URL}/${details.featuredImage}`}
-                        component="img"
+            <div className="overlay" style={{backgroundColor:color}}></div>
+                <img src={`${process.env.REACT_APP_BACKEND_URL}/${details.featuredImage}`}
+                       
                         alt={details.name}
-                        height="100%"
                 />
                 <div style={{zIndex:34, position:'absolute',height:'94%', width:'98%', top:'3%', left:'1%'}}>
                     {
@@ -70,8 +57,7 @@ const Trending = ({classes, color,name, details,favourite})=>{
                         />
                     </div>
                 </div>
-                <div className={classes.overlay} style={{backgroundColor:color}}>
-                </div>
+
                 <CardContent>
                     <Typography className={classes.para} style={{fontWeight:'bold'}} variant="h5">{details.title}</Typography>
                     <Typography color="textPrimary" className={classes.para} variant="subtitle1" component="p">{details.name}</Typography>

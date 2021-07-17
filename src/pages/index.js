@@ -270,26 +270,30 @@ class Index extends Component {
 
                     <Grid container justify="center" >
                         <Grid item xs={11} md={10} >
-                            {
-                                this.props.propertyTypes.length>=3&&
-                                <>
-                                <Typography classes={{ root: classes.title }} className="head-title" variant="h3">Where would you like to stay?</Typography>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12} sm={6} md={3} lg={3} >
-                                        <Stays title={this.props.propertyTypes[0].name} link={`/search?type=${this.props.propertyTypes[0].name}`} image={house} available={1000} color={'#DF6C08'} />
+                           
+                                {
+                                    this.props.propertyTypes.length>=2&&
+                                    <>
+                                    <Typography classes={{ root: classes.title }} className="head-title" variant="h3">Where would you like to stay?</Typography>
+                                    <Grid container spacing={2}>
+                                    <Slide>
+                                            <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                <Stays title={this.props.propertyTypes[0].name} link={`/search?type=${this.props.propertyTypes[0].name}`} image={house} available={1000} color={'#DF6C08'} />
+                                            </Grid>
+                                            <Grid item xs={12} sm={6} md={3} lg={3}>
+                                                <Stays title={this.props.propertyTypes[1].name}  link={`/search?type=${this.props.propertyTypes[1].name}`} image={bangalow} available={1000} />
+                                            </Grid>
+                                            <Grid item xs={12} sm={6} md={3} lg={3}>
+                                                <Stays title={'Cottage'}  link={`/search?type=${'cottage'}`} image={condos} available={1000} color="#DF0808" />
+                                            </Grid>
+                                            <Grid item xs={12} sm={6} md={3} lg={3}>
+                                                <Stays title="Wharehouse" link={`/search?type=waraehouse`} image={cottage} available={1000} color="#000000" />
+                                            </Grid>
+                                        </Slide>
                                     </Grid>
-                                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                                        <Stays title={this.props.propertyTypes[1].name}  link={`/search?type=${this.props.propertyTypes[1].name}`} image={bangalow} available={1000} />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                                        <Stays title={this.props.propertyTypes[2].name}  link={`/search?type=${this.props.propertyTypes[2].name}`} image={condos} available={1000} color="#DF0808" />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                                        <Stays title="Wharehouse" link={`/search?type=waraehouse`} image={cottage} available={1000} color="#000000" />
-                                    </Grid>
-                                </Grid>
-                                </>
-                            }
+                                    </>
+                                }
+                            
 
                             {/* {
                                 this.context.state.properties.length > 0 ?
@@ -326,9 +330,30 @@ class Index extends Component {
                             <Typography classes={{root:classes.title}} className="head-title" variant="h3">Trending Cribs</Typography>
                             <div style={{marginBottom:10}}>
                                 <Grid  container spacing={2}>
-                                    {
+                                <Slide>
+                                        
+                                        {
                                         trendingCribs.length>0?
-                                        trendingCribs.map((property, i)=>{
+                                            trendingCribs.map((property,index)=>{
+                                                return (
+                                                    <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Link to={this.props.user?`/app/crib/${property._id}`:`/crib/${property._id}`} key={index}>
+                                                        <Trending favourite={this.state.favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
+                                                    </Link>
+                                                    </Grid>
+                                                )
+                                            })
+                                            :
+                                            [1,2,3.4,5].map((value,i)=>(
+                                                <Grid  key={i}  item xs={12} sm={6} md={3} lg={3} >
+                                                        <Skeleton />
+                                                </Grid>
+                                            ))
+                                        }
+                                    </Slide>
+                                    {/* {
+                                        trendingCribs.length>0?
+                                        [1,1,1,1].map((property, i)=>{
                                             return(
                                                 <Grid item xs={12} sm={6} md={3} lg={3} >
                                                     <Link  to={`/crib/${property._id}`}>
@@ -345,7 +370,7 @@ class Index extends Component {
                                         ))
 
 
-                                    }
+                                    } */}
                                 </Grid>
                             </div>
                             {
@@ -353,27 +378,48 @@ class Index extends Component {
                                 <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'trending'}}>See more</Link>
                             }
 
-                            
-                            <div style={{marginTop:50}}>
+                        </Grid>
+                        <Grid container justify="center">
+                            <Grid item xs={11} md={10}>
                                 <Typography variant="h4" className="head-title" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
-                                <Grid style={{position:'relative'}}  container spacing={2}>
-                                    {
-                                        bestCribs.length>0?
-                                        <Slide favourites={this.state.favourites} content={bestCribs}/>
-                                        :
-                                        [1,2,3.4,5].map((value,i)=>(
-                                            <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                    <Skeleton key={i} />
-                                            </Grid>
-                                        ))
-                                    }
-                                </Grid>
-                            </div>
-                            {
-                                bestCribs.length>0&&
-                                <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>
-                            }
 
+                            </Grid>
+                        </Grid>
+                        <Grid container justify="center" className="best-cribs-section">
+                            <Grid item xs={11} md={10}>
+                                <div>
+                                    <Grid style={{position:'relative'}}  container spacing={2}>
+                                        <Slide>
+                                            
+                                            {
+                                                
+                                            bestCribs.length>0?
+                                                bestCribs.map((property,index)=>{
+                                                    return (
+                                                        <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                        <Link to={this.props.user?`/app/crib/${property._id}`:`/crib/${property._id}`} key={index}>
+                                                            <Trending favourite={this.state.favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
+                                                        </Link>
+                                                        </Grid>
+                                                    )
+                                                })
+                                                :
+                                                [1,2,3.4,5].map((value,i)=>(
+                                                    <Grid  key={i}  item xs={12} sm={6} md={3} lg={3} >
+                                                            <Skeleton />
+                                                    </Grid>
+                                                ))
+                                            }
+                                        </Slide>
+                                    </Grid>
+                                </div>
+                                {
+                                    bestCribs.length>0&&
+                                    <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>
+                                }
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={11} md={10}>
                             <Typography variant="h4" className="reason-title" classes={{ root: classes.title }} style={{ marginTop: 90 }} align="center">Reasons to Explore With Us</Typography>
                             <Container >
                                 <Grid container justify="center" >
@@ -415,7 +461,31 @@ class Index extends Component {
 
                             <Typography variant="h4" classes={{ root: classes.title }}>Explore Cribs by City</Typography>
                             <Grid style={{ position: 'relative' }} container>
-                                <Explore content={[{ name: 'Lagos City', image: lagos, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link: '/search?city=lagos' }, { name: 'Abuja City', image: abuja, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link: '/search?city=abuja' }, { name: 'Kano City', image: kano, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link: '/search?city=kano' }, { name: 'Benin City', image: benin, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link: '/search?city=benin' }]} />
+                                <Explore 
+                                content={[
+                                    { 
+                                        name: 'Lagos City', 
+                                        image: lagos, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
+                                        link: '/search?city=lagos' 
+                                    }, 
+                                    { 
+                                        name: 'Abuja City', 
+                                        image: abuja, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
+                                        link: '/search?city=abuja' 
+                                    }, 
+                                    {   
+                                        name: 'Kano City', 
+                                        image: kano, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
+                                        link: '/search?city=kano' 
+                                    }, 
+                                    { 
+                                        name: 'Benin City', 
+                                        image: benin, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
+                                        link: '/search?city=benin' 
+                                    }
+                                    ]}
+                                    height={274}
+                                 />
                             </Grid>
                         </Grid>
                     </Grid>

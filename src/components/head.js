@@ -105,7 +105,11 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky})=>{
                     Sign in
                 </NavButton>
             </nav>
-
+            <button className="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </div>
     )

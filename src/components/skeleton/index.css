@@ -219,7 +219,8 @@
 }
 @media(max-width:767px){
     .skeleton{
-        height: 227px;
+        min-width:190px !important;
+        height: 271px;
         border-radius: 20px;
     }
     .skeleton .details ul{
@@ -284,11 +285,11 @@
         background:transparent;
     }
 }
-@media(max-width:375px){
+/* @media(max-width:375px){
     .skeleton{
         height: 200px;
     }
-}
+} */
 @keyframes loading {
     0% {
         width: 0%;

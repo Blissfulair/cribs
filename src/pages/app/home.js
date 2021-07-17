@@ -24,7 +24,7 @@ import { Paper } from "@material-ui/core";
 import SlideBanner from "../../components/slideBanner";
 import { getFavs } from "../../helpers/helpers";
 import {connect} from "react-redux"
-import AppHeader from "../../components/appHeader";
+import AppHeader from "../../components/head";
 import { HomeSkeleton as Skeleton } from "../../components/skeleton/index";
 import { setTrendingAndBestCribs } from "../../state/actions";
 import { getTrendingAndBestCribs } from "../../apis/server";
@@ -112,7 +112,7 @@ class Home extends Component{
         const {classes}=this.props
     return(
         <>
-        <AppHeader/>
+        <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
         <Grid id="app-home-page" style={{paddingTop:90}} className="home" container justify="center">
             <Grid container justify="center" >
                 <Grid item xs={11} md={10} >
@@ -146,26 +146,28 @@ class Home extends Component{
                             <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
                             <div style={{marginBottom:10}}>
                                 <Grid  container spacing={2}>
-                                    {
-                                        this.props.trendingCribs.length>0?
-                                        this.props.trendingCribs.map((property, i)=>{
-                                            return(
-                                                <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                    <Link to={`/app/crib/${property._id}`}>
-                                                        <Trending favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
-                                                    </Link>
+                                    <Slide>
+                                        {
+                                            this.props.trendingCribs.length>0?
+                                            this.props.trendingCribs.map((property, i)=>{
+                                                return(
+                                                    <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                        <Link to={`/app/crib/${property._id}`}>
+                                                            <Trending favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
+                                                        </Link>
+                                                    </Grid>
+                                                )
+                                            })
+                                            :
+                                            [1,2,3.4,5].map((value,i)=>(
+                                                <Grid key={i} item xs={12} sm={6} md={3} lg={3} >
+                                                        <Skeleton  />
                                                 </Grid>
-                                            )
-                                        })
-                                        :
-                                        [1,2,3.4,5].map((value,i)=>(
-                                            <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                    <Skeleton key={i} />
-                                            </Grid>
-                                        ))
+                                            ))
 
 
-                                    }
+                                        }
+                                    </Slide>
                                 </Grid>
                             </div>
                             {
@@ -177,16 +179,26 @@ class Home extends Component{
                             <div style={{marginTop:50}}>
                                 <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
                                 <Grid style={{position:'relative'}}  container spacing={2}>
-                                    {
-                                        this.props.bestCribs.length>0?
-                                        <Slide favourites={this.state.favourites} content={this.props.bestCribs}/>
-                                        :
-                                        [1,2,3.4,5].map((value,i)=>(
-                                            <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                    <Skeleton key={i} />
-                                            </Grid>
-                                        ))
-                                    }
+                                    <Slide>
+                                        {
+                                            this.props.bestCribs.length>0?
+                                            this.props.bestCribs.map((property, i)=>{
+                                                return(
+                                                    <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                        <Link to={`/app/crib/${property._id}`}>
+                                                            <Trending favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
+                                                        </Link>
+                                                    </Grid>
+                                                )
+                                            })  
+                                            :
+                                            [1,2,3.4,5].map((value,i)=>(
+                                                <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                        <Skeleton key={i} />
+                                                </Grid>
+                                            ))
+                                        }
+                                    </Slide>
                                 </Grid>
                             </div>
                             {
@@ -199,16 +211,35 @@ class Home extends Component{
                 <Typography variant="h4" classes={{root:classes.title}} style={{marginTop:90}} align="center">Reasons to Explore With Us</Typography>
                 <Container >
                     <Grid container  justify="center" >
-                        <Grid item  xs={12} sm={10} md={10}>
-                            <Grid container justify="center" spacing={8}>
+                        <Grid item  xs={12} >
+                            <Grid container className="reasons" justify="center" spacing={6}>
                             <Grid item xs={12}  sm={4} md={4}>
-                            <IconBox image={trust} name="Reliable"/>
+                            <IconBox 
+                            image={trust} 
+                            name="Reliable"
+                            content="Pellentesque in ipsum id orci porta
+                            dapibus. Mauris blandit aliquet elit,
+                            eget tincidunt nibh pulvinar a.
+                            Donec rutrum congue leo eget malesuada." 
+                            />
                         </Grid>
                         <Grid item xs={12} sm={4} md={4}>
-                            <IconBox image={focus} name="Fast"/>
+                            <IconBox image={focus} 
+                            name="Fast"
+                            content="Pellentesque in ipsum id orci porta
+                            dapibus. Mauris blandit aliquet elit,
+                            eget tincidunt nibh pulvinar a.
+                            Donec rutrum congue leo eget malesuada." 
+                            />
                         </Grid>
                         <Grid item xs={12} sm={4} md={4}>
-                            <IconBox image={jigsaw} name="Convenient"/>
+                            <IconBox image={jigsaw} 
+                            name="Convenient"
+                            content="Pellentesque in ipsum id orci porta
+                            dapibus. Mauris blandit aliquet elit,
+                            eget tincidunt nibh pulvinar a.
+                            Donec rutrum congue leo eget malesuada." 
+                            />
                         </Grid>
                             </Grid>
                         </Grid>

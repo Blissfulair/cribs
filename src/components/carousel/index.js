@@ -108,9 +108,9 @@ class Carousel extends Component{
                 onTouchStart={(e)=>this.handleTouchStart(e.targetTouches[0].clientX)}
                 onTouchMove={(e)=>this.handleTouchMove(e.targetTouches[0].clientX)}
                 onTouchEnd={this.handleTouchEnd}
-                onMouseDown={(e)=>this.handleTouchStart(e.nativeEvent.clientX)}
-                onMouseMove={(e)=>this.handleTouchMove(e.nativeEvent.clientX)}
-                onMouseUp={this.handleTouchEnd}
+                // onMouseDown={(e)=>this.handleTouchStart(e.nativeEvent.clientX)}
+                // onMouseMove={(e)=>this.handleTouchMove(e.nativeEvent.clientX)}
+                // onMouseUp={this.handleTouchEnd}
                 className="carousel-main-container-track"
                 >
                 {this.props.children}

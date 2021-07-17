@@ -146,7 +146,9 @@ class Home extends Component{
                             <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
                             <div style={{marginBottom:10}}>
                                 <Grid  container spacing={2}>
-                                    <Slide>
+                                    <Slide
+                                        infinite={true}
+                                    >
                                         {
                                             this.props.trendingCribs.length>0?
                                             this.props.trendingCribs.map((property, i)=>{
@@ -179,7 +181,9 @@ class Home extends Component{
                             <div style={{marginTop:50}}>
                                 <Typography variant="h4" classes={{root:classes.title}}>Best Cribs Recommended For you</Typography>
                                 <Grid style={{position:'relative'}}  container spacing={2}>
-                                    <Slide>
+                                    <Slide
+                                        infinite={true}
+                                    >
                                         {
                                             this.props.bestCribs.length>0?
                                             this.props.bestCribs.map((property, i)=>{

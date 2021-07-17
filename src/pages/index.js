@@ -330,7 +330,9 @@ class Index extends Component {
                             <Typography classes={{root:classes.title}} className="head-title" variant="h3">Trending Cribs</Typography>
                             <div style={{marginBottom:10}}>
                                 <Grid  container spacing={2}>
-                                <Slide>
+                                <Slide
+                                    infinite={true}
+                                >
                                         
                                         {
                                         trendingCribs.length>0?
@@ -389,7 +391,9 @@ class Index extends Component {
                             <Grid item xs={11} md={10}>
                                 <div>
                                     <Grid style={{position:'relative'}}  container spacing={2}>
-                                        <Slide>
+                                        <Slide
+                                            infinite={true}
+                                        >
                                             
                                             {
                                                 

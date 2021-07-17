@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import './../../scss/payment.scss';
 import {withRouter} from "react-router-dom"
 import PaymentCard from '../../components/payment';
-import AppHeader from "../../components/appHeader"
+import Header from "../../components/head"
 
 const Payment = ({location}) => {
 
@@ -97,7 +97,7 @@ const Payment = ({location}) => {
     },[location])
     return (
         <>
-        <AppHeader/>
+        <Header sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
         <div style={{position:'relative'}}>
 			<section>
 				<div className="house-payment-details">

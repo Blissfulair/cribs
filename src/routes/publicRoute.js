@@ -9,7 +9,7 @@ const PublicRoute = ({component: Component, ...rest}) => {
         <Route {...rest} render={props =>{ 
             return(
             rest.user?
-            rest.user.emailVerify&&
+            rest.user.emailVerify?
                 !rest.location.pathname.includes('app')?
                     rest.dashboard?
                     <Redirect to={'/app/home'} />
@@ -18,6 +18,8 @@ const PublicRoute = ({component: Component, ...rest}) => {
                 :
                 <Redirect to={{pathname:rest.location.pathname, search:rest.location.search, state:rest.location.state}} />
 
+            :
+            <Component {...props} />
             :
             <Component {...props} />
             )}} />

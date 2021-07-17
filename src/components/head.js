@@ -112,14 +112,15 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
         <div ref={refs} className="showcase_head" style={{backgroundColor:bgColor?bgColor:'transparent', position:sticky?'fixed':'inherit'}}>
             <div  className="showcase__header">
             <div className="showcase__logo">
-                <Link style={{color: colors}} to="/">Cribs NG</Link>
+                <Link style={{color: colors}} to="/">Crib NG</Link>
             </div>
             <div>
               <Form width={width} color={headerColor} open={open} onClick={onOpen}/>
             </div>
             <nav className="showcase__nav">
                 {
-                    !user&&
+                    user?
+                        !user.emailVerify?
                     <NavButton
                         color={colors}
                         border
@@ -129,34 +130,64 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
                         width='180'
                         borderWidth={2}
                         marginRight='3rem'
-                        href="/app/properties"
+                        href="/app/property"
+                    >
+                        Host Accomodation
+                    </NavButton>
+                        :''
+                    :
+                    <NavButton
+                    color={colors}
+                    border
+                    borderColor={colors}
+                    borderRadius={27}
+                    height='44'
+                    width='180'
+                    borderWidth={2}
+                    marginRight='3rem'
+                    href="/app/property"
                     >
                         Host Accomodation
                     </NavButton>
                 }
                 {
                     user?
+                        user.emailVerify?
                         user.type ==='host'?
-                        <button
-                        onClick={changeDashboard}
-                    >
-                        Host
-                    </button>
-                        :
-                        <button onClick={becomeHost}>Become a host</button>
-                    :
-                    <NavButton
-                    color='#fff'
-                    backgroundColor='#046FA7'
-                    border
-                    borderRadius={27}
-                    height='44'
-                    width='106'
-                    href="/login"
-                    
-                >
-                    Sign in
-                </NavButton>
+                            <button
+                            onClick={changeDashboard}
+                            >
+                            Host
+                            </button>
+                            :
+                            <button onClick={becomeHost}>Become a host</button>
+                            :
+                            <NavButton
+                            color='#fff'
+                            backgroundColor='#046FA7'
+                            border
+                            borderRadius={27}
+                            height='44'
+                            width='106'
+                            href="/login"
+                                
+                            >
+                                Sign in
+                            </NavButton>
+                            :
+                            <NavButton
+                            color='#fff'
+                            backgroundColor='#046FA7'
+                            border
+                            borderRadius={27}
+                            height='44'
+                            width='106'
+                            href="/login"
+                            
+                            >
+                                Sign in
+                            </NavButton>
+                   
                 }
             </nav>
             <button className="hamburger">

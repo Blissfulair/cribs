@@ -12,6 +12,7 @@ import abuja from "../../images/abuja.jpg"
 import lagos from "../../images/lagos.jpg"
 import kano from "../../images/kano.jpeg"
 import { getFavs } from "../../helpers/helpers";
+import Header from "../../components/head";
 const styles = theme =>({
     container:{
         paddingTop:100
@@ -157,6 +158,7 @@ class Search extends Component{
                 this.state.isLoading&&
                     <Splash />
             }
+            <Header sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
                     <div id="search-page" className={classes.container}>

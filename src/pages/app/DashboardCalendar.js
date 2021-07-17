@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Layout from './layout';
 import '../../scss/dashboard_calendar.scss';
 
@@ -6,21 +6,22 @@ import '../../scss/dashboard_calendar.scss';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { Button } from '@material-ui/core';
-import BookingCalendar from '../../react-calender/src/BookingCalendar';
+import BookingCalendar from '../../components/booking';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {withRouter} from 'react-router-dom'
+import { connect } from 'react-redux';
+import AppHeader from '../../components/appHeader';
+import { search } from '../../state/actions';
 
 
-// import 'react-calendar/dist/Calendar.css';
-import AppContext from '../../state/context';
 
 
 
-const DashboardCalendar = ({history}) => {
 
-    const {state,setSearch} = useContext(AppContext)
+const DashboardCalendar = ({history,trendingCribs, search}) => {
+
 
 
     const [available, setAvailable] = useState(false);
@@ -38,7 +39,7 @@ const DashboardCalendar = ({history}) => {
             location:location
 
         }
-        setSearch(data)
+        search(data)
         history.push(`/app/crib/${property.id}`)
     }
     const handlePropertyChange = (event) => {
@@ -94,6 +95,8 @@ const DashboardCalendar = ({history}) => {
     }
 
     return (
+        <>
+        <AppHeader/>
         <Layout>
 
             <div className="calendar__heading">
@@ -119,7 +122,7 @@ const DashboardCalendar = ({history}) => {
                         }}
                         >
                             <option value=''>Select property</option>
-                            {state.latestProperties.map((property, index)=>{
+                            {trendingCribs.map((property, index)=>{
                                 return <option key={index} value={JSON.stringify(property)} >{property.name}</option>
                             })}
                         </NativeSelect>
@@ -211,7 +214,14 @@ const DashboardCalendar = ({history}) => {
             </div>
 
         </Layout>
+        </>
     );
 }
-
-export default withRouter(DashboardCalendar);
+const mapStateToProps=state=>({
+    user:state.user,
+    trendingCribs:state.trendingCribs
+})
+const mapDispatchToProps=dispatch=>({
+    search:(payload)=>dispatch(search(payload))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(DashboardCalendar));

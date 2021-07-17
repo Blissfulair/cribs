@@ -17,15 +17,15 @@ import {
 	Button
 } from "@material-ui/core"
 import { StyledTableCell, StyledTableRow, styles } from './properties';
-import AppContext from '../../state/context';
 import WithdrawPopUp from '../../components/withdrawPopup';
 import { currency } from '../../helpers/helpers';
 import Modal from '../../components/modal';
+import { connect } from 'react-redux';
+import AppHeader from '../../components/appHeader';
 
 
 
 class DashboardPayment extends Component {
-	static contextType = AppContext;
 	constructor(props){
 		super(props)
 		this.state={
@@ -51,13 +51,13 @@ class DashboardPayment extends Component {
 
 	componentDidMount(){
 		// this.context.approveWithdrawal('150000000','HsAcNIqVWXSdLmGcgV2fhiL8MNn1',200)
-		const date = new Date()
-		this.context.getPaymentHistory()
-		.then(history=>{
-			history.sort((a,b) => (a.createdAt*1000 > b.createdAt*1000) ? -1 : ((b.createdAt*1000 > a.createdAt*1000) ? 1 : 0)); 
-			const payments = history
-			this.setState({allPayments:history, payments, year:date.getFullYear().toString(),tableLoading:false})
-		})
+		//const date = new Date()
+		// this.context.getPaymentHistory()
+		// .then(history=>{
+		// 	history.sort((a,b) => (a.createdAt*1000 > b.createdAt*1000) ? -1 : ((b.createdAt*1000 > a.createdAt*1000) ? 1 : 0)); 
+		// 	const payments = history
+		// 	this.setState({allPayments:history, payments, year:date.getFullYear().toString(),tableLoading:false})
+		// })
 	}
 	handleChangePage = (event, newPage) => {
 		this.setState({page:newPage});
@@ -197,88 +197,89 @@ class DashboardPayment extends Component {
 	}
 	onSubmit=(e)=>{
 		e.preventDefault()
-		if(this.state.amount >= this.context.state.earnings.balance)
-		{
-			this.setState({err:'Insufficient balance!'})
-			return false;
-		}
-		if(this.state.amount === '' || this.state.accountName === '' || this.state.bankName === '' || this.state.accountNumber === ''){
-			this.setState({err:'All inputs are required!'})
-			return false;
-		}
+		// if(this.state.amount >= this.context.state.earnings.balance)
+		// {
+		// 	this.setState({err:'Insufficient balance!'})
+		// 	return false;
+		// }
+		// if(this.state.amount === '' || this.state.accountName === '' || this.state.bankName === '' || this.state.accountNumber === ''){
+		// 	this.setState({err:'All inputs are required!'})
+		// 	return false;
+		// }
 		this.setState({loading:true,err:''})
-		const data ={
-			hostId:this.context.state.user.uid,
-			amount:this.state.amount,
-			type:'direct transfer',
-			balance:this.context.state.earnings.balance,
-			pending:this.context.state.earnings.pending,
-			details:{
-				accountName:this.state.accountName,
-				accountNumber:this.state.accountNumber,
-				bankName:this.state.bankName,
-			}
-		}
-		this.context.withdrawal(data)
-		.then((withdraw)=>{
-			this.setState({
-				loading:false,
-				payments:[
-					{
-						...withdraw
-					},
-					...this.state.payments
-				]
-			})
-			this.directTransferClose()
-		})
+		// const data ={
+		// 	hostId:this.context.state.user.uid,
+		// 	amount:this.state.amount,
+		// 	type:'direct transfer',
+		// 	balance:this.context.state.earnings.balance,
+		// 	pending:this.context.state.earnings.pending,
+		// 	details:{
+		// 		accountName:this.state.accountName,
+		// 		accountNumber:this.state.accountNumber,
+		// 		bankName:this.state.bankName,
+		// 	}
+		// }
+		// this.context.withdrawal(data)
+		// .then((withdraw)=>{
+		// 	this.setState({
+		// 		loading:false,
+		// 		payments:[
+		// 			{
+		// 				...withdraw
+		// 			},
+		// 			...this.state.payments
+		// 		]
+		// 	})
+		// 	this.directTransferClose()
+		// })
 	}
 
 	onPayPaySubmit=(e)=>{
 		e.preventDefault()
-		if(this.state.amount >= this.context.state.earnings.balance){
-			this.setState({err:'Insufficient balance!'})
-			return false;
-		}
-		if(this.state.amount === '' || this.state.accountName === '' || this.state.email === ''){
-			this.setState({err:'All inputs are required!'})
-			return false;
-		}
+		// if(this.state.amount >= this.context.state.earnings.balance){
+		// 	this.setState({err:'Insufficient balance!'})
+		// 	return false;
+		// }
+		// if(this.state.amount === '' || this.state.accountName === '' || this.state.email === ''){
+		// 	this.setState({err:'All inputs are required!'})
+		// 	return false;
+		// }
 		this.setState({loading:true,err:''})
-		const data ={
-			hostId:this.context.state.user.uid,
-			amount:this.state.amount,
-			type:'paypal',
-			balance:this.context.state.earnings.balance,
-			pending:this.context.state.earnings.pending,
-			details:{
-				accountName:this.state.accountName,
-				email:this.state.email,
-			}
-		}
-		this.context.withdrawal(data)
-		.then((withdraw)=>{
-			this.setState({
-				loading:false,
-				payments:[
-					{
-						...withdraw
-					},
-					...this.state.payments
-				]
-			})
-			this.handleClose()
-		})
+		// const data ={
+		// 	hostId:this.context.state.user.uid,
+		// 	amount:this.state.amount,
+		// 	type:'paypal',
+		// 	balance:this.context.state.earnings.balance,
+		// 	pending:this.context.state.earnings.pending,
+		// 	details:{
+		// 		accountName:this.state.accountName,
+		// 		email:this.state.email,
+		// 	}
+		// }
+		// this.context.withdrawal(data)
+		// .then((withdraw)=>{
+		// 	this.setState({
+		// 		loading:false,
+		// 		payments:[
+		// 			{
+		// 				...withdraw
+		// 			},
+		// 			...this.state.payments
+		// 		]
+		// 	})
+		// 	this.handleClose()
+		// })
 	}
 	render(){
-		const {classes} = this.props
-		const {state} = this.context
+		const {classes, user, earnings} = this.props
 		const today = new Date().getFullYear()
 		const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.payments.length - this.state.page * this.state.rowsPerPage);
 		const years = []
 		for(let year = today; year >= 2018; year --)
 			years.push(year)
 	return (
+		<>
+		<AppHeader/>
 		<Layout>
 			<WithdrawPopUp className="withdraw-modal" title="Withdrawal Details" open={this.state.open} handleClose={this.handleClose}>
 			<p style={{color:'#f44336'}}>{this.state.err}</p>
@@ -370,19 +371,19 @@ class DashboardPayment extends Component {
 				<div className="dashboard__earningTable">
 					<div>
 						<p>Net Income</p>
-						<p className="dashboard__amount">{currency(state.userData.income)}</p>
+						<p className="dashboard__amount">{currency(user.income)}</p>
 					</div>
 					<div>
 						<p>Withdrawn</p>
-						<p className="dashboard__amount">{currency(state.userData.withdrawn)}</p>
+						<p className="dashboard__amount">{currency(user.withdrawn)}</p>
 					</div>
 					<div>
 						<p>Pending Clerance</p>
-						<p className="dashboard__amount">{currency(state.userData.pending)}</p>
+						<p className="dashboard__amount">{currency(user.pending)}</p>
 					</div>
 					<div>
 						<p>Available for Withdrawal</p>
-						<p className="dashboard__amount">{currency(state.earnings.balance)}</p>
+						<p className="dashboard__amount">{currency(earnings.balance)}</p>
 					</div>
 				</div>
 
@@ -516,7 +517,12 @@ class DashboardPayment extends Component {
 						</Grid>
 			</div>
 		</Layout>
+		</>
 	);
 }
 }
-export default withStyles(styles)(DashboardPayment);
+const mapStateToProps=state=>({
+	user:state.user,
+	earnings:state.earnings
+})
+export default connect(mapStateToProps)(withStyles(styles)(DashboardPayment));

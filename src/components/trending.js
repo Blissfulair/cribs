@@ -34,10 +34,12 @@ const Trending = ({classes, color,name, details,favourite})=>{
         <Card className="trending-card" elevation={0}>
             <CardActionArea classes={{root:classes.image}}>
             <div className="overlay" style={{backgroundColor:color}}></div>
-                <img src={`${process.env.REACT_APP_BACKEND_URL}/${details.featuredImage}`}
-                       
-                        alt={details.name}
-                />
+                <div className="img">
+                        <img src={`${process.env.REACT_APP_BACKEND_URL}/${details.featuredImage}`}
+                            
+                            alt={details.name}
+                    />
+                </div>
                 <div style={{zIndex:34, position:'absolute',height:'94%', width:'98%', top:'3%', left:'1%'}}>
                     {
 

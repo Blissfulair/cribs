@@ -44,7 +44,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { connect } from "react-redux";
 import { setCrib } from "../../state/actions";
 import { getCribById } from "../../apis/server";
-import AppHeader from "../../components/appHeader";
+import Header from "../../components/head";
 import Guest from "../../components/guest";
 import Booking from "../../components/booking";
 const styles = theme => ({
@@ -428,7 +428,7 @@ class Single extends Component {
             return <Splash />
         return (
             <>
-                 <AppHeader/>
+                <Header sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
                 <Grid container justify="center">
                     <Grid item xs={12} md={10} >
                         {
@@ -632,7 +632,7 @@ class Single extends Component {
                                                     <Grid item>
                                                         <Typography className={classes.subTitle}>Availability</Typography>
                                                         <Typography style={{marginBottom:40}}>Enter your trip dates for accurate pricing and availability</Typography>
-                                                        <Booking bookings={[]}/>
+                                                        <Booking bookings={dates}/>
                                                     </Grid>
                                                 </Grid>
                                             </Box>

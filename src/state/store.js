@@ -36,6 +36,9 @@ function configureStore(preload) {
       weekly:[],
       yearly:[]
     },
+    earnings:{
+      balance:0
+    },
     dashboard:false,
     ...preload,
    }

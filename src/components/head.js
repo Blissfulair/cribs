@@ -1,20 +1,59 @@
 import React, { useEffect, useRef, useState} from "react"
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types"
 import NavButton from "./Button/NavButton";
 import "../scss/header.scss"
 import Form from "./headerSearch";
 import { isDescendant } from "../helpers/helpers";
+import { connect } from "react-redux";
+import { chooseDashboard, setUser } from "../state/actions";
+import { changeRole, makeHost } from "../apis/server";
 
-const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky})=>{
+const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, dashboard, user, chooseDashboard, setUser})=>{
 
     const [colors, setColors] = useState(top===400?'#fff':color)
     const [headerColor, setHeaderColor] = useState('#046FA7')
     const [width, setWidth] = useState(0)
     const [open, setOpen] = useState(false)
     const refs = useRef()
+    const becomeHost = ()=>{
+        makeHost(user.id)
+        .then((res)=>{
+            chooseDashboard(!dashboard)
+            setUser(res.user)
 
-
+            if(history.location.pathname.includes('crib') || history.location.pathname.includes('search') || !history.location.pathname.includes('payment') || history.location.pathname.includes('history'))
+            history.push('/app/dashboard')
+            else
+            history.push(history.location.pathname+history.location.search)
+        })
+        .catch((e)=>{
+            console.log(e)
+        })
+    }
+    const  changeDashboard=()=>{
+        chooseDashboard(!dashboard)
+        changeRole(user.id, {role:!dashboard})
+        .then((res)=>{
+        })
+        .catch((e)=>{
+            console.log(e)
+        })
+            if(dashboard)
+            {
+                if(history.location.pathname.includes('calendar') || history.location.pathname.includes('inbox') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('property') || history.location.pathname.includes('add-property') || history.location.pathname.includes('edit-property'))
+                history.push('/app/home')
+                else
+                history.push(history.location.pathname+history.location.search)
+            }
+            else
+            {
+                if(history.location.pathname.includes('crib') || history.location.pathname.includes('search') || !history.location.pathname.includes('payment') || history.location.pathname.includes('history'))
+                history.push('/app/dashboard')
+                else
+                history.push(history.location.pathname+history.location.search)
+            }
+  }
     const onOpen = ()=>{
         setWidth(47)
         setOpen(true)
@@ -79,20 +118,34 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky})=>{
               <Form width={width} color={headerColor} open={open} onClick={onOpen}/>
             </div>
             <nav className="showcase__nav">
-                <NavButton
-                    color={colors}
-                    border
-                    borderColor={colors}
-                    borderRadius={27}
-                    height='44'
-                    width='180'
-                    borderWidth={2}
-                    marginRight='3rem'
-                    href="/properties"
-                >
-                    Host Accomodation
-                </NavButton>
-                <NavButton
+                {
+                    !user&&
+                    <NavButton
+                        color={colors}
+                        border
+                        borderColor={colors}
+                        borderRadius={27}
+                        height='44'
+                        width='180'
+                        borderWidth={2}
+                        marginRight='3rem'
+                        href="/app/properties"
+                    >
+                        Host Accomodation
+                    </NavButton>
+                }
+                {
+                    user?
+                        user.type ==='host'?
+                        <button
+                        onClick={changeDashboard}
+                    >
+                        Host
+                    </button>
+                        :
+                        <button onClick={becomeHost}>Become a host</button>
+                    :
+                    <NavButton
                     color='#fff'
                     backgroundColor='#046FA7'
                     border
@@ -104,6 +157,7 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky})=>{
                 >
                     Sign in
                 </NavButton>
+                }
             </nav>
             <button className="hamburger">
                 <span></span>
@@ -114,7 +168,15 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky})=>{
     </div>
     )
 }
-export default Head;
+const mapStateToProps=state=>({
+    user:state.user,
+    dashboard:state.dashboard
+})
+const mapDispatchToProps=dispatch=>({
+    chooseDashboard:(payload)=>dispatch(chooseDashboard(payload)),
+    setUser: (payload) => dispatch(setUser(payload))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Head));
 
 Head.propTypes = {
     top:PropTypes.number,

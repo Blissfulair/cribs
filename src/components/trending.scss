@@ -56,6 +56,9 @@
 
 @include mediaSm {
     .card{
+        &:hover{
+            transform: scale(1);
+        }
         .trending-card{
             min-width:190px !important;
             height: 255px;

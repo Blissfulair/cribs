@@ -99,17 +99,19 @@ const Footer = ({classes})=>{
                                     <Grid item xs={12} sm={6} md={10} >
                                         <Grid container spacing={1}>
                                            <Grid item xs={6}>
-                                                <AppLogo name="App" image={apple} href="https://wwww.play.google.com/store/apps/details?id=com.givismartatt" target="_blank" />
+                                                <AppLogo name="App" image={apple} href="#" target="_blank" />
                                             </Grid>
                                             <Grid item xs={6}>
-                                                <AppLogo name="Play" image={play} href="https://wwww.play.google.com/store/apps/details?id=com.givismartatt" target="_blank" />
+                                                <AppLogo name="Play" image={play} href="#" target="_blank" />
                                             </Grid>
                                         </Grid> 
                                     </Grid>
                                 </Grid>
                             </div>
                         </Grid>
+
                     </Grid>
+                    <p className="paragraphy" >CribNg &copy; 2021, All rights Reserved. Designed By <a href="https://www.givitec.com">Givitec Ltd</a></p>
                 </Grid>
                 <Grid item xs={false} md={1}/>
             </Grid>

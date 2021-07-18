@@ -1,7 +1,7 @@
 import React from "react"
 import Carousel from "./carousel";
 import PropTypes from"prop-types"
-const Slide = ({children, infinite, auto})=>{
+const Slide = ({children, infinite, auto, showArrows})=>{
     return(
                 <Carousel
                     slidesPerPage={4}
@@ -10,6 +10,7 @@ const Slide = ({children, infinite, auto})=>{
                     infinite={infinite}
                     auto={auto}
                     minDraggableOffset={40}
+                    showArrows={showArrows}
                     // arrowLeft={
                     //     <div style={{cursor:'pointer',height:30,width:30, borderRadius:'50%',top:'50%', transform:'translateY(-50%)', backgroundColor:'#000000', position:'absolute',zIndex:10,left:-15, display:'flex', alignItems:'center',justifyContent:'center'}} className="left">
                     //         <ArrowLeftIcon htmlColor="#fff"/>
@@ -29,9 +30,11 @@ export default Slide;
 
 Slide.propTypes ={
     infinite:PropTypes.bool,
-    auto:PropTypes.number
+    auto:PropTypes.number,
+    showArrows:PropTypes.bool
 }
 Slide.defaultProps={
     infinite:false,
-    auto:0
+    auto:0,
+    showArrows:true
 }

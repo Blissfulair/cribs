@@ -85,10 +85,11 @@ class Carousel extends Component{
     }
     render(){
         const {data}=this.state
-        const {slidesPerPage}=this.props
+        const {slidesPerPage, showArrows}=this.props
     return(
         <div className="carousel-main-container">
             {
+                showArrows?
                 data>slidesPerPage?
                 this.props.arrowLeft?
                     this.props.arrowLeft:
@@ -99,6 +100,7 @@ class Carousel extends Component{
                 >
                     <ArrowBackIcon/>
                 </button>
+                :''
                 :''
             }
             <div 
@@ -116,6 +118,7 @@ class Carousel extends Component{
                 {this.props.children}
             </div>
             {
+                showArrows?
                  data>slidesPerPage?
                     this.props.arrowRight?
                     this.props.arrowRight:
@@ -126,6 +129,7 @@ class Carousel extends Component{
                 >
                     <ArrowForwardIcon/>
                 </button>
+                :''
                 :''
             }
         </div>
@@ -142,7 +146,8 @@ Carousel.propTypes={
     arrowRight:PropTypes.instanceOf(React.Component).isRequired,
     arrowLeft:PropTypes.instanceOf(React.Component).isRequired,
     infinite:PropTypes.bool,
-    minDraggableOffset:PropTypes.number
+    minDraggableOffset:PropTypes.number,
+    showArrows:PropTypes.bool
 }
 Carousel.defaultProps={
     slidesPerScroll:1,
@@ -151,5 +156,6 @@ Carousel.defaultProps={
     arrowRight:null,
     arrowLeft:null,
     infinite:false,
-    minDraggableOffset:1200
+    minDraggableOffset:1200,
+    showArrows:true
 }

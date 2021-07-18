@@ -3,7 +3,7 @@
 	background-color:#FCFCFC
 }
 .showcase {
-	height: 130vh;
+	min-height: 110vh;
 	width: 100%;
 	background: url("../images/showcase.png") no-repeat center center/cover;
 	margin-left: -0.1vw;
@@ -83,6 +83,7 @@
 			box-shadow: 0px 4px 4px rgba(157, 157, 157, 0.1);
 			backdrop-filter: blur(11px);
 			border-radius: 51.5px;
+			margin-bottom: 50px;
 		}
 
 		form {
@@ -189,7 +190,7 @@
 
 @include mediaSm {
     .showcase{
-		height: 100vh;
+		min-height: 100vh;
 		&__logo a{
 			font-size: 18px;
 		}

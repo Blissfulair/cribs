@@ -276,7 +276,9 @@ class Index extends Component {
                                     <>
                                     <Typography classes={{ root: classes.title }} className="head-title" variant="h3">Where would you like to stay?</Typography>
                                     <Grid container spacing={2}>
-                                    <Slide>
+                                    <Slide
+                                        showArrows={false}
+                                    >
                                             <Grid item xs={12} sm={6} md={3} lg={3} >
                                                 <Stays title={this.props.propertyTypes[0].name} link={`/search?type=${this.props.propertyTypes[0].name}`} image={house} available={1000} color={'#DF6C08'} />
                                             </Grid>
@@ -332,6 +334,7 @@ class Index extends Component {
                                 <Grid  container spacing={2}>
                                 <Slide
                                     infinite={true}
+                                    showArrows={false}
                                 >
                                         
                                         {

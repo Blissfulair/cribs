@@ -148,6 +148,7 @@ class Home extends Component{
                                 <Grid  container spacing={2}>
                                     <Slide
                                         infinite={true}
+                                        showArrows={false}
                                     >
                                         {
                                             this.props.trendingCribs.length>0?

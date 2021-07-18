@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import {withRouter} from "react-router-dom";
 import {withStyles} from "@material-ui/core/styles"
-import {MiniSearch} from "../components/searchForm"
+//import {MiniSearch} from "../components/searchForm"
 import { connect } from "react-redux";
 import { chooseDashboard, setUser } from "../state/actions";
 import { changeRole, makeHost } from "../apis/server";
@@ -128,9 +128,9 @@ const AppHeader = ({classes, history,user,dashboard, chooseDashboard, setUser})=
                                     <Grid lg={1} item>
                                         <Typography className="dashboard-mobile-menu" variant="h5" style={{color:'#707070', fontWeight:'bold', whiteSpace:'nowrap'}}>{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME.toUpperCase():'React App'}</Typography>
                                     </Grid>
-                                    <Grid lg={11} item>
+                                    {/* <Grid lg={11} item>
                                         <MiniSearch/>
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                                 :
                                 <Typography className="dashboard-mobile-menu" variant="h5" style={{color:'#707070', fontWeight:'bold'}}>{process.env.REACT_APP_NAME?process.env.REACT_APP_NAME.toUpperCase():'React App'}</Typography>

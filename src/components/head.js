@@ -93,9 +93,10 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
           
         }
         else{
-            refs.current.style.position='inherit'
+            refs.current.style.position=''
             refs.current.style.backgroundColor='transparent'
             refs.current.style.width='inherit'
+            refs.current.style.top='-90px'
             setColors(top===400?'#fff':color)
             setWidth(0)
         }
@@ -109,6 +110,7 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
         };
     }, [width, color, top,quickSearch]);
     return(
+        <div className="showcase__container">
         <div ref={refs} className="showcase_head" style={{backgroundColor:bgColor?bgColor:'transparent', position:sticky?'fixed':'inherit'}}>
             <div  className="showcase__header">
             <div className="showcase__logo">
@@ -196,6 +198,7 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
                 <span></span>
             </button>
         </div>
+    </div>
     </div>
     )
 }

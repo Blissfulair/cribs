@@ -118,7 +118,7 @@ export default Guest
 Guest.propTypes = {
     label: PropTypes.string,
     placeholder: PropTypes.string,
-    value: PropTypes.number,
+    value: PropTypes.any,
     adult: PropTypes.number,
     childrens: PropTypes.number,
     infant: PropTypes.number,

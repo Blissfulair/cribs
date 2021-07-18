@@ -1,7 +1,6 @@
 import React from "react";
 import {Link} from 'react-router-dom';
 import CardMedia from '@material-ui/core/CardMedia';
-import Grow from '@material-ui/core/Grow';
 import Typography from "@material-ui/core/Typography"
 import "./stays.scss"
 
@@ -9,7 +8,7 @@ import "./stays.scss"
 const Stays = (props)=>{
     return(
         <Link className="card-link" to={props.link}>
-            <Grow in={true} disableStrictModeCompat>
+            <div>
             <div className="scard" style={{height:props.height?props.height:320}} > 
                 <CardMedia className="image" image={props.image}/>
                 <div  style={{position:'absolute',bottom:10,display:'flex',justifyContent:'center', width:'100%', zIndex:4}}>
@@ -20,7 +19,7 @@ const Stays = (props)=>{
                     </div>
                 <div style={{backgroundColor:props.color}} className="overlay"></div>
             </div>
-            </Grow>
+            </div>
         </Link>
     )
 }

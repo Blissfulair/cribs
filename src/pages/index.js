@@ -341,9 +341,9 @@ class Index extends Component {
                                         trendingCribs.length>0?
                                             trendingCribs.map((property,index)=>{
                                                 return (
-                                                    <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Grid key={index} item xs={12} sm={6} md={3} lg={3} >
                                                     <Link to={this.props.user?`/app/crib/${property._id}`:`/crib/${property._id}`} key={index}>
-                                                        <Trending favourite={this.state.favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
+                                                        <Trending favourite={this.state.favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"}  />   
                                                     </Link>
                                                     </Grid>
                                                 )
@@ -403,9 +403,9 @@ class Index extends Component {
                                             bestCribs.length>0?
                                                 bestCribs.map((property,index)=>{
                                                     return (
-                                                        <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                        <Grid key={index} item xs={12} sm={6} md={3} lg={3} >
                                                         <Link to={this.props.user?`/app/crib/${property._id}`:`/crib/${property._id}`} key={index}>
-                                                            <Trending favourite={this.state.favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"} key={index} />   
+                                                            <Trending favourite={this.state.favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"}  />   
                                                         </Link>
                                                         </Grid>
                                                     )

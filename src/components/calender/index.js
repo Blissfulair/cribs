@@ -116,7 +116,7 @@ Calendar.propTypes = {
     format: PropTypes.string,
     label: PropTypes.string,
     placeholder: PropTypes.string,
-    value: PropTypes.instanceOf(moment).isRequired,
+    value: PropTypes.any,
     onClick: PropTypes.func,
     onChange: PropTypes.func,
     right: PropTypes.any,

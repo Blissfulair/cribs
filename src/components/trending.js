@@ -51,7 +51,7 @@ const Trending = ({classes, color,name, details,favourite})=>{
                     <div style={{position:'absolute', bottom:0}}>
                         <Rating
                         name={name}
-                        defaultValue={details.rateValue/details.totalReviewer}
+                        value={details.rateValue/details.totalReviewer}
                         precision={0.5}
                         disabled
                         style={{fontSize:20, color:'#fff'}}

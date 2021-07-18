@@ -97,11 +97,11 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
             }
           
         }
-        // else if((position >= 280 ) && top === 400){
-        //     refs.current.style.top='-90px'
-        //     refs.current.style.position=''
+        else if((position >= 280 ) && top === 400){
+            refs.current.style.top='-90px'
+            refs.current.style.position='inherit'
 
-        // }
+        }
         else{
             refs.current.style.position=''
             refs.current.style.backgroundColor='transparent'

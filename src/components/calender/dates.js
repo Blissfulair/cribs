@@ -70,7 +70,7 @@ class Dates extends Component{
         }
         for (let i = 0; i < this.firstDayOfMonth(e); i++) {
           blanks.unshift(
-            <td className="past-month-day">
+            <td key={'month'+i} className="past-month-day">
                 <button
                   onClick={e => { 
                     this.onDayClick(prevMonth, prevMonthDays-i, prevMonthYear);
@@ -91,7 +91,7 @@ class Dates extends Component{
         }
         for (let i = 6; i > this.lastDayOfMonth(e); i--) {
           lastBlanks.push(
-            <td className="next-month-day">
+            <td key={'last'+i} className="next-month-day">
                 <button
                 
                 onClick={e => { 
@@ -115,7 +115,7 @@ class Dates extends Component{
         for (let d = 1; d <= this.daysInMonth(e); d++) {
           let currentDay = d === this.currentDay() ? "today" : ""; 
           daysInMonth.push(
-            <td key={d} className={`calendar-day ${(currentMonth===month && year===currentYear)?currentDay:''}`}>
+            <td key={'current'+d} className={`calendar-day ${(currentMonth===month && year===currentYear)?currentDay:''}`}>
                 <button onClick={()=> { 
              this.onDayClick(month, d, year);
              this.props.onClose()
@@ -139,7 +139,7 @@ class Dates extends Component{
             }
           });
          return rows.map((d, i) => {
-            return <tr>{d}</tr>;
+            return <tr key={i}>{d}</tr>;
           });
       }
     

@@ -139,12 +139,11 @@ class Carousel extends Component{
 export default Carousel
 
 Carousel.propTypes={
-    children:PropTypes.instanceOf(React.Children).isRequired,
     slidesPerScroll:PropTypes.number,
     slidesPerPage:PropTypes.number,
     auto:PropTypes.number,
-    arrowRight:PropTypes.instanceOf(React.Component).isRequired,
-    arrowLeft:PropTypes.instanceOf(React.Component).isRequired,
+    arrowRight:PropTypes.instanceOf(React.Component),
+    arrowLeft:PropTypes.instanceOf(React.Component),
     infinite:PropTypes.bool,
     minDraggableOffset:PropTypes.number,
     showArrows:PropTypes.bool

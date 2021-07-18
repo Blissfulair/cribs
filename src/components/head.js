@@ -15,6 +15,7 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
     const [headerColor, setHeaderColor] = useState('#046FA7')
     const [width, setWidth] = useState(0)
     const [open, setOpen] = useState(false)
+
     const refs = useRef()
     const becomeHost = ()=>{
         makeHost(user.id)
@@ -78,8 +79,11 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
     }
     const handleScroll = () => {
         const position = window.pageYOffset;
+
+        
         if(position >=top){
             refs.current.style.position='fixed'
+            
             refs.current.style.top='0'
             refs.current.style.backgroundColor='#CCE0FF'
             refs.current.style.backdropFilter='blur(20px)'
@@ -88,15 +92,19 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
             if(width <15 && quickSearch){
                 setWidth(15)
                 setOpen(false)
+                
                 setHeaderColor('#046FA7')
             }
           
         }
-        else{
+        else if((position >= 280 ) && top === 400){
+            refs.current.style.top='-90px'
             refs.current.style.position=''
+        }
+        else{
+            
             refs.current.style.backgroundColor='transparent'
             refs.current.style.width='inherit'
-            refs.current.style.top='-90px'
             setColors(top===400?'#fff':color)
             setWidth(0)
         }

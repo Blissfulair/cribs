@@ -38,8 +38,11 @@
         display: flex;
         overflow-x: scroll;
         scrollbar-width: none;
+        -ms-overflow-style: none;
         &::-webkit-scrollbar{
             display: none;
+            width: 0;
+            height: 0;
         }
         scroll-behavior: smooth;
         overflow-y: hidden;

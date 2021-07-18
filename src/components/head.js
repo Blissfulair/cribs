@@ -97,24 +97,25 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
             }
           
         }
-        else if((position >= 280 ) && top === 400){
-            refs.current.style.top='-90px'
-            refs.current.style.position=''
-        }
+        // else if((position >= 280 ) && top === 400){
+        //     refs.current.style.top='-90px'
+        //     refs.current.style.position=''
+
+        // }
         else{
-            
+            refs.current.style.position=''
             refs.current.style.backgroundColor='transparent'
             refs.current.style.width='inherit'
             setColors(top===400?'#fff':color)
             setWidth(0)
         }
     };
-        document.addEventListener('click',handleClick)
-        document.addEventListener('scroll', handleScroll);
+        window.addEventListener('click',handleClick)
+        window.addEventListener('scroll', handleScroll);
     
         return () => {
-            document.removeEventListener('scroll', handleScroll);
-            document.removeEventListener('click', handleClick);
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('click', handleClick);
         };
     }, [width, color, top,quickSearch]);
     return(

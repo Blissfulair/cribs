@@ -15,11 +15,14 @@ class Guest extends Component{
         this.top = React.createRef();
     }
     handleClick=   (e)=>{
-        if(this.guest.current && this.container.current)
-        if(!this.guest.current.contains(e.target) && this.state.onOpen && !this.container.current.contains(e.target)){
+     
+        if(this.guest.current && this.container.current){
+            if(!this.guest.current.contains(e.target) && this.state.onOpen && !this.container.current.contains(e.target)){
  
-          this.onClose()
+                this.onClose()
+              }
         }
+
      }
     componentDidUpdate(prevProp, prevState){
         if(!prevState.onOpen && this.state.onOpen){

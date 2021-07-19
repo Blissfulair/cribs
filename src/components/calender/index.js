@@ -43,42 +43,44 @@ componentDidUpdate(prevProp, prevState){
        window.removeEventListener('resize',this.handleResize)
     }
     onClick=()=>{
-        this.dates.current.parentElement.style.position="relative" 
-        this.setState({onOpen:!this.state.onOpen}, ()=>{
-            if(this.state.onOpen){
-            
-            this.setState({update:true})
-                //this.container.current.classList.add('active')
-                this.dates.current.style.width = '50vw'
-                this.dates.current.style.height = '390px'
-                this.dates.current.style.right = this.props.right
+        if(this.dates.current){
+            this.dates.current.parentElement.style.position="relative" 
+            this.setState({onOpen:!this.state.onOpen}, ()=>{
+                if(this.state.onOpen){
                 
-                
-     
-                 setTimeout(()=>{
-                     this.dates.current.firstChild.style.display="flex"
-                     this.top.current.style.width="30px"
-                     this.top.current.style.height="30px"
-                     this.dates.current.style.opacity = '1'
-                     this.dates.current.style.visibility = 'visible'
-                     this.dates.current.firstChild.style.opacity="1"
-                 },100)
-             }
-             else
-             {
-                //this.container.current.classList.remove('active')
-                 this.dates.current.style.opacity = '0'
-                 this.dates.current.firstChild.style.opacity="0"
-                this.dates.current.style.width = '0px'
-                this.dates.current.style.height = '0px'
-             //    this.dates.current.style.left = '35%'
-                 this.top.current.style.width="0"
-                 this.top.current.style.height="0"
-                 this.dates.current.style.visibility = 'hidden'
-                 this.dates.current.firstChild.style.display="none"
-                 
-             }
-        })
+                this.setState({update:true})
+                    //this.container.current.classList.add('active')
+                    this.dates.current.style.width = '50vw'
+                    this.dates.current.style.height = '390px'
+                    this.dates.current.style.right = this.props.right
+                    
+                    
+         
+                     setTimeout(()=>{
+                         this.dates.current.firstChild.style.display="flex"
+                         this.top.current.style.width="30px"
+                         this.top.current.style.height="30px"
+                         this.dates.current.style.opacity = '1'
+                         this.dates.current.style.visibility = 'visible'
+                         this.dates.current.firstChild.style.opacity="1"
+                     },100)
+                 }
+                 else
+                 {
+                    //this.container.current.classList.remove('active')
+                     this.dates.current.style.opacity = '0'
+                     this.dates.current.firstChild.style.opacity="0"
+                    this.dates.current.style.width = '0px'
+                    this.dates.current.style.height = '0px'
+                 //    this.dates.current.style.left = '35%'
+                     this.top.current.style.width="0"
+                     this.top.current.style.height="0"
+                     this.dates.current.style.visibility = 'hidden'
+                     this.dates.current.firstChild.style.display="none"
+                     
+                 }
+            })
+        }
 
     }
 

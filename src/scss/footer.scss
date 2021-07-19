@@ -97,6 +97,7 @@
 
         color: #2E2E2E;
         margin-bottom: 23px;
+
     }
     .first-box{
         border-right: 1px solid #B4BCBE;
@@ -194,6 +195,9 @@
         }
         .paragraphy{
             margin-bottom: 60px;
+            &.copy{
+                padding:  10px;
+            }
         }
     }
     

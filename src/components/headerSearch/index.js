@@ -24,14 +24,27 @@ class Form extends Component {
             open: false,
             interval:null
         }
+        this.searchForm= React.createRef()
     }
     componentDidMount() {
         this.setState({ 
             open: this.props.open?this.props.open:this.state.open,
          })
+         document.addEventListener('click', this.handleClick)
+    }
+    handleClick=(e)=>{
+
+        if(this.searchForm.current){
+            if(!this.searchForm.current.contains(e.target) && this.props.open && this.props.width>15 && e.target.className !=='qsearch1' ){
+
+                if(this.props.onClose)
+                this.props.onClose()
+            }
+        }
+          
     }
     componentDidUpdate(prevProps, prevState) {
-        if(prevProps.open !== this.props.open)
+        if(prevProps.open !== this.props.open){
             if(this.props.open){
                const interval =  setTimeout(()=>{
                     this.setState({open:this.props.open})
@@ -40,9 +53,11 @@ class Form extends Component {
             }
             else
             this.setState({open:this.props.open})
+            }
     }
     componentWillUnmount(){
         clearTimeout(this.state.interval)
+        document.removeEventListener('click', this.handleClick)
     }
     setDays = () => {
         const dates = getDates(this.state.checkIn, this.state.checkOut)
@@ -81,7 +96,7 @@ class Form extends Component {
             <>
                 {
                     this.props.width > 0 ?
-                        <div style={{ width: `${this.props.width}vw`, backgroundColor: this.props.color }} className="form-index">
+                        <div style={{ width: `${this.props.width}vw`, backgroundColor: this.props.color }} ref={this.searchForm} className="form-index">
                             {
                                 this.state.open &&
                                 <form onSubmit={this.onSubmit}>
@@ -167,5 +182,9 @@ const mapDispatchToProps=dispatch=>({
 export default connect(mapStateToProps,mapDispatchToProps)(withRouter(Form))
 
 Form.propTypes = {
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    onClose:PropTypes.func,
+}
+Form.defaultProps={
+    onClose:null
 }

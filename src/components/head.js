@@ -1,27 +1,33 @@
-import React, { useEffect, useRef, useState} from "react"
+import React, { createRef, Component} from "react"
 import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types"
 import NavButton from "./Button/NavButton";
 import "../scss/header.scss"
 import Form from "./headerSearch";
-import { isDescendant } from "../helpers/helpers";
 import { connect } from "react-redux";
 import { chooseDashboard, setUser } from "../state/actions";
 import { changeRole, makeHost } from "../apis/server";
+import Modal from "./modal/index";
 
-const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, dashboard, user, chooseDashboard, setUser})=>{
+class Head extends Component{
 
-    const [colors, setColors] = useState(top===400?'#fff':color)
-    const [headerColor, setHeaderColor] = useState('#046FA7')
-    const [width, setWidth] = useState(0)
-    const [open, setOpen] = useState(false)
+        state={
+            colors:this.props.top === 45?'#fff':this.props.color,
+            headerColor:'#046FA7',
+            width:0,
+            open:false,
+            menu:false
+        }
+        refs = createRef()
+        //form = createRef()
+        btn = createRef()
 
-    const refs = useRef()
-    const becomeHost = ()=>{
-        makeHost(user.id)
+     becomeHost = ()=>{
+         const history = this.props.history
+        makeHost(this.props.user.id)
         .then((res)=>{
-            chooseDashboard(!dashboard)
-            setUser(res.user)
+            this.props.chooseDashboard(!this.props.dashboard)
+            this.props.setUser(res.user)
 
             if(history.location.pathname.includes('crib') || history.location.pathname.includes('search') || !history.location.pathname.includes('payment') || history.location.pathname.includes('history'))
             history.push('/app/dashboard')
@@ -32,7 +38,8 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
             console.log(e)
         })
     }
-    const  changeDashboard=()=>{
+    changeDashboard=()=>{
+        const {chooseDashboard, user, dashboard,history}=this.props
         chooseDashboard(!dashboard)
         changeRole(user.id, {role:!dashboard})
         .then((res)=>{
@@ -54,85 +61,115 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
                 else
                 history.push(history.location.pathname+history.location.search)
             }
-  }
-    const onOpen = ()=>{
-        setWidth(47)
-        setOpen(true)
-        setHeaderColor('#fff')
+         }
+    onOpen = ()=>{
+        this.setState({width:47, open:true, headerColor:'#fff'})
     }
 
-    useEffect(()=>{
-        if(quickSearch && openQuickSearch){
-            setWidth(47)
-            setOpen(true)
-            setHeaderColor('#fff')
-        }
-    }, [openQuickSearch,quickSearch])
-    useEffect(() => {
-        const handleClick=(e)=>{
-            if(!isDescendant(document.querySelector('.form-index'), e.target) && width>0){
-            setWidth(15)
-            setOpen(false)
-            setHeaderColor('#046FA7')
-           }
-          
-    }
-    const handleScroll = () => {
-        const position = window.pageYOffset;
+    // useEffect(()=>{
+    //     if(quickSearch && openQuickSearch){
+    //         setWidth(47)
+    //         setOpen(true)
+    //         setHeaderColor('#fff')
+    //     }
+    // }, [openQuickSearch,quickSearch])
+handleClick=(e)=>{
+    // console.log(this.form.current.contains(e.target), e.target, this.form.current)
+    //     if(!isDescendant(this.form.current, e.target) && this.state.width>0){
+    //         // if(!this.props.openQuickSearch)
+    //         // this.setState({width:15, open:false, headerColor:'#046FA7'})
+           
+    //    }
+      
+}
+onCloseSearch=()=>{
+    if(!this.props.openQuickSearch)
+    this.setState({width:15, open:false, headerColor:'#046FA7'})
+}
+handleScroll = () => {
+    const position = window.pageYOffset;
 
+    if(position >=this.props.top){
+        // this.refs.style.position='fixed'
         
-        if(position >=top){
-            refs.current.style.position='fixed'
-            
-            refs.current.style.top='0'
-            refs.current.style.backgroundColor='#CCE0FF'
-            refs.current.style.backdropFilter='blur(20px)'
-            refs.current.style.width='100%'
-            setColors(color)
-            if(width <15 && quickSearch){
-                setWidth(15)
-                setOpen(false)
-                
-                setHeaderColor('#046FA7')
-            }
-          
+        this.refs.style.top='0'
+        this.refs.style.opacity='1'
+        this.refs.style.backgroundColor='#CCE0FF'
+        this.refs.style.backdropFilter='blur(20px)'
+        this.refs.style.width='100%'
+        this.setState({colors:this.props.color})
+        if(this.state.width <15 && this.props.quickSearch){
+            // setWidth(15)
+            // setOpen(false)
+            this.setState({width:15, open:false, headerColor:'#046FA7'})
+            //setHeaderColor('#046FA7')
         }
-        else if((position >= 280 ) && top === 400){
-            refs.current.style.top='-90px'
-            refs.current.style.position='inherit'
+      
+    }
+    // else if(position ===0){
+    //     this.refs.style.top='-45px'
+    //     this.refs.style.opacity='0'
 
+    // }
+    else{
+        this.refs.style.backgroundColor='transparent'
+        
+        this.setState({width:0, colors:this.props.top===45?'#fff':this.props.color})
+    }
+}
+    openMenu=()=>{
+        this.setState({menu:true})
+        console.log('open')
+    }
+    closeMenu=()=>{
+        this.setState({menu:false})
+    }
+    componentDidMount(){
+                if(this.props.quickSearch && this.props.openQuickSearch){
+                    this.onOpen()
         }
-        else{
-            refs.current.style.position=''
-            refs.current.style.backgroundColor='transparent'
-            refs.current.style.width='inherit'
-            setColors(top===400?'#fff':color)
-            setWidth(0)
-        }
-    };
-        window.addEventListener('click',handleClick)
-        window.addEventListener('scroll', handleScroll);
-    
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('click', handleClick);
-        };
-    }, [width, color, top,quickSearch]);
+        window.addEventListener('click',this.handleClick)
+        window.addEventListener('scroll', this.handleScroll);
+    }
+    componentWillUnmount(){
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('click', this.handleClick);
+    }
+ 
+
+    render(){
+        const {user, bgColor} =this.props
+        const {headerColor, colors,open,width}=this.state
     return(
         <div className="showcase__container">
-        <div ref={refs} className="showcase_head" style={{backgroundColor:bgColor?bgColor:'transparent', position:sticky?'fixed':'inherit'}}>
+        <div ref={(ref)=>this.refs=ref} className="showcase_head" style={{backgroundColor:bgColor?bgColor:'transparent', position:'fixed', top:0}}>
             <div  className="showcase__header">
             <div className="showcase__logo">
                 <Link style={{color: colors}} to="/">Crib NG</Link>
             </div>
             <div>
-              <Form width={width} color={headerColor} open={open} onClick={onOpen}/>
+              <Form onClose={this.onCloseSearch} width={width} color={headerColor} open={open} onClick={this.onOpen}/>
             </div>
             <nav className="showcase__nav">
-                {
-                    user?
-                        !user.emailVerify?
-                    <NavButton
+                    {
+                        user?
+                            !user.emailVerify?
+                        <NavButton
+                            color={colors}
+                            border
+                            borderColor={colors}
+                            borderRadius={27}
+                            height='44'
+                            width='180'
+                            borderWidth={2}
+                            marginRight='3rem'
+                            href="/app/property"
+                        >
+                            Host Accomodation
+                        </NavButton>
+                            :''
+                        :
+                        <NavButton
                         color={colors}
                         border
                         borderColor={colors}
@@ -142,74 +179,140 @@ const Head=({color, top, quickSearch, bgColor, openQuickSearch, sticky,history, 
                         borderWidth={2}
                         marginRight='3rem'
                         href="/app/property"
-                    >
-                        Host Accomodation
-                    </NavButton>
-                        :''
-                    :
-                    <NavButton
-                    color={colors}
-                    border
-                    borderColor={colors}
-                    borderRadius={27}
-                    height='44'
-                    width='180'
-                    borderWidth={2}
-                    marginRight='3rem'
-                    href="/app/property"
-                    >
-                        Host Accomodation
-                    </NavButton>
-                }
-                {
-                    user?
-                        user.emailVerify?
-                        user.type ==='host'?
-                            <button
-                            onClick={changeDashboard}
-                            >
-                            Host
-                            </button>
-                            :
-                            <button onClick={becomeHost}>Become a host</button>
-                            :
-                            <NavButton
-                            color='#fff'
-                            backgroundColor='#046FA7'
-                            border
-                            borderRadius={27}
-                            height='44'
-                            width='106'
-                            href="/login"
+                        >
+                            Host Accomodation
+                        </NavButton>
+                    }
+                    {
+                        user?
+                            user.emailVerify?
+                            user.type ==='host'?
+                                <button
+                                onClick={this.changeDashboard}
+                                >
+                                Host
+                                </button>
+                                :
+                                <button onClick={this.becomeHost}>Become a host</button>
+                                :
+                                <NavButton
+                                color='#fff'
+                                backgroundColor='#046FA7'
+                                border
+                                borderRadius={27}
+                                height='44'
+                                width='106'
+                                href="/login"
+                                    
+                                >
+                                    Sign in
+                                </NavButton>
+                                :
+                                <NavButton
+                                color='#fff'
+                                backgroundColor='#046FA7'
+                                border
+                                borderRadius={27}
+                                height='44'
+                                width='106'
+                                href="/login"
                                 
-                            >
-                                Sign in
-                            </NavButton>
-                            :
-                            <NavButton
-                            color='#fff'
-                            backgroundColor='#046FA7'
-                            border
-                            borderRadius={27}
-                            height='44'
-                            width='106'
-                            href="/login"
-                            
-                            >
-                                Sign in
-                            </NavButton>
-                   
-                }
-            </nav>
-            <button className="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+                                >
+                                    Sign in
+                                </NavButton>
+                    
+                    }
+                </nav>
+            <button  onClick={this.openMenu} className="hamburger">
+                <span  onClick={this.openMenu}></span>
+                <span  onClick={this.openMenu}></span>
+                <span  onClick={this.openMenu}></span>
             </button>
         </div>
+
+
+        
     </div>
+
+    <Modal onOpen={this.state.menu}  closeMenu={this.closeMenu} >
+                <nav className="showcase__nav">
+                    {
+                        user?
+                            !user.emailVerify?
+                        <NavButton
+                            color={colors}
+                            border
+                            borderColor={colors}
+                            borderRadius={27}
+                            height='44'
+                            width='180'
+                            borderWidth={2}
+                            marginRight='3rem'
+                            href="/app/property"
+                        >
+                            Host Accomodation
+                        </NavButton>
+                            :''
+                        :
+                        <NavButton
+                        color={this.props.color}
+                        border
+                        borderColor={this.props.color}
+                        borderRadius={27}
+                        height='44'
+                        width='180'
+                        borderWidth={2}
+                        marginRight='3rem'
+                        href="/app/property"
+                        >
+                            Host Accomodation
+                        </NavButton>
+                    }
+                    {
+                        user?
+                            user.emailVerify?
+                            user.type ==='host'?
+                                <button
+                                onClick={this.changeDashboard}
+                                >
+                                Host
+                                </button>
+                                :
+                                <button onClick={this.becomeHost}>Become a host</button>
+                                :
+                                <NavButton
+                                color='#fff'
+                                backgroundColor='#046FA7'
+                                border
+                                borderRadius={27}
+                                height='44'
+                                width='106'
+                                href="/login"
+                                    
+                                >
+                                    Sign in
+                                </NavButton>
+                                :
+                                <NavButton
+                                color='#fff'
+                                backgroundColor='#046FA7'
+                                border
+                                borderRadius={27}
+                                height='44'
+                                width='106'
+                                href="/login"
+                                
+                                >
+                                    Sign in
+                                </NavButton>
+                    
+                    }
+                </nav>
+            </Modal>
+
     </div>
     )
+}
 }
 const mapStateToProps=state=>({
     user:state.user,
@@ -226,6 +329,6 @@ Head.propTypes = {
     searchWidth:PropTypes.bool
   };
 Head.defaultProps={
-    top:400,
+    top:45,
     searchWidth:true
 }

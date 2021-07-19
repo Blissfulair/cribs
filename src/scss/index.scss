@@ -60,11 +60,11 @@
 
 	&__bottom {
 		position: relative;
-		z-index: 999;
+		z-index: 997;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		padding-top: 80px;
+		padding-top: 24.85vh;
 
 		> img {
 			width: #{"min(80%, 506px)"};
@@ -199,7 +199,7 @@
 		}
 		&__bottom {
 			
-			padding-top: 20px;
+			padding-top: 13.3vh;
 			.form__wrapper{
 			height: min(336px, 350px);
 			

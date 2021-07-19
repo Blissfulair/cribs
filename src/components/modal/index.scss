@@ -1,0 +1,66 @@
+@import "../../scss/config";
+.modals-container{
+    display: none;
+}
+@include mediaSm{
+    .modals-container{
+        position: fixed;
+        height: 100vh;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+        display: flex;
+        top: 0;
+        right: 0;
+        transform: translateX(100%);
+        transition: transform 1000ms;
+        justify-content: flex-end;
+        .modals-content{
+            height: 100%;
+            width: 60%;
+            background-color: #fff;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            flex-basis: 60%;
+            .modals-header{
+                height: 90%;
+                nav{
+                    margin-top: 50%;
+                    
+                    &> *{
+                        &:first-child{
+                            margin-right: 0 !important;
+                            margin-bottom: 30px;
+                        }
+                        width: 80%;
+                        font-size: 12px;
+                        text-align: center;
+                    }
+
+                }
+            }
+            .modals-footer{
+                p{
+                    text-align: center;
+                    font-family: Poppins;
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 24px;
+                    padding-left: 0;
+                    line-height: 36px;
+                    color: #046FA7;
+                    text-transform: uppercase;
+                }
+            }
+            .showcase__nav{
+                display: flex;
+                width: 100%;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            
+        }
+    }
+}

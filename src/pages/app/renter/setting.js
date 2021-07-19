@@ -8,7 +8,7 @@ import {Alert} from "@material-ui/lab"
 import VisibilityIcon from '@material-ui/icons/VisibilityOutlined';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOffOutlined';
 import { IconButton } from "@material-ui/core";
-import AppHeader from "../../../components/appHeader";
+import AppHeader from "../../../components/head";
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
@@ -130,7 +130,7 @@ class Setting extends React.Component{
             )
         return (
             <>
-                    <AppHeader/>
+                                <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
                     <Grid container justify="center">
                         <Grid item md={11}>
                             <Grid container>

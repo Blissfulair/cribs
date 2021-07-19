@@ -7,7 +7,7 @@ import "./../profile.css"
 import { Grid, Typography,withStyles, IconButton, Avatar } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import AppHeader from "../../../components/appHeader"
+import AppHeader from "../../../components/head"
 import { connect } from "react-redux";
 
 const ProfileDetails = ({user,uploadImage})=>{
@@ -168,7 +168,7 @@ class Profile extends React.Component{
     render(){
         return (
             <>
-                    <AppHeader/>
+                                <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
                     <Grid container justify="center">
                         <Grid item md={11}>
                             <Grid container>

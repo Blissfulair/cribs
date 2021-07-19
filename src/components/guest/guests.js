@@ -1,6 +1,7 @@
 import React, {Component} from "react"
 import PropTypes from 'prop-types';
 import "./guest.scss"
+import Switch from "../switch";
 class Guests extends Component{
 
     state = {
@@ -99,10 +100,11 @@ class Guests extends Component{
                 </div>
                 <div className="guest-bottom">
                     <p>Are you traveling with pets?</p>
-                    <label className="pets">
+                    <Switch value={this.state.pet} onChange={(e)=>this.props.onCheck(e)}/>
+                    {/* <label className="pets">
                         <input checked={this.state.pet}   onChange={(e)=>{this.setState({pet:e.target.checked}); if(this.props.onCheck)this.props.onCheck(e.target.checked)}} type="checkbox"  />
                         <span className="sknob"></span>
-                    </label>
+                    </label> */}
                 </div>
             </div>
         )

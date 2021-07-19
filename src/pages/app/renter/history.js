@@ -22,7 +22,7 @@ import {
  } from "@material-ui/core";
  import Rating from '@material-ui/lab/Rating';
 import { fade } from '@material-ui/core/styles';
-import AppHeader from "../../../components/appHeader";
+import AppHeader from "../../../components/head";
 import { StyledTableCell, StyledTableRow } from './../properties';
 import { getMonthInWord } from "../../../helpers/helpers";
 import Modal from "../../../components/modal";
@@ -272,7 +272,7 @@ class History extends React.Component{
 
         return (
             <>
-            <AppHeader/>
+            <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
             <Grid container justify ="center">
                 { this.state.history&&
                 <WithdrawPopUp open={this.state.open} title="" handleClose={this.handleClose} className="history-modal">

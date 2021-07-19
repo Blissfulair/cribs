@@ -1,13 +1,16 @@
 import React, { createRef, Component} from "react"
-import { Link, withRouter } from "react-router-dom";
+import { Link, NavLink, withRouter } from "react-router-dom";
 import PropTypes from "prop-types"
 import NavButton from "./Button/NavButton";
 import "../scss/header.scss"
 import Form from "./headerSearch";
 import { connect } from "react-redux";
 import { chooseDashboard, setUser } from "../state/actions";
-import { changeRole, makeHost } from "../apis/server";
+import { changeRole, makeHost, signOut } from "../apis/server";
 import Modal from "./modal/index";
+import Dmodal from "./modal/dmodal";
+import Switch from "./switch";
+import kano from "../images/kano.jpeg"
 
 class Head extends Component{
 
@@ -16,7 +19,8 @@ class Head extends Component{
             headerColor:'#046FA7',
             width:0,
             open:false,
-            menu:false
+            menu:false,
+            openModal:false
         }
         refs = createRef()
         //form = createRef()
@@ -64,6 +68,12 @@ class Head extends Component{
          }
     onOpen = ()=>{
         this.setState({width:47, open:true, headerColor:'#fff'})
+    }
+    onOpenModal =()=>{
+        this.setState({openModal:!this.state.openModal})
+    }
+    onCloseModal =(e)=>{
+        this.setState({openModal:e})
     }
 
     // useEffect(()=>{
@@ -124,6 +134,18 @@ handleScroll = () => {
     closeMenu=()=>{
         this.setState({menu:false})
     }
+
+//logout user
+onLogout = ()=>{
+    signOut()
+    .then((res)=>{
+      this.props.setUser(null)
+      window.sessionStorage.removeItem('@dash')
+      this.props.history.push('/')
+    })
+  }
+
+
     componentDidMount(){
                 if(this.props.quickSearch && this.props.openQuickSearch){
                     this.onOpen()
@@ -186,14 +208,51 @@ handleScroll = () => {
                     {
                         user?
                             user.emailVerify?
-                            user.type ==='host'?
-                                <button
-                                onClick={this.changeDashboard}
-                                >
-                                Host
-                                </button>
-                                :
-                                <button onClick={this.becomeHost}>Become a host</button>
+                                <div className="avatar-pro">
+                                    <img onClick={this.onOpenModal} src={kano} alt="" />
+                                    <Dmodal
+                                        open={this.state.openModal}
+                                        onClose={this.onCloseModal}
+                                    >
+
+                                    <ul>
+                                        <li>
+                                            <NavLink to="/app/home">Dashboard</NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink to="/app/history">History</NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink to="/app/favourites">Favourites</NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink to="/app/myprofile">Profile</NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink to="/app/setting">Settings</NavLink>
+                                        </li>
+                                        <li>
+                                            <NavLink to="/app/support">Help and Support</NavLink>
+                                        </li>
+                                        <li>
+                                            {
+                                            user.type ==='host'?
+                                            <div className="choice-switch">
+                                                <span style={{color:!this.props.dashboard?'#0066FF':'#C4C4C4'}}>Renting</span>
+                                                <Switch color={'#0066FF'} trackBorder={'1px solid #0066FF'} onChange={this.changeDashboard} trackColor={'#EEECF1'} value={this.props.dashboard}/>
+                                                <span>Hosting</span>
+
+                                            </div>
+                                            :
+                                            <button onClick={this.becomeHost}>Become a host</button>
+                                            }
+                                        </li>
+                                        <li>
+                                            <button onClick={this.onLogout} type="button">Logout</button>
+                                        </li>
+                                    </ul>
+                                    </Dmodal>
+                                </div>
                                 :
                                 <NavButton
                                 color='#fff'
@@ -271,14 +330,44 @@ handleScroll = () => {
                     {
                         user?
                             user.emailVerify?
-                            user.type ==='host'?
-                                <button
-                                onClick={this.changeDashboard}
-                                >
-                                Host
-                                </button>
-                                :
-                                <button onClick={this.becomeHost}>Become a host</button>
+                                <div >
+                                    <ul>
+                                        <li>
+                                            <Link to="/app/home">Dashboard</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/app/history">History</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/app/favourites">Favourites</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/app/myprofile">Profile</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/app/setting">Settings</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/app/support">Help and Support</Link>
+                                        </li>
+                                        <li>
+                                            {
+                                            user.type ==='host'?
+                                            <div className="choice-switch">
+                                                <span style={{color:!this.props.dashboard?'#0066FF':'#C4C4C4'}}>Renting</span>
+                                                <Switch color={'#0066FF'} trackBorder={'1px solid #0066FF'} onChange={this.changeDashboard} trackColor={'#EEECF1'} value={this.props.dashboard}/>
+                                                <span>Hosting</span>
+
+                                            </div>
+                                            :
+                                            <button onClick={this.becomeHost}>Become a host</button>
+                                            }
+                                        </li>
+                                        <li>
+                                            <button onClick={this.onLogout} type="button">Logout</button>
+                                        </li>
+                                    </ul>
+                                </div>
                                 :
                                 <NavButton
                                 color='#fff'

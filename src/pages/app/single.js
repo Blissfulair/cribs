@@ -429,12 +429,12 @@ class Single extends Component {
         return (
             <>
                 <Header sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
-                <Grid container justify="center">
+                <Grid container justify="center" className="page">
                     <Grid item xs={12} md={10} >
                         {
                             property &&
                             <div id="singlepage" className={classes.container}>
-                                <Grid container justify="flex-start" style={{ position: 'relative' }} spacing={3}>
+                                <Grid container justify="flex-start"  spacing={3}>
                                     <Grid item xs={12} md={8} sm={12}>
                                         <Grid container>
                                             <Grid item xs={4}>

@@ -18,7 +18,7 @@ const SlideBanner = ({content})=>{
                     >
                     {content.map((property,index)=>{
                     return (
-                        <Link to={`/crib/${property.id}`} key={index}>
+                        <Link to={`/crib/${property.id}`}  key={'slidess'+index}>
                             <img style={{width:'100%', height:200}} alt="" src={property.image}/>
                         </Link>
                     )

@@ -6,7 +6,7 @@ import Splash from "../../../components/splash"
 import Explore from "../../../components/explore";
 import  MapContainer  from "../../../components/map";
 import {withRouter} from "react-router-dom"
-import AppHeader from "../../../components/appHeader"
+import AppHeader from "../../../components/head"
 import benin from "../../../images/benin.jpeg"
 import abuja from "../../../images/abuja.jpg"
 import lagos from "../../../images/lagos.jpg"
@@ -78,7 +78,7 @@ class Favourites extends Component{
                 this.state.isLoading&&
                     <Splash />
             }
-            <AppHeader/>
+                        <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
                     <div className={classes.container}>

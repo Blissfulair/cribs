@@ -82,7 +82,7 @@ class Form extends Component {
         .then(()=>{
             //setLoading(false)
             this.props.history.push({
-                pathname: '/search',
+                pathname: !this.props.user?'/search':'/search',
                 search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
             })
         })
@@ -174,7 +174,8 @@ class Form extends Component {
 }
 
 const mapStateToProps=state=>({
-    searchData:state.searchData
+    searchData:state.searchData,
+    user:state.user
 })
 const mapDispatchToProps=dispatch=>({
     storeSearchData:(payload)=>dispatch(storeSearchData(payload))

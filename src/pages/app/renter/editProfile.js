@@ -3,7 +3,7 @@ import "./../inbox.css"
 import "./../properties.css"
 import "./../add-property.css"
 import "./../profile.css"
-import AppHeader from "../../../components/appHeader";
+import AppHeader from "../../../components/head";
 import { NativeSelect, Button,Snackbar, Slide, Grid } from "@material-ui/core";
 import Activity from "../../../components/activity"
 import {Alert} from "@material-ui/lab"
@@ -199,7 +199,7 @@ class EditProfile extends React.Component{
     render(){
         return (
             <>
-                <AppHeader/>
+                           <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
                     <Grid container justify="center">
                         <Grid item md={11}>
                             <Grid container>

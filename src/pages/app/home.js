@@ -131,17 +131,28 @@ class Home extends Component{
                     </Grid>
                 <Typography classes={{root:classes.title}} variant="h3">Where would you like to stay?</Typography>
                 <Grid  container spacing={2}>
-                    <Grid item xs={12} sm={6} md={3} lg={3} >
-                    <Stays title="House" link={`/app/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3} lg={3}>
-                    <Stays title="Bungalows" link={`/app/search?type=bungalow`}  height={280} image={bangalow} available={1000}/>
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={6} lg={6}>
+                    <Slide
+                        infinite={true}
+                        showArrows={false}
+                    >
+                        <Grid item xs={12} sm={6} md={3} lg={3} >
+                        <Stays title="House" link={`/app/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3} lg={3}>
+                        <Stays title="Bungalows" link={`/app/search?type=bungalow`}  height={280} image={bangalow} available={1000}/>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3} lg={3} >
+                        <Stays title="House" link={`/app/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3} lg={3}>
+                        <Stays title="Bungalows" link={`/app/search?type=bungalow`}  height={280} image={bangalow} available={1000}/>
+                        </Grid>
+                    </Slide>
+                    {/* <Grid item xs={12} sm={12} md={6} lg={6}>
                         <div className={classes.loginContainer}>
                             <div className={classes.containerOverlay}></div>
                         </div>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
                             <Typography classes={{root:classes.title}} variant="h3">Trending Cribs</Typography>
                             <div style={{marginBottom:10}}>
@@ -154,7 +165,7 @@ class Home extends Component{
                                             this.props.trendingCribs.length>0?
                                             this.props.trendingCribs.map((property, i)=>{
                                                 return(
-                                                    <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Grid item xs={12} sm={6} md={3} lg={3} key={i} >
                                                         <Link to={`/app/crib/${property._id}`}>
                                                             <Trending favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
                                                         </Link>
@@ -189,7 +200,7 @@ class Home extends Component{
                                             this.props.bestCribs.length>0?
                                             this.props.bestCribs.map((property, i)=>{
                                                 return(
-                                                    <Grid item xs={12} sm={6} md={3} lg={3} >
+                                                    <Grid item xs={12} sm={6} md={3} lg={3} key={i} >
                                                         <Link to={`/app/crib/${property._id}`}>
                                                             <Trending favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
                                                         </Link>
@@ -198,8 +209,8 @@ class Home extends Component{
                                             })  
                                             :
                                             [1,2,3.4,5].map((value,i)=>(
-                                                <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                        <Skeleton key={i} />
+                                                <Grid key={i} item xs={12} sm={6} md={3} lg={3} >
+                                                        <Skeleton  />
                                                 </Grid>
                                             ))
                                         }

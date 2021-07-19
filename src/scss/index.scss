@@ -191,6 +191,17 @@
 @include mediaSm {
     .showcase{
 		min-height: 100vh;
+		position: relative;
+		&::before{
+			background: linear-gradient(180deg, #9AAEBB -93.06%, #FFFFFF 88.43%);
+			position: absolute;
+			content: '';
+			width: 100%;
+			height: 213px;
+			bottom: -10px;
+			transform: skewY(3deg);
+			// opacity: 0.5;
+		}
 		&__logo a{
 			font-size: 18px;
 		}

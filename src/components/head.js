@@ -224,9 +224,9 @@ handleScroll = () => {
                     }
                 </nav>
             <button  onClick={this.openMenu} className="hamburger">
-                <span  onClick={this.openMenu}></span>
-                <span  onClick={this.openMenu}></span>
-                <span  onClick={this.openMenu}></span>
+                <span style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}} onClick={this.openMenu}></span>
+                <span style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}}  onClick={this.openMenu}></span>
+                <span style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}}  onClick={this.openMenu}></span>
             </button>
         </div>
 

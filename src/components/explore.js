@@ -11,7 +11,7 @@ const Explore = ({content,height})=>{
                     slidesPerPage={3}
                     slidesPerScroll={1}
                     infinite
-                    minDraggableOffset={20}
+                    minDraggableOffset={200}
                     auto={7000}
                     >
                     {content.map((city,index)=>{

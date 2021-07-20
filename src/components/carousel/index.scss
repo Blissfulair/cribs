@@ -96,6 +96,9 @@
             user-drag:none;
             -moz-user-select: none;
             -webkit-user-select: none;
+            -moz-user-drag:none;
+            -moz-user-modify: none;
+            
         }
     }
 }

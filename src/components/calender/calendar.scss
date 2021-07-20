@@ -49,6 +49,7 @@
     visibility: hidden;
     padding: 20px 50px;
     z-index: 9;
+
     // &::before{
     //     position: absolute;
     //     background-color: #fff;
@@ -71,10 +72,15 @@
     // }
     .calendar-dates{
         display: flex;
-        width: 100%;
+        width: calc(100% - 100px);
         height: 290px;
-        display: none;
         justify-content: space-between;
+        position: absolute;
+        top:20px;
+        left: 50%;
+        transform: translateX(-50%) scale(0);
+        visibility: hidden;
+        opacity: 0;
         .title{
             display: none;
         }
@@ -126,9 +132,12 @@
         margin-top: 15px;
         display: flex;
         justify-content: center;
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
         .calendar-pag{
             background-color: #EDEDED;
-            width: 40%;
             padding: 12px 20px;
             border-radius: 25px;
             display: flex;
@@ -145,7 +154,37 @@
                 line-height: 22px;
                 letter-spacing: 0.22px;
                 color: #046FA7;
+                &:first-child{
+                    margin-right: 30px;
+                }
+                &:last-child{
+                    margin-left: 30px;
+                }
             }
+        }
+
+    }
+    &.open{
+        width: 50vw;
+        height: 390px;
+        opacity: 1;
+        visibility: visible;
+        .calendar-dates, .calendar-nav{
+            visibility: visible;
+            opacity: 1;
+            transition-delay: 0.07s;
+            transform: translateX(-50%) scale(1);
+        }
+    }
+    &.close{
+        width: 0;
+        height: 0;
+        opacity: 0;
+        visibility: hidden;
+        .calendar-dates, .calendar-nav{
+            visibility: hidden;
+            opacity: 0;
+            transform: translateX(-50%) scale(0);
         }
     }
 }

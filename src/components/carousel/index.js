@@ -51,7 +51,7 @@ class Carousel extends Component{
     }
 
     handleTouchStart=(start)=>{
-        this.track.current.classList.add('swipe')
+        
         this.setState({start})
     }
     handleTouchMove=(end)=>{
@@ -67,7 +67,10 @@ class Carousel extends Component{
         else if(this.state.start-this.state.end < -this.props.minDraggableOffset)
             this.prev()
     }
-
+    handleDragStart=(e)=>{
+        this.track.current.classList.add('swipe')
+        console.log(e)
+    }
     componentDidMount(){
         const items = this.props.children.length
         let scrolls = this.props.slidesPerPage/this.props.slidesPerScroll
@@ -113,6 +116,9 @@ class Carousel extends Component{
                 // onMouseDown={(e)=>this.handleTouchStart(e.nativeEvent.clientX)}
                 // onMouseMove={(e)=>this.handleTouchMove(e.nativeEvent.clientX)}
                 // onMouseUp={this.handleTouchEnd}
+                // onDragStart={(e)=>this.handleDragStart(e.target)}
+                // onDrag={(e)=>console.log(e.target,'drag')}
+                // onDragEnd={(e)=>console.log(e,'end')}
                 className="carousel-main-container-track"
                 >
                 {this.props.children}

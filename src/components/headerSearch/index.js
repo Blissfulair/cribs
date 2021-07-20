@@ -44,16 +44,16 @@ class Form extends Component {
           
     }
     componentDidUpdate(prevProps, prevState) {
-        if(prevProps.open !== this.props.open){
-            if(this.props.open){
-               const interval =  setTimeout(()=>{
-                    this.setState({open:this.props.open})
-                   }, 250)
-                   this.setState({interval})
-            }
-            else
-            this.setState({open:this.props.open})
-            }
+        // if(prevProps.open !== this.props.open){
+        //     if(this.props.open){
+        //        const interval =  setTimeout(()=>{
+        //             this.setState({open:this.props.open})
+        //            }, 190)
+        //            this.setState({interval})
+        //     }
+        //     else
+        //     this.setState({open:this.props.open})
+        //     }
     }
     componentWillUnmount(){
         clearTimeout(this.state.interval)
@@ -96,9 +96,9 @@ class Form extends Component {
             <>
                 {
                     this.props.width > 0 ?
-                        <div style={{ width: `${this.props.width}vw`, backgroundColor: this.props.color }} ref={this.searchForm} className="form-index">
+                        <div style={{ width: `${this.props.width}vw`, backgroundColor: this.props.color }} ref={this.searchForm} className={`form-index ${this.props.open?'open':'close'}`}>
                             {
-                                this.state.open &&
+                                // this.state.open &&
                                 <form onSubmit={this.onSubmit}>
                                     <div className="location">
                                         <input className='location__input' value={this.state.location} onChange={e=>this.setState({location:e.target.value})} type="text" name="location" id="" placeholder="Where do you want to lodge?" />

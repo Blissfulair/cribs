@@ -186,7 +186,7 @@ class Dates extends Component{
       };
     render(){
         return(
-            <div ref={this.props.refs} style={{top:this.props.top}}  className="calendar-display">
+            <div ref={this.props.refs} style={{top:this.props.top}}  className="calendar-display close">
 
                 <div className="calendar-dates">
                 <div className="title">

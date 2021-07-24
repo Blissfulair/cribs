@@ -53,30 +53,27 @@ componentDidUpdate(prevProp, prevState){
                     // this.dates.current.style.width = '50vw'
                     // this.dates.current.style.height = '390px'
                     this.dates.current.classList.replace('close','open')
-                    this.dates.current.style.right = this.props.right
+                    this.container.current.classList.replace('close','open')
+                        
                     
                     
          
                     //  setTimeout(()=>{
-                    //      this.dates.current.firstChild.style.display="flex"
-                         this.top.current.style.width="30px"
-                         this.top.current.style.height="30px"
-                        //  this.dates.current.style.opacity = '1'
-                        //  this.dates.current.style.visibility = 'visible'
-                        //  this.dates.current.firstChild.style.opacity="1"
-                    // },100)
+                        this.dates.current.style.right = this.props.right
+                    //},100)
                  }
                  else
                  {
                     this.dates.current.classList.replace('open','close')
+                    this.container.current.classList.replace('open','close')
                     //this.container.current.classList.remove('active')
                     //  this.dates.current.style.opacity = '0'
                     //  this.dates.current.firstChild.style.opacity="0"
                     // this.dates.current.style.width = '0px'
                     // this.dates.current.style.height = '0px'
                  //    this.dates.current.style.left = '35%'
-                     this.top.current.style.width="0"
-                     this.top.current.style.height="0"
+                    //  this.top.current.style.width="0"
+                    //  this.top.current.style.height="0"
                     //  this.dates.current.style.visibility = 'hidden'
                     //  this.dates.current.firstChild.style.display="none"
                      
@@ -90,6 +87,7 @@ componentDidUpdate(prevProp, prevState){
         this.setState({onOpen:!this.state.onOpen}, ()=>{
             this.container.current.classList.remove('active')
                  this.dates.current.classList.replace('open','close')
+                 this.container.current.classList.replace('open','close')
             //      this.dates.current.firstChild.style.opacity="0"
             //     this.dates.current.style.width = '0px'
             //     this.dates.current.style.height = '0px'
@@ -105,10 +103,10 @@ componentDidUpdate(prevProp, prevState){
     render(){
         return(
             <>
-            <div onClick={this.onClick} ref={this.container} className="search-calendar">
+            <div   onClick={this.onClick} ref={this.container} className="search-calendar close">
                 <div>{this.props.label}</div>
                 <div>{this.props.value?moment(this.props.value).format('D/M/yyyy'):this.props.placeholder}</div>
-                <div ref={this.top} style={{bottom:this.props.caret}}   className="top"></div>
+                {/* <div ref={this.top}   className="top"></div> */}
             </div>
             <Dates refs={this.dates} label={this.props.label} onOpen={this.state.onOpen} onClose={this.onClose} top={this.props.top} onChange={this.props.onChange}  deviceWidth={this.state.deviceWidth} sm={this.state.sm} count={this.state.count}/>
             </>

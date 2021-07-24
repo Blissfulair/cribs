@@ -45,33 +45,36 @@ class Guest extends Component{
             if(this.state.onOpen){
             
             
-            
-                this.guest.current.style.width = '25vw'
-                this.guest.current.style.height = '300px'
+                this.guest.current.classList.replace('close','open')
+                this.container.current.classList.replace('close','open')
+                // this.guest.current.style.width = '25vw'
+                // this.guest.current.style.height = '300px'
                 this.guest.current.style.right = this.props.right
                 
                 
      
-                 setTimeout(()=>{
-                     this.guest.current.firstChild.style.display="block"
+                //  setTimeout(()=>{
+                //      this.guest.current.firstChild.style.display="block"
                      this.top.current.style.width="30px"
                      this.top.current.style.height="30px"
-                     this.guest.current.style.opacity = '1'
-                     this.guest.current.style.visibility = 'visible'
-                     this.guest.current.firstChild.style.opacity="1"
-                 },100)
+                //      this.guest.current.style.opacity = '1'
+                //      this.guest.current.style.visibility = 'visible'
+                //      this.guest.current.firstChild.style.opacity="1"
+                //  },100)
              }
              else
              {
-                 this.guest.current.style.opacity = '0'
-                 this.guest.current.firstChild.style.opacity="0"
-                this.guest.current.style.width = '0px'
-                this.guest.current.style.height = '0px'
-             //    this.guest.current.style.left = '35%'
+                this.guest.current.classList.replace('open','close')
+                this.container.current.classList.replace('open','close')
+            //      this.guest.current.style.opacity = '0'
+            //      this.guest.current.firstChild.style.opacity="0"
+            //     this.guest.current.style.width = '0px'
+            //     this.guest.current.style.height = '0px'
+            //  //    this.guest.current.style.left = '35%'
                  this.top.current.style.width="0"
                  this.top.current.style.height="0"
-                 this.guest.current.style.visibility = 'hidden'
-                 this.guest.current.firstChild.style.display="none"
+            //      this.guest.current.style.visibility = 'hidden'
+            //      this.guest.current.firstChild.style.display="none"
                  
              }
         })
@@ -80,15 +83,17 @@ class Guest extends Component{
 
     onClose=()=>{
         this.setState({onOpen:!this.state.onOpen}, ()=>{
-                 this.guest.current.style.opacity = '0'
-                 this.guest.current.firstChild.style.opacity="0"
-                this.guest.current.style.width = '0px'
-                this.guest.current.style.height = '0px'
-             //    this.guest.current.style.left = '35%'
+            this.guest.current.classList.replace('open','close')
+            this.container.current.classList.replace('open','close')
+            //      this.guest.current.style.opacity = '0'
+            //      this.guest.current.firstChild.style.opacity="0"
+            //     this.guest.current.style.width = '0px'
+            //     this.guest.current.style.height = '0px'
+            //  //    this.guest.current.style.left = '35%'
                  this.top.current.style.width="0"
                  this.top.current.style.height="0"
-                 this.guest.current.style.visibility = 'hidden'
-                 this.guest.current.firstChild.style.display="none"
+            //      this.guest.current.style.visibility = 'hidden'
+            //      this.guest.current.firstChild.style.display="none"
                  
 
         })
@@ -97,7 +102,7 @@ class Guest extends Component{
     render(){
         return(
             <>
-            <div onClick={this.onClick} ref={this.container} className="search-guest">
+            <div onClick={this.onClick} ref={this.container} className="search-guest close">
                 <div>{this.props.label}</div>
                 <div>{this.state.value?this.state.value:this.props.placeholder}</div>
                 <div ref={this.top} style={{bottom:this.props.caret}}   className="top"></div>

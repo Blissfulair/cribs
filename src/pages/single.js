@@ -320,24 +320,6 @@ class Single extends Component {
         let room = []
         let value = null
         let selected = ''
-        // if(item.target.value === '1000'){
-        //     this.state.property.rooms.forEach(room=>{
-        //         amount += Number(room.price)
-        //         books.push(...room.bookedDates)
-        //     })
-        //     rooms = {
-        //         price:amount,
-        //         bookedDates:books
-        //     }
-        //     room.push(...this.context.state.property.rooms)
-        // }
-        // else{
-        // amount = this.context.state.property.rooms[item.target.value].price
-        // rooms = this.context.state.property.rooms[item.target.value]
-        //     room.push(this.context.state.property.rooms[item.target.value])
-        // }
-
-        // this.setState({price:amount, rooms:rooms, room:room, change:true})
         if (item.target.value === '1000') {
             this.state.property.rooms.forEach(room => {
                 amount += Number(room.price)
@@ -700,6 +682,7 @@ class Single extends Component {
                                                                     </label>
                                                                     <DatePicker
                                                                         right="-12.5vw"
+                                                                        top="140%"
                                                                         className="single"
                                                                         id="check-in"
                                                                         label="Check-In"
@@ -722,6 +705,7 @@ class Single extends Component {
                                                                     </label>
                                                                     <DatePicker
                                                                         right="0"
+                                                                        top="140%"
                                                                         className="single"
                                                                         id="check-out"
                                                                         label="Check-Out"

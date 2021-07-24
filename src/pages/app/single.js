@@ -707,6 +707,7 @@ class Single extends Component {
                                                                     </label>
                                                                     <DatePicker
                                                                         right="-12.5vw"
+                                                                        top="140%"
                                                                         className="single"
                                                                         id="check-in"
                                                                         label="Check-In"
@@ -730,6 +731,7 @@ class Single extends Component {
                                                                     <DatePicker
                                                                         right="0"
                                                                         className="single"
+                                                                        top="140%"
                                                                         id="check-out"
                                                                         label="Check-Out"
                                                                         format="dd/MM/yyyy"

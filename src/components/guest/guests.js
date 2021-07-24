@@ -83,7 +83,7 @@ class Guests extends Component{
 
     render(){
         return(
-            <div ref={this.props.refs} style={{top:this.props.top}}  className="guest-display">
+            <div ref={this.props.refs} style={{top:this.props.top}}  className="guest-display close">
                 
                 <div className="guests">
                     <div className="title">
@@ -100,11 +100,10 @@ class Guests extends Component{
                 </div>
                 <div className="guest-bottom">
                     <p>Are you traveling with pets?</p>
+                    <div className="pets">
                     <Switch value={this.state.pet} onChange={(e)=>this.props.onCheck(e)}/>
-                    {/* <label className="pets">
-                        <input checked={this.state.pet}   onChange={(e)=>{this.setState({pet:e.target.checked}); if(this.props.onCheck)this.props.onCheck(e.target.checked)}} type="checkbox"  />
-                        <span className="sknob"></span>
-                    </label> */}
+
+                    </div>
                 </div>
             </div>
         )

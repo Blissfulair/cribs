@@ -26,8 +26,23 @@
             width: 32px;
             transform: rotate(45deg);
         }
+        li{
+            button.become-host{
+                background-color: #0066FF;
+                border: none;
+                padding: 5px 15px;
+                color: #fff;
+                border-radius: 15px;
+                opacity: .7;
+                &:hover{
+                    color: #fff;
+                    opacity: 1;
+                }
+            }
+        }
     }
 }
+
 @include mediaSm{
     .modals-container{
         position: fixed;
@@ -105,6 +120,18 @@
                                 font-weight: 500;
                                 font-size: 14px;
                                 line-height: 21px;
+                            }
+                        }
+                        button.become-host{
+                            background-color: #0066FF;
+                            border: none;
+                            padding: 5px 15px;
+                            color: #fff;
+                            border-radius: 15px;
+                            opacity: .7;
+                            &:hover{
+                                color: #fff;
+                                opacity: 1;
                             }
                         }
                     }

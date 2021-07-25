@@ -112,9 +112,14 @@ class SignUp extends React.Component{
             }
             registerUser(body)
             .then((user)=>{
-                this.props.setUser(user)
                 this.setState({loading:false})
-                this.props.history.push('/verification')
+                if(user.code === 200){
+                    this.props.setUser(user)
+                    this.props.history.push('/verification')
+                }
+                else{
+                    this.setState({err:'This account already exists'})
+                }
             })
             .catch((err=>{
                 this.setState({loading:false,

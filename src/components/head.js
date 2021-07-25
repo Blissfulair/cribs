@@ -11,6 +11,7 @@ import Modal from "./modal/index";
 import Dmodal from "./modal/dmodal";
 import Switch from "./switch";
 import kano from "../images/kano.jpeg"
+import Activity from "./activity";
 
 class Head extends Component{
 
@@ -20,7 +21,8 @@ class Head extends Component{
             width:0,
             open:false,
             menu:false,
-            openModal:false
+            openModal:false,
+            isLoading:false
         }
         refs = createRef()
         //form = createRef()
@@ -28,11 +30,12 @@ class Head extends Component{
 
      becomeHost = ()=>{
          const history = this.props.history
+         this.setState({isLoading:true})
         makeHost(this.props.user.id)
         .then((res)=>{
             this.props.chooseDashboard(!this.props.dashboard)
             this.props.setUser(res.user)
-
+            this.setState({isLoading:false})
             if(history.location.pathname.includes('crib') || history.location.pathname.includes('search') || !history.location.pathname.includes('payment') || history.location.pathname.includes('history'))
             history.push('/app/dashboard')
             else
@@ -40,6 +43,7 @@ class Head extends Component{
         })
         .catch((e)=>{
             console.log(e)
+            this.setState({isLoading:false})
         })
     }
     changeDashboard=()=>{
@@ -163,6 +167,8 @@ onLogout = ()=>{
         const {user, bgColor} =this.props
         const {headerColor, colors,open,width}=this.state
     return(
+        <>
+            <Activity loading={this.state.isLoading}/>
         <div className="showcase__container">
         <div ref={(ref)=>this.refs=ref} className="showcase_head" style={{backgroundColor:bgColor?bgColor:'transparent', position:'fixed', top:0}}>
             <div  className="showcase__header">
@@ -244,7 +250,7 @@ onLogout = ()=>{
 
                                             </div>
                                             :
-                                            <button onClick={this.becomeHost}>Become a host</button>
+                                            <button className="become-host" onClick={this.becomeHost}>Become a host</button>
                                             }
                                         </li>
                                         <li>
@@ -360,7 +366,7 @@ onLogout = ()=>{
 
                                             </div>
                                             :
-                                            <button onClick={this.becomeHost}>Become a host</button>
+                                            <button className="become-host" onClick={this.becomeHost}>Become a host</button>
                                             }
                                         </li>
                                         <li>
@@ -400,6 +406,7 @@ onLogout = ()=>{
             </Modal>
 
     </div>
+    </>
     )
 }
 }

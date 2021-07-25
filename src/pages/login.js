@@ -95,8 +95,13 @@ class Login extends React.Component{
 
                 }
                 else{
-                    console.log('home')
+                    if(user.code ===402){
+                        this.setState({err:'Invalid email or password'})
+                    }
+                    else{
+                    this.props.chooseDashboard(user.role)
                     this.props.history.push('/app/home')
+                    }
                 }
 
                 this.setState({loading:false})

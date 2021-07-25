@@ -3,6 +3,7 @@ import {Grid, Avatar, Typography, Divider} from "@material-ui/core"
 import Rating from '@material-ui/lab/Rating';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 const Review = ({data, number})=>{
+    console.log(data)
     return(
         <>
         <Grid container spacing={4} alignItems="center">
@@ -10,11 +11,11 @@ const Review = ({data, number})=>{
                 <Rating
                 name='kls'
                 disabled
-                defaultValue={data.rating}
+                defaultValue={data.stars}
                 emptyIcon={<StarBorderIcon fontSize="small" />}
                 style={{fontSize:15, color:'#000000', margin:'15px 0'}}
                 />
-                <span>{' '+data.rating+'/5'}</span>
+                <span>{' '+data.stars+'/5'}</span>
                 <Typography style={{fontWeight:'bold', fontSize:14}}>
                     {data.name}
                 </Typography>
@@ -22,12 +23,12 @@ const Review = ({data, number})=>{
                     {data.review}
                 </Typography>
                 <Typography style={{fontSize:12}} variant="subtitle2" component="small">
-                    {new Date(data.creactedAt.seconds*1000).toDateString()}
+                    {new Date(data.creactedAt).toDateString()}
                 </Typography>
             </Grid>
             <Grid item xs={4}>
                 <Grid container justify="flex-end">
-                    <Avatar style={{height:60,width:60}} src={data.photoURL} alt="reviewer"/>
+                    <Avatar style={{height:60,width:60}} src={data.image} alt="reviewer"/>
                 </Grid>
             </Grid>
         </Grid>

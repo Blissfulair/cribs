@@ -40,9 +40,10 @@
 .guest-display{
     position: absolute;
     // top: 120%;
-    right: 15%;
+    right: 0;
     height: 0;
     width: 0;
+    overflow: hidden;
     transition: all .1s ease-in-out;
     background-color: #fff;
     border-radius: 10px;

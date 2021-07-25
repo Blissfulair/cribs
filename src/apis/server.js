@@ -152,6 +152,17 @@ export const checkLoggedIn = async () => {
     return transaction;
   };
 
+  export const sendReview = async (data, id) => {
+    const response = await fetch('/api/property/review/'+id,{
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+    const  {transaction}= await response.json();
+    return transaction;
+  };
 
 
   export const updateHost = async (data, id) => {

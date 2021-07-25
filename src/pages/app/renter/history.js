@@ -33,7 +33,7 @@ import SwipeableViews from 'react-swipeable-views';
 import Box from '@material-ui/core/Box';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { connect } from "react-redux";
-import { deleteHistory, getHistoriesByUserId } from "../../../apis/server";
+import { deleteHistory, getHistoriesByUserId, sendReview } from "../../../apis/server";
 import { setHistories } from "../../../state/actions";
 const styles = (theme)=>({
     inputRoot: {
@@ -162,17 +162,17 @@ class History extends React.Component{
     this.setState({open:false});
     }
     onSearch = (text)=>{
-        if(text !== ''){
-        const histories = this.props.histories.filter(history=>{
-            if(history.propertyName.toLowerCase().includes(text.toLowerCase()) || history.propertyState.toLowerCase().includes(text.toLowerCase()) || history.propertyCity.toLowerCase().includes(text.toLowerCase()) || history.amount.toString().includes(text.toLowerCase()))
-            return history
-            else
-            return ''
-        })
+    //     if(text !== ''){
+    //     const histories = this.props.histories.filter(history=>{
+    //         if(history.propertyName.toLowerCase().includes(text.toLowerCase()) || history.propertyState.toLowerCase().includes(text.toLowerCase()) || history.propertyCity.toLowerCase().includes(text.toLowerCase()) || history.amount.toString().includes(text.toLowerCase()))
+    //         return history
+    //         else
+    //         return ''
+    //     })
         
-        this.setState({histories})
-    }   
-    else this.setState({histories:this.props.histories})
+    //     this.setState({histories})
+    // }   
+    // else this.setState({histories:this.props.histories})
     }
 
     onSelect = (id, checked)=>{
@@ -195,7 +195,7 @@ class History extends React.Component{
         if(this.state.selected.length<1)
         return
         this.setState({deleteStatus:true})
-        deleteHistory(this.state.selected)
+        deleteHistory({selected:this.state.selected})
         .then(()=>{
             const histories = this.props.histories.filter(history=>!this.state.selected.includes(history.reference))
             this.props.setHistories(histories)
@@ -221,25 +221,25 @@ class History extends React.Component{
             return false
        }
        this.setState({err:'', reviewLoading:true})
-        // const {user} = this.props
-        // const data ={
-        //     name:user.firstname+' '+user.lastname,
-        //     checkIn:this.state.history.checkIn,
-        //     checkOut:this.state.history.checkOut,
-        //     photoURL:user.photoURL,
-        //     propertyID:this.state.history.propertyID,
-        //     amount:this.state.history.amount,
-        //     review:this.state.review,
-        //     rating:this.state.rating,
-        //     email:user.email,
-        //     historyId:this.state.history.reference
-        //     // hostId:
-        // }
-        // this.context.sendReview(data)
-        // .then(()=>{
-        //     this.handleClose()
-        //     this.setState({review:'',reviewLoading:false})
-        // })
+        const {user} = this.props
+        const data ={
+            name:user.firstname+' '+user.lastname,
+            // checkIn:this.state.history.checkIn,
+            // checkOut:this.state.history.checkOut,
+            image:user.image,
+            // propertyID:this.state.history.propertyID,
+            // amount:this.state.history.amount,
+            review:this.state.review,
+            stars:this.state.rating,
+            // email:user.email,
+            // hostId:
+        }
+        const property_id = this.state.history.property_id
+        sendReview(data, property_id)
+        .then(()=>{
+            this.handleClose()
+            this.setState({review:'',reviewLoading:false})
+        })
     }
     render(){
         const {history} = this.state
@@ -247,29 +247,28 @@ class History extends React.Component{
         const inbox = (
             <>
             {histories.length>0?histories.map((history,i)=>{
-                const createdAt = new Date(history.creactedAt)
+                const createdAt = new Date(history.createdAt)
                 return (
                     <StyledTableRow  classes={{root:classes.trRoot}} key={i}>
                     <StyledTableCell classes={{root:classes.tdRoot}} className="history"  component="th" scope="row">
                         <label  htmlFor={history.id} className="radio">
-                            <input onChange={(e)=>this.onSelect(history.reference, e.target.checked)}  type="checkbox" value={history.id} name="" id={history.id}/>
+                            <input onChange={(e)=>this.onSelect(history.reference, e.target.checked)}  type="checkbox" value={history._id} name="" id={history._id}/>
                             <span className="radio-mark"></span>
                         </label>
                     </StyledTableCell>
                         <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.propertyName}</StyledTableCell>
                         <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.amount}</StyledTableCell>
-                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.propertyState}</StyledTableCell>
-                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.propertyCity}</StyledTableCell>
-                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.status}</StyledTableCell>
+                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.state}</StyledTableCell>
+                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.city}</StyledTableCell>
+                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.status===0?'Success':'Pending'}</StyledTableCell>
                         <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{createdAt.getDate()+' ' + getMonthInWord(createdAt)+', '+ createdAt.getFullYear()+' '+createdAt.getHours()+':'+createdAt.getMinutes()+':'+createdAt.getSeconds()}</StyledTableCell>
                     </StyledTableRow>
             
-                                   )   
+                     ) 
             }):''
             }
             </>
         )
-
         return (
             <>
             <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
@@ -297,11 +296,11 @@ class History extends React.Component{
                            <table>
                                <tr>
                                    <td>Check-in Date</td>
-                                   <td>{new Date(history.checkIn.seconds*1000).toDateString()}</td>
+                                   <td>{new Date(history.checkIn).toDateString()}</td>
                                </tr>
                                <tr>
                                    <td>Check-out Date</td>
-                                   <td>{new Date(history.checkOut.seconds*1000).toDateString()}</td>
+                                   <td>{new Date(history.checkOut).toDateString()}</td>
                                </tr>
                                <tr>
                                    <td>Amount</td>
@@ -313,11 +312,11 @@ class History extends React.Component{
                                </tr>
                                <tr>
                                    <td>Property City</td>
-                                   <td>{history.propertyCity}</td>
+                                   <td>{history.city}</td>
                                </tr>
                                <tr>
                                    <td>Property State</td>
-                                   <td>{history.propertyState}</td>
+                                   <td>{history.state}</td>
                                </tr>
                                <tr>
                                    <td>Transaction ID</td>
@@ -331,9 +330,9 @@ class History extends React.Component{
                         </TabPanel>
                         <TabPanel value={this.state.value} index={1} dir={this.props.theme.direction}>
                             <div style={{width:'70%', margin:'0 auto'}}>
-                                <Avatar style={{width:100,height:100,margin:'20px auto'}} src={this.context.state.user.photoURL} alt=""/>
+                                <Avatar style={{width:100,height:100,margin:'20px auto'}} src={this.props.user.image} alt=""/>
                                 {
-                                    !history.reviewed?
+                                    !history.reviews?
                                     <>
                                     <Typography className="rate-title" style={{textAlign:'center' }}>Rate your stay at {history.propertyName}, {history.propertyCity}</Typography>
                                         <div className="rate">
@@ -369,14 +368,14 @@ class History extends React.Component{
                                         <div className="rate">
                                             <StyledRating 
                                             name="rating" 
-                                            value={history.rating}
+                                            value={history.reviews.stars}
                                             className='rated-star'
                                             precision={0.5}
                                             size='large'
                                             disabled
                                             emptyIcon={<StarBorderIcon htmlColor="#B2B2B2" fontSize="large" />}
                                             />
-                                            <Typography>{history.review}</Typography>
+                                            <Typography>{history.reviews.review}</Typography>
                                         </div>
                                     </>
                                 }

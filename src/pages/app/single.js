@@ -171,11 +171,11 @@ class Single extends Component {
             favourite: false,
             loading: true,
             labels: {
-                1: 'Mediocre',
-                2: 'Okay',
-                3: 'Good',
-                4: 'Excellent',
-                5: 'Excellent'
+                1: ['Mediocre','Not bad at all'],
+                2: ['Okey','Good for you'],
+                3: ['Good','Popular choice'],
+                4: ['Excellent','Exquisite!!'],
+                5: ['Excellent','Best for you and family'],
             },
             pet:false,
             adult:0,
@@ -377,6 +377,8 @@ class Single extends Component {
         const { classes } = this.props
         this.propert = this.state.property
         const property = this.propert
+        const property_length = property?(property.reviews.length?property.reviews.length:1):1
+        let stars = 0;
         if (property)
             property.amount = this.state.price
         const summary = {
@@ -402,6 +404,7 @@ class Single extends Component {
         let checkOut = []
         let checkIn = []
         let dates = []
+        
         if (property) {
             let books = []
             property.rooms.forEach((room) => {
@@ -414,6 +417,12 @@ class Single extends Component {
             checkIn = books.filter(item => new Date(item).toDateString() === new Date(this.state.checkIn).toDateString())
             books.forEach(date => dates.push(new Date(date)))
             dates.sort((a, b) => new Date(b) - new Date(a))
+
+
+            //get stars
+            
+            if(property.reviews)
+            property.reviews.forEach(rev=>stars +=rev.stars)
         }
         if (this.state.rooms && this.state.change) {
 
@@ -651,12 +660,12 @@ class Single extends Component {
                                                                 {property.guest} Guests | {property.bedroom} Bedrooms | {property.bedroom} beds | {property.bathroom} Baths
                                                     </Typography>
                                                             <Typography style={{ fontSize: 12 }} variant="subtitle2" component="p">
-                                                                Excellent 4.7/5 Good for families
+                                                            {(stars / property_length)>=1?this.state.labels[Math.ceil(stars / property_length)][0]:''} {stars > 0?(stars/property_length)+'/5 ':'No rating yet'} {(stars / property_length) >= 1?this.state.labels[Math.ceil(stars / property_length)][1]:''}
                                                     </Typography>
                                                             <Rating
                                                                 disabled
                                                                 name='kls'
-                                                                defaultValue={property.rateValue / property.totalReviewer}
+                                                                defaultValue={stars / property_length}
                                                                 emptyIcon={<StarBorderIcon htmlColor="#fff" fontSize="small" />}
                                                                 style={{ fontSize: 15, color: '#000000', margin: '15px 0' }}
                                                             />
@@ -857,11 +866,12 @@ class Single extends Component {
 
                                                     <Grid item xs={5}>
                                                         {
-                                                            property.reviews.length > 0 &&
+                                                            property_length > 0 &&
+                                                            
                                                             <>
                                                                 <div style={{ marginTop: 570, marginBottom: 26 }}>
-                                                                    <Typography className={classes.progressBarTitle}>{this.state.labels[Math.ceil(property.rateValue / property.totalReviewer)]}</Typography>
-                                                                    <BorderLinearProgress variant="determinate" value={(property.rateValue / 5) * 100} />
+                                                                    <Typography className={classes.progressBarTitle}>{(stars / property_length)>=1?this.state.labels[Math.ceil(stars / property_length)][0]:''}</Typography>
+                                                                    <BorderLinearProgress variant="determinate" value={((stars/property_length) / 5) * 100} />
                                                                     {/* <Typography className={classes.progressBarTitle}>Good</Typography>
                                                     <BorderLinearProgress variant="determinate" value={50}/>
                                                     <Typography className={classes.progressBarTitle}>Okay</Typography>
@@ -871,7 +881,7 @@ class Single extends Component {
                                                                 </div>
                                                                 <Grid container >
                                                                     <Grid item md={5}>
-                                                                        <Typography variant="h5" style={{ fontWeight: 'bold' }}>{(property.rateValue / property.totalReviewer).toFixed(1)}</Typography>
+                                                                        <Typography variant="h5" style={{ fontWeight: 'bold' }}>{(stars / property_length).toFixed(1)}</Typography>
                                                                         <Typography style={{ fontSize: 12, fontWeight: 500, marginBottom: 17 }} variant="subtitle1" component="p">Overall Rating</Typography>
                                                                         {/* <Typography variant="h5" style={{fontWeight:'bold'}}>4.3</Typography>
                                                         <Typography style={{fontSize:12,fontWeight:500, marginBottom:17}} variant="subtitle1" component="p">Amenities</Typography> */}
@@ -891,7 +901,7 @@ class Single extends Component {
                                                         <Grid container style={{ marginTop: 80 }}>
                                                             <Grid item md={10}>
                                                                 {
-                                                                    property.reviews.length > 0 ?
+                                                                    property_length > 0 ?
                                                                         property.reviews.map((item, i) => {
                                                                             return <Review number={i} property={property} data={item} key={i} />
                                                                         })

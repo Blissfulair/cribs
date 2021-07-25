@@ -247,7 +247,7 @@ class History extends React.Component{
         const inbox = (
             <>
             {histories.length>0?histories.map((history,i)=>{
-                const createdAt = new Date(history.creactedAt.seconds*1000)
+                const createdAt = new Date(history.creactedAt)
                 return (
                     <StyledTableRow  classes={{root:classes.trRoot}} key={i}>
                     <StyledTableCell classes={{root:classes.tdRoot}} className="history"  component="th" scope="row">

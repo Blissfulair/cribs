@@ -1,7 +1,6 @@
 import React from "react";
-import {NavLink} from "react-router-dom";
+import {NavLink,withRouter} from "react-router-dom";
 import "./sidebar.css";
-import PropTypes from "prop-types"
 import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 // import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
@@ -11,13 +10,76 @@ import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceW
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import {connect} from "react-redux";
-let toggle = false;
-const Sidebar = ({dashboard})=>{
+import { chooseDashboard } from "../../state/actions";
+import { changeRole } from "../../apis/server";
+import { Grid, Switch } from "@material-ui/core";
+const Sidebar = ({dashboard,user,chooseDashboard,history})=>{
+    const [open, setOpen]=React.useState(false)
+    const handClick = React.useCallback((e)=>{
+        const dashboardDom = document.getElementsByClassName('dashboard');
+        const mobileBtn = document.getElementById('mobile-menu');
+        if(dashboardDom.length>0 && mobileBtn){
+            if(mobileBtn.contains(e.target)){
+
+                if(!open)
+                dashboardDom[0].classList.replace('close', 'open')
+                else
+                dashboardDom[0].classList.replace('open', 'close')
+                setOpen(!open)
+            }
+            
+            else if(dashboardDom[0].contains(e.target))
+            {
+                dashboardDom[0].classList.replace('open', 'close')
+                setOpen(false)
+            }
+        }
+       
+    },[open])
+    
+    const  changeDashboard=()=>{
+        chooseDashboard(!dashboard)
+        changeRole(user.id, {role:!dashboard})
+        .then((res)=>{
+        })
+        .catch((e)=>{
+            console.log(e)
+        })
+            if(dashboard)
+            {
+                if(history.location.pathname.includes('calendar') || history.location.pathname.includes('inbox') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('property') || history.location.pathname.includes('add-property') || history.location.pathname.includes('edit-property'))
+                history.push('/app/home')
+                else
+                history.push(history.location.pathname+history.location.search)
+            }
+            else
+            {
+                if(history.location.pathname.includes('crib') || history.location.pathname.includes('search') || !history.location.pathname.includes('payment') || history.location.pathname.includes('history'))
+                history.push('/app/dashboard')
+                else
+                history.push(history.location.pathname+history.location.search)
+            }
+  }
+    React.useEffect(()=>{
+        document.addEventListener('click', handClick)
+        return ()=>{
+            document.removeEventListener('click', handClick)
+        }
+    },[open,handClick])
     return(
         <>
             <div className="sidebar">
                 <div className="sidebar-menu">
                     <ul className="s-menu">
+                    {
+                                        user&&
+                                        <Grid component="label" className="switches" container alignItems="center" spacing={1}>
+                                        <Grid item >Switch to Renting</Grid>
+                                        <Grid item>
+                                            <Switch checked={dashboard} onChange={()=>{changeDashboard()}} name="checkedC" />
+                                        </Grid>
+                                        </Grid>
+                                    }
                         <NavLink onClick={Sidebar.active} activeClassName="is-active" to="/app/dashboard"><li><DashboardOutlinedIcon/> Dashboard</li></NavLink>
                             {
                                 dashboard&&
@@ -51,43 +113,13 @@ const Sidebar = ({dashboard})=>{
     )
 }
 
-Sidebar.active =(e)=>{
-    // document.querySelector('.active').classList.remove('active')
-    // if(e.target.localName === 'span')
-    // e.target.parentElement.parentElement.classList.add('active');
-    // else if(e.target.localName === 'a')
-    // e.target.parentElement.classList.add('active');
-    // else if(e.target.localName === 'li')
-    // e.target.classList.add('active');
-    if(window){
-        if(window.innerWidth < 767){
-            const dom = document.querySelector('.s-menu');
-            if(!toggle){
-                for(let i = 0; i < dom.children.length; i++){
-                    dom.children[i].querySelector('li').style.display = "flex"
-                    // document.querySelector('.sidebar').style.boxShadow  = "0px 3px 6px #0F134842"
-                }
-                toggle = true;
-            }
-            else{
-                for(let i = 0; i < dom.children.length; i++){
-                    dom.children[i].querySelector('li').style.display = "none"
-                }
-                dom.querySelector('a[aria-current=page]').firstElementChild.style.display = "flex"
-                document.querySelector('.sidebar').style.boxShadow = "none"
-                toggle = false;
-            }
-        }
-    }
-}
-Sidebar.propTypes = {
-    siteTitle: PropTypes.string,
-  }
   
-Sidebar.defaultProps = {
-    siteTitle: ``,
-  }
+
   const mapStateToProps=state=>({
-      dashboard:state.dashboard
+      dashboard:state.dashboard,
+      user:state.user
   })
-export default connect(mapStateToProps)(Sidebar);
+  const mapDispatchToProps=dispatch=>({
+      chooseDashboard:(payload)=>dispatch(chooseDashboard(payload))
+  })
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(Sidebar));

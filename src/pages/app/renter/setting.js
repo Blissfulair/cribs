@@ -9,6 +9,7 @@ import VisibilityIcon from '@material-ui/icons/VisibilityOutlined';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOffOutlined';
 import { IconButton } from "@material-ui/core";
 import AppHeader from "../../../components/head";
+import Footer from "../../../components/footer";
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
@@ -138,6 +139,7 @@ class Setting extends React.Component{
                             </Grid>
                         </Grid>
                     </Grid>
+                    <Footer/>
             </>
         )
     }

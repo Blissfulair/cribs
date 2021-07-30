@@ -1,6 +1,5 @@
 import React from "react";
 import {BrowserRouter as Router} from "react-router-dom"
-import Footer from './footer';
 // import Header from './header';
 import Root from "../routes/root";
 import ScrollTop from "./scrollTop";
@@ -22,14 +21,6 @@ const Navigation =()=>{
                                 <Root user={null}/>
 
                         </ScrollTop>
-                        {
-                            // state.userData?
-                            // state.userData.role !== 3?
-                            // <Footer/>
-                            // :null
-                            // :
-                            <Footer/>
-                        }
                    
                 </>
             }

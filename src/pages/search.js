@@ -14,7 +14,9 @@ import kano from "../images/kano.jpeg"
 import { getFavs } from "../helpers/helpers";
 import { connect } from "react-redux";
 import { searchProperties } from "../apis/server";
-import { search } from "../state/actions";
+import { search, storeSearchData } from "../state/actions";
+import Footer from "../components/footer";
+import Pagination from "../components/pagination";
 const styles = theme =>({
     container:{
         paddingTop:125
@@ -51,7 +53,10 @@ class Search extends Component{
             checkIn:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             checkOut:new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
             guest:1,
-            favourites:[]
+            favourites:[],
+            page:1,
+            totalPages:1,
+            location:''
         }
     }
     componentDidMount(){
@@ -61,34 +66,42 @@ class Search extends Component{
         const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
         const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
         const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
-        const type = params.filter(type=>type.includes('type'))
-        const city = params.filter(city=>city.includes('city'))
+        const page = params.filter(page=>page.includes('page')).toString().split('=')[1];
+        const type = params.filter(type=>type.includes('type')).toString().split('=')[1]
+        const city = params.filter(city=>city.includes('city')).toString().split('=')[1]
         const favourites = getFavs()
-        if(address !== undefined){
- 
+        if(address !== undefined || city !== undefined || type !== undefined){
+            let search = city?city:(type?type:address)
             const data = {
-                location:address,
+                location:search,
                 checkIn:checkin,
                 checkOut,
                 guest
             }
+            
             this.setState({isLoading:false})
-            // this.context.setSearch(data)
-                searchProperties({search:data.location})
+            this.props.storeSearchData(data)
+            console.log(data.location)
+                searchProperties({search:data.location, page:Number(page)})
                 .then((res)=>{
-                    this.props.search(res)
+                    console.log(res)
+                    this.props.search(res.properties)
                     this.setState({
                         isLoading:false,
                         checkOut:checkOut,
                         checkIn:checkin,
-                        favourites:favourites
+                        favourites:favourites,
+                        page:Number(page),
+                        totalPages:res.totalPages,
+                        location:address
                     })
                 })
                 .catch((er)=>{
                     this.setState({
                         isLoading:false,
                         checkOut:checkOut,
-                        checkIn:checkin
+                        checkIn:checkin,
+                        location:address
                     })
                 })
         }
@@ -113,38 +126,43 @@ class Search extends Component{
             // })
         }   
     }
-    componentDidUpdate(prevProps){
-        if(prevProps.history.location !== this.props.history.location){
+    componentDidUpdate(prevProps, prvState){
+        if(prevProps.location !== this.props.location){
             const url =this.props.history.location.search.replace(/%20/g, ' ');
             const params = url.split('&')
             const address = params.filter(address=>address.includes('location')).toString().split('=')[1];
             const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
             const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
             const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
-            
+            const page = params.filter(page=>page.includes('page')).toString().split('=')[1];
+            const type = params.filter(type=>type.includes('type')).toString().split('=')[1]
+            const city = params.filter(city=>city.includes('city')).toString().split('=')[1]
+            let search = city?city:(type?type:address)
                 const data = {
-                    location:address,
+                    location:search,
                     checkIn:checkin,
                     checkOut,
                     guest
                 }
-                console.log('here')
-                // this.context.setSearch(data)
-                searchProperties({search:data.location})
+                
+                this.props.storeSearchData(data)
+                searchProperties({search:data.location, page:Number(page)})
                 .then((res)=>{
-                    this.props.search(res)
-                    console.log(res)
+                    this.props.search(res.properties)
                     this.setState({
                         isLoading:false,
                         checkOut:checkOut,
-                        checkIn:checkin
+                        checkIn:checkin,
+                        page:Number(page),
+                        location:address
                     })
                 })
                 .catch((er)=>{
                     this.setState({
                         isLoading:false,
                         checkOut:checkOut,
-                        checkIn:checkin
+                        checkIn:checkin,
+                        location:address
                     })
                 })
         }
@@ -155,9 +173,25 @@ class Search extends Component{
       this.setState({age:event.target.value});
     };
 
+    onNext = (e)=>{
+        console.log(e,'time')
+        searchProperties({search:this.state.location, page:e})
+        .then((res)=>{
+            this.props.search(res.properties)
+            this.setState({
+                isLoading:false,
+                page:e
+            })
+        })
+        .catch(e=>{
+            this.setState({
+                isLoading:false
+            })
+        })
+    }
+
     render(){
     const {classes, searches} = this.props
-
     if(this.state.isLoading)
      return <Splash />
     return(
@@ -173,9 +207,9 @@ class Search extends Component{
                                     searches.length>0?
                                     <>
                                     <Grid container justify="space-between">
-                                    <Grid item>
+                                    {/* <Grid item>
                                         <p className={classes.text}>1 -30 of 200</p>
-                                    </Grid>
+                                    </Grid> */}
                                     <Grid item>
                                         <FormControl classes={{root:classes.formControl}}>
                                             <p className={classes.text}>Sort:</p>
@@ -195,10 +229,11 @@ class Search extends Component{
                                         searches.map((search,index)=>{
 
                                                 return(
-                                                    <Searchs favourite={this.state.favourites.includes(search._id)} content={search}   name={`rating${index}`} key={index}/>
+                                                    <Searchs rating={search.reviews} favourite={this.state.favourites.includes(search._id)} content={search}   name={`rating${index}`} key={index}/>
                                                 )
                                         })
                                     }
+                                    <Pagination currentPage={!isNaN(this.state.page)?this.state.page:1}   onNext={(e)=>this.onNext(e)} onPrev={(e)=>console.log(e)} totalPages={this.state.totalPages}/>
                                 
                                 </>
                                     :
@@ -210,18 +245,19 @@ class Search extends Component{
                                 }
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Paper elevation={0} classes={{root:classes.map}}>
+                                <Paper elevation={0} className="search-map" classes={{root:classes.map}}>
                                     <MapContainer/>
                                 </Paper>
                             </Grid>
                         </Grid>
                         <Typography variant="h4" classes={{root:classes.title}}>Explore Cribs by City</Typography>
                         <Grid style={{position:'relative'}} container>
-                        <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link:'/search?city=lagos'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/search?city=abuja'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/search?city=kano'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/search?city=benin'}]}/>
+                        <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link:'city=lagos'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'city=abuja'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'city=kano'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'city=benin'}]}/>
                         </Grid>
                     </div>
                 </Grid>
             </Grid>
+            <Footer/>
         </>
     )
 }
@@ -230,6 +266,7 @@ const mapStateToProps=state=>({
     searches:state.searches
 })
 const mapDispatchToProps=dispatch=>({
-    search:(payload)=>dispatch(search(payload))
+    search:(payload)=>dispatch(search(payload)),
+    storeSearchData:(payload)=>dispatch(storeSearchData(payload))
 })
 export default connect(mapStateToProps,mapDispatchToProps)(withRouter(withStyles(styles)(Search)));

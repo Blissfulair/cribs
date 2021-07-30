@@ -11,6 +11,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import {Link} from "react-router-dom"
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { connect } from "react-redux";
+import "./search.scss"
 
 const styles = ()=>({
     para:{
@@ -24,19 +25,10 @@ const styles = ()=>({
     },
     root:{
         borderRadius:16,
-        height:220,
+        minHeight:220,
         position:'relative',
         display:'flex',
         backgroundColor:'#FCFBFB',
-    },
-    overlay:{
-        position:'absolute',
-        top:0,
-        left:0,
-        height:'100%',
-        width:'100%',
-        opacity: 0.35,
-        backgroundColor:'#C8BB00'
     },
     media:{
         width:'45%',
@@ -46,9 +38,17 @@ const styles = ()=>({
     }
 })
 const Search = ({classes, content, rating,name, favourite, user})=>{
-    console.log(content)
+    const [stars, setStars] = React.useState(0)
+    React.useEffect(()=>{
+        let star = 0
+        if(rating.length>0){
+            rating.forEach(rate=>star += rate.stars)
+            setStars(star/rating.length)
+        }
+
+    },[rating])
     return(
-    <Link to={user?`/app/crib/${content._id}`:`/crib/${content._id}`}>
+    <Link className="s-nav-link" to={user?`/app/crib/${content._id}`:`/crib/${content._id}`}>
         <Card className="fav-search" elevation={3} style={{margin:'15px 0'}} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.root}}>
                 <div className={classes.media}>
@@ -57,28 +57,36 @@ const Search = ({classes, content, rating,name, favourite, user})=>{
                             alt={content.name}
                             height="100%"
                     />
-                    <div style={{zIndex:34, position:'absolute',height:'100%', width:'98%', top:'3%', left:'1%'}}>
-                        {
-                            favourite?
-                            <FavoriteIcon  style={{fontSize:32}} htmlColor="#EB4F1E"/>
-                            :
-                            <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#fff"/>
-                        }
-                    </div>
-                    <div className={classes.overlay}>
+                <div className="ds-favourite">
+                    {
+                        favourite?
+                        <FavoriteIcon  style={{fontSize:32}} htmlColor="#EB4F1E"/>
+                        :
+                        <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#fff"/>
+                    }
+                </div>
+                    <div className="overlays">
                     </div>
                 </div>
+
+                <div className="ms-favourite">
+                    {
+                        favourite?
+                        <FavoriteIcon  style={{fontSize:32}} htmlColor="#0066FF"/>
+                        :
+                        <FavoriteBorderIcon  style={{fontSize:32}} htmlColor="#0066FF"/>
+                    }
+                </div>   
                 <div>
                     <CardContent style={{position:'absolute',left:'45%', top:0}}>
-                        <Typography className={classes.para} style={{fontWeight:'bold'}} variant="h5">{content.city}, {content.state}, Ng</Typography>
-                        <Typography  className={classes.para} variant="subtitle1" component="p">{content.name}</Typography>
+                        <Typography className={classes.para} style={{fontWeight:'bold', textTransform:'capitalize'}} variant="h5">{content.name}</Typography>
+                        <Typography  className={classes.para} variant="subtitle1" style={{textTransform:'capitalize'}} component="p">{content.city}, {content.state}, Ng</Typography>
                         <Typography className={classes.para1} style={{marginBottom:30}}  variant="subtitle2" component="p">{content.guest} Guests | {content.bedroom} Bedrooms | {content.bedroom} beds | {content.bathroom} Baths</Typography>
                         <Typography className={classes.para1} variant="subtitle2" component="p">Excellent 4.7/5 Good for families</Typography>
                         <Typography>
                             <Rating
                                 name={name}
-                                // defaultValue={content.rateValue/content.totalReviewer}
-                                defaultValue={5}
+                                value={stars}
                                 precision={0.5}
                                 disabled
                                 style={{fontSize:20, color:'#000000'}}

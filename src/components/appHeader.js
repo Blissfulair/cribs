@@ -117,7 +117,7 @@ const AppHeader = ({classes, history,user,dashboard, chooseDashboard, setUser})=
                 <Grid item xs={11} lg={10} >
                     <Grid container alignItems="center">
                         <Grid  item xs={7} lg={8}>
-                            <Button style={{justifySelf:'flex-start', justifyContent:'flex-start'}} className="mobile-menu" >
+                            <Button style={{width:50}} id="mobile-menu" className="mobile-menu" >
                                 <MenuIcon/>
                             </Button>
                             {

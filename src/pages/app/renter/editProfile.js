@@ -9,6 +9,7 @@ import Activity from "../../../components/activity"
 import {Alert} from "@material-ui/lab"
 import {withRouter} from "react-router-dom"
 import { connect } from "react-redux";
+import Footer from "../../../components/footer";
 
 const EditProfileDom = ({state, handleCloseSnackBar, user, env, changeHandler,onSubmit,handleClick})=>{
     return(
@@ -207,6 +208,7 @@ class EditProfile extends React.Component{
                             </Grid>
                         </Grid>
                     </Grid>
+                    <Footer/>
             </>
         )
     }

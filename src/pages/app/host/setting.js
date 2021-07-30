@@ -10,12 +10,11 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOffOutlined';
 
 import Backend from "./../layout"
 import { IconButton } from "@material-ui/core";
-import AppContext from "../../../state/context";
+import AppHeader from "../../../components/appHeader";
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
 class Setting extends React.Component{
-    static contextType = AppContext
     constructor(props){
         super(props)
         this.state ={
@@ -133,7 +132,9 @@ class Setting extends React.Component{
             )
         return (
             <>
+               
                     <Backend>
+                        <AppHeader/>
                         {settings}
                     </Backend>
             </>

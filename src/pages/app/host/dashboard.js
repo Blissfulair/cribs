@@ -18,6 +18,7 @@ import Chart from "../../../components/chart";
 import { getMonthInWord } from "../../../helpers/helpers";
 import { connect } from "react-redux";
 import AppHeader from "../../../components/appHeader"
+import "./dashboard.scss"
 
 const Progress = ({value}) => (
     <div style={{
@@ -37,8 +38,8 @@ const HostDashboard = ({classes, state, switchChart, context,user, notifications
         return (
             <>
                 <AppHeader/>
-                <Grid container  justify="space-between">
-                    <Grid item xs={11} md={3}>
+                <Grid container className="dashboard-center" justify="space-between">
+                    <Grid item xs={12} md={3}>
                         <Paper classes={{root:classes.user}}>
                             <div className={classes.userInner}>
                                 {
@@ -64,8 +65,8 @@ const HostDashboard = ({classes, state, switchChart, context,user, notifications
                             </div>
                         </Paper>
                     </Grid>
-                    <Grid item md={7}>
-                    <Paper classes={{root:classes.impression}}>
+                    <Grid item md={7} xs={12}>
+                    <Paper classes={{root:classes.impression}} className='impression'>
                         <Grid container style={{marginBottom:15}}>
                             <Grid item xs={6}>
                                 <Typography variant="subtitle1" style={{fontWeight:'bold', color:'#707070',fontSize:15}} component="p">Impressions</Typography>
@@ -155,8 +156,8 @@ const HostDashboard = ({classes, state, switchChart, context,user, notifications
 
                         </List>
                     </Paper>
-                    <Grid container spacing={10}>
-                        <Grid item xs={6}>
+                    <Grid container justify="space-between" spacing={12}>
+                        <Grid item md={5} xs={12}>
                             <Paper>
                                 <CardContent>
                                     <Typography variant="h5" className={classes.title}>Promotion</Typography>
@@ -165,7 +166,7 @@ const HostDashboard = ({classes, state, switchChart, context,user, notifications
                                 </CardContent>
                             </Paper>
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item md={5} xs={12} className='tips'> 
                             <Card>
                                 <CardContent>
                                     <Typography variant="h5" className={classes.title}>Tips</Typography>

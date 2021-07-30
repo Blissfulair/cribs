@@ -1,6 +1,8 @@
 /* menu section */
+.sidebar{
+    min-height: 100vh;
+}
 .sidebar-menu{
-    margin-top: 68px;
     width: 100%;
 }
 .sidebar-menu .s-menu{
@@ -47,6 +49,9 @@
     font-weight: 700;
 
 }
+.s-menu .switches{
+    display: none;
+}
 .sidebar-menu .s-menu li :first-child{
     margin-right: 6px;
     margin-left: 15px;
@@ -67,13 +72,16 @@
 }
 
 @media (max-width:767px){
-    .sidebar{
-        position: absolute;
-        width: 150px;
-        height: auto;
-        /* box-shadow: none !important */
+    .s-menu .switches{
+        display: flex;
+        background-color: #fff;
+        margin: 0 auto;
+
     }
-    .sidebar-menu{
+    .s-menu .switches > :first-child{
+        color: #046FA7;
+    }
+    /* .sidebar-menu{
         display: block;
         margin: 0 auto !important;
     }
@@ -82,5 +90,5 @@
     }
     .sidebar-menu .s-menu li{
         height: 36px;
-    }
+    } */
 }

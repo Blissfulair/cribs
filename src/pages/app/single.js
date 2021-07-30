@@ -21,6 +21,7 @@ import BusinessIcon from '@material-ui/icons/Business';
 import KingBedIcon from '@material-ui/icons/KingBedOutlined';
 import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import BathtubIcon from '@material-ui/icons/BathtubOutlined';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import KitchenIcon from '@material-ui/icons/Kitchen';
 import LocalParkingIcon from '@material-ui/icons/LocalParking';
 import TvIcon from '@material-ui/icons/Tv';
@@ -47,6 +48,7 @@ import { getCribById } from "../../apis/server";
 import Header from "../../components/head";
 import Guest from "../../components/guest";
 import Booking from "../../components/booking";
+import Footer from "../../components/footer";
 const styles = theme => ({
     container: {
         paddingTop: 140,
@@ -82,33 +84,10 @@ const styles = theme => ({
         width: '100%',
         height: '100%'
     },
-    overlay1: {
-        backgroundColor: '#000000',
-        opacity: 0.41,
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 3
-    },
     root: {
         flexGrow: 1,
         borderRadius: 0,
         marginTop: 30
-    },
-    payment: {
-        minHeight: 500,
-        borderRadius: 0,
-        backgroundColor: '#F8F8F8'
-    },
-    checkIn: {
-        height: '50px',
-        display: 'flex',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        border: '1px solid #DCDCDC',
-        padding: '0px 16px'
     },
     guest: {
         marginTop: 17,
@@ -446,15 +425,15 @@ class Single extends Component {
                                 <Grid container justify="flex-start"  spacing={3}>
                                     <Grid item xs={12} md={8} sm={12}>
                                         <Grid container>
-                                            <Grid item xs={4}>
+                                            <Grid className="slide-sided" item md={4}>
                                                 <div className={classes.background} id="slideTop" style={{ backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL}/${property.featuredImage})` }}>
                                                     <div className={classes.overlay}></div>
                                                 </div>
                                                 <div className={classes.background} id="slideBottom" style={{ backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL}/${property.images[0]})` }}></div>
                                             </Grid>
-                                            <Grid item xs={8}>
+                                            <Grid item md={8} xs={12}>
                                                 <div className={classes.background} id="slide-cover">
-                                                    <div className={classes.overlay1}></div>
+                                                    <div className="overlay"></div>
                                                     <DetailSlide content={[property.featuredImage, ...property.images]} />
                                                 </div>
                                             </Grid>
@@ -479,11 +458,11 @@ class Single extends Component {
                                                     <Tab label="Location" />
                                                 </a>
                                             </Tabs>
-                                            <Box p={3}>
+                                            <Box className="sets1" p={3}>
                                                 <Typography style={{ marginBottom: 30 }} variant="h4" id="overview">{property.name}</Typography>
                                                 <Grid>
 
-                                                    <div >
+                                                    <div>
                                                         <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', columnGap: '1rem' }} >
                                                             <div className={classes.position} >
                                                                 <BusinessIcon htmlColor="#00A8C8" fontSize="large" />
@@ -538,13 +517,16 @@ class Single extends Component {
                                             </Grid>
                                         </Grid> */}
                                                 </Grid>
-                                                <Divider />
+                                            </Box>
+                                            <Box p={3}  className="sets1">
+                                                <Divider className="sets1lines" />
                                                 <Typography variant="subtitle1" component="p" style={{ margin: '15px 0', fontSize: 15, wordWrap: 'break-word' }}>
                                                     {
                                                         property.description
                                                     }
                                                 </Typography>
-
+                                              </Box>
+                                              <Box p={3} className="sets1">      
                                                 <Typography className={classes.subTitle} id="amenities">
                                                     Amenities
                                     </Typography>
@@ -621,22 +603,25 @@ class Single extends Component {
                                                         }
                                                     </div>
                                                 </Grid>
-                                                <Divider style={{ marginTop: 20 }} />
+                                                <Divider style={{ marginTop: 20 }} className="sets1lines" />
+                                                </Box>
+                                                <Box className="sets1" p={3}>
 
                                                 <Typography className={classes.subTitle}>Accessibility</Typography>
                                                 <Grid id="accessibility">
-                                                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', columnGap: '1rem', paddingBottom: '1rem' }}>
-                                                        <Typography className={classes.textTitle} style={{ marginLeft: 0 }} variant="subtitle1" component="p">GETTING INSIDE</Typography>
-                                                        <Typography className={classes.textTitle} style={{ marginLeft: 0 }} variant="subtitle1" component="p">MOVING AROUND THE SPACE</Typography>
-
-                                                    </div>
-
-                                                    <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', columnGap: '1rem' }}>
-                                                        <Typography variant="caption" component="p">{property.inside}</Typography>
-                                                        <Typography variant="caption" component="p">{property.around}</Typography>
+                                                    <div>
+                                                        <div>
+                                                            <Typography className={classes.textTitle} style={{ marginLeft: 0,paddingBottom: '1rem'  }} variant="subtitle1" component="p">GETTING INSIDE</Typography>
+                                                            <Typography variant="caption" component="p">{property.inside}</Typography>
+                                                        </div>
+                                                        <div>
+                                                            <Typography className={classes.textTitle} style={{ marginLeft: 0 ,paddingBottom: '1rem' }} variant="subtitle1" component="p">MOVING AROUND THE SPACE</Typography>
+                                                            <Typography variant="caption" component="p">{property.around}</Typography>
+                                                        </div>
                                                     </div>
                                                 </Grid>
-
+                                                </Box>
+                                                <Box p={3} className="sets1">
                                                 <Grid container id="availability">
                                                     <Grid item>
                                                         <Typography className={classes.subTitle}>Availability</Typography>
@@ -644,11 +629,11 @@ class Single extends Component {
                                                         <Booking bookings={dates}/>
                                                     </Grid>
                                                 </Grid>
-                                            </Box>
+                                                </Box>
                                         </Paper>
                                     </Grid>
                                     <Grid item xs={12} md={4}>
-                                        <Paper className={classes.payment}>
+                                        <Paper  className='payment'>
                                             <Grid container justify="center">
                                                 <Grid item xs={11}>
                                                     <Grid style={{ marginTop: 10 }} container>
@@ -710,7 +695,7 @@ class Single extends Component {
                                                     <form autoComplete="off">
                                                         <Grid container spacing={1}>
                                                             <Grid item xs={6}>
-                                                                <div  className={classes.checkIn}>
+                                                                <div  className="checkinss">
                                                                     <label htmlFor="check-in">
                                                                         <Calendar htmlColor="#00A8C8" fontSize="small" />
                                                                     </label>
@@ -733,7 +718,7 @@ class Single extends Component {
                                                                 </div>
                                                             </Grid>
                                                             <Grid item xs={6}>
-                                                                <div className={classes.checkIn} >
+                                                                <div className="checkinss" >
                                                                     <label htmlFor="check-out">
                                                                         <Calendar htmlColor="#00A8C8" fontSize="small" />
                                                                     </label>
@@ -751,7 +736,7 @@ class Single extends Component {
                                                             </Grid>
                                                         </Grid>
                                                         <div className={classes.guest}>
-                                                            <div className={classes.checkIn}>
+                                                            <div className="checkinss">
                                                                 <label htmlFor="check-out">
                                                                     <Calendar htmlColor="#00A8C8"  fontSize="small" />
                                                                 </label>
@@ -772,7 +757,7 @@ class Single extends Component {
                                                             property.rooms !== undefined &&
                                                             property.rooms.length > 1 &&
                                                             <div className={classes.guest}>
-                                                                <div className={classes.checkIn}>
+                                                                <div className="checkinss">
                                                                     <label htmlFor="check-out">
                                                                         <KingBedIcon htmlColor="#00A8C8" fontSize="small" />
                                                                     </label>
@@ -804,7 +789,7 @@ class Single extends Component {
                                                                     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', marginTop: 10 }}>
                                                                         {
                                                                             this.state.room.map((room, i) => {
-                                                                                return <button onClick={() => this.onDelete(i)} className="cancelBtn" type="button" style={{ border: 'none', borderRadius: 20, color: '#fff', margin: 5 }} key={i}>{room.room}</button>
+                                                                                return <button onClick={() => this.onDelete(i)} className="cancelBtn" type="button" style={{ border: 'none', margin: 5 }} key={i}>{room.room}</button>
                                                                             })
                                                                         }
                                                                     </div>
@@ -812,45 +797,71 @@ class Single extends Component {
                                                             </div>
                                                         }
                                                         <Grid container spacing={1}>
-                                                            <Grid item xs={8}>
+                                                            <Grid item xs={8} className="desktop-total">
                                                                 <Typography variant="h5">Total</Typography>
                                                                 <Typography variant="caption" component="p">Includes taxes and fees</Typography>
                                                             </Grid>
                                                             <Grid item xs={4}>
-                                                                <Typography variant="h5" style={{ color: '#FF9C07', textAlign: 'right', fontWeight: 'bold' }}>₦{property.amount * this.state.days}</Typography>
+                                                                <Typography variant="h5" className="desktop-amount" style={{ color: '#FF9C07', textAlign: 'right', fontWeight: 'bold' }}>₦{property.amount * this.state.days}</Typography>
                                                                 {
                                                                     (checkIn.length < 1 && checkOut.length < 1) &&
                                                                     <Typography variant="caption" style={{ cursor: 'pointer' }} component="p" onClick={this.handleClickOpen}>view details</Typography>
                                                                 }
                                                                 <PopUP onReserved={this.onReserved} summary={summary} open={this.state.open} handleClose={this.handleClose} />
-                                                                <Share text={property.name + '-' + property.description} url={'http://localhost:3000/crib/' + property._id.replace('/', '')} triger={this.state.triger} close={this.shareClose} />
+                                                                <Share text={property.name + '-' + property.description} url={`${process.env.REACT_APP_BACKEND_URL}/crib/` + property._id.replace('/', '')} triger={this.state.triger} close={this.shareClose} />
                                                                 <HostPopUp host={property.host} triger={this.state.hostTriger} close={this.hostClose} />
                                                             </Grid>
                                                         </Grid>
+                                                        <div className="book-btn">
+                                                            <div className="mobile-amount">
+                                                                <Typography variant="h5" style={{ color: '#FF9C07', textAlign: 'right', fontWeight: 'bold' }}>₦{property.amount * this.state.days} ({this.state.days+(this.state.days ===1?' day':' days')})</Typography>
+                                                            </div>
                                                         {
                                                             (checkIn.length < 1 && checkOut.length < 1) ?
-                                                                <Button onClick={this.handleClickOpen} style={{ textTransform: 'capitalize', backgroundColor: '#00A8C8', width: '100%', borderRadius: 44, color: '#fff', padding: '10px 0', fontSize: 18, marginTop: 15 }} variant="contained" disableElevation>
+                                                                <Button  onClick={this.handleClickOpen} style={{ textTransform: 'capitalize', backgroundColor: '#00A8C8', width: '100%', borderRadius: 44, color: '#fff', padding: '10px 0', fontSize: 18, marginTop: 15 }} variant="contained" disableElevation>
                                                                     Reserve Now
-                                                    </Button>
+                                                                </Button>
                                                                 :
                                                                 <Button style={{ textTransform: 'capitalize', backgroundColor: '#DEDEDE', width: '100%', borderRadius: 44, color: '#707070', padding: '10px 0', fontSize: 18, marginTop: 15 }} variant="disabled" disableElevation>
                                                                     Unavailable
                                                     </Button>
                                                         }
-
+                                                        </div>
                                                         <Divider style={{ marginTop: 15, height: 3, backgroundColor: '#DCDCDC' }} />
                                                         <Typography variant="h6" style={{ textAlign: 'center', color: '#000000', paddingTop: '1rem' }} >Speak to the Host</Typography>
-                                                        <Grid container style={{ marginTop: 10, marginBottom: 5 }}>
-                                                            <Grid item xs={3}>
-                                                                <Avatar alt={property.host.firstname} style={{ width: 50, height: 50 }} src={property.host.image} />
+                                                        <div className="desktop-host">
+                                                            <Grid container style={{ marginTop: 10, marginBottom: 5 }}>
+                                                                <Grid item xs={3}>
+                                                                    <Avatar alt={property.host.firstname} style={{ width: 50, height: 50 }} src={property.host.image} />
+                                                                </Grid>
+                                                                <Grid item xs={9}>
+                                                                    
+                                                                        <Typography variant="subtitle1" component="p">{property.host.firstname + ' ' + property.host.lastname}</Typography>
+                                                                        <button type="button" style={{ background: 'transparent', border: 'none' }} onClick={this.hostOpen}>
+                                                                            <Typography style={{ paddingBottom: '1rem' }} variant="caption" component="p">Contact host</Typography>
+                                                                        </button>
+                                                                
+
+
+                                                                </Grid>
                                                             </Grid>
-                                                            <Grid item xs={9}>
-                                                                <Typography variant="subtitle1" component="p">{property.host.firstname + ' ' + property.host.lastname}</Typography>
-                                                                <button type="button" style={{ background: 'transparent', border: 'none' }} onClick={this.hostOpen}>
-                                                                    <Typography style={{ paddingBottom: '1rem' }} variant="caption" component="p">Contact host</Typography>
-                                                                </button>
-                                                            </Grid>
-                                                        </Grid>
+                                                        </div>
+                                                        <div className="mobile-host">
+                                                            <button onClick={this.hostOpen} type="button">
+                                                                {property.host.firstname + ' ' + property.host.lastname+' '}
+                                                                <ArrowForwardIcon/>
+                                                            </button>
+                                                            <Rating
+                                                            disabled
+                                                            name='kls'
+                                                            defaultValue={3}
+                                                            color='#FDB62F'
+                                                            iconField='#FDB62F'
+                                                            emptyIcon={<StarBorderIcon htmlColor="#fff" fontSize="small" />}
+                                                            style={{ fontSize: 15, margin: '15px 0' }}
+                                                            
+                                                            />
+                                                        </div>
                                                     </form>
                                                 </Grid>
                                             </Grid>
@@ -864,7 +875,7 @@ class Single extends Component {
                                                 </div>
                                                 <Grid container spacing={3} justify="center">
 
-                                                    <Grid item xs={5}>
+                                                    <Grid item md={5} xs={12}>
                                                         {
                                                             property_length > 0 &&
                                                             
@@ -897,13 +908,13 @@ class Single extends Component {
                                                         }
                                                     </Grid>
 
-                                                    <Grid item xs={6}>
+                                                    <Grid item xs={12} md={6}>
                                                         <Grid container style={{ marginTop: 80 }}>
                                                             <Grid item md={10}>
                                                                 {
                                                                     property_length > 0 ?
                                                                         property.reviews.map((item, i) => {
-                                                                            return <Review number={i} property={property} data={item} key={i} />
+                                                                            return <Review number={i} reviews={property.reviews} data={item} key={i} />
                                                                         })
                                                                         :
                                                                         <Typography>No review for this crib yet!</Typography>
@@ -921,6 +932,7 @@ class Single extends Component {
                         }
                     </Grid>
                 </Grid>
+                <Footer/>
             </>
 
         )

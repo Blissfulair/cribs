@@ -216,6 +216,7 @@ onLogout = ()=>{
                             user.emailVerify?
                                 <div className="avatar-pro">
                                     <img onClick={this.onOpenModal} src={kano} alt="" />
+                                    
                                     <Dmodal
                                         open={this.state.openModal}
                                         onClose={this.onCloseModal}
@@ -288,10 +289,10 @@ onLogout = ()=>{
                     
                     }
                 </nav>
-            <button  onClick={this.openMenu} className="hamburger">
-                <span style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}} onClick={this.openMenu}></span>
-                <span style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}}  onClick={this.openMenu}></span>
-                <span style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}}  onClick={this.openMenu}></span>
+            <button   onTouchStart={this.openMenu} onClick={this.openMenu} id="hamburger" className="hamburger">
+                <span className="hamburger"   style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}} ></span>
+                <span className="hamburger" style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}}  ></span>
+                <span className="hamburger" style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}}  ></span>
             </button>
         </div>
 

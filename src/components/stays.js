@@ -3,11 +3,12 @@ import {Link} from 'react-router-dom';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from "@material-ui/core/Typography"
 import "./stays.scss"
+import { connect } from "react-redux";
 
 
 const Stays = (props)=>{
     return(
-        <Link className="card-link" to={props.link}>
+        <Link className="card-link" to={{pathname:props.user?'/app/search':'/search', search:props.link}}>
             <div>
             <div className="scard" style={{height:props.height?props.height:320}} > 
                 <CardMedia className="image" image={props.image}/>
@@ -23,4 +24,7 @@ const Stays = (props)=>{
         </Link>
     )
 }
-export default Stays;
+const mapStateToProps=state=>({
+    user:state.user
+})
+export default connect(mapStateToProps)(Stays);

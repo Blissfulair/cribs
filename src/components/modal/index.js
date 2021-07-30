@@ -22,7 +22,7 @@ class Modal extends Component{
     }
     render(){
         return(
-            <div style={{transform:this.props.onOpen?'translateX(0)':'translateX(100%)'}} className="modals-container">
+            <div style={{transform:this.props.onOpen?' scale(1)':' scale(0)',  transition:this.props.onOpen? 'transform 150ms':'none'}} className="modals-container">
                 <div ref={this.modal}  className="modals-content">
                     <div className="modals-header">{this.props.children}</div>
                     <div className="modals-footer">

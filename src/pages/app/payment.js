@@ -3,6 +3,7 @@ import './../../scss/payment.scss';
 import {withRouter} from "react-router-dom"
 import PaymentCard from '../../components/payment';
 import Header from "../../components/head"
+import Footer from '../../components/footer';
 
 const Payment = ({location}) => {
 
@@ -165,6 +166,7 @@ const Payment = ({location}) => {
 
                 </div>
         </div>
+        <Footer/>
         </>
 		);
 }

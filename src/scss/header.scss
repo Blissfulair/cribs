@@ -87,13 +87,13 @@
     .showcase__header{
         align-items: center;
         justify-content: space-between;
-        .hamburger{
-            width: 39px;
-            height: 24px;
+        #hamburger{
+            width: 40px;
+            height: 40px;
             background-color: transparent;
             border: none;
             display: none;
-            padding: 4px 8px;
+            padding: 12px 8px;
             z-index: 1000;
             margin-right: -8px;
             flex-direction: column;
@@ -103,6 +103,7 @@
                 width: 100%;
                 display: block;
                 background-color: #FCFCFC;
+                user-select: none;
                 &:first-child{
                     width: calc(1000%/23);
                 }
@@ -173,9 +174,9 @@
         display: none !important;
     }
     .showcase_head{
-        height: 50px;
+        height: 70px;
         .showcase__header{
-            .hamburger{
+            #hamburger{
                 display: flex;
                 cursor: default;
             }

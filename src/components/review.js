@@ -2,8 +2,7 @@ import React from "react"
 import {Grid, Avatar, Typography, Divider} from "@material-ui/core"
 import Rating from '@material-ui/lab/Rating';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-const Review = ({data, number})=>{
-    console.log(data)
+const Review = ({data, number, reviews})=>{
     return(
         <>
         <Grid container spacing={4} alignItems="center">
@@ -33,7 +32,7 @@ const Review = ({data, number})=>{
             </Grid>
         </Grid>
         {
-            data.length-1 !== number && <Divider style={{backgroundColor:'#AAAAAA', marginTop:10}}/>
+            reviews.length-1 !== number && <Divider style={{backgroundColor:'#AAAAAA', marginTop:10}}/>
         }
         </>
     )

@@ -9,6 +9,7 @@ import Rating from "@material-ui/lab/Rating";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import AppHeader from "../../../components/head"
 import { connect } from "react-redux";
+import Footer from "../../../components/footer";
 
 const ProfileDetails = ({user,uploadImage})=>{
     return(
@@ -176,6 +177,7 @@ class Profile extends React.Component{
                             </Grid>
                         </Grid>
                     </Grid>
+                    <Footer/>
             </>
         )
     }

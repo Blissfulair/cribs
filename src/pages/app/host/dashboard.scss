@@ -1,0 +1,10 @@
+@import "../../../scss/config";
+
+@include mediaSm {
+    .dashboard-center{
+        padding: 0 18px;
+        .impression, .tips{
+            margin-top: 30px;
+        }
+    }
+}

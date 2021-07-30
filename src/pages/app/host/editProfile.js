@@ -204,8 +204,9 @@ class EditProfile extends React.Component{
     render(){
         return (
             <>
-                <AppHeader/>
+               
                 <Backend>
+                    <AppHeader/>
                     <EditProfileDom state={this.state} onSubmit={this.onSubmit} user={this.props.user} env={this.props.env} handleClick={this.handleClick} changeHandler={this.changeHandler} handleCloseSnackBar={this.handleCloseSnackBar} />
                 </Backend>
             </>

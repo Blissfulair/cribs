@@ -167,9 +167,11 @@ input[type=checkbox]{
     transition: 0.2;
 }
 .social-signup{
-    display: grid;
+    /* display: grid;
     grid-template-columns: 21% 21% 21%;
-    grid-column-gap: 18.5%;
+    grid-column-gap: 18.5%; */
+    display: flex;
+    justify-content: space-evenly;
     margin-top: 15px;
 }
 .social-signup .col{
@@ -180,6 +182,7 @@ input[type=checkbox]{
     border-radius: 5px;
     height: 33px;
     background: var(--white);
+    padding: 5px 22px;
 }
 .form p{
     text-align: center;
@@ -247,7 +250,7 @@ input[type=checkbox]{
     .form button,
     .form .social-signup{
         margin-top: 40px;
-        width: 100%;
+        /* width: 100%; */
         /* font-family: "Poppins-Medium" */
     }
     .social-signup .col{

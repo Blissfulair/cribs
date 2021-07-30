@@ -322,8 +322,9 @@ editProperty(formData,id)
         console.log(this.state.other_images)
         return (
             <>
-                <AppHeader/>
+               
                 <Backend>
+                <AppHeader/>
                     <Activity loading={this.state.isLoading}/>
                     <div className="inbox">
                         <div className="inbox-head dashboard-mt">
@@ -335,7 +336,7 @@ editProperty(formData,id)
                     </div>
 
                     {/* <!-- form --> */}
-                    <div className="property-form dashboard-mt">
+                    <div className="property-form mt40">
                         <form onSubmit={event=>{this.onSubmit(event)}} method="post" encType="multipart/form-data">
                         {
                                 this.state.message&&

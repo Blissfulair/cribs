@@ -377,8 +377,9 @@ addProperty(formData)
     render(){
         return (
             <>
-                <AppHeader/>
+                
                 <Backend>
+                <AppHeader/>
                     <Activity loading={this.state.isLoading}/>
                     <div className="inbox">
                         <div className="inbox-head dashboard-mt">
@@ -390,7 +391,7 @@ addProperty(formData)
                     </div>
 
                     {/* <!-- form --> */}
-                    <div className="property-form dashboard-mt">
+                    <div className="property-form mt40">
                         {
                             !this.props.user.phone&&
                             <div className="profile-info">

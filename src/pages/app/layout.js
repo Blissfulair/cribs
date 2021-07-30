@@ -6,8 +6,11 @@ import PropTypes from "prop-types"
 const Layout = ({children})=>{
     return (
         <div className="site">
-            <div className="dashboard">
-                <Sidebar />
+            <div className="dashboard close">
+                <aside>
+                    <Sidebar />
+                </aside>
+              
                 <div className="dashboard-content">
                     
                     <div className="dashboard-main">

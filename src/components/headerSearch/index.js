@@ -82,7 +82,7 @@ class Form extends Component {
         .then(()=>{
             //setLoading(false)
             this.props.history.push({
-                pathname: !this.props.user?'/search':'/search',
+                pathname: !this.props.user?'/search':'/app/search',
                 search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
             })
         })

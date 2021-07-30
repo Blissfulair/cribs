@@ -8,6 +8,8 @@ import {
 } from '@material-ui/core';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import PhoneIcon from '@material-ui/icons/Phone';
+import { Rating } from '@material-ui/lab';
+import { StarBorder } from '@material-ui/icons';
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
@@ -30,6 +32,13 @@ const HostPopUp = ({triger, close,host})=>{
                     <Typography style={{display:'flex',alignItems:'center',marginTop:15}}>{host.firstname +' '+ host.lastname}</Typography>
                     <Typography style={{display:'flex',alignItems:'center',marginTop:15}}><MailOutlineIcon/> {host.email}</Typography>
                     <Typography style={{display:'flex',alignItems:'center',marginTop:15}}><PhoneIcon/> {host.phone}</Typography>
+                    <Rating
+                        disabled
+                        name='kls'
+                        defaultValue={5}
+                        emptyIcon={<StarBorder htmlColor="#fff" fontSize="small" />}
+                        style={{ fontSize: 15, color: '#000000', margin: '15px 0' }}
+                    />
 
             </div>
         </DialogContent>

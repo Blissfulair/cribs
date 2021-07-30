@@ -28,6 +28,7 @@ import AppHeader from "../../components/head";
 import { HomeSkeleton as Skeleton } from "../../components/skeleton/index";
 import { setTrendingAndBestCribs } from "../../state/actions";
 import { getTrendingAndBestCribs } from "../../apis/server";
+import Footer from "../../components/footer"
 const styles = theme =>({
     loginContainer:{
         backgroundImage:`url(${cottage})`,
@@ -136,16 +137,16 @@ class Home extends Component{
                         showArrows={false}
                     >
                         <Grid item xs={12} sm={6} md={3} lg={3} >
-                        <Stays title="House" link={`/app/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
+                        <Stays title="House" link={`type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3} lg={3}>
-                        <Stays title="Bungalows" link={`/app/search?type=bungalow`}  height={280} image={bangalow} available={1000}/>
+                        <Stays title="Bungalows" link={`type=bungalow`}  height={280} image={bangalow} available={1000}/>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3} lg={3} >
-                        <Stays title="House" link={`/app/search?type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
+                        <Stays title="House" link={`type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
                         </Grid>
                         <Grid item xs={12} sm={6} md={3} lg={3}>
-                        <Stays title="Bungalows" link={`/app/search?type=bungalow`}  height={280} image={bangalow} available={1000}/>
+                        <Stays title="Bungalows" link={`type=bungalow`}  height={280} image={bangalow} available={1000}/>
                         </Grid>
                     </Slide>
                     {/* <Grid item xs={12} sm={12} md={6} lg={6}>
@@ -264,11 +265,12 @@ class Home extends Component{
 
                 <Typography variant="h4" classes={{root:classes.title}}>Explore Cribs by City</Typography>
                 <Grid style={{position:'relative'}} container>
-                <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link:'/app/search?city=lagos'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/app/search?city=abuja'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/app/search?city=kano'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'/app/search?city=benin'}]}/>
+                <Explore content={[{name:'Lagos City',image:lagos, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', link:'city=lagos'},{name:'Abuja City',image:abuja, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'city=abuja'},{name:'Kano City', image:kano, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'city=kano'},{name:'Benin City',image:benin, description:'440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more',link:'city=benin'}]}/>
                 </Grid>
                 </Grid>
             </Grid>
         </Grid>
+        <Footer/>
         </>
     )
 }

@@ -37,7 +37,7 @@ import { getTrendingAndBestCribs, searchProperties } from "../apis/server";
 import Calendar from "../components/calender";
 import Guest from "../components/guest";
 
-
+import Footer from "../components/footer";
 
 const styles = theme => ({
 
@@ -280,16 +280,16 @@ class Index extends Component {
                                         showArrows={false}
                                     >
                                             <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                <Stays title={this.props.propertyTypes[0].name} link={`/search?type=${this.props.propertyTypes[0].name}`} image={house} available={1000} color={'#DF6C08'} />
+                                                <Stays title={this.props.propertyTypes[0].name} link={`type=${this.props.propertyTypes[0].name}`} image={house} available={1000} color={'#DF6C08'} />
                                             </Grid>
                                             <Grid item xs={12} sm={6} md={3} lg={3}>
-                                                <Stays title={this.props.propertyTypes[1].name}  link={`/search?type=${this.props.propertyTypes[1].name}`} image={bangalow} available={1000} />
+                                                <Stays title={this.props.propertyTypes[1].name}  link={`type=${this.props.propertyTypes[1].name}`} image={bangalow} available={1000} />
                                             </Grid>
                                             <Grid item xs={12} sm={6} md={3} lg={3}>
-                                                <Stays title={'Cottage'}  link={`/search?type=${'cottage'}`} image={condos} available={1000} color="#DF0808" />
+                                                <Stays title={'Cottage'}  link={`type=${'cottage'}`} image={condos} available={1000} color="#DF0808" />
                                             </Grid>
                                             <Grid item xs={12} sm={6} md={3} lg={3}>
-                                                <Stays title="Wharehouse" link={`/search?type=waraehouse`} image={cottage} available={1000} color="#000000" />
+                                                <Stays title="Wharehouse" link={`type=waraehouse`} image={cottage} available={1000} color="#000000" />
                                             </Grid>
                                         </Slide>
                                     </Grid>
@@ -473,22 +473,22 @@ class Index extends Component {
                                     { 
                                         name: 'Lagos City', 
                                         image: lagos, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
-                                        link: '/search?city=lagos' 
+                                        link: 'city=lagos' 
                                     }, 
                                     { 
                                         name: 'Abuja City', 
                                         image: abuja, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
-                                        link: '/search?city=abuja' 
+                                        link: 'city=abuja' 
                                     }, 
                                     {   
                                         name: 'Kano City', 
                                         image: kano, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
-                                        link: '/search?city=kano' 
+                                        link: 'city=kano' 
                                     }, 
                                     { 
                                         name: 'Benin City', 
                                         image: benin, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
-                                        link: '/search?city=benin' 
+                                        link: 'city=benin' 
                                     }
                                     ]}
                                     height={274}
@@ -497,6 +497,7 @@ class Index extends Component {
                         </Grid>
                     </Grid>
                 </Grid>
+                <Footer/>
             </>
         )
     }

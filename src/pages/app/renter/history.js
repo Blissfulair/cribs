@@ -35,6 +35,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { connect } from "react-redux";
 import { deleteHistory, getHistoriesByUserId, sendReview } from "../../../apis/server";
 import { setHistories } from "../../../state/actions";
+import Footer from "../../../components/footer";
 const styles = (theme)=>({
     inputRoot: {
         color: 'inherit',
@@ -512,6 +513,7 @@ class History extends React.Component{
                     </div>
                 </Grid>
             </Grid>
+            <Footer/>
             </>
         )
     }

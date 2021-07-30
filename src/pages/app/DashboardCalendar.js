@@ -96,8 +96,9 @@ const DashboardCalendar = ({history,trendingCribs, search}) => {
 
     return (
         <>
-        <AppHeader/>
+        
         <Layout>
+        <AppHeader/>
 
             <div className="calendar__heading">
                 <h1>Calendar</h1>

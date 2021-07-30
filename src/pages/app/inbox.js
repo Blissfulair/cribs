@@ -6,6 +6,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import SearchIcon from '@material-ui/icons/Search';
 import { IconButton, withStyles,InputBase } from "@material-ui/core";
 import { fade } from '@material-ui/core/styles';
+import Footer from "../../components/footer";
 const styles = (theme)=>({
     inputRoot: {
         color: 'inherit',
@@ -194,6 +195,7 @@ class Inbox extends React.Component{
                         </div>
                     </div>
                 </Backend>
+                <Footer/>
             </>
         )
     }

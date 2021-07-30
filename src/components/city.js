@@ -2,10 +2,11 @@ import React from "react";
 import {Link} from 'react-router-dom';
 import Typography from "@material-ui/core/Typography"
 import "./city.scss"
+import { connect } from "react-redux";
 
 const City = (props)=>{
     return(
-        <Link className='ccardLink' style={{height:props.height?props.height:200}} to={`${props.link}`}>
+        <Link className='ccardLink' style={{height:props.height?props.height:200}} to={{pathname:props.user?'/app/search':'/search', search:`${props.link}`}}>
             <div className="ccard">
                 <img className="cimage" alt={`explore ${props.name}`}  src={props.image}/>
                 <div style={{backgroundColor:props.color}} className="overlay"> </div>
@@ -20,4 +21,7 @@ const City = (props)=>{
         </Link>
     )
 }
-export default City
+const mapStateToProps=state=>({
+    user:state.user
+})
+export default connect(mapStateToProps)(City)

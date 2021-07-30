@@ -15,6 +15,7 @@ import { getFavs } from "../../../helpers/helpers";
 import { connect } from "react-redux";
 import { setFavourite } from "../../../state/actions";
 import { getFavourite } from "../../../apis/server";
+import Footer from "../../../components/footer";
 const styles = theme =>({
     container:{
         paddingTop:100
@@ -137,6 +138,7 @@ class Favourites extends Component{
                     </div>
                 </Grid>
             </Grid>
+            <Footer/>
         </>
     )
 }

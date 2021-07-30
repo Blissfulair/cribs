@@ -279,8 +279,9 @@ class DashboardPayment extends Component {
 			years.push(year)
 	return (
 		<>
-		<AppHeader/>
+		
 		<Layout>
+		<AppHeader/>
 			<WithdrawPopUp className="withdraw-modal" title="Withdrawal Details" open={this.state.open} handleClose={this.handleClose}>
 			<p style={{color:'#f44336'}}>{this.state.err}</p>
 			<form onSubmit={this.onPayPaySubmit}>

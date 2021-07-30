@@ -169,8 +169,9 @@ class Properties extends React.Component{
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, properties.length - this.state.page * this.state.rowsPerPage);
         return (
             <>
-                <AppHeader/>
+                
                 <Layout>
+                <AppHeader/>
                     <Dialog
                         open={this.state.dialogOpen}
                         TransitionComponent={TransitionUp}

@@ -95,6 +95,9 @@ const Payment = ({location}) => {
                 })
             }
         }
+        return ()=>{
+            window.sessionStorage.removeItem(location.search)
+        }
     },[location])
     return (
         <>

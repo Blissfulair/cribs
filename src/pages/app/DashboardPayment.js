@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,createRef } from 'react';
 import Layout from './layout';
 import '../../scss/dashboard_payment.scss';
 import FormControl from '@material-ui/core/FormControl';
@@ -22,6 +22,7 @@ import { currency } from '../../helpers/helpers';
 import Modal from '../../components/modal';
 import { connect } from 'react-redux';
 import AppHeader from '../../components/appHeader';
+import { bankWithdraw, getWallet, getWithdraw, paypalWithdraw } from '../../apis/server';
 
 
 
@@ -45,11 +46,19 @@ class DashboardPayment extends Component {
 			month:'',
 			status:'',
 			page:0,
-			rowsPerPage:8
+			rowsPerPage:8,
+			wallet:{}
 		}
+		this.table= createRef()
 	}
 
 	componentDidMount(){
+		this.onLoadWallet()
+		getWithdraw(this.props.user.id)
+		.then(withdraws=>{
+			console.log(withdraws)
+			this.setState({tableLoading:false, payments:withdraws})
+		})
 		// this.context.approveWithdrawal('150000000','HsAcNIqVWXSdLmGcgV2fhiL8MNn1',200)
 		//const date = new Date()
 		// this.context.getPaymentHistory()
@@ -59,6 +68,17 @@ class DashboardPayment extends Component {
 		// 	this.setState({allPayments:history, payments, year:date.getFullYear().toString(),tableLoading:false})
 		// })
 	}
+	onLoadWallet=()=>{
+		getWallet(this.props.user.id)
+		.then(wallet=>{
+			this.setState({wallet:wallet, loading:false})
+
+		})
+		.catch(e=>{
+			this.setState({loading:false})
+		})
+	}
+
 	handleChangePage = (event, newPage) => {
 		this.setState({page:newPage});
 	  };
@@ -82,196 +102,141 @@ class DashboardPayment extends Component {
 	handleChange=(e)=>{
 		this.setState({[e.target.name]:e.target.value})
 	}
-	filterByStatus =(status)=>{
-		if(status === '' && this.state.month === ''){
-			const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
-	
-			const payments = this.state.allPayments.filter((payment)=>{if(payment.year.toString() === filterYear)return payment;else return ''} )
-			console.log(payments, 'month and status empty')
-			this.setState({payments,status})
-		}
-		else{
-			if(status !== '' && this.state.month !== ''){
-				const filterStatus = status
-				const filterMonth = this.state.month
-				const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
-		
-				const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.month.toString() === filterMonth &&  payment.year.toString() === filterYear)return payment;else return ''} )
-				this.setState({payments,status})
-			}
-			else if(status !== '' && this.state.month === ''){
-				const filterStatus = status
-				const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
-		
-				const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus &&  payment.year.toString() === filterYear)return payment;else return ''} )
-				this.setState({payments,status})
-			}
-			else if(status === '' && this.state.month !== ''){
-				const filterMonth = this.state.month
-				const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
-		
-				const payments = this.state.allPayments.filter((payment)=>{if(payment.month.toString() === filterMonth  && payment.year.toString() === filterYear)return payment;else return ''} )
-				this.setState({payments,status})	
-			}
-			else{
-				const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
-				const payments = this.state.allPayments.filter((payment)=>{if( payment.year.toString() === filterYear)return payment;else return ''} )
-				this.setState({payments,status})	
-				console.log(payments, 'last empty')
-			}
-		}
-
-	}
-	filterByYear =(year)=>{
-		if(this.state.status === '' && this.state.month === ''){
-			const filterYear = year !== ''?year:new Date().getFullYear().toString()
-			const payments = this.state.allPayments.filter((payment)=>{if( payment.year.toString() === filterYear)return payment;else return ''} )
-			this.setState({payments,year})
-		}
-		else{
-			console.log('top')
-			if(this.state.status !== '' && this.state.month !== ''){
-				console.log('first')
-				const filterYear = year !== ''?year:new Date().getFullYear().toString()
-				const filterStatus = this.state.status
-				const filterMonth = this.state.month
-				const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.month.toString() === filterMonth && payment.year.toString() === filterYear)return payment;else return ''} )
-				this.setState({payments,year})
-			}
-			else if(this.state.status !== '' && this.state.month === ''){
-				const filterYear = year !== ''?year:new Date().getFullYear().toString()
-				const filterStatus = this.state.status
-				const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.year.toString() === filterYear)return payment;else return ''} )
-				this.setState({payments,year})
-			}
-			else if(this.state.month !== '' && this.state.status === ''){
-				const filterYear = year !== ''?year:new Date().getFullYear().toString()
-				const filterMonth = this.state.month
-				const payments = this.state.allPayments.filter((payment)=>{if(payment.month.toString() === filterMonth  && payment.year.toString() === filterYear)return payment;else return ''} )
-				this.setState({payments,year})
-			}
-			else{
-				const filterYear = year !== ''?year:new Date().getFullYear().toString()
-				const payments = this.state.allPayments.filter((payment)=>{if(payment.year.toString() === filterYear)return payment;else return ''} )
-				this.setState({payments,year})
-			}
-		}
-		
-	}
-	filterByMonth =(month)=>{
-		
-			if(month === '' && this.state.status === ''){
-				const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
-				const payments = this.state.allPayments.filter((payment)=>{if( payment.year.toString() === filterYear)return payment;else return ''} )
-				this.setState({payments,month})
-			}
-			else{
-				if(month !== '' && this.state.status !== '')
-				{
-					const filterMonth = month
-					const filterStatus = this.state.status
-					const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
-					const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.month.toString() === filterMonth && payment.year.toString() === filterYear)return payment;else return ''} )
-					this.setState({payments,month})
-				}
-				else if(month === '' && this.state.status !== ''){
-					const filterStatus = this.state.status
-					const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
-					const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus  && payment.year.toString() === filterYear)return payment;else return ''} )
-					this.setState({payments,month})
-				}
-				else if(month !== '' && this.state.status === ''){
-					const filterMonth = month
-					const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
-					const payments = this.state.allPayments.filter((payment)=>{if(payment.month.toString() === filterMonth && payment.year.toString() === filterYear)return payment;else return ''} )
-					this.setState({payments,month})
-				}
-			}
-			// else{
-			// 	const filterMonth = month
-			// 	const filterStatus = this.state.status !== ''? this.state.status:'pending';
-			// 	const filterYear = this.state.year !== ''? this.state.year:new Date().getFullYear().toString();
-			// 	const payments = this.state.allPayments.filter((payment)=>{if(payment.status === filterStatus && payment.month.toString() === filterMonth && payment.year.toString() === filterYear)return payment;else return ''} )
-			// 	this.setState({payments,month})
-			// }
-	}
 	onSubmit=(e)=>{
 		e.preventDefault()
-		// if(this.state.amount >= this.context.state.earnings.balance)
-		// {
-		// 	this.setState({err:'Insufficient balance!'})
-		// 	return false;
-		// }
-		// if(this.state.amount === '' || this.state.accountName === '' || this.state.bankName === '' || this.state.accountNumber === ''){
-		// 	this.setState({err:'All inputs are required!'})
-		// 	return false;
-		// }
+		if(this.state.amount >= this.state.wallet.available)
+		{
+			this.setState({err:'Insufficient balance!'})
+			return false;
+		}
+		if(this.state.amount === '' || this.state.accountName === '' || this.state.bankName === '' || this.state.accountNumber === ''){
+			this.setState({err:'All inputs are required!'})
+			return false;
+		}
 		this.setState({loading:true,err:''})
-		// const data ={
-		// 	hostId:this.context.state.user.uid,
-		// 	amount:this.state.amount,
-		// 	type:'direct transfer',
-		// 	balance:this.context.state.earnings.balance,
-		// 	pending:this.context.state.earnings.pending,
-		// 	details:{
-		// 		accountName:this.state.accountName,
-		// 		accountNumber:this.state.accountNumber,
-		// 		bankName:this.state.bankName,
-		// 	}
-		// }
-		// this.context.withdrawal(data)
-		// .then((withdraw)=>{
-		// 	this.setState({
-		// 		loading:false,
-		// 		payments:[
-		// 			{
-		// 				...withdraw
-		// 			},
-		// 			...this.state.payments
-		// 		]
-		// 	})
-		// 	this.directTransferClose()
-		// })
+		const data ={
+			id:this.props.user.id,
+			firstname:this.props.user.firstname,
+			lastname:this.props.user.lastname,
+			amount:this.state.amount,
+			account_name:this.state.accountName,
+			account_number:this.state.accountNumber,
+			bank_name:this.state.bankName
+		}
+		bankWithdraw(data)
+		.then((withdraw)=>{
+			this.setState({
+				loading:false,
+				payments:[
+					{
+						...withdraw
+					},
+					...this.state.payments
+				]
+			})
+			this.onLoadWallet()
+			this.directTransferClose()
+		})
 	}
 
 	onPayPaySubmit=(e)=>{
 		e.preventDefault()
-		// if(this.state.amount >= this.context.state.earnings.balance){
-		// 	this.setState({err:'Insufficient balance!'})
-		// 	return false;
-		// }
-		// if(this.state.amount === '' || this.state.accountName === '' || this.state.email === ''){
-		// 	this.setState({err:'All inputs are required!'})
-		// 	return false;
-		// }
+		if(this.state.amount >= this.state.wallet.available){
+			this.setState({err:'Insufficient balance!'})
+			return false;
+		}
+		if(this.state.amount === '' || this.state.accountName === '' || this.state.email === ''){
+			this.setState({err:'All inputs are required!'})
+			return false;
+		}
 		this.setState({loading:true,err:''})
-		// const data ={
-		// 	hostId:this.context.state.user.uid,
-		// 	amount:this.state.amount,
-		// 	type:'paypal',
-		// 	balance:this.context.state.earnings.balance,
-		// 	pending:this.context.state.earnings.pending,
-		// 	details:{
-		// 		accountName:this.state.accountName,
-		// 		email:this.state.email,
-		// 	}
-		// }
-		// this.context.withdrawal(data)
-		// .then((withdraw)=>{
-		// 	this.setState({
-		// 		loading:false,
-		// 		payments:[
-		// 			{
-		// 				...withdraw
-		// 			},
-		// 			...this.state.payments
-		// 		]
-		// 	})
-		// 	this.handleClose()
-		// })
+		const data ={
+			id:this.props.user.id,
+			firstname:this.props.user.firstname,
+			lastname:this.props.user.lastname,
+			amount:this.state.amount,
+			paypal_name:this.state.accountName,
+			paypal_email:this.state.email,
+		}
+		paypalWithdraw(data)
+		.then((withdraw)=>{
+			this.setState({
+				loading:false,
+				payments:[
+					{
+						...withdraw
+					},
+					...this.state.payments
+				]
+			})
+			this.onLoadWallet()
+			this.handleClose()
+		})
 	}
+
+	statusFilter=(e)=> {
+		var input, filter, table, tr, td, i, txtValue;
+		input = e.target.value
+		filter = input.toUpperCase();
+		table = this.table.current;
+		tr = table.getElementsByTagName("tr");
+		this.setState({status:filter})
+		for (i = 0; i < tr.length; i++) {
+		  td = tr[i].getElementsByTagName("td")[4];
+		  if (td) {
+			txtValue = td.textContent || td.innerText;
+			if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			  tr[i].style.display = "";
+			} else {
+			  tr[i].style.display = "none";
+			}
+		  }       
+		}
+	  }
+
+	  monthFilter=(e)=> {
+		var input, filter, table, tr, td, i, txtValue;
+		input = e.target.value
+		filter = input;
+		table = this.table.current;
+		tr = table.getElementsByTagName("tr");
+		
+		for (i = 0; i < tr.length; i++) {
+		  td = tr[i].getElementsByTagName("td")[0];
+		  if (td) {
+			txtValue = td.textContent.split('/') || td.innerText.split('/');
+			if(txtValue.length>2)
+			if (txtValue[1] === filter) {
+			  tr[i].style.display = "";
+			} else {
+			  tr[i].style.display = "none";
+			}
+		  }       
+		}
+	  }
+
+	  yearFilter=(e)=> {
+		var input, filter, table, tr, td, i, txtValue;
+		input = e.target.value
+		filter = input;
+		table = this.table.current;
+		tr = table.getElementsByTagName("tr");
+		
+		for (i = 0; i < tr.length; i++) {
+		  td = tr[i].getElementsByTagName("td")[0];
+		  if (td) {
+			txtValue = td.textContent.split('/') || td.innerText.split('/');
+			if(txtValue.length>2)
+			if (txtValue[2] === filter) {
+			  tr[i].style.display = "";
+			} else {
+			  tr[i].style.display = "none";
+			}
+		  }       
+		}
+	  }
 	render(){
-		const {classes, user, earnings} = this.props
+		const {classes} = this.props
 		const today = new Date().getFullYear()
 		const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.payments.length - this.state.page * this.state.rowsPerPage);
 		const years = []
@@ -308,7 +273,7 @@ class DashboardPayment extends Component {
 							<tr>
 								<td>Amount</td>
 								<td>
-									<input name="amount" onChange={this.handleChange}/>
+									<input name="amount" onInput={(e)=>e.target.value=e.target.value.replace(/[A-Za-z]/g, '')} onChange={this.handleChange}/>
 								</td>
 							</tr>
 						</tbody>
@@ -347,13 +312,13 @@ class DashboardPayment extends Component {
 							<tr>
 								<td>Account Number</td>
 								<td>
-									<input name="accountNumber" onChange={this.handleChange}/>
+									<input onInput={(e)=>e.target.value=e.target.value.replace(/[A-Za-z]/g, '')}  name="accountNumber" onChange={this.handleChange}/>
 								</td>
 							</tr>
 							<tr>
 								<td>Amount</td>
 								<td>
-									<input name="amount" onChange={this.handleChange}/>
+									<input onInput={(e)=>e.target.value=e.target.value.replace(/[A-Za-z]/g, '')}  name="amount" onChange={this.handleChange}/>
 								</td>
 							</tr>
 						</tbody>
@@ -372,19 +337,19 @@ class DashboardPayment extends Component {
 				<div className="dashboard__earningTable">
 					<div>
 						<p>Net Income</p>
-						<p className="dashboard__amount">{currency(user.income)}</p>
+						<p className="dashboard__amount">{currency(this.state.wallet.income)}</p>
 					</div>
 					<div>
 						<p>Withdrawn</p>
-						<p className="dashboard__amount">{currency(user.withdrawn)}</p>
+						<p className="dashboard__amount">{currency(this.state.wallet.withdrawn)}</p>
 					</div>
 					<div>
 						<p>Pending Clerance</p>
-						<p className="dashboard__amount">{currency(user.pending)}</p>
+						<p className="dashboard__amount">{currency(this.state.wallet.pending)}</p>
 					</div>
 					<div>
 						<p>Available for Withdrawal</p>
-						<p className="dashboard__amount">{currency(earnings.balance)}</p>
+						<p className="dashboard__amount">{currency(this.state.wallet.available)}</p>
 					</div>
 				</div>
 
@@ -401,7 +366,7 @@ class DashboardPayment extends Component {
                                 <NativeSelect
                                 className='input'
                                 // value={state.age}
-								onChange={(e)=>{this.filterByStatus(e.target.value)}}
+								onChange={(e)=>{this.statusFilter(e)}}
                                 inputProps={{
                                     name: 'everything'
                                 }}
@@ -418,7 +383,7 @@ class DashboardPayment extends Component {
                                 <NativeSelect
                                 className='input'
                                 // value={state.age}
-                                onChange={(e)=>this.filterByYear(e.target.value)}
+                                onChange={(e)=>this.yearFilter(e)}
                                 inputProps={{
                                     name: 'year'
                                 }}
@@ -436,24 +401,24 @@ class DashboardPayment extends Component {
 							<NativeSelect
 							className='input'
 							// value={state.age}
-							onChange={(e)=>this.filterByMonth(e.target.value)}
+							onChange={(e)=>this.monthFilter(e)}
 							inputProps={{
 								name: 'month'
 							}}
 							>
 							<option value="">All months</option>	
-							<option value="0">Jan</option>
-							<option value='1'>Feb</option>
-							<option value='2'>Mar</option>
-							<option value='3'>Apr</option>
-							<option value='4'>May</option>
-							<option value='5'>Jun</option>
-							<option value='6'>Jul</option>
-							<option value='7'>Aug</option>
-							<option value='8'>Sep</option>
-							<option value='9'>Oct</option>
-							<option value='10'>Nov</option>
-							<option value='11'>Dec</option>
+							<option value="1">Jan</option>
+							<option value='2'>Feb</option>
+							<option value='3'>Mar</option>
+							<option value='4'>Apr</option>
+							<option value='5'>May</option>
+							<option value='6'>Jun</option>
+							<option value='7'>Jul</option>
+							<option value='8'>Aug</option>
+							<option value='9'>Sep</option>
+							<option value='10'>Oct</option>
+							<option value='11'>Nov</option>
+							<option value='12'>Dec</option>
 							</NativeSelect>
 						</FormControl>
 					</div>
@@ -463,7 +428,7 @@ class DashboardPayment extends Component {
 					<Grid item xs={10}>
 					<TableContainer style={{position:'relative'}} className='payment-table' component={Paper} >
 							<Modal loading={this.state.tableLoading}/>
-                            <Table  aria-label="payment">
+                            <Table innerRef={this.table}  aria-label="payment">
                                 <TableHead>
                                 <TableRow>
                                     <StyledTableCell classes={{root:classes.tdHead}} align="left">Date</StyledTableCell>
@@ -477,17 +442,17 @@ class DashboardPayment extends Component {
                                 {
                                 this.state.payments.length>0?
                                 this.state.payments.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((payment, i) =>{
-                                        const created = new Date(payment.createdAt*1000);
+                                        const created = new Date(payment.createdAt);
                                         const createdAt = created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
                                     return(
                                         <StyledTableRow classes={{root:classes.trRoot}} key={i}>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} component="th" scope="row">
+                                        <StyledTableCell classes={{root:classes.tdRoot}}>
                                             {createdAt}
                                         </StyledTableCell>
                                         <StyledTableCell classes={{root:classes.tdRoot}} align="left">{currency(payment.amount)}</StyledTableCell>
-										<StyledTableCell classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{payment.type}</StyledTableCell>
-										<StyledTableCell classes={{root:classes.tdRoot}} align="left">{payment.transactionID}</StyledTableCell>
-										<StyledTableCell classes={{root:classes.tdRoot}}  align="left"><span style={{color:payment.status === 'pending'?'#ff9800':payment.status === 'processed'?'#4caf50':'#f44336'}}>{payment.status}</span></StyledTableCell>
+										<StyledTableCell classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{payment.method?'Bank Transfer':'Paypal'}</StyledTableCell>
+										<StyledTableCell classes={{root:classes.tdRoot}} align="left">{payment._id}</StyledTableCell>
+										<StyledTableCell classes={{root:classes.tdRoot}}  align="left"><span style={{color:payment.status === 0?'#ff9800':payment.status === 1?'#4caf50':'#f44336'}}>{payment.status === 0?'pending':payment.status ===1?'Processed':'Cancelled'}</span></StyledTableCell>
                                         </StyledTableRow>
 									)
 									

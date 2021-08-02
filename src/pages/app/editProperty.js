@@ -6,7 +6,6 @@ import image from  "../../images/placeholder.jpg"
 import {Snackbar, Slide } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Backend from "./layout"
-import AppContext from "../../state/context";
 import Activity from '../../components/activity'
 import {withRouter} from "react-router-dom"
 import {states} from "../../icons/options"
@@ -19,7 +18,6 @@ const TransitionUp=(props)=>{
   }
 
 class EditProperty extends React.Component{
-    static contextType = AppContext
     constructor(props){
         super(props)
         this.state ={
@@ -319,7 +317,6 @@ editProperty(formData,id)
     }
 
     render(){
-        console.log(this.state.other_images)
         return (
             <>
                

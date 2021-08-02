@@ -90,9 +90,9 @@ class Favourites extends Component{
                                     this.props.favourites.length>0?
                                     <>
                                     <Grid container justify="space-between">
-                                    <Grid item>
+                                    {/* <Grid item>
                                         <p className={classes.text}>1 -30 of 200</p>
-                                    </Grid>
+                                    </Grid> */}
                                     <Grid item>
                                         <FormControl classes={{root:classes.formControl}}>
                                             <p className={classes.text}>Sort:</p>
@@ -111,7 +111,7 @@ class Favourites extends Component{
                                     {
                                         this.props.favourites.map((result,index)=>{
                                                 return(
-                                                    <Searchs favourite={this.state.favourites.includes(result._id)} content={result}   name={`rating${index}`} key={index}/>
+                                                    <Searchs rating={result.reviews} favourite={this.state.favourites.includes(result._id)} content={result}   name={`rating${index}`} key={index}/>
                                                 )
                                         })
                                     }

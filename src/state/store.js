@@ -16,6 +16,8 @@ function configureStore(preload) {
     trendingCribs:[],
     bestCribs:[],
     propertyTypes:[],
+    topTypes:[],
+    topCities:[],
     notifications:[],
     searchData:{
       location: '',

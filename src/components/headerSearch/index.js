@@ -43,17 +43,15 @@ class Form extends Component {
         }
           
     }
-    componentDidUpdate(prevProps, prevState) {
-        // if(prevProps.open !== this.props.open){
-        //     if(this.props.open){
-        //        const interval =  setTimeout(()=>{
-        //             this.setState({open:this.props.open})
-        //            }, 190)
-        //            this.setState({interval})
-        //     }
-        //     else
-        //     this.setState({open:this.props.open})
-        //     }
+    componentDidUpdate(prevProps) {
+        if(prevProps.searchData !== this.props.searchData){
+            this.setState({
+                location: this.props.searchData.location,
+                checkIn: this.props.searchData.checkIn,
+                checkOut: this.props.searchData.checkOut,
+                guest: this.props.searchData.guest
+            })
+        }
     }
     componentWillUnmount(){
         clearTimeout(this.state.interval)

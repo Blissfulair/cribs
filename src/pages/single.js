@@ -668,7 +668,7 @@ class Single extends Component {
                                                                 {property.guest} Guests | {property.bedroom} Bedrooms | {property.bedroom} beds | {property.bathroom} Baths
                                                     </Typography>
                                                             <Typography style={{ fontSize: 12 }} variant="subtitle2" component="p">
-                                                            {(stars / property_length)>=1?this.state.labels[Math.ceil(stars / property_length)][0]:''} {stars > 0?(stars/property_length)+'/5 ':'No rating yet'} {(stars / property_length) >= 1?this.state.labels[Math.ceil(stars / property_length)][1]:''}
+                                                            {(stars / property_length)>=1?this.state.labels[Math.ceil(stars / property_length)][0]:''} {stars > 0?(stars/property_length).toFixed(2)+'/5 ':'No rating yet'} {(stars / property_length) >= 1?this.state.labels[Math.ceil(stars / property_length)][1]:''}
                                                     </Typography>
                                                             <Rating
                                                                 disabled

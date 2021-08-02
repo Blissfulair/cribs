@@ -8,6 +8,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Rating from '@material-ui/lab/Rating';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import PropTypes from "prop-types"
 import "./trending.scss"
 
 const styles = ()=>({
@@ -28,7 +29,18 @@ const styles = ()=>({
 
     }
 })
-const Trending = ({classes, color,name, details,favourite})=>{
+const Trending = ({classes, color,name, details,favourite, rating})=>{
+    const [stars, setStars] = React.useState(0)
+    React.useEffect(()=>{
+        let star = 0
+        if(rating.length>0){
+            rating.forEach(rate=>star += rate.stars)
+            setStars(star/rating.length)
+        }
+        return ()=>{
+            setStars(0)
+        }
+    },[rating])
     return(
         <div className="card" >
         <Card className="trending-card" elevation={0}>
@@ -51,7 +63,7 @@ const Trending = ({classes, color,name, details,favourite})=>{
                     <div style={{position:'absolute', bottom:0}}>
                         <Rating
                         name={name}
-                        value={details.rateValue/details.totalReviewer}
+                        value={stars}
                         precision={0.5}
                         disabled
                         style={{fontSize:20, color:'#fff'}}
@@ -75,3 +87,10 @@ const Trending = ({classes, color,name, details,favourite})=>{
     )
 }
 export default withStyles(styles)(Trending)
+
+Trending.propTypes={
+    rating:PropTypes.array
+}
+Trending.defaultProps ={
+    rating:[]
+}

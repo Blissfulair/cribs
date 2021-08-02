@@ -4,7 +4,7 @@ import {
     Grid, 
     withStyles,
 } from '@material-ui/core'
-import AppContext from "../../state/context"
+
 import HostDashboard from "./host/dashboard"
 // import RenterDashboard from "./renter/dashboard";
 const styles = (theme)=>({
@@ -73,7 +73,6 @@ const styles = (theme)=>({
 //     return <Slide direction="up" ref={ref} {...props} />;
 //   });
 class Dashboard extends React.Component{
-        static contextType = AppContext
         constructor(){
             super()
             this.state={

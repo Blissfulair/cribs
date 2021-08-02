@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
@@ -39,13 +39,22 @@ const styles = ()=>({
 })
 const Search = ({classes, content, rating,name, favourite, user})=>{
     const [stars, setStars] = React.useState(0)
+    const [labels,] = useState({
+        1: ['Mediocre','Not bad at all'],
+        2: ['Okey','Good for you'],
+        3: ['Good','Popular choice'],
+        4: ['Excellent','Exquisite!!'],
+        5: ['Excellent','Best for you and family'],
+    })
     React.useEffect(()=>{
         let star = 0
         if(rating.length>0){
             rating.forEach(rate=>star += rate.stars)
             setStars(star/rating.length)
         }
-
+        return ()=>{
+            setStars(0)
+        }
     },[rating])
     return(
     <Link className="s-nav-link" to={user?`/app/crib/${content._id}`:`/crib/${content._id}`}>
@@ -82,7 +91,10 @@ const Search = ({classes, content, rating,name, favourite, user})=>{
                         <Typography className={classes.para} style={{fontWeight:'bold', textTransform:'capitalize'}} variant="h5">{content.name}</Typography>
                         <Typography  className={classes.para} variant="subtitle1" style={{textTransform:'capitalize'}} component="p">{content.city}, {content.state}, Ng</Typography>
                         <Typography className={classes.para1} style={{marginBottom:30}}  variant="subtitle2" component="p">{content.guest} Guests | {content.bedroom} Bedrooms | {content.bedroom} beds | {content.bathroom} Baths</Typography>
-                        <Typography className={classes.para1} variant="subtitle2" component="p">Excellent 4.7/5 Good for families</Typography>
+                        <Typography className={classes.para1} variant="subtitle2" component="p">
+
+                        {stars >=1?labels[Math.ceil(stars)][0]:''} {stars > 0?stars.toFixed(2)+'/5 ':'No rating yet'} {stars  >= 1?labels[Math.ceil(stars)][1]:''}
+                        </Typography>
                         <Typography>
                             <Rating
                                 name={name}

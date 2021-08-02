@@ -14,15 +14,6 @@ import jigsaw from "../images/jigsaw.svg"
 import focus from "../images/focus.svg"
 import Slide from "../components/slider";
 import Explore from "../components/explore";
-import AppContext from "../state/context";
-import house from "../images/house.png"
-import bangalow from "../images/bangalow.png"
-import condos from "../images/condos.png"
-import benin from "../images/benin.jpeg"
-import abuja from "../images/abuja.jpg"
-import lagos from "../images/lagos.jpg"
-import kano from "../images/kano.jpeg"
-import cottage from "../images/cottage.png"
 import cribs from "../images/cribs.svg"
 import SearchIcon from "../images/searchicon.svg"
 import CancelIcon from "../images/cancelicon.svg"
@@ -94,7 +85,6 @@ const Guests = styled.div`
 
 
 class Index extends Component {
-    static contextType = AppContext
     constructor(props) {
         super(props)
         this.state = {
@@ -272,25 +262,20 @@ class Index extends Component {
                         <Grid item xs={11} md={10} >
                            
                                 {
-                                    this.props.propertyTypes.length>=2&&
+                                    this.props.topTypes.length>=2&&
                                     <>
                                     <Typography classes={{ root: classes.title }} className="head-title" variant="h3">Where would you like to stay?</Typography>
                                     <Grid container spacing={2}>
                                     <Slide
                                         showArrows={false}
                                     >
-                                            <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                <Stays title={this.props.propertyTypes[0].name} link={`type=${this.props.propertyTypes[0].name}`} image={house} available={1000} color={'#DF6C08'} />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={3} lg={3}>
-                                                <Stays title={this.props.propertyTypes[1].name}  link={`type=${this.props.propertyTypes[1].name}`} image={bangalow} available={1000} />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={3} lg={3}>
-                                                <Stays title={'Cottage'}  link={`type=${'cottage'}`} image={condos} available={1000} color="#DF0808" />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6} md={3} lg={3}>
-                                                <Stays title="Wharehouse" link={`type=waraehouse`} image={cottage} available={1000} color="#000000" />
-                                            </Grid>
+                                            {
+                                                this.props.topTypes.map((type, index)=>(
+                                                    <Grid key={index} item xs={12} sm={6} md={3} lg={3} >
+                                                        <Stays title={type.name} link={`type=${type.name}`} image={process.env.REACT_APP_BACKEND_URL+'/'+type.image} available={type.total} color={index === 1?'#DF6C08':(index===2?'':(index===3?'#DF0808':'#000000'))} />
+                                                    </Grid>
+                                                ))
+                                            }
                                         </Slide>
                                     </Grid>
                                     </>
@@ -343,7 +328,7 @@ class Index extends Component {
                                                 return (
                                                     <Grid key={index} item xs={12} sm={6} md={3} lg={3} >
                                                     <Link to={this.props.user?`/app/crib/${property._id}`:`/crib/${property._id}`} key={index}>
-                                                        <Trending favourite={this.state.favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"}  />   
+                                                        <Trending rating={property.reviews}  favourite={this.state.favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"}  />   
                                                     </Link>
                                                     </Grid>
                                                 )
@@ -405,7 +390,7 @@ class Index extends Component {
                                                     return (
                                                         <Grid key={index} item xs={12} sm={6} md={3} lg={3} >
                                                         <Link to={this.props.user?`/app/crib/${property._id}`:`/crib/${property._id}`} key={index}>
-                                                            <Trending favourite={this.state.favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"}  />   
+                                                            <Trending rating={property.reviews}  favourite={this.state.favourites.includes(property._id)} name={`rating${index}`} details={property} color={index === 0?"#00C1C8":index===1?"#08191A":index===2?"#EE2B72":"#C8BB00"}  />   
                                                         </Link>
                                                         </Grid>
                                                     )
@@ -469,28 +454,6 @@ class Index extends Component {
                             <Typography variant="h4" classes={{ root: classes.title }}>Explore Cribs by City</Typography>
                             <Grid style={{ position: 'relative' }} container>
                                 <Explore 
-                                content={[
-                                    { 
-                                        name: 'Lagos City', 
-                                        image: lagos, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
-                                        link: 'city=lagos' 
-                                    }, 
-                                    { 
-                                        name: 'Abuja City', 
-                                        image: abuja, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
-                                        link: 'city=abuja' 
-                                    }, 
-                                    {   
-                                        name: 'Kano City', 
-                                        image: kano, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
-                                        link: 'city=kano' 
-                                    }, 
-                                    { 
-                                        name: 'Benin City', 
-                                        image: benin, description: '440+ VERIFIED STAYS Book sunny lofts, beachfront flats, and more', 
-                                        link: 'city=benin' 
-                                    }
-                                    ]}
                                     height={274}
                                  />
                             </Grid>
@@ -505,9 +468,9 @@ class Index extends Component {
 const mapStateToProps = state => ({
     properties:state.properties,
     user:state.user,
-    propertyTypes:state.propertyTypes,
+    topTypes:state.topTypes,
     trendingCribs:state.trendingCribs,
-    bestCribs:state.bestCribs
+    bestCribs:state.bestCribs,
 });
 const mapDispatchToProps = dispatch => ({
     setTrendingAndBestCribs: (payload) => dispatch(setTrendingAndBestCribs(payload)),

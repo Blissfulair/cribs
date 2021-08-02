@@ -41,13 +41,13 @@ const ProfileDetails = ({user,uploadImage})=>{
                 <h4 className="title">{user.firstname + ' '+ user.lastname}</h4>
                 <p className="review"> Reviews</p>
                 <Grid container alignItems="center">
-                    <Typography style={{color:'#00A8C8', fontSize:20, fontWeight:'bold', marginRight:10}}>6.6</Typography>
+                    <Typography style={{color:'#00A8C8', fontSize:20, fontWeight:'bold', marginRight:10}}>{(user.stars/user.reviews).toFixed(1)}</Typography>
                     <StyledRating
                         name="rate"
-                        defaultValue={5}
+                        defaultValue={user.stars/user.reviews}
                     />
                 </Grid>
-                <Typography variant="subtitle2" style={{marginTop:12, color:'#00A8C8'}} component="p">Top Host</Typography>
+                <Typography variant="subtitle2" style={{marginTop:12, color:'#00A8C8'}} component="p">{user.reviews === 0?'No reviews yet':(user.stars/user.reviews)>=3.5?'Top Host':(user.stars/user.reviews<3.5&&'NewBie Host')}</Typography>
 
                 <Link to="/app/edit-profile">
                     <div className="btn">

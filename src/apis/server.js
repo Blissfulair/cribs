@@ -69,6 +69,14 @@ export const checkLoggedIn = async () => {
     if (user)
     return user;
   };
+
+  export const getWallet = async (id) => {
+    const response = await fetch(`/api/user/wallet/${id}`);
+    const  user = await response.json();
+
+    if (user)
+    return user;
+  };
   export const changeRole = async (id, data) => {
     const response = await fetch(`/api/user/change_role/${id}`,{
       method:'POST',
@@ -118,8 +126,8 @@ export const checkLoggedIn = async () => {
   export const propertyTypes = async () => {
     const response = await fetch('/api/property/types');
 
-    const { types } = await response.json();
-    return types
+    const { types, topTypes, topCities } = await response.json();
+    return { types, topTypes, topCities } 
   };
   export const getTrendingAndBestCribs = async () => {
     const [trending_crib, best_crib] = await Promise.all([
@@ -227,3 +235,38 @@ export const checkLoggedIn = async () => {
     const { favourites } = await response.json();
     return favourites
   }
+
+
+
+
+  //withdraw
+
+  export const paypalWithdraw = async (data) => {
+    const response = await fetch('/api/withdraw/paypal',{
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+    const  {withdraw}= await response.json();
+    return withdraw;
+  };
+
+  export const bankWithdraw = async (data) => {
+    const response = await fetch('/api/withdraw/bank',{
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+    const  {withdraw}= await response.json();
+    return withdraw;
+  };
+
+  export const getWithdraw = async (id) => {
+    const response = await fetch('/api/withdraw/withdraws/'+id);
+    const  {withdraws}= await response.json();
+    return withdraws;
+  };

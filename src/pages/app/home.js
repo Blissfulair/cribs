@@ -12,8 +12,6 @@ import jigsaw from "../../images/jigsaw.svg"
 import focus from "../../images/focus.svg"
 import Slide from "../../components/slider";
 import Explore from "../../components/explore";
-import AppContext from "../../state/context";
-import house from "../../images/house.png"
 import bangalow from "../../images/bangalow.png"
 import cottage from "../../images/cottage.png"
 import benin from "../../images/benin.jpeg"
@@ -67,7 +65,6 @@ const styles = theme =>({
     }
 })
 class Home extends Component{
-     static contextType = AppContext
     constructor(props){
         super(props)
         this.state={
@@ -86,7 +83,7 @@ class Home extends Component{
     //     })
     // },[context])
     componentDidMount(){
-        const favourites = getFavs()
+        const favourites = getFavs(this.props.user)
         getTrendingAndBestCribs()
         .then(cribs=>{
             this.props.setTrendingAndBestCribs(cribs)
@@ -125,7 +122,7 @@ class Home extends Component{
                             <Paper style={{height:200,padding:'20px 8px'}}>
                                 <Typography style={{fontSize:40, color:'#707070'}} variant="h3">Hi, {this.props.user.firstname}</Typography>
                                 <Typography style={{color:'#707070', fontSize:15,marginTop:22}} variant="subtitle1" component="p">
-                                Check your inbox so as not to miss clients requests.
+                                Make your reservations and enjoy your stay.
                                 </Typography>
                             </Paper>
                         </Grid>
@@ -136,18 +133,13 @@ class Home extends Component{
                         infinite={true}
                         showArrows={false}
                     >
-                        <Grid item xs={12} sm={6} md={3} lg={3} >
-                        <Stays title="House" link={`type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
-                        <Stays title="Bungalows" link={`type=bungalow`}  height={280} image={bangalow} available={1000}/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={3} lg={3} >
-                        <Stays title="House" link={`type=house`} height={280} image={house} available={1000} color={'#DF6C08'}/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={3} lg={3}>
-                        <Stays title="Bungalows" link={`type=bungalow`}  height={280} image={bangalow} available={1000}/>
-                        </Grid>
+                            {
+                                this.props.topTypes.map((type, index)=>(
+                                    <Grid key={index} item xs={12} sm={6} md={3} lg={3} >
+                                        <Stays title={type.name} link={`type=${type.name}`} image={process.env.REACT_APP_BACKEND_URL+'/'+type.image} available={type.total} color={index === 1?'#DF6C08':(index===2?'':(index===3?'#DF0808':'#000000'))} />
+                                    </Grid>
+                                ))
+                            }
                     </Slide>
                     {/* <Grid item xs={12} sm={12} md={6} lg={6}>
                         <div className={classes.loginContainer}>
@@ -168,7 +160,7 @@ class Home extends Component{
                                                 return(
                                                     <Grid item xs={12} sm={6} md={3} lg={3} key={i} >
                                                         <Link to={`/app/crib/${property._id}`}>
-                                                            <Trending favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
+                                                            <Trending favourite={this.state.favourites.includes(property._id)} rating={property.reviews} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
                                                         </Link>
                                                     </Grid>
                                                 )
@@ -203,7 +195,7 @@ class Home extends Component{
                                                 return(
                                                     <Grid item xs={12} sm={6} md={3} lg={3} key={i} >
                                                         <Link to={`/app/crib/${property._id}`}>
-                                                            <Trending favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
+                                                            <Trending rating={property.reviews}  favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
                                                         </Link>
                                                     </Grid>
                                                 )
@@ -279,7 +271,8 @@ const mapStateToProps=state=>({
    properties:state.properties,
    trendingCribs:state.trendingCribs,
    bestCribs:state.bestCribs,
-   user:state.user
+   user:state.user,
+   topTypes:state.topTypes
 })
 const mapDispatchToProps = dispatch => ({
     setTrendingAndBestCribs: (payload) => dispatch(setTrendingAndBestCribs(payload))

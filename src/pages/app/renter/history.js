@@ -232,6 +232,7 @@ class History extends React.Component{
             // amount:this.state.history.amount,
             review:this.state.review,
             stars:this.state.rating,
+            host_id:this.state.history.host_id
             // email:user.email,
             // hostId:
         }

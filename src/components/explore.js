@@ -1,12 +1,13 @@
 import React from "react"
+import { connect } from "react-redux";
 import Carousel from './carousel';
 import City from "./city"
-const Explore = ({content,height})=>{
+const Explore = ({height, topCities})=>{
 
     return(
         <>
             
-            {content.length > 0?(
+            {topCities.length > 0?(
                 <Carousel
                     slidesPerPage={3}
                     slidesPerScroll={1}
@@ -14,9 +15,9 @@ const Explore = ({content,height})=>{
                     minDraggableOffset={200}
                     auto={7000}
                     >
-                    {content.map((city,index)=>{
+                    {topCities.map((city,index)=>{
                     return (
-                        <City height={height} color='#000000' link={city.link} name={city.name} image={city.image} description={city.description}  key={index} />
+                        <City height={height} color='#000000' link={`city=${city.name}`} name={city.name} image={process.env.REACT_APP_BACKEND_URL+'/'+city.image} description={`${city.total} VERIFIED STAYS Book sunny lofts, beachfront flats, and more`}  key={index} />
                     )
                     })
                     }
@@ -25,4 +26,7 @@ const Explore = ({content,height})=>{
         </>
     )
 }
-export default Explore;
+const mapStateToProps=state=>({
+    topCities:state.topCities
+})
+export default connect(mapStateToProps)(Explore);

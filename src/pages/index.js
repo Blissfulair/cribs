@@ -18,7 +18,7 @@ import cribs from "../images/cribs.svg"
 import SearchIcon from "../images/searchicon.svg"
 import CancelIcon from "../images/cancelicon.svg"
 import Splash from "../components/splash";
-import { getFavs, getDates } from "../helpers/helpers";
+import { getFavs, getDates, verified } from "../helpers/helpers";
 import  LocationCard from "../components/Cards/LocationCard";
 import { connect } from "react-redux";
 import { setTrendingAndBestCribs, storeSearchData} from "../state/actions"
@@ -272,7 +272,7 @@ class Index extends Component {
                                             {
                                                 this.props.topTypes.map((type, index)=>(
                                                     <Grid key={index} item xs={12} sm={6} md={3} lg={3} >
-                                                        <Stays title={type.name} link={`type=${type.name}`} image={process.env.REACT_APP_BACKEND_URL+'/'+type.image} available={type.total} color={index === 1?'#DF6C08':(index===2?'':(index===3?'#DF0808':'#000000'))} />
+                                                        <Stays title={type.name} link={`type=${type.name}`} image={process.env.REACT_APP_BACKEND_URL+'/'+type.image} available={verified(type.total)} color={index === 1?'#DF6C08':(index===2?'':(index===3?'#DF0808':'#000000'))} />
                                                     </Grid>
                                                 ))
                                             }

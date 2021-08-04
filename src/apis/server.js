@@ -24,6 +24,19 @@ export const checkLoggedIn = async () => {
     return user;
   };
 
+
+
+  export const uploadProfileImage = async (id,data) => {
+    const response = await fetch('/api/user/profile-photo/'+id,{
+      method:'POST',
+      body:data
+    });
+    const  user= await response.json();
+    return user;
+  };
+
+
+
   export const resendEmail = async (data) => {
     const response = await fetch('/api/user/resend',{
       method:'POST',

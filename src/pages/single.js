@@ -855,7 +855,7 @@ class Single extends Component {
                                                         <div className="desktop-host">
                                                             <Grid container style={{ marginTop: 10, marginBottom: 5 }}>
                                                                 <Grid item xs={3}>
-                                                                    <Avatar alt={property.host.firstname} style={{ width: 50, height: 50 }} src={property.host.image} />
+                                                                    <Avatar alt={property.host.firstname} style={{ width: 50, height: 50 }} src={process.env.REACT_APP_BACKEND_URL+'/'+property.host.image} />
                                                                 </Grid>
                                                                 <Grid item xs={9}>
                                                                     

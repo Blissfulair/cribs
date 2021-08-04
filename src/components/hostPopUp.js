@@ -28,7 +28,7 @@ const HostPopUp = ({triger, close,host})=>{
         <DialogContent >
             <div style={{display:'grid', justifyContent:'center', alignSelf:'center', marginTop:70}}>
 
-                    <Avatar style={{width:100, height:100, margin:'0 auto'}} src={host.photoURL} alt={host.firstname}/>
+                    <Avatar style={{width:100, height:100, margin:'0 auto'}} src={process.env.REACT_APP_BACKEND_URL+'/'+host.image} alt={host.firstname}/>
                     <Typography style={{display:'flex',alignItems:'center',marginTop:15}}>{host.firstname +' '+ host.lastname}</Typography>
                     <Typography style={{display:'flex',alignItems:'center',marginTop:15}}><MailOutlineIcon/> {host.email}</Typography>
                     <Typography style={{display:'flex',alignItems:'center',marginTop:15}}><PhoneIcon/> {host.phone}</Typography>

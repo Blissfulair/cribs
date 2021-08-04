@@ -44,7 +44,7 @@ const HostDashboard = ({classes, state, switchChart, context,user, notifications
                             <div className={classes.userInner}>
                                 {
                                     user.image?
-                                    <Avatar className={classes.avater} src={user.image} alt="user"/>
+                                    <Avatar className={classes.avater} src={process.env.REACT_APP_BACKEND_URL+'/'+user.image} alt="user"/>
                                     :
                                     <Avatar className={classes.avater} ><Typography variant="h3">{user.firstname.charAt(0)+user.lastname.charAt(0)}</Typography></Avatar>
                                 }

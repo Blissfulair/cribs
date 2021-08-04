@@ -20,7 +20,7 @@ import lagos from "../../images/lagos.jpg"
 import kano from "../../images/kano.jpeg"
 import { Paper } from "@material-ui/core";
 import SlideBanner from "../../components/slideBanner";
-import { getFavs } from "../../helpers/helpers";
+import { getFavs, verified } from "../../helpers/helpers";
 import {connect} from "react-redux"
 import AppHeader from "../../components/head";
 import { HomeSkeleton as Skeleton } from "../../components/skeleton/index";
@@ -136,7 +136,7 @@ class Home extends Component{
                             {
                                 this.props.topTypes.map((type, index)=>(
                                     <Grid key={index} item xs={12} sm={6} md={3} lg={3} >
-                                        <Stays title={type.name} link={`type=${type.name}`} image={process.env.REACT_APP_BACKEND_URL+'/'+type.image} available={type.total} color={index === 1?'#DF6C08':(index===2?'':(index===3?'#DF0808':'#000000'))} />
+                                        <Stays title={type.name} link={`type=${type.name}`} image={process.env.REACT_APP_BACKEND_URL+'/'+type.image} available={verified(type.total)} color={index === 1?'#DF6C08':(index===2?'':(index===3?'#DF0808':'#000000'))} />
                                     </Grid>
                                 ))
                             }

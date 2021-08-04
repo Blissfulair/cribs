@@ -127,3 +127,24 @@ export const isDescendant=(parent, child)=> {
     }
     return false;
 }
+
+
+export const verified=(number)=> {
+    let whole = 0;
+    if(number > 0){
+        if(number >= 1000){
+            whole = parseInt(number/1000)
+            return whole*1000+'+'
+        }
+        else if(number >= 100){
+            whole = parseInt(number/100)
+            return whole*100+'+'
+        }
+        else if(number >=10){
+            whole = parseInt(number/10)
+            return whole*10 +'+'
+        }
+        return number
+    }
+    return number;
+}

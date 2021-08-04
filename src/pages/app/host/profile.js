@@ -11,6 +11,8 @@ import Rating from "@material-ui/lab/Rating";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import {connect} from "react-redux";
 import AppHeader from "../../../components/appHeader"
+import { setUser } from "../../../state/actions";
+import { uploadProfileImage } from "../../../apis/server";
 
 
 const ProfileDetails = ({user,uploadImage})=>{
@@ -26,7 +28,7 @@ const ProfileDetails = ({user,uploadImage})=>{
             <div className="profile-img">
                 {
                     user.image?
-                    <img id="img" src={user.image} alt={user.firstname} />
+                    <img id="img" src={process.env.REACT_APP_BACKEND_URL+'/'+user.image} alt={user.firstname} />
                     :
                     <Avatar/>
                 }
@@ -142,29 +144,15 @@ class Profile extends React.Component{
         }
     }
 
-    componentDidMount(){
-        // axios.get(`${api}/get_profile`,{headers:headers})
-        // .then(res=>{
-        //     this.setState({
-        //         profile:res.data.profile,
-        //         user:res.data.user,
-        //         phone: res.data.profile !== null?  res.data.profile.phone:'',
-        //         name: res.data.profile !== null?  res.data.profile.name:'',
-        //         address: res.data.profile !== null?  res.data.profile.address:'',
-        //         location: res.data.profile !== null?  res.data.profile.location:'',
-        //         avater: res.data.profile !== null?  res.data.profile.avater:'',
-        //         experience: res.data.profile !== null?  res.data.profile.experience:'',
-        //         gender: res.data.profile !== null?  res.data.profile.gender:'',
 
-        //     })
-        // })
-    }
     uploadImage = (e)=>{
-        //let image = e.target.files[0];
-        // this.context.uploadProfilePhoto(image)
-        // .then(()=>{
-        //     // con
-        // })
+        let image = e.target.files[0];
+        const formData = new FormData()
+        formData.append('image', image)
+        uploadProfileImage(this.props.user.id,formData)
+        .then((user)=>{
+            this.props.setUser(user)
+        })
     }
 
 
@@ -183,5 +171,8 @@ class Profile extends React.Component{
 const mapStateToProps=state=>({
     user:state.user
 })
-export default connect(mapStateToProps)(Profile);
+const mapDispatchToProps=dispatch=>({
+    setUser:(payload)=>dispatch(setUser(payload))
+})
+export default connect(mapStateToProps,mapDispatchToProps)(Profile);
 

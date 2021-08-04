@@ -10,8 +10,8 @@ import { changeRole, makeHost, signOut } from "../apis/server";
 import Modal from "./modal/index";
 import Dmodal from "./modal/dmodal";
 import Switch from "./switch";
-import kano from "../images/kano.jpeg"
 import Activity from "./activity";
+import {Avatar, IconButton} from "@material-ui/core"
 
 class Head extends Component{
 
@@ -215,8 +215,9 @@ onLogout = ()=>{
                         user?
                             user.emailVerify?
                                 <div className="avatar-pro">
-                                    <img onClick={this.onOpenModal} src={kano} alt="" />
-                                    
+                                        <IconButton  onClick={this.onOpenModal}>
+                                            <Avatar className="avatar-img"  src={process.env.REACT_APP_BACKEND_URL+'/'+user.image}/>
+                                        </IconButton>
                                     <Dmodal
                                         open={this.state.openModal}
                                         onClose={this.onCloseModal}

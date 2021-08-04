@@ -1,5 +1,6 @@
 import React from "react"
 import { connect } from "react-redux";
+import { verified } from "../helpers/helpers";
 import Carousel from './carousel';
 import City from "./city"
 const Explore = ({height, topCities})=>{
@@ -17,7 +18,7 @@ const Explore = ({height, topCities})=>{
                     >
                     {topCities.map((city,index)=>{
                     return (
-                        <City height={height} color='#000000' link={`city=${city.name}`} name={city.name} image={process.env.REACT_APP_BACKEND_URL+'/'+city.image} description={`${city.total} VERIFIED STAYS Book sunny lofts, beachfront flats, and more`}  key={index} />
+                        <City height={height} color='#000000' link={`city=${city.name}`} name={city.name} image={process.env.REACT_APP_BACKEND_URL+'/'+city.image} description={`${verified(city.total)} VERIFIED STAYS Book sunny lofts, beachfront flats, and more`}  key={index} />
                     )
                     })
                     }

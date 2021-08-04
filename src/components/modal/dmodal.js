@@ -4,9 +4,12 @@ import "./index.scss"
 class Dmodal extends Component{
     dmodal = React.createRef()
     handleClick=(e)=>{
-        if((!this.dmodal.current.contains(e.target) && this.props.open && e.target.parentElement && e.target.parentElement.className !== 'avatar-pro') || (!this.dmodal.current.contains(e.target) && !this.props.open && e.target.parentElement && e.target.parentElement.className === 'avatar-pro')){
-            if(this.props.onClose)
-            this.props.onClose(false)
+        if(e.target.parentElement.tagName !== 'svg')
+        {
+            if((!this.dmodal.current.contains(e.target) && this.props.open && e.target.parentElement && !e.target.parentElement.className.includes('avatar-img')) || (!this.dmodal.current.contains(e.target) && !this.props.open && e.target.parentElement && e.target.parentElement.className.includes('avatar-img'))){
+                if(this.props.onClose)
+                this.props.onClose(false)
+            }
         }
     }
     componentDidMount(){

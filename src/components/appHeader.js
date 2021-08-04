@@ -175,7 +175,7 @@ const AppHeader = ({classes, history,user,dashboard, chooseDashboard, setUser})=
                                     <>
                                         {
                                             user.image?
-                                            <Avatar style={{ width:25,height:25}} src={user.image} alt="user"/>
+                                            <Avatar style={{ width:25,height:25}} src={process.env.REACT_APP_BACKEND_URL+'/'+user.image} alt="user"/>
                                             :
                                             <Avatar style={{ width:25,height:25}}  alt="">{user.firstname.charAt(0)+user.lastname.charAt(0)}</Avatar>
                                         }

@@ -8,13 +8,7 @@ import {
 import HostDashboard from "./host/dashboard"
 // import RenterDashboard from "./renter/dashboard";
 const styles = (theme)=>({
-    user:{
-        borderRadius:0,
-        height: 330,
-        justifyContent:'center',
-        display:'flex',
-        paddingTop:15
-    },
+
     impression:{
         borderRadius:0,
         minHeight: 200,
@@ -100,7 +94,7 @@ class Dashboard extends React.Component{
         return (
             <>
                 <Layout>
-                    <Grid container style={{paddingTop:120}}>
+                    <Grid container>
                         <Grid item xs={12} md={11} >
                             {/* {
                                 this.context.state.dashboard?

@@ -15,7 +15,7 @@ import { getDates } from "../helpers/helpers";
 
 //const stripePromise = loadStripe('pk_test_51Hg8hoK2fIb9aYwzRl3MOcLEWpgHCGKnqkXzl8emOzsoNn5ii8oMMuKRAyjV1tanLgvOBuRvFFDu0MK9frmDdDuZ00uaY2DWuF');
 
-const PayStack = withRouter(({changeHandler,state,data,history,user})=>{
+const PayStack = withRouter(({changeHandler,state,data,history,user,location})=>{
     const [loading, setLoading] = useState(false)
     const config = {
         reference: (new Date()).getTime(),
@@ -32,7 +32,8 @@ const PayStack = withRouter(({changeHandler,state,data,history,user})=>{
                 renter:{
                     email:user.email,
                     firstname:user.firstname,
-                    lastname:user.lastname
+                    lastname:user.lastname,
+                    image:user.image
                 },
                 refund:data.refund,
                 amount:data.total,
@@ -63,11 +64,9 @@ const PayStack = withRouter(({changeHandler,state,data,history,user})=>{
             .then(()=>{
 
                     window.sessionStorage.removeItem('@py')
+                    window.sessionStorage.removeItem(location.search)
                     setLoading(false)
-                    if(user)
                     history.push('/app/home')
-                    else
-                    history.push('/')
                 })
             
         
@@ -232,7 +231,7 @@ class PaymentCard extends Component{
             year:0,
             cardYear:'',
             cardMonth:0,
-            method:'card',
+            method:'paystack',
             email:'',
             phone:'',
             name:"",
@@ -272,11 +271,11 @@ class PaymentCard extends Component{
         <>
         <div className="card-details">
         <div className="payment-type">
-            <button onClick={()=>this.setState({method:'card'})} className={this.state.method === 'card'?'active':''}>Card</button>
+            <button onClick={()=>this.setState({method:'paystack'})} className={this.state.method === 'paystack'?'active':''}>Pay with Paystack</button>
 
-            <button className={this.state.method === 'paystack'?'active':''} onClick={() => { this.setState({method:'paystack'})}}>Paystack</button>
+            {/* <button className={this.state.method === 'paystack'?'active':''} onClick={() => { this.setState({method:'paystack'})}}>Paystack</button>
 
-            <button className={this.state.method === 'paypal'?'active':''} onClick={()=>{this.setState({method:'paypal'})}}>Paypal</button>
+            <button className={this.state.method === 'paypal'?'active':''} onClick={()=>{this.setState({method:'paypal'})}}>Paypal</button> */}
         </div>
         {/* <div className="user-card-details"> */}
         {

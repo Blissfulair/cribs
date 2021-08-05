@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import AppHeader from "../../../components/appHeader"
 import { setUser } from "../../../state/actions";
 import { uploadProfileImage } from "../../../apis/server";
+import Activity from "../../../components/activity";
 
 
 const ProfileDetails = ({user,uploadImage})=>{
@@ -46,6 +47,7 @@ const ProfileDetails = ({user,uploadImage})=>{
                     <Typography style={{color:'#00A8C8', fontSize:20, fontWeight:'bold', marginRight:10}}>{(user.stars/user.reviews).toFixed(1)}</Typography>
                     <StyledRating
                         name="rate"
+                        disabled
                         defaultValue={user.stars/user.reviews}
                     />
                 </Grid>
@@ -140,7 +142,8 @@ class Profile extends React.Component{
             code:'',
             avater:null,
             profile:null,
-            user:null
+            user:null,
+            isLoading:false
         }
     }
 
@@ -149,9 +152,11 @@ class Profile extends React.Component{
         let image = e.target.files[0];
         const formData = new FormData()
         formData.append('image', image)
+        this.setState({isLoading:true})
         uploadProfileImage(this.props.user.id,formData)
         .then((user)=>{
             this.props.setUser(user)
+            this.setState({isLoading:false})
         })
     }
 
@@ -161,6 +166,7 @@ class Profile extends React.Component{
             <>
                    
                     <Backend>
+                        <Activity loading={this.state.isLoading} />
                         <AppHeader/>
                         <ProfileDetails user={this.props.user} uploadImage={this.uploadImage}/>
                     </Backend>

@@ -141,9 +141,11 @@ handleScroll = () => {
 
 //logout user
 onLogout = ()=>{
+    this.setState({isLoading:true})
     signOut()
     .then((res)=>{
       this.props.setUser(null)
+      this.setState({isLoading:false})
       window.sessionStorage.removeItem('@dash')
       this.props.history.push('/')
     })

@@ -10,13 +10,13 @@ const PublicRoute = ({component: Component, ...rest}) => {
             return(
             rest.user?
             rest.user.emailVerify?
-                //!rest.location.pathname.includes('app')?
+                rest.location.state === undefined?
                     rest.dashboard?
                     <Redirect to={'/app/home'} />
                     :
                     <Redirect to={'/app/dashboard'} />
-                // :
-                // <Redirect to={{pathname:rest.location.pathname, search:rest.location.search, state:rest.location.state}} />
+                :
+                <Redirect to={{pathname:rest.location.state.referer.pathname, search:rest.location.state.referer.search}} />
 
             :
             <Component {...props} />

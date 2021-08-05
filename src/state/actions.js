@@ -31,6 +31,12 @@ export const setProperties = (payload) => {
     payload
   }
 }
+export const setDashboardData = (payload) => {
+  return {
+    type: "DASHBOARD_DATA",
+    payload
+  }
+}
 export const setPropertyTypes = (payload) => {
   return {
     type: "PROPERTY_TYPES",

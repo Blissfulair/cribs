@@ -1,3 +1,4 @@
+import moment from "moment"
 export const getDates=(startDate, stopDate)=> {
     for(var arr=[],dt=new Date(startDate); dt<=stopDate; dt.setDate(dt.getDate()+1)){
         arr.push(new Date(dt));
@@ -148,3 +149,14 @@ export const verified=(number)=> {
     }
     return number;
 }
+export const maxStringLength = (text,leng = 80)=>{
+    if(text.length> leng){
+       return text.substr(0, leng)+'...';
+    }
+    return text;
+  }
+
+  export const humanDiff = (date)=>{
+    const prevDate = moment(date).toNow({withoutPrefix:true, seconds:true})
+    return prevDate+' ago'
+  }

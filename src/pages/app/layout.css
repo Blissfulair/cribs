@@ -12,9 +12,6 @@ button{
     position: fixed;
    
 }
-.dashboard aside .sidebar:first-child{
-    padding-top: 68px;
-}
 .dashboard .dashboard-content{
     width: 79%;
     margin-left: 21%;
@@ -31,7 +28,8 @@ button{
 }
 .dashboard .sidebar{
     width: 100%;
-    background: var(--text-blue);
+    background: #fff;
+    border-right: 1px solid #E5E5E5;
     /* box-shadow: 0px 3px 6px var(--shadow); */
 
 }

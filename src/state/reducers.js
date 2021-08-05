@@ -15,6 +15,11 @@ export default (state, action) => {
             ...state,
             dashboard: action.payload
           };
+      case "DASHBOARD_DATA":
+        return {
+          ...state,
+          dashboardData: action.payload
+        };
       case "PROPERTIES":
         return {
           ...state,

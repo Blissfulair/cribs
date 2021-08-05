@@ -3,18 +3,9 @@ import "./inbox.css"
 import {Link} from "react-router-dom"
 import Layout from "./layout"
 import {
-    Table,
-    TableHead,
-    TableBody,
-    TableCell,
-    TablePagination,
-    TableContainer,
-    Paper,
-    TableRow,
     withStyles,
     Grid,
     Fab,
-    Switch,
     Snackbar, Slide,
     IconButton,
     Typography,
@@ -35,33 +26,23 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { connect } from "react-redux";
 import { deleteProperty, getProperties } from "../../apis/server";
 import { setProperties } from "../../state/actions";
+import  Table, { 
+    TableHead,
+    TableBody,
+    TableCell,
+    TablePagination,
+    TableRow,
+} from "../../components/table/"
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
-export const StyledTableCell = withStyles((theme) => ({
-    head: {
-      backgroundColor: theme.palette.common.white,
-    },
-    body: {
-      fontSize: 14,
-    },
-  }))(TableCell);
-  
-  export const StyledTableRow = withStyles((theme) => ({
-    root: {
-      '&:nth-of-type(odd)': {
-        backgroundColor: theme.palette.action.hover,
-      },
-    },
-  }))(TableRow);
+
   
 
 
 export const styles = (theme)=>({
-    container:{
-        paddingTop:120
-    },
+
     btn:{
         width:36,
         height:36, 
@@ -77,9 +58,8 @@ export const styles = (theme)=>({
     tdRoot:{
         borderBottom:'none !important'
     },
-    tdHead:{
-        borderBottomColor:'#DCDCDC !important',
-        fontWeight:'bold !important'
+    tdCell:{
+        minWidth:120
     }
 })
 
@@ -144,12 +124,6 @@ class Properties extends React.Component{
 	handleChangeRowsPerPage = (event) => {
 		this.setState({rowsPerPage:Number(event.target.value),page:0});
 	  };
-
-    mark = n=>{
-        //let properties = this.state.property.push(n.target.dataset[n.target.name]);
-        //console.log(properties)
-        // this.setState({[n.target.name]: this.state.property.push(n.target.dataset[n.target.name])})
-    }
     str_length = (str, length, ending)=> {
         if (length == null) {
           length = 100;
@@ -165,7 +139,7 @@ class Properties extends React.Component{
       };
     render(){
         // const properties = this.context.state.myProperties
-        const {classes,properties} = this.props
+        const {properties} = this.props
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, properties.length - this.state.page * this.state.rowsPerPage);
         return (
             <>
@@ -208,34 +182,34 @@ class Properties extends React.Component{
                                     <Alert variant="filled" severity={this.state.success?"success":"error"}>{this.state.message}</Alert>
                                 </Snackbar>
                             }
-                    <Grid container justify="center" classes={{root:classes.container}}>
-                        <Grid item xs={11}>
-                            <div className="inbox-title">
-                                <h4>Property Listing</h4>
-                            </div>
+                    <div className="property-main">
+                        <Grid>
                             <div >
                                 <div>
                                     <div  style={{margin:'30px 0'}}>
-                                        <Link style={{textDecoration:'underline',color:'#74D8EB'}} id="add" to="/app/add-property">Add Property to Cribs
-                                            <Fab classes={{sizeSmall:classes.btn,root:classes.btnRoot}} size="small"  aria-label="add">
+                                        <Link  id="add" to="/app/add-property">
+                                            <Fab  size="small"  aria-label="add">
                                                 <AddIcon fontSize="small" />
                                             </Fab>
+                                            Add New Crib
                                         </Link>
                                     </div>
                                 </div>
                             </div>
-                            <TableContainer className="property-table" style={{position:'relative'}} component={Paper} >
+                            <div className="property-well">
+                                <p>Crib List</p>
+                            </div>
                                 <Modal loading={this.state.loading} />
-                            <Table  aria-label="property table">
+                            <Table  className="property-table">
                                 <TableHead>
                                 <TableRow>
-                                    <StyledTableCell classes={{root:classes.tdHead}}>Property Title</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdHead}} align="left">Property Description</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdHead}} align="left">Amount</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdHead}} align="left">Date Added</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdHead}} align="left">Updated</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdHead}} align="center">Availability</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdHead}} align="center"> </StyledTableCell>
+                                    <TableCell style={{minWidth:120}}>Name</TableCell>
+                                    <TableCell style={{minWidth:120}}>Description</TableCell>
+                                    <TableCell style={{minWidth:120}}>Amount</TableCell>
+                                    <TableCell style={{minWidth:120}}>Date Added</TableCell>
+                                    <TableCell style={{minWidth:120}}>Updated</TableCell>
+                                    <TableCell style={{minWidth:120}}>Verified</TableCell>
+                                    <TableCell> </TableCell>
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -249,18 +223,26 @@ class Properties extends React.Component{
                                         const updatedAt = new Date(property.updatedAt).toDateString() //update.getDate()+'/'+(update.getMonth()+1)+'/'+update.getFullYear() 
                                         const createdAt = new Date(property.createdAt).toDateString() //created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
                                     return(
-                                        <StyledTableRow classes={{root:classes.trRoot}} key={i}>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} component="th" scope="row">
+                                        <TableRow key={i}>
+                                        <TableCell style={{minWidth:120}}>
                                             {property.name}
-                                        </StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{this.str_length(property.description, 30)}</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{currency(property.amount)}</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{createdAt}</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{updatedAt}</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} align="center">
-                                            <Switch name={property.id}  />
-                                        </StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} align="center">
+                                        </TableCell>
+                                        <TableCell style={{minWidth:120}}>{this.str_length(property.description, 30)}</TableCell>
+                                        <TableCell style={{minWidth:120}}>{currency(property.amount)}</TableCell>
+                                        <TableCell style={{minWidth:120}}>{createdAt}</TableCell>
+                                        <TableCell style={{minWidth:120}}>{updatedAt}</TableCell>
+                                        <TableCell style={{minWidth:120}}>
+                                            {
+                                                property.status === 0?
+                                                <span>Pending</span>
+                                                :
+                                                property.status === 1?
+                                                <span>Success</span>
+                                                :
+                                                <span>Failed</span>
+                                            }
+                                        </TableCell>
+                                        <TableCell>
                                             <div style={{display:'flex',justifyContent:'space-between', alignItems:'center'}}>
                                                 <Link to={`/app/edit-property/${property._id}`}>
                                                     <IconButton>
@@ -271,33 +253,31 @@ class Properties extends React.Component{
                                                     <DeleteIcon/>
                                                </IconButton>
                                             </div>
-                                        </StyledTableCell>
-                                        </StyledTableRow>
+                                        </TableCell>
+                                        </TableRow>
                                     )
                                 })
                                 :
                                 <Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">No Properties uploaded yet</Typography>
                             }
                             	{emptyRows > 0 && (
-										<StyledTableRow classes={{root:classes.trRoot}} style={{ height: 53 * emptyRows }}>
-										<StyledTableCell classes={{root:classes.tdRoot}}  colSpan={6} />
-										</StyledTableRow>
+										<TableRow style={{ height: 53 * emptyRows }}>
+										<TableCell  colSpan={6} />
+										</TableRow>
 									)}
                                 </TableBody>
                             </Table>
                             <TablePagination
 								rowsPerPageOptions={[8, 16, 24]}
-								component="div"
 								count={properties.length}
 								rowsPerPage={this.state.rowsPerPage}
 								page={this.state.page}
 								onChangePage={this.handleChangePage}
 								onChangeRowsPerPage={this.handleChangeRowsPerPage}
 								/>
-                            </TableContainer>
                         </Grid>
 
-                    </Grid> 
+                    </div> 
                 </Layout>
             </>
         )

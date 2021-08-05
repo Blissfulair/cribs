@@ -283,3 +283,16 @@ export const checkLoggedIn = async () => {
     const  {withdraws}= await response.json();
     return withdraws;
   };
+
+
+  export const getDashboard = async (id,date) => {
+    const response = await fetch('/api/property/dashboard/'+id,{
+      method:'POST',
+      body:JSON.stringify({date:date}),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+    const  dashboard= await response.json();
+    return dashboard;
+  };

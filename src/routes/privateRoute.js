@@ -15,9 +15,9 @@ const RentRoute = ({component: Component,history, ...rest}) => {
                 // state.user && state.user.emailVerified?
                 rest.user?
                 rest.user.emailVerify?
-                    rest.location.state !== undefined?
-                    <Component {...props}  />
-                    :
+                    // rest.location.state === undefined?
+                    // <Component {...props}  />
+                    // :
                     !rest.dashboard?
                     <Component {...props} />
                     :

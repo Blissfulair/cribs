@@ -4,19 +4,19 @@ import '../../scss/dashboard_payment.scss';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import {
-    Table,
-    TableHead,
-    TableBody,
-	TableContainer,
-	TablePagination,
-	Paper,
-	TableRow,
 	Typography,
 	withStyles,
 	Grid,
 	Button
 } from "@material-ui/core"
-import { StyledTableCell, StyledTableRow, styles } from './properties';
+import Table,{
+    TableHead,
+    TableBody,
+	TableCell,
+	TableRow,
+	TablePagination
+} from "../../components/table/index"
+import { styles } from './properties';
 import WithdrawPopUp from '../../components/withdrawPopup';
 import { currency } from '../../helpers/helpers';
 import Modal from '../../components/modal';
@@ -426,16 +426,15 @@ class DashboardPayment extends Component {
 
 				<Grid container style={{marginTop:80}}>
 					<Grid item xs={10}>
-					<TableContainer style={{position:'relative'}} className='payment-table' component={Paper} >
 							<Modal loading={this.state.tableLoading}/>
-                            <Table innerRef={this.table}  aria-label="payment">
+                            <Table innerRef={this.table}  className="cribs-payment">
                                 <TableHead>
                                 <TableRow>
-                                    <StyledTableCell classes={{root:classes.tdHead}} align="left">Date</StyledTableCell>
-                                    <StyledTableCell classes={{root:classes.tdHead}} align="left">Amount</StyledTableCell>
-									<StyledTableCell classes={{root:classes.tdHead}} align="left">Payment Method</StyledTableCell>
-									<StyledTableCell classes={{root:classes.tdHead}} align="left">Transaction ID</StyledTableCell>
-									<StyledTableCell classes={{root:classes.tdHead}} align="left">Status</StyledTableCell>
+                                    <TableCell classes={{root:classes.tdHead}} align="left">Date</TableCell>
+                                    <TableCell classes={{root:classes.tdHead}} align="left">Amount</TableCell>
+									<TableCell classes={{root:classes.tdHead}} align="left">Payment Method</TableCell>
+									<TableCell classes={{root:classes.tdHead}} align="left">Transaction ID</TableCell>
+									<TableCell classes={{root:classes.tdHead}} align="left">Status</TableCell>
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -445,15 +444,15 @@ class DashboardPayment extends Component {
                                         const created = new Date(payment.createdAt);
                                         const createdAt = created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
                                     return(
-                                        <StyledTableRow classes={{root:classes.trRoot}} key={i}>
-                                        <StyledTableCell classes={{root:classes.tdRoot}}>
+                                        <TableRow classes={{root:classes.trRoot}} key={i}>
+                                        <TableCell classes={{root:classes.tdRoot}}>
                                             {createdAt}
-                                        </StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdRoot}} align="left">{currency(payment.amount)}</StyledTableCell>
-										<StyledTableCell classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{payment.method?'Bank Transfer':'Paypal'}</StyledTableCell>
-										<StyledTableCell classes={{root:classes.tdRoot}} align="left">{payment._id}</StyledTableCell>
-										<StyledTableCell classes={{root:classes.tdRoot}}  align="left"><span style={{color:payment.status === 0?'#ff9800':payment.status === 1?'#4caf50':'#f44336'}}>{payment.status === 0?'pending':payment.status ===1?'Processed':'Cancelled'}</span></StyledTableCell>
-                                        </StyledTableRow>
+                                        </TableCell>
+                                        <TableCell classes={{root:classes.tdRoot}} align="left">{currency(payment.amount)}</TableCell>
+										<TableCell classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{payment.method?'Bank Transfer':'Paypal'}</TableCell>
+										<TableCell classes={{root:classes.tdRoot}} align="left">{payment._id}</TableCell>
+										<TableCell classes={{root:classes.tdRoot}}  align="left"><span style={{color:payment.status === 0?'#ff9800':payment.status === 1?'#4caf50':'#f44336'}}>{payment.status === 0?'pending':payment.status ===1?'Processed':'Cancelled'}</span></TableCell>
+                                        </TableRow>
 									)
 									
 								})
@@ -462,9 +461,9 @@ class DashboardPayment extends Component {
                                 <Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">There are no transaction to show yet...</Typography>
                             }
 							    {emptyRows > 0 && (
-										<StyledTableRow classes={{root:classes.trRoot}} style={{ height: 53 * emptyRows }}>
-										<StyledTableCell classes={{root:classes.tdRoot}}  colSpan={6} />
-										</StyledTableRow>
+										<TableRow classes={{root:classes.trRoot}} style={{ height: 53 * emptyRows }}>
+										<TableCell classes={{root:classes.tdRoot}}  colSpan={6} />
+										</TableRow>
 									)}
                                 </TableBody>
                             </Table>
@@ -477,7 +476,6 @@ class DashboardPayment extends Component {
 								onChangePage={this.handleChangePage}
 								onChangeRowsPerPage={this.handleChangeRowsPerPage}
 								/>
-                            </TableContainer>
 
 						</Grid>
 						</Grid>

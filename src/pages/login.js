@@ -76,13 +76,14 @@ class Login extends React.Component{
             }
             loginUser(body)
             .then((user)=>{
-                this.props.setUser(user)
+               
                 if(this.props.location.state !== undefined){
                     this.props.chooseDashboard(false)
+                    this.props.setUser(user)
                     changeRole(user.id, {role:false})
                     .then(()=>{
                         this.props.history.push({
-                            pathname: '/app/payment',
+                            pathname: this.props.location.state.referer.pathname,
                             search: this.props.location.state.referer.search,
                             state:this.props.location.state.referer.state
                         })
@@ -97,8 +98,10 @@ class Login extends React.Component{
                         this.setState({err:'Invalid email or password'})
                     }
                     else{
+                        this.props.setUser(user)
+                        console.log(user.role)
                     this.props.chooseDashboard(user.role)
-                    this.props.history.push('/app/home')
+                    // this.props.history.push('/app/home')
                     }
                 }
 

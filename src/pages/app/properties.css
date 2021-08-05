@@ -1,3 +1,31 @@
+.property-main{
+    max-width: 91.666667%;
+    margin-top: 120px;
+}
+.property-main #add{
+    padding: 0 !important;
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+
+    /* or 150% */
+    letter-spacing: 0.1px;
+
+    color: #1976D2;
+}
+.property-main #add button{
+    margin-right: 10px;
+}
+.property-main #add .MuiFab-root{
+    background-color: #1976D2;
+    color: #fff;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+.property-main #add:hover .MuiFab-root{
+    background-color: #0D549A;
+}
 .table-head{
     width: 100%;
     margin-bottom: 12px;
@@ -6,7 +34,44 @@
     display: grid;
     align-items: center;
 }
+.property-main .property-table td{
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
 
+    /* or 150% */
+    letter-spacing: 0.1px;
+
+    color: #757575;
+}
+.property-main .property-table thead td{
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.property-main .property-well{
+    width: 100%;
+    background: #EFEFEF;
+    border-radius: 20px;
+    height: 40px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+.property-main .property-well p{
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+
+    /* or 150% */
+    letter-spacing: 0.1px;
+
+    color: #1053FF;
+    margin-left: 30px;
+}
 .table-head .table-title li{
     /* font-family: 'Roboto-Bold'; */
     font-size: 14px;
@@ -117,6 +182,11 @@ select,
     transform: rotate(45deg) translate(-50%, -50%);
 }
 @media (max-width:767px){
+    .property-main{
+        padding: 70px 10px 90px !important;
+        max-width: 100%;
+        margin-top: 0px;
+    }
     .property-bod{
         height: auto !important;
     }

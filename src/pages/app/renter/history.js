@@ -9,12 +9,6 @@ import {
     withStyles,
     InputBase, 
     Grid,
-    Table,
-    TableHead,
-    TableBody,
-	TableContainer,
-	Paper,
-	TableRow,
     Typography,
     Avatar,
     Button,
@@ -23,7 +17,7 @@ import {
  import Rating from '@material-ui/lab/Rating';
 import { fade } from '@material-ui/core/styles';
 import AppHeader from "../../../components/head";
-import { StyledTableCell, StyledTableRow } from './../properties';
+import Table, { TableBody, TableHead, TableRow, TableCell } from './../../../components/table/index';
 import { getMonthInWord } from "../../../helpers/helpers";
 import Modal from "../../../components/modal";
 import WithdrawPopUp from "../../../components/withdrawPopup";
@@ -245,26 +239,26 @@ class History extends React.Component{
     }
     render(){
         const {history} = this.state
-        const {classes,histories} =this.props
+        const {histories} =this.props
         const inbox = (
             <>
             {histories.length>0?histories.map((history,i)=>{
                 const createdAt = new Date(history.createdAt)
                 return (
-                    <StyledTableRow  classes={{root:classes.trRoot}} key={i}>
-                    <StyledTableCell classes={{root:classes.tdRoot}} className="history"  component="th" scope="row">
+                    <TableRow  key={i}>
+                    <TableCell className="history" >
                         <label  htmlFor={history.id} className="radio">
                             <input onChange={(e)=>this.onSelect(history.reference, e.target.checked)}  type="checkbox" value={history._id} name="" id={history._id}/>
                             <span className="radio-mark"></span>
                         </label>
-                    </StyledTableCell>
-                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.propertyName}</StyledTableCell>
-                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.amount}</StyledTableCell>
-                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.state}</StyledTableCell>
-                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.city}</StyledTableCell>
-                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{history.status===0?'Success':'Pending'}</StyledTableCell>
-                        <StyledTableCell onClick={()=>{this.handleClickOpen(history)}} classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{createdAt.getDate()+' ' + getMonthInWord(createdAt)+', '+ createdAt.getFullYear()+' '+createdAt.getHours()+':'+createdAt.getMinutes()+':'+createdAt.getSeconds()}</StyledTableCell>
-                    </StyledTableRow>
+                    </TableCell>
+                        <TableCell onClick={()=>{this.handleClickOpen(history)}} style={{textTransform:'capitalize'}} >{history.propertyName}</TableCell>
+                        <TableCell onClick={()=>{this.handleClickOpen(history)}} style={{textTransform:'capitalize'}} >{history.amount}</TableCell>
+                        <TableCell onClick={()=>{this.handleClickOpen(history)}} style={{textTransform:'capitalize'}} >{history.state}</TableCell>
+                        <TableCell onClick={()=>{this.handleClickOpen(history)}} style={{textTransform:'capitalize'}} >{history.city}</TableCell>
+                        <TableCell onClick={()=>{this.handleClickOpen(history)}} style={{textTransform:'capitalize'}} >{history.status===0?'Success':'Pending'}</TableCell>
+                        <TableCell onClick={()=>{this.handleClickOpen(history)}} style={{textTransform:'capitalize'}} >{createdAt.getDate()+' ' + getMonthInWord(createdAt)+', '+ createdAt.getFullYear()+' '+createdAt.getHours()+':'+createdAt.getMinutes()+':'+createdAt.getSeconds()}</TableCell>
+                    </TableRow>
             
                      ) 
             }):''
@@ -430,31 +424,29 @@ class History extends React.Component{
                             </div>
                         </div>
                         <div style={{position:'relative'}}  className="inbox-body">
-                            <TableContainer className='payment-table' component={Paper} >
                             
                                 <Modal loading={this.state.loading}/>
-                                <Table  aria-label="payment">
+                                <Table  className="cribs-histories">
                                     <TableHead>
                                     <TableRow>
-                                        <StyledTableCell className="history" classes={{root:classes.tdHead}} align="left">
+                                        <TableCell className="history"  >
                                         <label htmlFor="radio" className="radio">
                                             <input type="checkbox"  name="" id="radio"/>
                                             <span className="radio-mark"></span>
                                         </label>
-                                        </StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdHead}} align="left">Property Name</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdHead}} align="left">Amount</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdHead}} align="left">State</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdHead}} align="left">City</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdHead}} align="left">Status</StyledTableCell>
-                                        <StyledTableCell classes={{root:classes.tdHead}} align="left">Date</StyledTableCell>
+                                        </TableCell>
+                                        <TableCell  >Property Name</TableCell>
+                                        <TableCell  >Amount</TableCell>
+                                        <TableCell  >State</TableCell>
+                                        <TableCell  >City</TableCell>
+                                        <TableCell  >Status</TableCell>
+                                        <TableCell  >Date</TableCell>
                                     </TableRow>
                                     </TableHead>
                                     <TableBody>
                                 {inbox}
                                     </TableBody>
                             </Table>
-                            </TableContainer>
                                 {histories.length<1&& <Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">No crib history yet</Typography>}
                                     {/* <tr className="new">
                                         <td>

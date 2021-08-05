@@ -155,7 +155,7 @@ const Payment = ({location}) => {
 				{/* end of house-payment-details*/}
 
 				<aside>
-                    <PaymentCard data={data}/>
+                    <PaymentCard data={data} location={location}/>
 				</aside>
 			</section>
                 <div className="signin-left payment-left">

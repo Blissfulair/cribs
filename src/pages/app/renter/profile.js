@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import Footer from "../../../components/footer";
 import { uploadProfileImage } from "../../../apis/server";
 import { setUser } from "../../../state/actions";
+import Activity from "../../../components/activity";
 
 const ProfileDetails = ({user,uploadImage})=>{
     return(
@@ -119,7 +120,8 @@ class Profile extends React.Component{
             code:'',
             avater:null,
             profile:null,
-            user:null
+            user:null,
+            isLoading:false
         }
     }
 
@@ -128,9 +130,11 @@ class Profile extends React.Component{
         let image = e.target.files[0];
         const formData = new FormData()
         formData.append('image', image)
+        this.setState({isLoading:true})
         uploadProfileImage(this.props.user.id,formData)
         .then((user)=>{
             this.props.setUser(user)
+            this.setState({isLoading:false})
         })
     }
 
@@ -138,7 +142,8 @@ class Profile extends React.Component{
     render(){
         return (
             <>
-                                <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
+                    <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
+                    <Activity loading={this.state.isLoading} />
                     <Grid container justify="center">
                         <Grid item md={11}>
                             <Grid container>

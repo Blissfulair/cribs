@@ -38,8 +38,13 @@ function configureStore(preload) {
       weekly:[],
       yearly:[]
     },
-    earnings:{
-      balance:0
+    dashboardData:{
+      earning:0,
+      totalCribs:0,
+      totalBooking:0,
+      recentTransactions:[],
+      recentCribs:[],
+      recentWithdraws:[]
     },
     dashboard:false,
     ...preload,

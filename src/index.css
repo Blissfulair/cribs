@@ -183,6 +183,12 @@ border-radius: 2px;
 .MuiInput-underline::before {
   border-bottom: none !important;
 }
+.MuiTabs-indicator{
+  background-color: #00A8C8!important;
+}
+.MuiLinearProgress-colorPrimary{
+  background-color: #fff !important;
+}
 .home-guest .MuiInputLabel-formControl {
   transform: translate(0, 10px) scale(1);
 }

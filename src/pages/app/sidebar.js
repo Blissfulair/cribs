@@ -44,8 +44,9 @@ const Sidebar = ({dashboard,user,chooseDashboard,history, setUser})=>{
         signOut()
         .then(()=>{
             setLoading(false)
-            setUser(null)
             history.push('/')
+            setUser(null)
+           
         })
         .catch(e=>{
             setLoading(false)

@@ -32,7 +32,6 @@ componentDidUpdate(prevProps, prevState){
             this.setState({offset:(offset+((off)*perPage)), level:off+1})
         }
         else if(currentPage > perPage && currentPage%perPage === 0){
-            console.log(off)
             this.setState({offset:(offset+((off-1)*perPage)), level:off})
         }
         this.setState({current:this.props.currentPage,loaded:true})

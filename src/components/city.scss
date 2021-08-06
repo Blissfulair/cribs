@@ -3,7 +3,8 @@
     width: 100%;
     box-sizing: border-box;
     .ccard{
-        min-width:362px;
+        // min-width:362px;
+        min-width: calc(100vw / 3.8);
         height: 100%;
         position: relative;
         border-radius: 10px;

@@ -155,6 +155,9 @@ border-radius: 2px;
   transform: translate(14px, 8px) scale(0.75) !important;
   white-space: nowrap;
 }
+#app-home-page{
+	padding-top: 100px !important;
+}
 .home .MuiInputLabel-animated.MuiInputLabel-shrink{
   white-space: nowrap !important;
 }

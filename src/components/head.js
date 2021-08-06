@@ -248,9 +248,9 @@ onLogout = ()=>{
                                             {
                                             user.type ==='host'?
                                             <div className="choice-switch">
-                                                <span style={{color:!this.props.dashboard?'#0066FF':'#C4C4C4'}}>Renting</span>
+                                                {/* <span style={{color:!this.props.dashboard?'#0066FF':'#C4C4C4'}}>Renting</span> */}
                                                 <Switch color={'#0066FF'} trackBorder={'1px solid #0066FF'} onChange={this.changeDashboard} trackColor={'#EEECF1'} value={this.props.dashboard}/>
-                                                <span>Hosting</span>
+                                                <span>Switch to Hosting</span>
 
                                             </div>
                                             :
@@ -364,9 +364,9 @@ onLogout = ()=>{
                                             {
                                             user.type ==='host'?
                                             <div className="choice-switch">
-                                                <span style={{color:!this.props.dashboard?'#0066FF':'#C4C4C4'}}>Renting</span>
+                                                {/* <span style={{color:!this.props.dashboard?'#0066FF':'#C4C4C4'}}>Renting</span> */}
                                                 <Switch color={'#0066FF'} trackBorder={'1px solid #0066FF'} onChange={this.changeDashboard} trackColor={'#EEECF1'} value={this.props.dashboard}/>
-                                                <span>Hosting</span>
+                                                <span>Switch to Hosting</span>
 
                                             </div>
                                             :

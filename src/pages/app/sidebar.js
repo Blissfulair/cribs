@@ -4,7 +4,7 @@ import "./sidebar.css";
 import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 // import EmailOutlinedIcon from '@material-ui/icons/EmailOutlined';
-import EventOutlinedIcon from '@material-ui/icons/EventOutlined';
+// import EventOutlinedIcon from '@material-ui/icons/EventOutlined';
 import AccountBalanceWalletOutlinedIcon from '@material-ui/icons/AccountBalanceWalletOutlined';
 // import AccountTreeOutlinedIcon from '@material-ui/icons/AccountTreeOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
@@ -44,8 +44,9 @@ const Sidebar = ({dashboard,user,chooseDashboard,history, setUser})=>{
         signOut()
         .then(()=>{
             setLoading(false)
-            history.push('/')
             setUser(null)
+            window.sessionStorage.removeItem('@dash')
+            history.push('/')
            
         })
         .catch(e=>{
@@ -101,7 +102,7 @@ const Sidebar = ({dashboard,user,chooseDashboard,history, setUser})=>{
                                     } */}
                         <NavLink onClick={Sidebar.active} activeClassName="is-active" to="/app/dashboard"><li><DashboardOutlinedIcon/> Dashboard</li></NavLink>
 
-                        <NavLink onClick={Sidebar.active} activeClassName="is-active"  id="properties" to="/app/property"><li><HomeOutlinedIcon/> Property </li></NavLink>
+                        <NavLink onClick={Sidebar.active} activeClassName="is-active"  id="properties" to="/app/property"><li><HomeOutlinedIcon/> Cribs </li></NavLink>
 
                         
                             {/* <NavLink onClick={Sidebar.active}  activeClassName="is-active"  id="inboxes" to="/app/inbox">
@@ -114,7 +115,7 @@ const Sidebar = ({dashboard,user,chooseDashboard,history, setUser})=>{
                             </NavLink> */}
 
                         
-                        <NavLink  onClick={Sidebar.active}  activeClassName="is-active" to="/app/calendar"><li><EventOutlinedIcon/>Calendar</li></NavLink>
+                        {/* <NavLink  onClick={Sidebar.active}  activeClassName="is-active" to="/app/calendar"><li><EventOutlinedIcon/>Calendar</li></NavLink> */}
                             {
                                 dashboard&&
                                 <>

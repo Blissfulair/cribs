@@ -2,7 +2,6 @@ import React, { useRef,useState } from "react"
 import Avatar from '@material-ui/core/Avatar';
 import LogoutModal from "./logout";
 import { Grid,IconButton} from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import {withRouter} from "react-router-dom";
 import {withStyles} from "@material-ui/core/styles"
@@ -66,9 +65,9 @@ const AppHeader = ({classes, history,user,dashboard, chooseDashboard, setUser})=
                 <Grid item xs={11} lg={10} >
                     <Grid container alignItems="center">
                         <Grid  item xs={7} lg={8}>
-                            <Button style={{width:50}} id="mobile-menu" className="mobile-menu" >
-                                <MenuIcon/>
-                            </Button>
+                            <button style={{background:'transparent', border:'none'}} id="mobile-menu" className="mobile-menu" >
+                                <MenuIcon htmlColor="rgba(0, 0, 0, 0.24)"/>
+                            </button>
 
                         </Grid>
                         <Grid item  xs={5} lg={4}> 

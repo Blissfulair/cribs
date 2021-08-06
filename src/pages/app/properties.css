@@ -181,6 +181,61 @@ select,
     border-top-left-radius: 100%;    
     transform: rotate(45deg) translate(-50%, -50%);
 }
+.property-main .tb-view-btn{
+    background: #1053FF;
+    border-radius: 4px;
+    border-width: 0;
+    color: #fff;
+    padding: 4px 15px;
+    cursor: pointer;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+
+    /* identical to box height, or 114% */
+    text-align: center;
+    letter-spacing: 1.25px;
+    transition: background 0.3s;
+}
+.property-main .tb-view-btn:hover{
+    background: #0D549A;
+}
+.property-main .crib-dialog-action ul{
+    list-style: none;
+}
+.property-main .crib-dialog-action ul li button{
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.property-main .crib-dialog-action ul li button > *{
+    margin-right: 10px;
+}
+.property-main .props-status-f{
+    color: #A60E0E;
+}
+.property-main .props-status-s{
+    color: #4DC602;
+}
+.property-main .props-status-p{
+    color: #DFCC1E;
+}
+.property-main .crib-dialog-action ul li, .property-main .crib-dialog-action ul li button{
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 30px;
+
+    /* or 250% */
+    letter-spacing: 0.15px;
+
+    color: #686F74;
+}
 @media (max-width:767px){
     .property-main{
         padding: 70px 10px 90px !important;

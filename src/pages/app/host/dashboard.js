@@ -146,11 +146,11 @@ class HostDashboard extends Component{
                                                         <TableCell style={{flexBasis:0}}>
                                                             <Avatar src={process.env.REACT_APP_BACKEND_URL+'/'+transaction.renter.image} style={{height:30, width:30}}/>
                                                         </TableCell>
-                                                        <TableCell style={{whiteSpace: 'nowrap'}}>
-                                                            <p className="recent-title-head">{maxStringLength(transaction.renter.firstname +' ' +transaction.renter.lastname, 15) }</p>
-                                                            <span className="recent-title-subhead">{maxStringLength(transaction.propertyName)}</span>    
+                                                        <TableCell style={{whiteSpace: 'nowrap', minWidth:160}}>
+                                                            <p className="recent-title-head">{maxStringLength(transaction.renter.firstname +' ' +transaction.renter.lastname, 23) }</p>
+                                                            <span className="recent-title-subhead">{maxStringLength(transaction.propertyName, 23)}</span>    
                                                         </TableCell>
-                                                        <TableCell style={{textAlign:'center',whiteSpace: 'nowrap'}}>
+                                                        <TableCell style={{textAlign:'center',whiteSpace: 'nowrap', minWidth:100}}>
                                                              {humanDiff(transaction.createdAt)}
                                                         </TableCell>
                                                         <TableCell style={{whiteSpace: 'nowrap'}}>

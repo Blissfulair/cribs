@@ -363,10 +363,10 @@ class Index extends Component {
                                     } */}
                                 </Grid>
                             </div>
-                            {
+                            {/* {
                                 trendingCribs.length>0&&
                                 <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'trending'}}>See more</Link>
-                            }
+                            } */}
 
                         </Grid>
                         <Grid container justify="center">
@@ -405,10 +405,10 @@ class Index extends Component {
                                         </Slide>
                                     </Grid>
                                 </div>
-                                {
+                                {/* {
                                     bestCribs.length>0&&
                                     <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>
-                                }
+                                } */}
                             </Grid>
                         </Grid>
                         <Grid item xs={11} md={10}>

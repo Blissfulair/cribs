@@ -177,10 +177,10 @@ class Home extends Component{
                                     </Slide>
                                 </Grid>
                             </div>
-                            {
+                            {/* {
                                 this.props.trendingCribs.length>0&&
                                 <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'trending'}}>See more</Link>
-                            }
+                            } */}
 
                             
                             <div style={{marginTop:50}}>
@@ -210,10 +210,10 @@ class Home extends Component{
                                     </Slide>
                                 </Grid>
                             </div>
-                            {
+                            {/* {
                                 this.props.bestCribs.length>0&&
                                 <Link className={classes.link} to={{pathname:'/app/more-cribs', search:'recommended'}}>See more</Link>
-                            }
+                            } */}
 
                        
 

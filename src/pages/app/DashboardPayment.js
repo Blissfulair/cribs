@@ -19,7 +19,7 @@ import Table,{
 import { styles } from './properties';
 import WithdrawPopUp from '../../components/withdrawPopup';
 import { currency } from '../../helpers/helpers';
-import Modal from '../../components/modal';
+import Activity from '../../components/activity';
 import { connect } from 'react-redux';
 import AppHeader from '../../components/appHeader';
 import { bankWithdraw, getWallet, getWithdraw, paypalWithdraw } from '../../apis/server';
@@ -426,7 +426,7 @@ class DashboardPayment extends Component {
 
 				<Grid container style={{marginTop:80}}>
 					<Grid item xs={10}>
-							<Modal loading={this.state.tableLoading}/>
+							<Activity loading={this.state.tableLoading}/>
                             <Table innerRef={this.table}  className="cribs-payment">
                                 <TableHead>
                                 <TableRow>

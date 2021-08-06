@@ -43,6 +43,9 @@ class HostDashboard extends Component{
             })
             this.setState({loading:false, data:week})
         })
+        .catch(e=>{
+            this.setState({loading:false})
+        })
     } 
     render(){
         const {classes,user,dashboardData} = this.props
@@ -116,18 +119,25 @@ class HostDashboard extends Component{
                             <div className="recent-cribs">
                                 <p className="recent-title">Recent Cribs</p>
                                 {
-                                    dashboardData.recentCribs.length>0?
-                                    <div>
-                                        <div className="recent-cribs-scroll">
-                                            {
-                                                dashboardData.recentCribs.map((crib,i)=>(
-                                                    <Detail key={i} crib={crib} />
-                                                ))
-                                            }
-                                        </div>
-                                    </div>
+                                    this.state.loading?
+                                    <p>Loading Recent Cribs...</p>
                                     :
-                                    <p>You have not uploaded a crib yet</p>
+                                    <>
+                                    {
+                                        dashboardData.recentCribs.length>0?
+                                        <div>
+                                            <div className="recent-cribs-scroll">
+                                                {
+                                                    dashboardData.recentCribs.map((crib,i)=>(
+                                                        <Detail key={i} crib={crib} />
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                        :
+                                        <p>You have not uploaded a crib yet</p>
+                                    }
+                                    </>
                                 }
                             </div>
                         </div>
@@ -137,74 +147,88 @@ class HostDashboard extends Component{
                             <div className="transactions">
                                 <p className="recent-title">Recent Transactions</p>
                                 {
-                                    dashboardData.recentTransactions.length>0?
-                                    <Table className="recent-transactions-table">
-                                        <TableBody>
-                                            {
-                                                dashboardData.recentTransactions.map((transaction,i)=>(
-                                                    <TableRow key={i} style={{height:67}}>
-                                                        <TableCell style={{flexBasis:0}}>
-                                                            <Avatar src={process.env.REACT_APP_BACKEND_URL+'/'+transaction.renter.image} style={{height:30, width:30}}/>
-                                                        </TableCell>
-                                                        <TableCell style={{whiteSpace: 'nowrap', minWidth:160}}>
-                                                            <p className="recent-title-head">{maxStringLength(transaction.renter.firstname +' ' +transaction.renter.lastname, 23) }</p>
-                                                            <span className="recent-title-subhead">{maxStringLength(transaction.propertyName, 23)}</span>    
-                                                        </TableCell>
-                                                        <TableCell style={{textAlign:'center',whiteSpace: 'nowrap', minWidth:100}}>
-                                                             {humanDiff(transaction.createdAt)}
-                                                        </TableCell>
-                                                        <TableCell style={{whiteSpace: 'nowrap'}}>
-                                                        <span className={!transaction.status?'tdelivered':'tpending'}>{!transaction.status?'success':'pending'}</span>
-                                                        </TableCell>
-                                                        <TableCell style={{whiteSpace: 'nowrap'}}>
-                                                        {currency(transaction.amount)}
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))
-                                            }
-                                        </TableBody>
-                                    </Table>
+                                    this.state.loading?
+                                    <p>Loading recent transactions...</p>
                                     :
-                                    <p>No Transactions yet!</p>
+                                    <>
+                                    {
+                                        dashboardData.recentTransactions.length>0?
+                                        <Table className="recent-transactions-table">
+                                            <TableBody>
+                                                {
+                                                    dashboardData.recentTransactions.map((transaction,i)=>(
+                                                        <TableRow key={i} style={{height:67}}>
+                                                            <TableCell style={{flexBasis:0}}>
+                                                                <Avatar src={process.env.REACT_APP_BACKEND_URL+'/'+transaction.renter.image} style={{height:30, width:30}}/>
+                                                            </TableCell>
+                                                            <TableCell style={{whiteSpace: 'nowrap', minWidth:160}}>
+                                                                <p className="recent-title-head">{maxStringLength(transaction.renter.firstname +' ' +transaction.renter.lastname, 23) }</p>
+                                                                <span className="recent-title-subhead">{maxStringLength(transaction.propertyName, 23)}</span>    
+                                                            </TableCell>
+                                                            <TableCell style={{textAlign:'center',whiteSpace: 'nowrap', minWidth:100}}>
+                                                                {humanDiff(transaction.createdAt)}
+                                                            </TableCell>
+                                                            <TableCell style={{whiteSpace: 'nowrap'}}>
+                                                            <span className={!transaction.status?'tdelivered':'tpending'}>{!transaction.status?'success':'pending'}</span>
+                                                            </TableCell>
+                                                            <TableCell style={{whiteSpace: 'nowrap'}}>
+                                                            {currency(transaction.amount)}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                        :
+                                        <p>No Transactions yet!</p>
+                                    }
+                                    </>
                                 }
                             </div>
                             <div className="recent-withdraws">
                                 <p className="recent-title">Recent Withdraws</p>
                                 {
-                                    dashboardData.recentWithdraws.length>0?
-                                    <Table className="recent-withdraws-table">
-                                        <TableBody>
-                                            {
-                                                dashboardData.recentWithdraws.map((withdraw,i)=>(
-                                                    <TableRow key={i} style={{height:67}}>
-                                                        <TableCell style={{whiteSpace: 'nowrap',minWidth:160}}>
-                                                            <p className="recent-title-head">{!withdraw.method?'With Paypal':'With Bank'}</p>
-                                                            <span className="recent-title-subhead">{!withdraw.method?maxStringLength(withdraw.paypal_email, 20):maxStringLength(withdraw.account_number,20)}</span>    
-                                                        </TableCell>
-                                                        <TableCell style={{textAlign:'center',whiteSpace: 'nowrap'}}>
-                                                            {humanDiff(withdraw.createdAt)}   
-                                                        </TableCell>
-                                                        <TableCell style={{whiteSpace: 'nowrap'}}>
-                                                            {
-                                                                withdraw.status ===0?
-                                                                <span className="wpending"> Pending</span>
-                                                                :
-                                                                withdraw.status ===1?
-                                                                <span className="wdelivered"> paid</span>
-                                                                :
-                                                                <span className="wdeclined"> Declined</span>
-                                                            }
-                                                        </TableCell>
-                                                        <TableCell style={{whiteSpace: 'nowrap'}}>
-                                                            {currency(withdraw.amount)}
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))
-                                            }
-                                        </TableBody>
-                                    </Table>
+                                    this.state.loading?
+                                    <p>Loading recent withdraws...</p>
                                     :
-                                    <p>No withdrawals yet!</p>
+                                    <>
+                                    {
+                                        dashboardData.recentWithdraws.length>0?
+                                        <Table className="recent-withdraws-table">
+                                            <TableBody>
+                                                {
+                                                    dashboardData.recentWithdraws.map((withdraw,i)=>(
+                                                        <TableRow key={i} style={{height:67}}>
+                                                            <TableCell style={{whiteSpace: 'nowrap',minWidth:160}}>
+                                                                <p className="recent-title-head">{!withdraw.method?'With Paypal':'With Bank'}</p>
+                                                                <span className="recent-title-subhead">{!withdraw.method?maxStringLength(withdraw.paypal_email, 20):maxStringLength(withdraw.account_number,20)}</span>    
+                                                            </TableCell>
+                                                            <TableCell style={{textAlign:'center',whiteSpace: 'nowrap'}}>
+                                                                {humanDiff(withdraw.createdAt)}   
+                                                            </TableCell>
+                                                            <TableCell style={{whiteSpace: 'nowrap'}}>
+                                                                {
+                                                                    withdraw.status ===0?
+                                                                    <span className="wpending"> Pending</span>
+                                                                    :
+                                                                    withdraw.status ===1?
+                                                                    <span className="wdelivered"> paid</span>
+                                                                    :
+                                                                    <span className="wdeclined"> Declined</span>
+                                                                }
+                                                            </TableCell>
+                                                            <TableCell style={{whiteSpace: 'nowrap'}}>
+                                                                {currency(withdraw.amount)}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))
+                                                }
+                                            </TableBody>
+                                        </Table>
+                                        :
+                                        <p>No withdrawals yet!</p>
+                                    }
+                                    </>
                                 }
                             </div>
                         </div>

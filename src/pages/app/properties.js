@@ -18,7 +18,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityOutlined from '@material-ui/icons/VisibilityOutlined';
 import AppHeader from "../../components/appHeader"
 import { currency } from "../../helpers/helpers";
-import Modal from "../../components/modal";
+import Activity from "../../components/activity";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -211,7 +211,7 @@ class Properties extends React.Component{
                                 <p>Crib List</p>
                             </div>
                             <TableContainer>
-                                <Modal loading={this.state.loading} />
+                                <Activity loading={this.state.loading} />
                                 <Table  className="property-table">
                                     <TableHead>
                                     <TableRow>

@@ -159,12 +159,18 @@
                         padding: 0 20px;
                     }
                 }
+                & >p{
+                    &:last-child{
+                     margin-left: 30px;
+                    }
+                 }
             }
         }
         .recent-transactions{
             max-width: 68.8%;
             flex-basis: 68.8%;
             flex-grow: 0;
+        
             .recent-transactions-table,  .recent-withdraws-table{
                 padding: 0 20px;
                 tr{
@@ -235,6 +241,12 @@
                 }
 
             }
+
+            & >p{
+               &:last-child{
+                margin-left: 30px;
+               }
+            }
             .recent-withdraws-table{
                 tr{
                     td{
@@ -299,6 +311,11 @@
             }
             .recent-withdraws{
                 margin-top: 16px;
+                & >p{
+                    &:last-child{
+                     margin-left: 30px;
+                    }
+                 }
             }
         }
     }

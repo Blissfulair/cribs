@@ -57,7 +57,7 @@ class Head extends Component{
         })
             if(dashboard)
             {
-                if(history.location.pathname.includes('calendar') || history.location.pathname.includes('inbox') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('property') || history.location.pathname.includes('add-property') || history.location.pathname.includes('edit-property'))
+                if(history.location.pathname.includes('calendar') || history.location.pathname.includes('inbox') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('cribs') || history.location.pathname.includes('add-crib') || history.location.pathname.includes('edit-crib'))
                 history.push('/app/home')
                 else
                 history.push(history.location.pathname+history.location.search)
@@ -133,7 +133,6 @@ handleScroll = () => {
 }
     openMenu=()=>{
         this.setState({menu:true})
-        console.log('open')
     }
     closeMenu=()=>{
         this.setState({menu:false})
@@ -193,7 +192,7 @@ onLogout = ()=>{
                             width='180'
                             borderWidth={2}
                             marginRight='3rem'
-                            href="/app/property"
+                            href="/app/cribs"
                         >
                             Host Accomodation
                         </NavButton>
@@ -208,7 +207,7 @@ onLogout = ()=>{
                         width='180'
                         borderWidth={2}
                         marginRight='3rem'
-                        href="/app/property"
+                        href="/app/cribs"
                         >
                             Host Accomodation
                         </NavButton>
@@ -317,7 +316,7 @@ onLogout = ()=>{
                             width='180'
                             borderWidth={2}
                             marginRight='3rem'
-                            href="/app/property"
+                            href="/app/cribs"
                         >
                             Host Accomodation
                         </NavButton>
@@ -332,7 +331,7 @@ onLogout = ()=>{
                         width='180'
                         borderWidth={2}
                         marginRight='3rem'
-                        href="/app/property"
+                        href="/app/cribs"
                         >
                             Host Accomodation
                         </NavButton>

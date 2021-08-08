@@ -48,9 +48,9 @@ class Root extends Component{
     return(
         <Switch>
             <HostRoute exact component={Dashboard} path='/app/dashboard' />
-            <HostRoute exact component={Properties} path='/app/property' />
-            <HostRoute exact path='/app/add-property' component={AddProperty} />
-            <HostRoute exact component={EditProperty} path='/app/edit-property/:id' />
+            <HostRoute exact component={Properties} path='/app/cribs' />
+            <HostRoute exact path='/app/add-crib' component={AddProperty} />
+            <HostRoute exact component={EditProperty} path='/app/edit-crib/:id' />
             <HostRoute exact path='/app/withdraws' component={DashboardPayment} />
             <RentRoute exact path='/app/history' component={History} />
             <RentRoute exact path='/app/favourites' component={Favourites} />

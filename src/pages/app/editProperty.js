@@ -61,7 +61,7 @@ class EditProperty extends React.Component{
         const dom = document.querySelector('#properties')
         if(dom !== null)
         dom.setAttribute('class', 'is-active')
-        const id = this.props.location.pathname.split('edit-property')[1]
+        const id = this.props.location.pathname.split('edit-crib')[1]
         getCribById(id)
         .then(property=>{
                 this.setState({

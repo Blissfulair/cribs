@@ -63,7 +63,7 @@ const Sidebar = ({dashboard,user,chooseDashboard,history, setUser})=>{
         })
             if(dashboard)
             {
-                if(history.location.pathname.includes('calendar') || history.location.pathname.includes('inbox') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('property') || history.location.pathname.includes('add-property') || history.location.pathname.includes('edit-property'))
+                if(history.location.pathname.includes('calendar') || history.location.pathname.includes('inbox') || history.location.pathname.includes('dashboard') || history.location.pathname.includes('withdraw') || history.location.pathname.includes('reviews') || history.location.pathname.includes('cribs') || history.location.pathname.includes('add-crib') || history.location.pathname.includes('edit-crib'))
                 history.push('/app/home')
                 else
                 history.push(history.location.pathname+history.location.search)
@@ -102,7 +102,7 @@ const Sidebar = ({dashboard,user,chooseDashboard,history, setUser})=>{
                                     } */}
                         <NavLink onClick={Sidebar.active} activeClassName="is-active" to="/app/dashboard"><li><DashboardOutlinedIcon/> Dashboard</li></NavLink>
 
-                        <NavLink onClick={Sidebar.active} activeClassName="is-active"  id="properties" to="/app/property"><li><HomeOutlinedIcon/> Cribs </li></NavLink>
+                        <NavLink onClick={Sidebar.active} activeClassName="is-active"  id="properties" to="/app/cribs"><li><HomeOutlinedIcon/> Cribs </li></NavLink>
 
                         
                             {/* <NavLink onClick={Sidebar.active}  activeClassName="is-active"  id="inboxes" to="/app/inbox">

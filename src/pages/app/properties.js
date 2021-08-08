@@ -213,7 +213,7 @@ class Properties extends React.Component{
                             <div >
                                 <div>
                                     <div  style={{margin:'30px 0'}}>
-                                        <Link  id="add" to="/app/add-property">
+                                        <Link  id="add" to="/app/add-crib">
                                             <Fab  size="small"  aria-label="add">
                                                 <AddIcon fontSize="small" />
                                             </Fab>
@@ -288,7 +288,7 @@ class Properties extends React.Component{
                                                         <ul>
                                                             <li><button><VisibilityOutlined fontSize="small"/> View</button></li>
                                                             <li>
-                                                                <Link to={`/app/edit-property/${property._id}`}>
+                                                                <Link to={`/app/edit-crib/${property._id}`}>
                                                                 <button><EditIcon fontSize="small" /> Edit</button>
                                                                 </Link>
                                                             </li>

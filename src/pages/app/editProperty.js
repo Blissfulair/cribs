@@ -99,17 +99,37 @@ class EditProperty extends React.Component{
     uploadImage = (e)=>{
 
         let image = e.target.files[0];
-        this.setState({featured_image:image})
-        let reader = new FileReader();
-        reader.readAsDataURL(image);
-        reader.onload = (e)=>{
-            document.getElementById('img').setAttribute('src', reader.result);
+        if(image.type === 'image/png' || image.type === 'image/jpeg' || image.type === 'image/jpg'){
+            if(image.size > 110000){
+                this.setState({message:'image must not be more than 100kb',open:true})
+                return
+            }
+            this.setState({featured_image:image})
+            let reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = (e)=>{
+                document.getElementById('img').setAttribute('src', reader.result);
 
+            }
+        }
+        else{
+            this.setState({message:'File must be of type PNG, JPEG or JPG',open:true})
+            return
         }
     }
     uploadImages = (e)=>{
-        
-        this.getImageUrl(e.target.files[0])
+        let imaged = e.target.files[0]
+        if(imaged.type === 'image/png' || imaged.type === 'image/jpeg' || imaged.type === 'image/jpg'){
+            if(imaged.size > 110000){
+                this.setState({message:'image must not be more than 100kb',open:true})
+                return
+            }
+            this.getImageUrl(imaged)
+        }
+        else{
+            this.setState({message:'File must be of type PNG, JPEG or JPG',open:true})
+            return 
+        }
         
     }
     getImageUrl = (image)=>{

@@ -69,31 +69,56 @@ class AddProperty extends React.Component{
 
     uploadImage = (e)=>{
         let image = e.target.files[0];
-        this.setState({featured_image:image})
-        let reader = new FileReader();
-        reader.readAsDataURL(image);
-        reader.onload = (e)=>{
-            document.getElementById('img').setAttribute('src', reader.result);
+        if(image.type === 'image/png' || image.type === 'image/jpeg' || image.type === 'image/jpg'){
+             if(image.size > 110000){
+                this.setState({message:'image must not be more than 100kb',open:true})
+                return
+            }
+            this.setState({featured_image:image})
+            let reader = new FileReader();
+            reader.readAsDataURL(image);
+            reader.onload = (e)=>{
+                document.getElementById('img').setAttribute('src', reader.result);
+            }
         }
+        else{
+            this.setState({message:'File must be of type PNG, JPEG or JPG',open:true})
+            return
+        }
+
+
     }
     uploadImages = (e)=>{
         let reader = new FileReader();
-        let pic = document.createElement('img');
-        let del = document.createElement('div');
-        let newEl = document.createElement('div');
-        newEl.setAttribute('class', 'viewing')
-        other_images.push(e.target.files[0]);
-        reader.readAsDataURL(e.target.files[0]);
-        reader.onload = (e)=>{
-            images.push(reader.result)
-            pic.setAttribute('src', reader.result);
-            newEl.appendChild(pic);
-            newEl.appendChild(del);
-            document.getElementsByClassName('images')[0].appendChild(newEl);
-            document.getElementsByClassName('images')[0].lastChild.lastChild.onclick = (e)=>{
-                this.deleteImage(e);
+        let imaged = e.target.files[0]
+        if(imaged.type === 'image/png' || imaged.type === 'image/jpeg' || imaged.type === 'image/jpg'){
+            if(imaged.size > 110000){
+                this.setState({message:'image must not be more than 100kb',open:true})
+                return
+            }
+            let pic = document.createElement('img');
+            let del = document.createElement('div');
+            let newEl = document.createElement('div');
+            newEl.setAttribute('class', 'viewing')
+            other_images.push(imaged);
+            reader.readAsDataURL(imaged);
+            reader.onload = (e)=>{
+                images.push(reader.result)
+                pic.setAttribute('src', reader.result);
+                newEl.appendChild(pic);
+                newEl.appendChild(del);
+                document.getElementsByClassName('images')[0].appendChild(newEl);
+                document.getElementsByClassName('images')[0].lastChild.lastChild.onclick = (e)=>{
+                    this.deleteImage(e);
+                }
             }
         }
+        else{
+            this.setState({message:'File must be of type PNG, JPEG or JPG',open:true})
+            return 
+        }
+
+
     }
     handleClick = (Transition) => () => {
         this.setState({transition:Transition, open:true})
@@ -137,26 +162,7 @@ class AddProperty extends React.Component{
     getLocation = async(address)=>{
 
     }
-    // onChangeState=e=>{
-    //     e.preventDefault();
-    //     let val = e.target.value
-    //     axios.get(`${api}/cities/${val}`)
-    //     .then(resp=>{
-    //         let options = resp.data.cities.length > 0?resp.data.cities.map((value,i)=>{
-    //             let option = document.createElement('option');
-    //             option.setAttribute('value', value.name)
-    //             option.innerHTML = value.name
-    //             document.querySelector('#city').appendChild(option)
-                
-    //             return option
-    //         }):''
-           
-    //         this.setState({
-    //             cities:resp.data.cities
-    //          })
-    //     })
-    //     .catch(error=>error)
-    // }
+
 
     onAdd=()=>{
         let add = this.state.rooms;

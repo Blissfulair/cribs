@@ -74,13 +74,20 @@
     
 }
 .inbox-body table tr{
-    background: #FCFCFC;
+    display: table-row !important;
+    height: 53px;
+    cursor: pointer;
+}
+.inbox-body table tr:hover{
+    background:  #EFEFEF;
 }
 .table-head tr th,
 .inbox-body table tr td{
     padding:15px;
-    border-bottom: 1px solid #EFEFEF;
-
+    font-size: 14px;
+}
+.table-head tr th{
+    font-weight: 700;
 }
 .table-head tr:last-child th,
 .inbox-body table tr:last-child td{

@@ -144,10 +144,13 @@ class History extends React.Component{
     }
 
     componentDidMount(){
+        this.onLoadHistories()
+    }
+    onLoadHistories=()=>{
         getHistoriesByUserId(this.props.user.id)
         .then((histories)=>{
             this.props.setHistories(histories)
-            this.setState({loading:false, histories:this.props.histories})
+            this.setState({loading:false, histories:histories})
         })
     }
 	handleClickOpen = (history) => {
@@ -157,17 +160,18 @@ class History extends React.Component{
     this.setState({open:false});
     }
     onSearch = (text)=>{
-    //     if(text !== ''){
-    //     const histories = this.props.histories.filter(history=>{
-    //         if(history.propertyName.toLowerCase().includes(text.toLowerCase()) || history.propertyState.toLowerCase().includes(text.toLowerCase()) || history.propertyCity.toLowerCase().includes(text.toLowerCase()) || history.amount.toString().includes(text.toLowerCase()))
-    //         return history
-    //         else
-    //         return ''
-    //     })
+        const histories= this.props.histories.filter(props=>{
+            if(props.status === 0)
+               props.stat= 'success'
+           else if(props.status ===1)
+               props.stat='pending'
+               const createdAt = new Date(props.createdAt)
+           props.create = createdAt.getDate()+' ' + getMonthInWord(createdAt)+', '+ createdAt.getFullYear()+' '+createdAt.getHours()+':'+createdAt.getMinutes()+':'+createdAt.getSeconds()
+           let  td = Object.values(props);
+           return (td.toString().toUpperCase().indexOf(text.toUpperCase()) > -1)? td:''
+         })
         
-    //     this.setState({histories})
-    // }   
-    // else this.setState({histories:this.props.histories})
+        this.setState({histories})
     }
 
     onSelect = (id, checked)=>{
@@ -226,20 +230,21 @@ class History extends React.Component{
             // amount:this.state.history.amount,
             review:this.state.review,
             stars:this.state.rating,
-            host_id:this.state.history.host_id
+            host_id:this.state.history.host_id,
+            trans_id:this.state.history._id
             // email:user.email,
             // hostId:
         }
         const property_id = this.state.history.property_id
         sendReview(data, property_id)
         .then(()=>{
+            this.onLoadHistories()
             this.handleClose()
-            this.setState({review:'',reviewLoading:false})
+            this.setState({review:'',reviewLoading:false, rating:0})
         })
     }
     render(){
-        const {history} = this.state
-        const {histories} =this.props
+        const {history,histories} = this.state
         const inbox = (
             <>
             {histories.length>0?histories.map((history,i)=>{

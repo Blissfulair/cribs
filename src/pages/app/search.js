@@ -79,7 +79,7 @@ class Search extends Component{
                 checkOut,
                 guest
             }
-            this.setState({isLoading:false})
+            
             this.props.storeSearchData(data)
                 searchProperties({search:data.location, page:Number(page)})
                 .then((res)=>{

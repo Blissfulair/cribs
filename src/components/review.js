@@ -22,12 +22,17 @@ const Review = ({data, number, reviews})=>{
                     {data.review}
                 </Typography>
                 <Typography style={{fontSize:12}} variant="subtitle2" component="small">
-                    {new Date(data.creactedAt).toDateString()}
+                    {new Date(data.createdAt).toDateString()}
                 </Typography>
             </Grid>
             <Grid item xs={4}>
                 <Grid container justify="flex-end">
-                    <Avatar style={{height:60,width:60}} src={data.image} alt="reviewer"/>
+                    {
+                        data.image?
+                        <Avatar style={{height:60,width:60}} src={process.env.REACT_APP_BACKEND_URL+'/'+data.image} alt= {data.name}/>
+                        :
+                        <Avatar style={{height:60,width:60}} src={data.image} alt= {data.name}/>
+                    }
                 </Grid>
             </Grid>
         </Grid>

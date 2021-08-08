@@ -296,3 +296,18 @@ export const checkLoggedIn = async () => {
     const  dashboard= await response.json();
     return dashboard;
   };
+
+
+  export const changePassword = async (data) => {
+    const response = await fetch('/api/user/change_password', {
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{
+        "Content-Type":"application/json"
+      }
+    });
+   
+    const res = await response.json();
+    console.log(res)
+    return res
+  };

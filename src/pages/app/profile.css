@@ -1,3 +1,7 @@
+.profiles{
+    padding-top: 80px;
+    width: 80%;
+}
 .profile{
     display: grid;
     grid-template-columns: 35% 60%;
@@ -104,6 +108,23 @@
     color: #00A8C8;
     margin-bottom: 10px;
 }
+.profiles .profile-details .title{
+    font-size: 1.3rem;
+
+    margin-bottom: 10px;
+
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 21px;
+
+    /* or 150% */
+    letter-spacing: 0.1px;
+
+    color: #1053FF;
+}
+
 .profile-details .review{
     color: #DCDCDC;
     margin-bottom: 3px;
@@ -126,6 +147,9 @@
     background: #00A8C8;
     border: 3px;
 }
+.profiles .underline-title::after{
+    background: #1053FF;
+}
 .profile-details .btn{
     position: absolute;
     right: 0;
@@ -147,6 +171,13 @@
     height: 136px !important;
 }
 @media(max-width:767px){
+    .profiles{
+        padding: 70px 16px 40px;
+        width: 100%;
+    }
+    /* .profiles .profiles-reviews{
+        justify-content: center;
+    } */
     .profile{
         display: block;
         border-radius: 0;

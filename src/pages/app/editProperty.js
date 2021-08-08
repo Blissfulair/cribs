@@ -1,7 +1,4 @@
 import React from "react";
-import "./inbox.css"
-import "./properties.css"
-import "./add-property.css"
 import image from  "../../images/placeholder.jpg"
 import {Snackbar, Slide } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
@@ -12,6 +9,8 @@ import {states} from "../../icons/options"
 import { connect } from "react-redux";
 import { editProperty, getCribById } from "../../apis/server";
 import AppHeader from "../../components/appHeader"
+import CancelIcon from '@material-ui/icons/CancelOutlined';
+import "./add-crib.scss"
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
@@ -323,10 +322,10 @@ editProperty(formData,id)
                 <Backend>
                 <AppHeader/>
                     <Activity loading={this.state.isLoading}/>
-                    <div className="inbox">
-                        <div className="inbox-head dashboard-mt">
+                    <div className="property-add-page">
+                        <div className="dashboard-mt">
                             <div className="inbox-title">
-                                <h4>Edit Property</h4>
+                                <h4>Edit Crib</h4>
                             </div>
                         </div>
 
@@ -348,14 +347,57 @@ editProperty(formData,id)
                                     <Alert variant="filled" severity={this.state.success?"success":"error"}>{this.state.message}</Alert>
                                 </Snackbar>
                             }
-                            <div className="property-group">
-                                <label htmlFor="title">Title</label>
-                                <input type="text" onChange={this.changeHandler} defaultValue={this.state.title} onKeyUp={event=>{this.maxStringLength(event,25)}} name="title" id="title" placeholder="E.g: One Bedroom Flat" />
+
+                                <div className="property-group">
+                                    <div className="featured-image">
+                                        <label>
+                                            <img id="img" src={this.state.featured_image === null? image: process.env.REACT_APP_BACKEND_URL+"/"+ this.state.featured_image} alt="" />  
+                                                <input type="file" onChange={this.uploadImage} name="featured" id="image" />
+                                        </label>
+                                        <label htmlFor="image">Upload featured Image</label>
+                                    </div>
+                                    
+                                    <div className="other-images">
+                                        <label>
+                                            <input type="file" name="images" onChange={this.uploadImages} id="images" />
+                                            Upload Viewing image
+                                            <div className="add-image">
+                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="white" fill-opacity="0.87"/>
+                                                </svg>
+                                            </div>
+                                        </label>
+
+                                        <div className="images">
+                                            {
+                                                this.state.other_images.map((image,i)=>{
+                                                    if(image)
+                                                    return(
+                                                    <div key={i} className="viewing">
+                                                        {
+                                                            typeof image === 'object'?
+                                                            <img src={image.src} alt={`side${i}`} />
+                                                            :
+                                                            <img src={process.env.REACT_APP_BACKEND_URL+"/"+image} alt={`side${i}`} />
+
+                                                        }
+                                                        <div onClick={()=>this.deleteImage(i,image)} aria-hidden="true" ></div>
+                                                    </div>
+                                                )
+                                                return ''
+                                            }) 
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            <div className="property-groups">
+                                <label htmlFor="title">Name</label>
+                                <input type="text" maxLength={25} onChange={this.changeHandler} defaultValue={this.state.title} onKeyUp={event=>{this.maxStringLength(event,25)}} name="title" id="title" placeholder="E.g: One Bedroom Flat" />
                                 <p>25 Characters</p>
                             </div>
-                            <div className="property-group">
+                            <div className="property-groups">
                                 <label htmlFor="desc">Description</label>
-                                <textarea name="description" defaultValue={this.state.description}  onKeyUp={event=>{this.maxStringLength(event,500)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="desc" cols="30" rows="10" />
+                                <textarea name="description" maxLength={500} defaultValue={this.state.description}  onKeyUp={event=>{this.maxStringLength(event,500)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="desc" cols="30" rows="10" />
                                 <p>500 Characters</p>
                             </div>
 
@@ -405,28 +447,16 @@ editProperty(formData,id)
                                     </div>
                                 </div>
 
-                                <div className="property-group-inner">
-                                    {/* <div className="col">
-                                        <label htmlFor="type">Locality</label>
-                                        <div className="input">
-                                            <select name="locality" onBlur={this.changeHandler}  id="type">
-                                                <option value="">Select Locality</option>
-                                                <option value="Egba">Egba</option>
-                                                <option value="Ogida">Ogida</option>
-                                            </select>
-                                            <span><div className="angle"></div></span>
-                                        </div>
-                                    </div> */}
-
-                                    <div className="col">
-                                    </div>
-                                </div>
                             </div>
 
-                            <div className="property-group">
+                            <div className="property-group-room">
                                 <div style={{display:'flex', alignItems:'center'}}>
                                     <h3>Add room</h3>
-                                    <button type="button" className="add-room" style={{marginLeft:10}} onClick={this.onAdd}></button>
+                                    <button type="button" className="add-room" style={{marginLeft:10}} onClick={this.onAdd}>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="white" fill-opacity="0.87"/>
+                                        </svg>
+                                    </button>
                                 </div>
                                 
                                 {
@@ -474,7 +504,9 @@ editProperty(formData,id)
                                             <div className="col">
                                             {
                                             i>0&&
-                                                <span aria-hidden={true} onClick={()=>this.remove(i)} className='prop-remove'>Remove</span>
+                                                <span aria-hidden={true} onClick={()=>this.remove(i)} className='prop-remove'>
+                                                    <CancelIcon htmlColor="#C50000"/>
+                                                </span>
                                             }
                                             </div>
                                       
@@ -489,51 +521,52 @@ editProperty(formData,id)
 
                                 <div className="property-group-inner2">
                                     <div className="col">
-                                        <label className="rememberme">
+                                        <label className="checkbox">
                                                 <input  type="checkbox" checked={this.state.wifi}  onChange={this.changeType}  name="wifi" id="pool" />
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="pool">Wifi</label>
                                     </div>
                                     <div className="col">
-                                        <label className="rememberme">
+                                        <label className="checkbox">
                                                 <input type="checkbox" checked={this.state.parking}  onChange={this.changeType}  name="parking" id="smoking" />
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="smoking">parking</label>
                                     </div>
                                     <div className="col">
-                                        <label className="rememberme">
+                                        <label className="checkbox">
                                                 <input type="checkbox" checked={this.state.smoking}  onChange={this.changeType}  name="smoking" id="jaccuzi" />
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="jaccuzi">Smoke Alarm</label>
                                     </div>
                                     <div className="col">
-                                        <label className="rememberme">
+                                        <label className="checkbox">
                                             <input type="checkbox" checked={this.state.cable}  onChange={this.changeType}  name="cable" id="water" />
                                             <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="water">Cable Tv</label>
                                     </div>
                                     <div className="col">
-                                        <label className="rememberme">
+                                        <label className="checkbox">
                                             <input type="checkbox" checked={this.state.kitchen}  onChange={this.changeType}  name="kitchen" id="kitchen" />
                                             <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="kitchen">Kitchen</label>
                                     </div>
                                 </div>
-                                <div className="property-group">
+                            </div>
+                            <div className="property-groups">
                                     <h3>Accessibility</h3>
                                     <label htmlFor="inside">Getting Inside</label>
-                                    <textarea name="inside" value={this.state.inside}  onKeyUp={event=>{this.maxStringLength(event,300)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="inside" cols="30" rows="5" />
+                                    <textarea name="inside" value={this.state.inside} maxLength={300}  onKeyUp={event=>{this.maxStringLength(event,300)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="inside" cols="30" rows="5" />
                                     <p>300 Characters</p>
                                     <label htmlFor="outside">Moving around the space</label>
-                                    <textarea name="around" value={this.state.around}  onKeyUp={event=>{this.maxStringLength(event,300)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="outside" cols="30" rows="5" />
+                                    <textarea name="around" value={this.state.around} maxLength={300}  onKeyUp={event=>{this.maxStringLength(event,300)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="outside" cols="30" rows="5" />
                                     <p>300 Characters</p>
                                 </div>
-                                <div className="property-group">
+                                <div className="property-groups">
                                     <h3>Type</h3>
                                     <ul className="prop-type">
                                     {
@@ -552,53 +585,11 @@ editProperty(formData,id)
                                        
                                     </ul>
                                 </div>
-
-
                                 <div className="property-group">
-                                    <h3>Pictures</h3>
-                                    <div className="featured-image">
-                                        <p>Featured Image</p>
-                                        <label>
-                                            <img id="img" src={this.state.featured_image === null? image: process.env.REACT_APP_BACKEND_URL+"/"+ this.state.featured_image} alt="" />  
-                                                <input type="file" onChange={this.uploadImage} name="featured" id="image" />
-                                        </label>
-                                        <label htmlFor="image">Upload Image</label>
-                                    </div>
-                                    
-                                    <div className="other-images">
-                                        <label>
-                                            <input type="file" name="images" onChange={this.uploadImages} id="images" />
-                                            Upload Viewing image
-                                            <div className="add-image"></div>
-                                        </label>
-
-                                        <div className="images">
-                                            {
-                                                this.state.other_images.map((image,i)=>{
-                                                    if(image)
-                                                    return(
-                                                    <div key={i} className="viewing">
-                                                        {
-                                                            typeof image === 'object'?
-                                                            <img src={image.src} alt={`side${i}`} />
-                                                            :
-                                                            <img src={process.env.REACT_APP_BACKEND_URL+"/"+image} alt={`side${i}`} />
-
-                                                        }
-                                                        <div onClick={()=>this.deleteImage(i,image)} aria-hidden="true" ></div>
-                                                    </div>
-                                                )
-                                                return ''
-                                            }) 
-                                            }
-                                        </div>
-                                    </div>
+                                    <button className="add-crib-btn" onClick={this.handleClick(TransitionUp)}>
+                                        Update Crib
+                                    </button>
                                 </div>
-
-                                <div className="property-group">
-                                    <button onClick={this.handleClick(TransitionUp)}>Save and Preview</button>
-                                </div>
-                            </div>
                         </form>
                     </div>
                 </Backend>

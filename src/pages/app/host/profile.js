@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom"
 import "./../inbox.css"
 import "./../properties.css"
-import "./../add-property.css"
+// import "./../add-property.css"
 import "./../profile.css"
 
 import Backend from "./../layout"
@@ -18,12 +18,12 @@ import Activity from "../../../components/activity";
 
 const ProfileDetails = ({user,uploadImage})=>{
     return(
-        <div style={{paddingTop:80}} className="inbox">
-        <div className="inbox-head dashboard-mt">
+        <div  className="profiles">
+        {/* <div className="inbox-head dashboard-mt">
             <div className="inbox-title">
                 <h4>Profile</h4>
             </div>
-        </div>
+        </div> */}
 
         <div className="profile">
             <div className="profile-img">
@@ -34,7 +34,7 @@ const ProfileDetails = ({user,uploadImage})=>{
                     <Avatar/>
                 }
                     <input type="file" onChange={(e)=>{uploadImage(e)}} name="" id="ig" />
-                    <label htmlFor="ig">
+                    <label style={{background:'#1053FF'}} htmlFor="ig">
                         {/* <IconButton> */}
                             <EditOutlinedIcon fontSize="small" htmlColor="#fff"/>
                         {/* </IconButton> */}
@@ -43,18 +43,18 @@ const ProfileDetails = ({user,uploadImage})=>{
             <div className="profile-details">
                 <h4 className="title">{user.firstname + ' '+ user.lastname}</h4>
                 <p className="review"> Reviews</p>
-                <Grid container alignItems="center">
-                    <Typography style={{color:'#00A8C8', fontSize:20, fontWeight:'bold', marginRight:10}}>{(user.stars/user.reviews).toFixed(1)}</Typography>
+                <Grid container className="profiles-reviews" alignItems="center">
+                    <Typography style={{color:'#1053FF', fontSize:20, fontWeight:'bold', marginRight:10}}>{(user.stars/user.reviews).toFixed(1)}</Typography>
                     <StyledRating
                         name="rate"
                         disabled
                         defaultValue={user.stars/user.reviews}
                     />
                 </Grid>
-                <Typography variant="subtitle2" style={{marginTop:12, color:'#00A8C8'}} component="p">{user.reviews === 0?'No reviews yet':(user.stars/user.reviews)>=3.5?'Top Host':(user.stars/user.reviews<3.5&&'NewBie Host')}</Typography>
+                <Typography variant="subtitle2" style={{marginTop:12, color:'#1053FF'}} component="p">{user.reviews === 0?'No reviews yet':(user.stars/user.reviews)>=3.5?'Top Host':(user.stars/user.reviews<3.5&&'NewBie Host')}</Typography>
 
                 <Link to="/app/edit-profile">
-                    <div className="btn">
+                    <div style={{background:'#1053FF'}} className="btn">
                         <IconButton>
                             <EditOutlinedIcon fontSize="small" htmlColor="#fff"/>
                         </IconButton>

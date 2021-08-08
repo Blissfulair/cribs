@@ -1,8 +1,9 @@
 import React from "react";
 import "./../inbox.css"
 import "./../properties.css"
-import "./../add-property.css"
+// import "./../add-property.css"
 import "./../setting.css"
+import "./setting.scss"
 import {Snackbar, Slide } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import VisibilityIcon from '@material-ui/icons/VisibilityOutlined';
@@ -11,6 +12,7 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOffOutlined';
 import Backend from "./../layout"
 import { IconButton } from "@material-ui/core";
 import AppHeader from "../../../components/appHeader";
+import { changePassword } from "../../../apis/server";
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
@@ -28,7 +30,8 @@ class Setting extends React.Component{
             message:'',
             transition:undefined,
             open:false,
-            success:false
+            success:false,
+            loading:false
         }
     }
     changeHandler =(n)=>{
@@ -36,7 +39,40 @@ class Setting extends React.Component{
     }
     onSubmit = (e)=>{
         e.preventDefault()
-        this.setState({message:'Password Successfully Changed',success:true})
+        this.setState({loading:true})
+        if(!this.state.old){
+            this.setState({message:'Old password is required',success:false,loading:false}) 
+            return
+        }
+        else if(!this.state.password)
+        {
+            this.setState({message:'New password is required',success:false,loading:false}) 
+            return
+        }
+        else if(!this.state.confirm_pass)
+        {
+            this.setState({message:'Confirm password is required',success:false,loading:false}) 
+            return
+        }
+        else if(this.state.password !== this.state.confirm_pass)
+        {
+            this.setState({message:'New password does not match',success:false,loading:false}) 
+            return
+        }
+        const data = {
+            oldPassword:this.state.old,
+            password:this.state.password
+        }
+        changePassword(data)
+        .then((res)=>{
+            if(res.code === 200)
+            this.setState({message:'Password Successfully Changed',success:true,loading:false})
+            else
+            this.setState({message:'Existing password does not match.',success:false,loading:false})
+        })
+        .catch(e=>{
+            this.setState({message:'Oops something went wrong',success:false,loading:false})
+        })
     }
     handleClick = (Transition) => () => {
         this.setState({transition:Transition, open:true})
@@ -50,12 +86,8 @@ class Setting extends React.Component{
     render(){
             const settings=(
                 <>
-                                    <div style={{paddingTop:46}} className="inbox">
-                        <div className="inbox-head dashboard-mt">
-                            <div className="inbox-title">
-                                <h4>Account Setting</h4>
-                            </div>
-                        </div>
+                    <div  className="settins-c">
+
                         <div className="password-form">
                              <h4>Change Password</h4>
                              {
@@ -75,8 +107,8 @@ class Setting extends React.Component{
                                 <div className="password-group">
                                     <label htmlFor="old">Old Password</label>
                                     <div>
-                                        <input type={this.state.old_secure?"password":"text"} id="old" name="old" />
-                                        <IconButton onClick={()=>this.setState({old_secure:!this.state.old_secure})}  className="eye">
+                                        <input type={this.state.old_secure?"password":"text"} id="old" name="old" onChange={this.changeHandler} />
+                                        <IconButton onClick={()=>this.setState({old_secure:!this.state.old_secure})} >
                                             {
                                                 !this.state.old_secure?
                                                 <VisibilityOffIcon/>
@@ -90,8 +122,8 @@ class Setting extends React.Component{
                                 <div className="password-group">
                                     <label htmlFor="new">New Password</label>
                                     <div>
-                                        <input type={this.state.password_secure?"password":"text"} id="new" name="password" />
-                                        <IconButton onClick={()=>this.setState({password_secure:!this.state.password_secure})} className="eye">
+                                        <input type={this.state.password_secure?"password":"text"} id="new" name="password" onChange={this.changeHandler} />
+                                        <IconButton onClick={()=>this.setState({password_secure:!this.state.password_secure})}>
                                             {
                                                 !this.state.password_secure?
                                                 <VisibilityOffIcon/>
@@ -104,8 +136,8 @@ class Setting extends React.Component{
                                 <div className="password-group">
                                     <label htmlFor="confirm">Re-Type Password</label>
                                     <div>
-                                    <input type={this.state.confirm_secure?"password":"text"} id="confirm" name="confirm_pass" />
-                                    <IconButton onClick={()=>this.setState({confirm_secure:!this.state.confirm_secure})} className="eye">
+                                    <input type={this.state.confirm_secure?"password":"text"} id="confirm" name="confirm_pass" onChange={this.changeHandler}/>
+                                    <IconButton onClick={()=>this.setState({confirm_secure:!this.state.confirm_secure})} >
                                         {
                                                 !this.state.confirm_secure?
                                                 <VisibilityOffIcon/>

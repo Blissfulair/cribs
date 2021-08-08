@@ -1,7 +1,6 @@
 import React from "react";
-import "./inbox.css"
-import "./properties.css"
-import "./add-property.css"
+// import "./add-property.css"
+import "./add-crib.scss"
 import image from  "../../images/placeholder.jpg"
 import {Snackbar, Slide } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
@@ -13,6 +12,7 @@ import {withRouter, Link} from "react-router-dom"
 import { connect } from "react-redux";
 import { addProperty } from "../../apis/server";
 import { setPropertyTypes } from "../../state/actions";
+import CancelIcon from '@material-ui/icons/CancelOutlined';
 
 
 const TransitionUp=(props)=>{
@@ -329,49 +329,6 @@ addProperty(formData)
     this.form.reset()
 })
 .catch(e=>{console.log(e)})
-// firebase.storeProperty(body)
-// .then(()=>{
-    // this.setState({
-    //     title:'',
-    //     description:'',
-    //     house:'',
-    //     address:'',
-    //     price:'',
-    //     bedroom:1,
-    //     discount:0,
-    //     bathroom:0,
-    //     parking:false,
-    //     wifi:false,
-    //     smoking:false,
-    //     cable:false,
-    //     jaccuzi:0,
-    //     kitchen:false,
-    //     inside:'',
-    //     around:'',
-    //     guest:1,
-    //     featured_image:null,
-    //     type:'house',
-    //     other_images:[],
-    //     city:'',
-    //     state:'',
-    //     success:true,
-    //     rooms:[{room:'', price:'', bed:1,bathroom:0,bookedDates:[]}],
-    //     message:'Submitted successfully',
-    //     isLoading:false
-    // })
-
-//         const elements = document.querySelectorAll('.viewing')
-//         for(let i =0 ; i< elements.length ; i++){
-            
-//             elements[i].remove()
-
-//         }
-//         this.refs.form.reset();
-//      })
-//      .catch(err=>{
-//          console.log(err)
-//          this.setState({message:'Failed to submit', isLoading:false})
-//      })
 
     }
     render(){
@@ -381,10 +338,10 @@ addProperty(formData)
                 <Backend>
                 <AppHeader/>
                     <Activity loading={this.state.isLoading}/>
-                    <div className="inbox">
-                        <div className="inbox-head dashboard-mt">
+                    <div className="property-add-page">
+                        <div className="dashboard-mt">
                             <div className="inbox-title">
-                                <h4>Add Property</h4>
+                                <h4>Add New Crib</h4>
                             </div>
                         </div>
 
@@ -413,14 +370,39 @@ addProperty(formData)
                                     <Alert variant="filled" severity={this.state.success?"success":"error"}>{this.state.message}</Alert>
                                 </Snackbar>
                             }
+
+
                             <div className="property-group">
-                                <label htmlFor="title">Title</label>
-                                <input type="text" onChange={this.changeHandler} value={this.state.title} onKeyUp={event=>{this.maxStringLength(event,25)}} name="title" id="title" placeholder="E.g: One Bedroom Flat" />
+                                <div className="featured-image">
+                                    <label>
+                                        <img id="img" src={this.state.featured_image === null? image: this.state.featured_image} alt="" />  
+                                            <input type="file" onChange={this.uploadImage} name="featured" id="image" />
+                                    </label>
+                                    <label htmlFor="image">Upload featured image</label>
+                                </div>
+                                
+                                <div className="other-images">
+                                    <label>
+                                        <input type="file" name="images" onChange={this.uploadImages} id="images" />
+                                        Upload Viewing image
+                                        <div className="add-image">
+                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="white" fill-opacity="0.87"/>
+                                            </svg>
+                                        </div>
+                                    </label>
+
+                                    <div className="images"></div>
+                                </div>
+                            </div>
+                            <div className="property-groups">
+                                <label htmlFor="title">Name</label>
+                                <input type="text" onChange={this.changeHandler} maxLength={25} value={this.state.title} onKeyUp={event=>{this.maxStringLength(event,25)}} name="title" id="title" placeholder="E.g: One Bedroom Flat" />
                                 <p>25 Characters</p>
                             </div>
-                            <div className="property-group">
+                            <div className="property-groups">
                                 <label htmlFor="desc">Description</label>
-                                <textarea name="description" value={this.state.description}  onKeyUp={event=>{this.maxStringLength(event,500)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="desc" cols="30" rows="10" />
+                                <textarea name="description" value={this.state.description} maxLength={500}  onKeyUp={event=>{this.maxStringLength(event,500)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="desc" cols="30" rows="10" />
                                 <p>500 Characters</p>
                             </div>
 
@@ -489,11 +471,15 @@ addProperty(formData)
                                 </div>
                             </div>
 
-                            <div className="property-group">
-                                <div style={{display:'flex', alignItems:'center'}}>
+                            <div className="property-group-room">
+                                <label style={{display:'flex', alignItems:'center'}}>
                                     <h3>Add room</h3>
-                                    <button className="add-room" style={{marginLeft:10}} onClick={this.onAdd}></button>
-                                </div>
+                                    <button className="add-room" onClick={this.onAdd}>
+                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="white" fill-opacity="0.87"/>
+                                            </svg>
+                                    </button>
+                                </label>
                                 
                                 {
                                     this.state.rooms.length>0&&
@@ -539,7 +525,9 @@ addProperty(formData)
                                             <div className="col">
                                             {
                                             i>0&&
-                                                <span aria-hidden={true} onClick={()=>this.remove(i)} className='prop-remove'>Remove</span>
+                                                <span aria-hidden={true} onClick={()=>this.remove(i)} className='prop-remove'>
+                                                    <CancelIcon htmlColor="#C50000"/>
+                                                </span>
                                             }
                                             </div>
                                       
@@ -554,42 +542,43 @@ addProperty(formData)
 
                                 <div className="property-group-inner2">
                                     <div className="col">
-                                        <label className="rememberme">
+                                        <label className="checkbox">
                                                 <input  type="checkbox" onChange={this.changeType}  name="wifi" id="pool" />
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="pool">Wifi</label>
                                     </div>
                                     <div className="col">
-                                        <label className="rememberme">
+                                        <label className="checkbox">
                                                 <input type="checkbox" onChange={this.changeType}  name="parking" id="smoking" />
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="smoking">parking</label>
                                     </div>
                                     <div className="col">
-                                        <label className="rememberme">
+                                        <label className="checkbox">
                                                 <input type="checkbox" onChange={this.changeType}  name="smoking" id="jaccuzi" />
                                                 <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="jaccuzi">Smoke Alarm</label>
                                     </div>
                                     <div className="col">
-                                        <label className="rememberme">
+                                        <label className="checkbox">
                                             <input type="checkbox" onChange={this.changeType}  name="cable" id="water" />
                                             <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="water">Cable Tv</label>
                                     </div>
                                     <div className="col">
-                                        <label className="rememberme">
+                                        <label className="checkbox">
                                             <input type="checkbox" onChange={this.changeType}  name="kitchen" id="kitchen" />
                                             <span className="checkmark"></span>
                                         </label>
                                         <label htmlFor="kitchen">Kitchen</label>
                                     </div>
                                 </div>
-                                <div className="property-group">
+                            </div>
+                            <div className="property-groups">
                                     <h3>Accessibility</h3>
                                     <label htmlFor="inside">Getting Inside</label>
                                     <textarea name="inside" value={this.state.inside}  onKeyUp={event=>{this.maxStringLength(event,300)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="inside" cols="30" rows="5" />
@@ -598,21 +587,7 @@ addProperty(formData)
                                     <textarea name="around" value={this.state.around}  onKeyUp={event=>{this.maxStringLength(event,300)}} onBlur={event=>{this.maxStringLength(event,240)}} onChange={this.changeHandler} id="outside" cols="30" rows="5" />
                                     <p>300 Characters</p>
                                 </div>
-                                {/* <div className="property-group">
-                                    <h3>Discounts</h3>
-                                    <div className="property-group-inner">
-                                        <div className="col">
-                                            <label htmlFor="discount">Discount</label>
-                                            <div className="discount">
-                                                <input name="discount" placeholder="E.g:10 or 3.6" onChange={this.changeHandler} id="discount"/>
-                                                <span>
-                                                    <div className="angle"></div>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
-                                <div className="property-group">
+                                <div className="property-groups">
                                     <h3>Type</h3>
                                     <ul className="prop-type">
                                         {
@@ -632,62 +607,25 @@ addProperty(formData)
                                       
                                     </ul>
                                 </div>
-
-
-                                <div className="property-group">
-                                    <h3>Pictures</h3>
-                                    <div className="featured-image">
-                                        <p>Featured Image</p>
-                                        <label>
-                                            <img id="img" src={this.state.featured_image === null? image: this.state.featured_image} alt="" />  
-                                                <input type="file" onChange={this.uploadImage} name="featured" id="image" />
-                                        </label>
-                                        <label htmlFor="image">Upload Image</label>
-                                    </div>
-                                    
-                                    <div className="other-images">
-                                        <label>
-                                            <input type="file" name="images" onChange={this.uploadImages} id="images" />
-                                            Upload Viewing image
-                                            <div className="add-image"></div>
-                                        </label>
-
-                                        <div className="images"></div>
-                                    </div>
-                                </div>
-
                                 <div className="property-group">
                                     {
                                         this.props.user.phone?
-                                        <button onClick={this.handleClick(TransitionUp)}>Save and Preview</button>
+                                        <button className="add-crib-btn" onClick={this.handleClick(TransitionUp)}>
+                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="white" fill-opacity="0.87"/>
+                                            </svg>
+                                            Add Crib
+                                        </button>
                                         :
-                                        <button style={{backgroundColor:"rgb(186, 186, 186)", cursor:'default'}}>Save and Preview</button>
-                                        // :
-                                        // <button style={{backgroundColor:'green'}} type="button" onClick={()=>this.props.history.push({pathname:'/app/edit-profile',state:{detail:{    name:this.state.title,
-                                        //     description:this.state.description,
-                                        //     featuredImage:this.state.featured_image,
-                                        //     images:[ ...other_images],
-                                        //     amount:this.state.price,
-                                        //     bedroom:this.state.bedroom,
-                                        //     discount:this.state.discount,
-                                        //     smoke:this.state.smoking,
-                                        //     wifi:this.state.wifi,
-                                        //     parking:this.state.parking,
-                                        //     cable:this.state.cable,
-                                        //     bathroom:this.state.bathroom,
-                                        //     kitchen:this.state.kitchen,
-                                        //     inside:this.state.inside,
-                                        //     around:this.state.around,
-                                        //     address:this.state.address,
-                                        //     guest:this.state.guest,
-                                        //     type:this.state.type,
-                                        //     house:this.state.house,
-                                        //     city:this.state.city,
-                                        //     state:this.state.state
-                                        //     }}})} >Update Profile</button>
+                                        <button className="add-crib-btn" style={{backgroundColor:"rgb(186, 186, 186)", cursor:'default'}}>
+                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="white" fill-opacity="0.87"/>
+                                            </svg>
+                                            Add Crib
+                                        </button>
+                                       
                                     }
                                 </div>
-                            </div>
                         </form>
                     </div>
                 </Backend>

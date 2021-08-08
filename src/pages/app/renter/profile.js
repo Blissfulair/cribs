@@ -2,7 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom"
 import "./../inbox.css"
 import "./../properties.css"
-import "./../add-property.css"
+// import "./../add-property.css"
 import "./../profile.css"
 import { Grid, Typography, IconButton, Avatar } from "@material-ui/core";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';

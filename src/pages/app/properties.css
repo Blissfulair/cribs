@@ -199,6 +199,32 @@ select,
     letter-spacing: 1.25px;
     transition: background 0.3s;
 }
+#crib-delete-alert .action-bottom{
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+}
+ #crib-delete-alert .action-bottom button{
+    border-width: 0;
+    cursor: pointer;
+    background-color: transparent;
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+    padding: 10px 30px;
+
+    /* or 150% */
+    letter-spacing: 0.1px;
+}
+#crib-delete-alert .action-bottom button:first-child{
+    color: #4DC602;
+}
+#crib-delete-alert .action-bottom button:last-child{
+
+    color: #F56D6D;
+}
 .property-main .tb-view-btn:hover{
     background: #0D549A;
 }
@@ -235,6 +261,9 @@ select,
     letter-spacing: 0.15px;
 
     color: #686F74;
+}
+.property-main .crib-dialog-action ul li, .property-main .crib-dialog-action ul li a{
+    padding: 0 !important;
 }
 @media (max-width:767px){
     .property-main{

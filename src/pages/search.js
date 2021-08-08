@@ -79,12 +79,9 @@ class Search extends Component{
                 guest
             }
             
-            this.setState({isLoading:false})
             this.props.storeSearchData(data)
-            console.log(data.location)
                 searchProperties({search:data.location, page:Number(page)})
                 .then((res)=>{
-                    console.log(res)
                     this.props.search(res.properties)
                     this.setState({
                         isLoading:false,

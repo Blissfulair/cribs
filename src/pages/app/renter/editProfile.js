@@ -1,7 +1,7 @@
 import React from "react";
 import "./../inbox.css"
 import "./../properties.css"
-import "./../add-property.css"
+// import "./../add-property.css"
 import "./../profile.css"
 import AppHeader from "../../../components/head";
 import { NativeSelect, Button,Snackbar, Slide, Grid } from "@material-ui/core";

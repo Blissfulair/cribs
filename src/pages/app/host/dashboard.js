@@ -13,6 +13,7 @@ import Table , {TableBody, TableRow, TableCell} from "../../../components/table"
 import { setDashboardData } from "../../../state/actions";
 import { getDashboard } from "../../../apis/server";
 import moment from "moment";
+import { DetailSkeleton, TableDataSkeleton } from "../../../components/skeleton";
 
 
 class HostDashboard extends Component{
@@ -120,7 +121,15 @@ class HostDashboard extends Component{
                                 <p className="recent-title">Recent Cribs</p>
                                 {
                                     this.state.loading?
-                                    <p>Loading Recent Cribs...</p>
+                                    <div>
+                                        <div className="recent-cribs-scroll">
+                                            {
+                                                [1,2].map(i=>(
+                                                    <DetailSkeleton key={i}/>
+                                                ))
+                                            }
+                                        </div>
+                                    </div>
                                     :
                                     <>
                                     {
@@ -148,7 +157,9 @@ class HostDashboard extends Component{
                                 <p className="recent-title">Recent Transactions</p>
                                 {
                                     this.state.loading?
-                                    <p>Loading recent transactions...</p>
+                                        [1,2,3,4].map(i=>(
+                                            <TableDataSkeleton key={i} className="rtransactions" columns={5}/>
+                                        ))
                                     :
                                     <>
                                     {
@@ -189,7 +200,9 @@ class HostDashboard extends Component{
                                 <p className="recent-title">Recent Withdraws</p>
                                 {
                                     this.state.loading?
-                                    <p>Loading recent withdraws...</p>
+                                    [1,2,3,4].map(i=>(
+                                        <TableDataSkeleton style={{minWidth:100}} key={i} columns={5}/>
+                                    ))
                                     :
                                     <>
                                     {

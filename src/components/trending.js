@@ -75,7 +75,7 @@ const Trending = ({classes, color,name, details,favourite, rating})=>{
                 <CardContent>
                     <Typography className={classes.para} style={{fontWeight:'bold'}} variant="h5">{details.title}</Typography>
                     <Typography color="textPrimary" className={classes.para} variant="subtitle1" component="p">{details.name}</Typography>
-                    <Typography className={classes.para1} variant="subtitle2" component="p">Sleeps 10 - {details.bedroom} BR - {details.bathroom} BA</Typography>
+                    <Typography className={classes.para1} variant="subtitle2" component="p">{details.guest} Sleeps - {details.bedroom} BR - {details.bathroom} BA</Typography>
                     <Typography className={classes.para} style={{fontWeight:'bold',display:'inline', marginRight:10}} variant="h6">‎₦{details.amount}</Typography>
                     <span>
                         avg/night

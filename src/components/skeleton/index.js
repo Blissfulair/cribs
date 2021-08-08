@@ -1,5 +1,6 @@
 import React from "react"
-import "./index.css"
+import "./index.scss"
+import PropTypes from "prop-types"
 
 
 export const HomeSkeleton = ()=>{
@@ -14,107 +15,58 @@ export const HomeSkeleton = ()=>{
     )
 }
 
-export  const ResultSkeleton = ()=>{
+export const SmallSkeleton=()=>{
+    return(
+        <p  aria-hidden="true" className="loadings small-skeleton"></p>
+    )
+}
+
+
+export  const DetailSkeleton = ()=>{
     return (
         <div className="result-skeleton">
-            <div className="result-house loading"></div>
             <div className="result-description">
-                <h3 aria-hidden="true" className="loadings"></h3>
-                <h4 aria-hidden="true" className="loadings"></h4>
-                <p className="loadings"></p>
-                <ul className="loadings"></ul>
+                <div>
+                    <h3 aria-hidden="true" className="loadings"></h3>
+                    <h4 aria-hidden="true" className="loadings"></h4>
+                    <p className="loadings"></p>
+                </div>
+                <div>
+                    <div className="simg loadings">
+
+                    </div>
+                </div>
             </div>
             <div className="result-third">
-                <div className="result-verified-house loadings"></div>
                 <div className="result-house-price loadings"></div>
             </div>
         </div>
     )
 }
 
-
-export const SinglePageSkeleton = ({related})=>{
-    return (
-        <div className="single-skeleton header-wrap">
-        <div className="label">
-            <div className="breadcumb"></div>
+export const TableDataSkeleton=({columns, className, style})=>{
+    const [total,setTotal] = React.useState([])
+    React.useEffect(()=>{
+        let tot = []
+        for(let i = 0; i< columns;i++){
+            tot.push(i)
+        }
+        setTotal(tot)
+    },[columns])
+    return(
+        <div className={`skeleton-table-data ${className}`}>
+            {
+                total.map((u,i)=>(
+                    <div style={style} className="loadings" key={i}></div>
+                ))
+            }
         </div>
-        <div className="single-details">
-            <div className="col">
-                <div className="featured">
-                    <div className="slide loading">
-                        <div className="slide-overlay">
-                        </div>
-                    </div>
-                    <div className="side">
-                        <div className="sicons"></div>
-                        <div className="sicons"></div>
-                    </div>
-                </div>
-            </div>
-            <div className="col">
-                <div className="single-info">
-                    <ul>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                    </ul>
-                    <ul className="details-accessories">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div className="description">
-            <div className="nav">
-                <ul>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-            <div className="main">
-                <div className="main-inner">
-                    <h3 aria-hidden="true"></h3>
-                    <p></p>
-                    <h3 aria-hidden="true"></h3>
-                    <table>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div className="similiar main-inner">
-            <h3 aria-hidden="true"></h3>
-            <p></p>
-            <p></p>
-            {related?(
-                <>
-                <h3 aria-hidden="true" className="title"></h3>
-                <section id="filter-results" className="related" >
-                    <div className="col">
-                        {[...Array(2)].map((item,index)=>{
-                            return (
-                                <ResultSkeleton key={index} />
-                            )
-                        })}
-                    </div>
-                    <div className="adverts">
-                        <div className="ad1">
-                            <div className="advert-overlay"></div>
-                        </div>
-                        <div className="ad2">
-                            <div className="advert-overlay"></div>
-                        </div>
-                    </div>
-                </section>
-                </>
-            ):''}
-        </div>
-    </div>
     )
+}
+TableDataSkeleton.propTypes={
+    className:PropTypes.string,
+    style:PropTypes.object
+}
+TableDataSkeleton.defaultProps={
+    className:'',
 }

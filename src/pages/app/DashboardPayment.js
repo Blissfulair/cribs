@@ -1,8 +1,8 @@
 import React, { Component,createRef } from 'react';
 import Layout from './layout';
 import '../../scss/dashboard_payment.scss';
-import FormControl from '@material-ui/core/FormControl';
-import NativeSelect from '@material-ui/core/NativeSelect';
+// import FormControl from '@material-ui/core/FormControl';
+// import NativeSelect from '@material-ui/core/NativeSelect';
 import {
 	Typography,
 	withStyles,
@@ -14,15 +14,16 @@ import Table,{
     TableBody,
 	TableCell,
 	TableRow,
-	TablePagination
+	TablePagination,
+	TableContainer
 } from "../../components/table/index"
 import { styles } from './properties';
 import WithdrawPopUp from '../../components/withdrawPopup';
 import { currency } from '../../helpers/helpers';
-import Activity from '../../components/activity';
 import { connect } from 'react-redux';
 import AppHeader from '../../components/appHeader';
 import { bankWithdraw, getWallet, getWithdraw, paypalWithdraw } from '../../apis/server';
+import { SmallSkeleton, TableDataSkeleton } from '../../components/skeleton';
 
 
 
@@ -39,8 +40,9 @@ class DashboardPayment extends Component {
 			accountName:'',
 			bankName:'',
 			email:'',
-			loading:false,
+			loading:true,
 			tableLoading:true,
+			paymentLoading:false,
 			err:'',
 			year:'',
 			month:'',
@@ -56,8 +58,7 @@ class DashboardPayment extends Component {
 		this.onLoadWallet()
 		getWithdraw(this.props.user.id)
 		.then(withdraws=>{
-			console.log(withdraws)
-			this.setState({tableLoading:false, payments:withdraws})
+			this.setState({tableLoading:false, payments:withdraws, allPayments:withdraws})
 		})
 		// this.context.approveWithdrawal('150000000','HsAcNIqVWXSdLmGcgV2fhiL8MNn1',200)
 		//const date = new Date()
@@ -113,7 +114,7 @@ class DashboardPayment extends Component {
 			this.setState({err:'All inputs are required!'})
 			return false;
 		}
-		this.setState({loading:true,err:''})
+		this.setState({paymentLoading:true,err:''})
 		const data ={
 			id:this.props.user.id,
 			firstname:this.props.user.firstname,
@@ -126,7 +127,7 @@ class DashboardPayment extends Component {
 		bankWithdraw(data)
 		.then((withdraw)=>{
 			this.setState({
-				loading:false,
+				paymentLoading:false,
 				payments:[
 					{
 						...withdraw
@@ -149,7 +150,7 @@ class DashboardPayment extends Component {
 			this.setState({err:'All inputs are required!'})
 			return false;
 		}
-		this.setState({loading:true,err:''})
+		this.setState({paymentLoading:true,err:''})
 		const data ={
 			id:this.props.user.id,
 			firstname:this.props.user.firstname,
@@ -161,7 +162,7 @@ class DashboardPayment extends Component {
 		paypalWithdraw(data)
 		.then((withdraw)=>{
 			this.setState({
-				loading:false,
+				paymentLoading:false,
 				payments:[
 					{
 						...withdraw
@@ -235,8 +236,31 @@ class DashboardPayment extends Component {
 		  }       
 		}
 	  }
+	onSearch=(e)=>{
+
+		const payments= this.state.allPayments.filter(props=>{
+			if(props.status === 1){
+				props.stat ='processed'
+			}
+			else if(props.status === 0){
+				props.stat='pending'
+			}
+			else if(props.status === -1){
+				props.stat='cancelled'
+			}
+			if(props.method ===0)
+			props.meth='Paypal'
+			else if(props.method === 1)
+			props.meth='Bank Transfer'
+			const created = new Date(props.createdAt);
+			const createdAt = created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
+			props.date = createdAt
+		   let  td = Object.values(props);
+		   return (td.toString().toUpperCase().indexOf(e.toUpperCase()) > -1)? td:''
+		 })
+		 this.setState({payments})
+	 }
 	render(){
-		const {classes} = this.props
 		const today = new Date().getFullYear()
 		const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.payments.length - this.state.page * this.state.rowsPerPage);
 		const years = []
@@ -246,7 +270,7 @@ class DashboardPayment extends Component {
 		<>
 		
 		<Layout>
-		<AppHeader/>
+		<AppHeader search={true} onSearch={this.onSearch}/>
 			<WithdrawPopUp className="withdraw-modal" title="Withdrawal Details" open={this.state.open} handleClose={this.handleClose}>
 			<p style={{color:'#f44336'}}>{this.state.err}</p>
 			<form onSubmit={this.onPayPaySubmit}>
@@ -279,8 +303,8 @@ class DashboardPayment extends Component {
 						</tbody>
 					</table>
 					{
-						this.state.loading?
-						<Button style={{background:'#DBDBDB'}} type="btn">Please wait ...</Button>
+						this.state.paymentLoading?
+						<Button  type="btn">Please wait ...</Button>
 						:
 						<Button style={{background:'#00A8C8'}} type="submit">Submit Request</Button>
 					}
@@ -324,32 +348,53 @@ class DashboardPayment extends Component {
 						</tbody>
 					</table>
 					{
-						this.state.loading?
-						<Button style={{background:'#DBDBDB'}} type="btn">Please wait ...</Button>
+						this.state.paymentLoading?
+						<Button  type="btn">Please wait ...</Button>
 						:
 						<Button style={{background:'#00A8C8'}} type="submit">Submit Request</Button>
 					}
 				</form>
 			</WithdrawPopUp>
 			<div className="dashboard__earning">
-				<h1>Earning</h1>
 
 				<div className="dashboard__earningTable">
 					<div>
 						<p>Net Income</p>
-						<p className="dashboard__amount">{currency(this.state.wallet.income)}</p>
+						{
+							this.state.loading?
+							<SmallSkeleton/>
+							:
+							<p className="dashboard__amount">{currency(this.state.wallet.income)}</p>
+						}
+
 					</div>
 					<div>
 						<p>Withdrawn</p>
-						<p className="dashboard__amount">{currency(this.state.wallet.withdrawn)}</p>
+						{
+							this.state.loading?
+							<SmallSkeleton/>
+							:
+							<p className="dashboard__amount">{currency(this.state.wallet.withdrawn)}</p>
+						}
+
 					</div>
 					<div>
 						<p>Pending Clerance</p>
-						<p className="dashboard__amount">{currency(this.state.wallet.pending)}</p>
+						{
+							this.state.loading?
+							<SmallSkeleton/>
+							:
+							<p className="dashboard__amount">{currency(this.state.wallet.pending)}</p>
+						}
 					</div>
 					<div>
 						<p>Available for Withdrawal</p>
-						<p className="dashboard__amount">{currency(this.state.wallet.available)}</p>
+						{
+							this.state.loading?
+							<SmallSkeleton/>
+							:
+							<p className="dashboard__amount">{currency(this.state.wallet.available)}</p>
+						}
 					</div>
 				</div>
 
@@ -358,8 +403,10 @@ class DashboardPayment extends Component {
 					<button onClick={this.handleClickOpen}> <strong className='paypal'>P</strong> Paypal</button>
 					<button onClick={this.directTransfer}>Bank Transfer</button>
 				</div>
-
-				<h4>Show</h4>
+				<div className="withdrawn-well">
+					<p>Withdraw List</p>
+				</div>
+				{/* <h4>Show</h4>
 				<div className="dashboard__show">
 					<div>
 					<FormControl >
@@ -422,61 +469,71 @@ class DashboardPayment extends Component {
 							</NativeSelect>
 						</FormControl>
 					</div>
-				</div>
+				</div> */}
 
-				<Grid container style={{marginTop:80}}>
-					<Grid item xs={10}>
-							<Activity loading={this.state.tableLoading}/>
-                            <Table innerRef={this.table}  className="cribs-payment">
-                                <TableHead>
-                                <TableRow>
-                                    <TableCell classes={{root:classes.tdHead}} align="left">Date</TableCell>
-                                    <TableCell classes={{root:classes.tdHead}} align="left">Amount</TableCell>
-									<TableCell classes={{root:classes.tdHead}} align="left">Payment Method</TableCell>
-									<TableCell classes={{root:classes.tdHead}} align="left">Transaction ID</TableCell>
-									<TableCell classes={{root:classes.tdHead}} align="left">Status</TableCell>
-                                </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                {
-                                this.state.payments.length>0?
-                                this.state.payments.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((payment, i) =>{
-                                        const created = new Date(payment.createdAt);
-                                        const createdAt = created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
-                                    return(
-                                        <TableRow classes={{root:classes.trRoot}} key={i}>
-                                        <TableCell classes={{root:classes.tdRoot}}>
-                                            {createdAt}
-                                        </TableCell>
-                                        <TableCell classes={{root:classes.tdRoot}} align="left">{currency(payment.amount)}</TableCell>
-										<TableCell classes={{root:classes.tdRoot}} style={{textTransform:'capitalize'}} align="left">{payment.method?'Bank Transfer':'Paypal'}</TableCell>
-										<TableCell classes={{root:classes.tdRoot}} align="left">{payment._id}</TableCell>
-										<TableCell classes={{root:classes.tdRoot}}  align="left"><span style={{color:payment.status === 0?'#ff9800':payment.status === 1?'#4caf50':'#f44336'}}>{payment.status === 0?'pending':payment.status ===1?'Processed':'Cancelled'}</span></TableCell>
-                                        </TableRow>
-									)
+				<Grid container style={{marginTop:30,}}>
+					<Grid item xs={11}>
+						<TableContainer>
+							{
+								this.state.tableLoading?
+								[1,2,3,4].map(i=>(
+									<TableDataSkeleton className="cribs-payment-skeleton" columns={5} key={i}/>
+								))
+								:
+								<>
+								<Table innerRef={this.table}  className="cribs-payment">
+									<TableHead>
+									<TableRow>
+										<TableCell style={{minWidth:80}}>Date</TableCell>
+										<TableCell style={{minWidth:120}}>Amount</TableCell>
+										<TableCell style={{minWidth:160}}>Payment Method</TableCell>
+										<TableCell style={{minWidth:220}}>Transaction ID</TableCell>
+										<TableCell style={{minWidth:120}}>Status</TableCell>
+									</TableRow>
+									</TableHead>
+									<TableBody>
+									{
+									this.state.payments.length>0?
+									this.state.payments.slice(this.state.page * this.state.rowsPerPage, this.state.page * this.state.rowsPerPage + this.state.rowsPerPage).map((payment, i) =>{
+											const created = new Date(payment.createdAt);
+											const createdAt = created.getDate()+'/'+(created.getMonth()+1)+'/'+created.getFullYear() 
+										return(
+											<TableRow key={i}>
+											<TableCell  style={{minWidth:80}}>
+												{createdAt}
+											</TableCell>
+											<TableCell style={{minWidth:120}} >{currency(payment.amount)}</TableCell>
+											<TableCell  style={{textTransform:'capitalize',minWidth:160}} >{payment.method?'Bank Transfer':'Paypal'}</TableCell>
+											<TableCell style={{minWidth:220}} >{payment._id}</TableCell>
+											<TableCell  style={{minWidth:120}} ><span style={{color:payment.status === 0?'#ff9800':payment.status === 1?'#4caf50':'#f44336'}}>{payment.status === 0?'pending':payment.status ===1?'Processed':'Cancelled'}</span></TableCell>
+											</TableRow>
+										)
+										
+									})
 									
-								})
-								
-                                :
-                                <Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">There are no transaction to show yet...</Typography>
-                            }
-							    {emptyRows > 0 && (
-										<TableRow classes={{root:classes.trRoot}} style={{ height: 53 * emptyRows }}>
-										<TableCell classes={{root:classes.tdRoot}}  colSpan={6} />
-										</TableRow>
-									)}
-                                </TableBody>
-                            </Table>
-							<TablePagination
-								rowsPerPageOptions={[8, 16, 24]}
-								component="div"
-								count={this.state.payments.length}
-								rowsPerPage={this.state.rowsPerPage}
-								page={this.state.page}
-								onChangePage={this.handleChangePage}
-								onChangeRowsPerPage={this.handleChangeRowsPerPage}
-								/>
+									:
+									<Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">No record found.</Typography>
+								}
+									{emptyRows > 0 && (
+											<TableRow style={{ height: 46 * emptyRows }}>
+											<TableCell   colSpan={5} />
+											</TableRow>
+										)}
+									</TableBody>
+								</Table>
+								<TablePagination
+									rowsPerPageOptions={[8, 16, 24]}
+									component="div"
+									count={this.state.payments.length}
+									rowsPerPage={this.state.rowsPerPage}
+									page={this.state.page}
+									onChangePage={this.handleChangePage}
+									onChangeRowsPerPage={this.handleChangeRowsPerPage}
+									/>
+								</>
+							}
 
+						</TableContainer>
 						</Grid>
 						</Grid>
 			</div>

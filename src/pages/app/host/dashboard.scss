@@ -242,11 +242,7 @@
 
             }
 
-            & >p{
-               &:last-child{
-                margin-left: 30px;
-               }
-            }
+
             .recent-withdraws-table{
                 tr{
                     td{
@@ -308,15 +304,16 @@
                 box-sizing: border-box;
                 border-radius: 4px;
                 min-height: 334px;
-            }
-            .recent-withdraws{
-                margin-top: 16px;
                 & >p{
                     &:last-child{
                      margin-left: 30px;
                     }
                  }
             }
+            .recent-withdraws{
+                margin-top: 16px;
+            }
+            
         }
     }
 }

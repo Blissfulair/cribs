@@ -9,7 +9,6 @@ import {
     Snackbar, Slide,
     IconButton,
     Typography,
-    Button
 } from "@material-ui/core"
 import {Alert} from "@material-ui/lab"
 import AddIcon from "@material-ui/icons/Add"
@@ -18,9 +17,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityOutlined from '@material-ui/icons/VisibilityOutlined';
 import AppHeader from "../../components/appHeader"
 import { currency } from "../../helpers/helpers";
-import Activity from "../../components/activity";
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -36,6 +33,7 @@ import  Table, {
     TableContainer
 } from "../../components/table/index"
 import ActionDialog from "../../components/action-dialog";
+import { TableDataSkeleton } from "../../components/skeleton";
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
@@ -80,17 +78,18 @@ class Properties extends React.Component{
             transition:undefined,
             open:false,
             dialogOpen:false,
-            deleted:'',
+            deleted:{},
             index:'',
             actionDialog:false,
-            actionDom:undefined
+            actionDom:undefined,
+            search:''
         }
     }
     componentDidMount(){
         getProperties(this.props.user.id)
         .then(properties=>{
             this.props.setProperties(properties)
-            this.setState({loading:false})
+            this.setState({loading:false, properties})
         })
 
     }
@@ -103,8 +102,8 @@ class Properties extends React.Component{
           }
         this.setState({open:false})
         }
-    handleClickOpen = (Transition, id,i) => {
-        this.setState({dialogOpen:true, deleted:id,transition:Transition,index:i});
+    handleClickOpen = (Transition, crib,i) => {
+        this.setState({dialogOpen:true, deleted:crib,transition:Transition,index:i});
         };
     
     handleClose = () => {
@@ -115,7 +114,7 @@ class Properties extends React.Component{
     }
     onDelete=()=>{
         this.setState({loading:true,success:false})
-        deleteProperty(this.state.deleted)
+        deleteProperty(this.state.deleted._id)
         .then(()=>{
             console.log('dome')
             this.props.properties.splice(this.state.index, 1)
@@ -145,9 +144,24 @@ class Properties extends React.Component{
       openActionDialog=(e)=>{
           this.setState({actionDialog:e.target})
       }
+      onSearch=(e)=>{
+
+         const properties= this.props.properties.filter(props=>{
+             if(props.status === 0)
+                props.stat= 'pending'
+            else if(props.status ===1)
+                props.stat='success'
+            else if(props.status === -1)
+                props.stat='failed'
+            props.create = new Date(props.createdAt).toDateString() 
+            props.update = new Date(props.updatedAt).toDateString() 
+            let  td = Object.values(props);
+            return (td.toString().toUpperCase().indexOf(e.toUpperCase()) > -1)? td:''
+          })
+          this.setState({properties})
+      }
     render(){
-        // const properties = this.context.state.myProperties
-        const {properties} = this.props
+        const {properties} = this.state
         const offset = (this.state.page-1)* this.state.rowsPerPage
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, properties.length - offset);
 
@@ -156,7 +170,7 @@ class Properties extends React.Component{
             <>
                 
                 <Layout>
-                <AppHeader/>
+                <AppHeader search={true} onSearch={this.onSearch} />
                     <Dialog
                         open={this.state.dialogOpen}
                         TransitionComponent={TransitionUp}
@@ -164,21 +178,22 @@ class Properties extends React.Component{
                         onClose={this.handleClose}
                         aria-labelledby="alert-dialog-slide-title"
                         aria-describedby="alert-dialog-slide-description"
+                        id="crib-delete-alert"
                     >
-                        <DialogTitle id="alert-dialog-delete">{"Confirm!!"}</DialogTitle>
+                        <DialogTitle style={{color:'#A60E0E'}} id="alert-dialog-delete">{"Confirm!!"}</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-delete-description">
-                        Are sure you want to delete this property?
+                        Are sure you want to delete crib <strong>{this.state.deleted.name}</strong>?
                         </DialogContentText>
                         </DialogContent>
-                        <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={()=>{this.handleClose();this.onDelete()}} color="primary">
-                            Continue
-                        </Button>
-                        </DialogActions>
+                        <div className="action-bottom">
+                            <button onClick={this.handleClose}>
+                                No
+                            </button>
+                            <button onClick={()=>{this.handleClose();this.onDelete()}}>
+                                Yes
+                            </button>
+                        </div>
                     </Dialog>
                                             {
                                 this.state.message&&
@@ -211,7 +226,13 @@ class Properties extends React.Component{
                                 <p>Crib List</p>
                             </div>
                             <TableContainer>
-                                <Activity loading={this.state.loading} />
+                                {
+                                    this.state.loading?
+                                        [1,2,3,4].map(i=>(
+                                            <TableDataSkeleton className="tables" key={i} columns={7} />
+                                        ))
+                                    :
+                                <>
                                 <Table  className="property-table">
                                     <TableHead>
                                     <TableRow>
@@ -267,10 +288,12 @@ class Properties extends React.Component{
                                                         <ul>
                                                             <li><button><VisibilityOutlined fontSize="small"/> View</button></li>
                                                             <li>
+                                                                <Link to={`/app/edit-property/${property._id}`}>
                                                                 <button><EditIcon fontSize="small" /> Edit</button>
+                                                                </Link>
                                                             </li>
                                                             <li>
-                                                                <button onClick={()=>{this.handleClickOpen(TransitionUp,property._id, i)}}> <DeleteIcon fontSize="small" /> Delete</button>
+                                                                <button onClick={()=>{this.handleClickOpen(TransitionUp,property, i)}}> <DeleteIcon fontSize="small" /> Delete</button>
                                                             </li>
                                                         </ul>
                                                     </ActionDialog>
@@ -281,7 +304,7 @@ class Properties extends React.Component{
                                         )
                                     })
                                     :
-                                    <Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">No Properties uploaded yet</Typography>
+                                    <Typography style={{margin:'10px 20px', color:'#979797'}} variant="subtitle2" component="p">No crib found</Typography>
                                 }
                                     {emptyRows > 0 && (
                                             <TableRow style={{ height: 82 * emptyRows }}>
@@ -298,6 +321,8 @@ class Properties extends React.Component{
                                     onChangePage={this.handleChangePage}
                                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                                     />
+                                </>
+                                }
                             </TableContainer>
                         </Grid>
 

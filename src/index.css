@@ -297,6 +297,10 @@ svg{
   min-width: 375px;
   background: #FCFBFB  !important;
 }
+.withdraw-modal#popup .MuiDialog-paperScrollPaper{
+  border-radius: 10px;
+  background: #fff  !important;
+}
 #host-pop-up .MuiDialog-paperScrollPaper{
   height: 60vh;
   max-width: 450px;
@@ -307,7 +311,7 @@ svg{
   border: 1px solid #DCDCDC;
   width: 100%;
   border-radius: 6px;
-  border-collapse: separate;
+  border-collapse: collapse;
   background: #fff;
 }
 #popup .MuiDialog-paperScrollPaper table:nth-child(2){
@@ -397,33 +401,46 @@ svg{
   font-size: 0.95rem !important;
   color: #00A8C8;
 }
+#popup.withdraw-modal .MuiDialogTitle-root .MuiTypography-h6{
+  color: #1053FF;
+}
 
 #popup.withdraw-modal .MuiDialog-paperScrollPaper{
   max-height: 70vh !important;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2) !important;
 }
 #popup.withdraw-modal .MuiDialog-paperScrollPaper input{
   padding: 10px 8px;
-  border: 1px solid #DBDBDB;
-  border-radius: 5px;
-  font-size: 15px;
-  color: #ACA9A9;
   outline: 0;
+  border: 1px solid #EBEBEB;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 21px;
+
+  /* or 150% */
+  letter-spacing: 0.1px;
+
+  color: #686F74;
 }
 #popup.withdraw-modal .MuiDialog-paperScrollPaper table{
   border: none !important;
 }
 #popup.withdraw-modal .MuiDialog-paperScrollPaper input:focus{
-    border-color: #00A8C8;
+    border-color: #1053FF;
 }
 #popup.withdraw-modal .MuiDialog-paperScrollPaper td{
   padding: 13px 8px !important;
 
 }
 #popup.withdraw-modal .MuiDialog-paperScrollPaper td:first-child{
-  color: #00A8C8;
+  color: #1053FF;
 }
 #popup.withdraw-modal .MuiDialog-paperScrollPaper form{
-  border: 1px solid #DBDBDB;
+  border: 1px solid #EBEBEB;
   border-radius: 5px;
   background: #fff;
   display: grid;
@@ -434,8 +451,21 @@ svg{
   width: 50%;
   margin: 0 auto;
   margin-bottom: 20px;
-  border-radius: 20px;
+  border-radius: 5px;
   color: #fff;
+  background-color: #1053FF !important;
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 21px;
+
+  /* or 150% */
+  letter-spacing: 0.1px;
+  transition: background-color 0.3s;
+}
+#popup.withdraw-modal .MuiDialog-paperScrollPaper form button:hover{
+  background-color: #082B83 !important;
 }
 #popup.history-modal .MuiDialog-paperScrollPaper{
   max-width: 900px !important;

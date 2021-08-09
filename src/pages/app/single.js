@@ -656,7 +656,7 @@ class Single extends Component {
                                                     </Grid>
                                                     {
                                                         (checkIn.length < 1 && checkOut.length < 1) ?
-                                                            <Typography style={{ display: 'flex', marginBottom: 6, color: '#4caf50' }} variant="subtitle2" component="p" >Dates Are Available to be Reserved &nbsp;<CheckCircleOutlinedIcon fontSize="small" htmlColor="#0BA4E0" /></Typography>
+                                                            <Typography style={{ display: 'flex', marginBottom: 6, color: '#4caf50' }} variant="subtitle2" component="p" >Dates Are Available to be Reserved &nbsp;<CheckCircleOutlinedIcon fontSize="small" htmlColor="#0066FF" /></Typography>
                                                             :
                                                             <Typography style={{ display: 'flex', marginBottom: 6, color: '#f44336' }} variant="subtitle2" component="p" >Dates Are Already Reserved, Try Other Dates &nbsp;<CancelIcon fontSize="small" htmlColor="#f44336" /></Typography>
                                                     }

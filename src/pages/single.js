@@ -676,7 +676,7 @@ class Single extends Component {
                                                     </Grid>
                                                     {
                                                         (checkIn.length < 1 && checkOut.length < 1) ?
-                                                            <Typography style={{ display: 'flex', marginBottom: 6, color: '#4caf50' }} variant="subtitle2" component="p" >Dates Are Available to be Reserved &nbsp;<CheckCircleOutlinedIcon fontSize="small" htmlColor="#0BA4E0" /></Typography>
+                                                            <Typography style={{ display: 'flex', marginBottom: 6, color: '#4caf50' }} variant="subtitle2" component="p" >Dates Are Available to be Reserved &nbsp;<CheckCircleOutlinedIcon fontSize="small" htmlColor="#0066FF" /></Typography>
                                                             :
                                                             <Typography style={{ display: 'flex', marginBottom: 6, color: '#f44336' }} variant="subtitle2" component="p" >Dates Are Already Reserved, Try Other Dates &nbsp;<CancelIcon fontSize="small" htmlColor="#f44336" /></Typography>
                                                     }
@@ -806,7 +806,7 @@ class Single extends Component {
                                                             </div>
                                                         {
                                                             (checkIn.length < 1 && checkOut.length < 1) ?
-                                                                <Button  onClick={this.handleClickOpen} style={{ textTransform: 'capitalize', backgroundColor: '#00A8C8', width: '100%', borderRadius: 44, color: '#fff', padding: '10px 0', fontSize: 18, marginTop: 15 }} variant="contained" disableElevation>
+                                                                <Button  onClick={this.handleClickOpen} style={{ textTransform: 'capitalize', backgroundColor: '#0066FF', width: '100%', borderRadius: 44, color: '#fff', padding: '10px 0', fontSize: 18, marginTop: 15 }} variant="contained" disableElevation>
                                                                     Reserve Now
                                                                 </Button>
                                                                 :

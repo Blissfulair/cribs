@@ -88,9 +88,9 @@ const Footer = ({classes})=>{
                                 <Grid container justify="center">
                                     <Grid item xs={6} md={8}>
                                     <ul className={classes.social}>
-                                        <SocialIcon backgroundColor="#375FA5" href="https://wwww.facebook.com"><Facebook  htmlColor="#fff"/></SocialIcon>
-                                        <SocialIcon backgroundColor="#6FAEEB" href="https://wwww.facebook.com"><Twitter  htmlColor="#fff"/></SocialIcon>
-                                        <SocialIcon backgroundColor="#FFFFFF" href="https://wwww.facebook.com"><Instagram htmlColor="#375FA5"/></SocialIcon>
+                                        <SocialIcon backgroundColor="#0066FF" href="https://wwww.facebook.com"><Facebook  htmlColor="#fff"/></SocialIcon>
+                                        <SocialIcon backgroundColor="#0066FF" href="https://wwww.facebook.com"><Twitter  htmlColor="#fff"/></SocialIcon>
+                                        <SocialIcon backgroundColor="#0066FF" href="https://wwww.facebook.com"><Instagram htmlColor="#fff"/></SocialIcon>
                                     </ul>
                                     </Grid>
                                 </Grid>

@@ -4,7 +4,9 @@
     box-sizing: border-box;
     .ccard{
         // min-width:362px;
-        min-width: calc(100vw / 3.8);
+        min-width: calc(100vw / 3 - 6.9vw);
+        max-width: calc(100vw / 3.8);
+        width: 100%;
         height: 100%;
         position: relative;
         border-radius: 10px;

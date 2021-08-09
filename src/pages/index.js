@@ -386,7 +386,7 @@ class Index extends Component {
                                             {
                                                 
                                             bestCribs.length>0?
-                                                bestCribs.map((property,index)=>{
+                                                [...bestCribs,...bestCribs].map((property,index)=>{
                                                     return (
                                                         <Grid key={index} item xs={12} sm={6} md={3} lg={3} >
                                                         <Link to={this.props.user?`/app/crib/${property._id}`:`/crib/${property._id}`} key={index}>

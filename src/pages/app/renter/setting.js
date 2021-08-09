@@ -3,6 +3,7 @@ import "./../inbox.css"
 import "./../properties.css"
 // import "./../add-property.css"
 import "./../setting.css"
+import "./../host/setting.scss"
 import {Snackbar, Slide,Grid } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import VisibilityIcon from '@material-ui/icons/VisibilityOutlined';
@@ -87,12 +88,7 @@ class Setting extends React.Component{
     render(){
             const settings=(
                 <>
-                    <div style={{paddingTop:46}} className="inbox">
-                        <div className="inbox-head dashboard-mt">
-                            <div className="inbox-title">
-                                <h4>Account Setting</h4>
-                            </div>
-                        </div>
+                    <div className="settins-c renting">
                         <div className="password-form">
                              <h4>Change Password</h4>
                              {

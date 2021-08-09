@@ -44,11 +44,11 @@ const ProfileDetails = ({user,uploadImage})=>{
                 <h4 className="title">{user.firstname + ' '+ user.lastname}</h4>
                 <p className="review"> Reviews</p>
                 <Grid container className="profiles-reviews" alignItems="center">
-                    <Typography style={{color:'#1053FF', fontSize:20, fontWeight:'bold', marginRight:10}}>{(user.stars/user.reviews).toFixed(1)}</Typography>
+                    <Typography style={{color:'#1053FF', fontSize:20, fontWeight:'bold', marginRight:10}}>{user.reviews === 0? 0:(user.stars/user.reviews).toFixed(1)}</Typography>
                     <StyledRating
                         name="rate"
                         disabled
-                        defaultValue={user.reviews === 0? 0:user.stars/user.reviews}
+                        defaultValue={user.reviews === 0? 0:(user.stars/user.reviews)}
                     />
                 </Grid>
                 <Typography variant="subtitle2" style={{marginTop:12, color:'#1053FF'}} component="p">{user.reviews === 0?'No reviews yet':(user.stars/user.reviews)>=3.5?'Top Host':(user.stars/user.reviews<3.5&&'NewBie Host')}</Typography>

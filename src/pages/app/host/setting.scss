@@ -2,6 +2,9 @@
 .settins-c{
     width: 80%;
     padding-top: 46px;
+    &.renting{
+        margin-left: 5%;
+    }
     .password-form{
         h4{
             font-family: Mulish;
@@ -97,6 +100,9 @@
     .settins-c{
         padding: 90px 16px 40px;
         width: 100%;
+        &.renting{
+            margin-left: 0;
+        }
         .password-form{
                 width: 100%;
                 margin-top: 0;

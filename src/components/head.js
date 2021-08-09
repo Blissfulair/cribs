@@ -106,12 +106,13 @@ handleScroll = () => {
     if(position >=this.props.top){
         // this.refs.style.position='fixed'
         
-        this.refs.style.top='0'
-        this.refs.style.opacity='1'
-        this.refs.style.backgroundColor='#CCE0FF'
-        this.refs.style.backdropFilter='blur(20px)'
-        this.refs.style.width='100%'
-        this.setState({colors:this.props.color})
+        // this.refs.style.top='0'
+        // this.refs.style.opacity='1'
+        // this.refs.style.backgroundColor='#CCE0FF'
+        // this.refs.style.backdropFilter='blur(20px)'
+        // this.refs.style.width='100%'
+        this.refs.classList.replace('close', 'open')
+        this.setState({colors:this.props.color, open:true})
         if(this.state.width <15 && this.props.quickSearch){
             // setWidth(15)
             // setOpen(false)
@@ -126,8 +127,8 @@ handleScroll = () => {
 
     // }
     else{
-        this.refs.style.backgroundColor='transparent'
-        
+        // this.refs.style.backgroundColor='transparent'
+        this.refs.classList.replace('open', 'close')
         this.setState({width:0, colors:this.props.top===45?'#fff':this.props.color})
     }
 }
@@ -171,7 +172,7 @@ onLogout = ()=>{
         <>
             <Activity loading={this.state.isLoading}/>
         <div className="showcase__container">
-        <div ref={(ref)=>this.refs=ref} className="showcase_head" style={{backgroundColor:bgColor?bgColor:'transparent', position:'fixed', top:0}}>
+        <div ref={(ref)=>this.refs=ref} className={`showcase_head close ${bgColor?'bg':''}`} style={{position:'fixed', top:0}}>
             <div  className="showcase__header">
             <div className="showcase__logo">
                 <Link style={{color: colors}} to="/">Crib NG</Link>

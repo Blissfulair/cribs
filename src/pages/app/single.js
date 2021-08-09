@@ -824,7 +824,7 @@ class Single extends Component {
                                                                 :
                                                                 <Button style={{ textTransform: 'capitalize', backgroundColor: '#DEDEDE', width: '100%', borderRadius: 44, color: '#707070', padding: '10px 0', fontSize: 18, marginTop: 15 }} variant="disabled" disableElevation>
                                                                     Unavailable
-                                                    </Button>
+                                                                </Button>
                                                         }
                                                         </div>
                                                         <Divider style={{ marginTop: 15, height: 3, backgroundColor: '#DCDCDC' }} />

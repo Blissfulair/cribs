@@ -181,7 +181,7 @@ class Index extends Component {
                     }
 
                     <div className="showcase">
-                        <Head color="#046FA7" quickSearch={true}/>
+                        <Head color="#046FA7"  quickSearch={true}/>
 
                         <div className="showcase__bottom">
                             <img src={cribs} alt="cribs ng for everyone" />
@@ -386,7 +386,7 @@ class Index extends Component {
                                             {
                                                 
                                             bestCribs.length>0?
-                                                [...bestCribs,...bestCribs].map((property,index)=>{
+                                               bestCribs.map((property,index)=>{
                                                     return (
                                                         <Grid key={index} item xs={12} sm={6} md={3} lg={3} >
                                                         <Link to={this.props.user?`/app/crib/${property._id}`:`/crib/${property._id}`} key={index}>

@@ -83,9 +83,24 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+
+    &.open{
+        background-color: #CCE0FF;
+        backdrop-filter: blur(20px);
+        opacity: 1;
+        top: 0;
+        width: 100%;
+    }
+    &.close{
+        background-color: transparent;
+        &.bg{
+            background-color: #CCE0FF;  
+        }
+    }
     .showcase__header{
         align-items: center;
         justify-content: space-between;
+
         #hamburger{
             width: 40px;
             height: 40px;
@@ -171,6 +186,16 @@
     }
     .showcase_head{
         height: 70px;
+        &.open{
+             background-color: #fff;
+             box-shadow: 0px 1px 1px rgba(0,0,0,0.03);
+            //background-color: linear-gradient(180deg, #9AAEBB -93.06%, #FFFFFF 88.43%);
+        }
+        &.close{
+            &.bg{
+                background-color: #fff;  
+            }
+        }
         .showcase__header{
             #hamburger{
                 display: flex;

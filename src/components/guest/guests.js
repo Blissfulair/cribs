@@ -101,7 +101,7 @@ class Guests extends Component{
                 <div className="guest-bottom">
                     <p>Are you traveling with pets?</p>
                     <div className="pets">
-                    <Switch value={this.state.pet} onChange={(e)=>this.props.onCheck(e)}/>
+                    <Switch value={this.props.checked} onChange={(e)=>this.props.onCheck(e)}/>
 
                     </div>
                 </div>

@@ -10,7 +10,7 @@ class Switch extends Component{
     }
     render(){
         return(
-            <label style={{backgroundColor:this.props.trackColor, border:this.props.trackBorder}} className="cswitch">
+            <label style={{backgroundColor:this.props.value?'#0066FF':this.props.trackColor, border:this.props.trackBorder}} className="cswitch">
                 <input checked={this.state.value}   onChange={(e)=>{this.setState({value:e.target.checked}); if(this.props.onChange)this.props.onChange(e.target.checked)}} type="checkbox"  />
                 <span style={{backgroundColor:this.props.color}} className="sknob"></span>
             </label>

@@ -6,9 +6,9 @@
 }
 
 :root {
-  --bg-blue: #0f478f;
+  --bg-blue: #0066FF;
   --white: #ffffff;
-  --text-blue: #00A8C8;
+  --text-blue: #0066FF;
   --btn-yellow: #ffd70e;
   --shadow: #00000029;
   --dark-border: #707070;
@@ -39,7 +39,7 @@ border-radius: 2px;
     max-width: 10.2857% !important;
 }
 .react-calendar__tile.react-calendar__month-view__days__day.react-calendar__tile--now{
-  background: #00A8C8 !important;
+  background: #0066FF !important;
   border: 2px solid #046FA7 !important;
 }
 .react-calendar__tile.react-calendar__month-view__days__day{
@@ -68,7 +68,7 @@ border-radius: 2px;
 .react-calendar__navigation button:nth-child(4):enabled:hover, 
 .react-calendar__navigation button:nth-child(2):enabled:focus,
 .react-calendar__navigation button:nth-child(4):enabled:focus{
-  background-color: #00A8C8 !important;
+  background-color: #0066FF !important;
   border-radius: 17px;
   width: 65px !important;
   height: 35px !important;
@@ -106,7 +106,10 @@ border-radius: 2px;
 }
 .MuiTab-root span{
   text-transform: capitalize !important;
-  color:#00A8C8 !important
+  color:#2E2E2E !important
+}
+ .MuiTabs-root a[href='#overview'] span{
+  color: #0066FF !important;
 }
 .Mui-selected{
   border-bottom-color: #046FA7 !important;
@@ -133,7 +136,7 @@ border-radius: 2px;
   border-radius: 7px;
 }
 #singlepage .BrainhubCarousel__dots .BrainhubCarousel__dot.BrainhubCarousel__dot--selected::before{
-  background:#00A8C8 !important;
+  background:#0066FF !important;
   box-shadow: 0px 3px 6px #00000029;
 }
 .MuiOutlinedInput-notchedOutline,
@@ -142,7 +145,7 @@ border-radius: 2px;
 }
 .MuiFormLabel-root.Mui-focused,
 .MuiFormLabel-root{
-  color:#00A8C8 !important;
+  color:#0066FF !important;
 
 }
 .home-location .MuiFormLabel-root.MuiInputLabel-shrink,
@@ -187,7 +190,7 @@ border-radius: 2px;
   border-bottom: none !important;
 }
 .MuiTabs-indicator{
-  background-color: #00A8C8!important;
+  background-color: #0066FF!important;
 }
 .MuiLinearProgress-colorPrimary{
   background-color: #fff !important;
@@ -233,7 +236,7 @@ svg{
   background-size: 100% 100%, 100% 100%;
   background-repeat: no-repeat;
   background-image: linear-gradient(white, white), 
-                    linear-gradient(30deg, #046FA7 30%, #00A8C8 30%);
+                    linear-gradient(30deg, #046FA7 30%, #0066FF 30%);
   background-origin: content-box, border-box;
   background-clip: content-box, border-box;
   transform: rotate(150deg);
@@ -347,7 +350,7 @@ svg{
 }
 #popup .MuiDialog-paperScrollPaper table:first-child td p:last-child{
   font-size: 12px;
-  color: #00A8C8;
+  color: #0066FF;
 }
 #popup .MuiDialog-paperScrollPaper table:first-child tr:first-child td{
   border-bottom: 1px solid #DCDCDC;
@@ -389,7 +392,7 @@ svg{
 }
 #popup .MuiDialog-paperScrollPaper .summary-btn button:last-child{
   padding: 10px 70px;
-  background: #00A8C8;
+  background: #0066FF;
 }
 #popup .MuiDialogContent-root{
   padding: 8px 32px !important;
@@ -399,7 +402,7 @@ svg{
 }
 #popup .MuiDialogTitle-root .MuiTypography-h6{
   font-size: 0.95rem !important;
-  color: #00A8C8;
+  color: #0066FF;
 }
 #popup.withdraw-modal .MuiDialogTitle-root .MuiTypography-h6{
   color: #1053FF;
@@ -509,7 +512,7 @@ svg{
   height: 120px;
 }
 #popup.history-modal .MuiDialog-paperScrollPaper textarea:focus{
-  border-color: #00A8C8 !important;
+  border-color: #0066FF !important;
 }
 #popup.history-modal .MuiDialog-paperScrollPaper .rate-title{
   font-size: 13px;
@@ -525,7 +528,7 @@ svg{
 
 }
 #popup.history-modal .MuiDialog-paperScrollPaper textarea + div button{
-  background: #00A8C8;
+  background: #0066FF;
   border-radius: 25px;
   color: #fff;
   text-transform: capitalize;
@@ -548,7 +551,7 @@ font-size: 19px;
 
 }
 .MuiCircularProgress-colorPrimary{
-  color: #00A8C8 !important;
+  color: #0066FF !important;
 }
 .property-table .MuiCircularProgress-svg,
 .payment-table .MuiCircularProgress-svg,

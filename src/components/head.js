@@ -111,8 +111,11 @@ handleScroll = () => {
         // this.refs.style.backgroundColor='#CCE0FF'
         // this.refs.style.backdropFilter='blur(20px)'
         // this.refs.style.width='100%'
+        if(position > this.props.top)
         this.refs.classList.replace('close', 'open')
-        this.setState({colors:this.props.color, open:true})
+        else
+        this.refs.classList.replace('open', 'close')
+        this.setState({colors:this.props.color})
         if(this.state.width <15 && this.props.quickSearch){
             // setWidth(15)
             // setOpen(false)
@@ -293,9 +296,9 @@ onLogout = ()=>{
                     }
                 </nav>
             <button   onTouchStart={this.openMenu} onClick={this.openMenu} id="hamburger" className="hamburger">
-                <span className="hamburger"   style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}} ></span>
-                <span className="hamburger" style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}}  ></span>
-                <span className="hamburger" style={{backgroundColor:this.props.top>30 && !this.state.open ?'#fff':colors}}  ></span>
+                <span className="hamburger"   style={{backgroundColor:this.props.top>30 && !this.state.width ?'#fff':colors}} ></span>
+                <span className="hamburger" style={{backgroundColor:this.props.top>30 && !this.state.width ?'#fff':colors}}  ></span>
+                <span className="hamburger" style={{backgroundColor:this.props.top>30 && !this.state.width ?'#fff':colors}}  ></span>
             </button>
         </div>
 

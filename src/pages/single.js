@@ -32,7 +32,7 @@ import SmokeFreeIcon from '@material-ui/icons/SmokeFree';
 import  DatePicker  from "../components/calender/index";
 import MapContainer from "../components/map";
 import Review from "../components/review"
-import { withRouter } from "react-router-dom"
+import { withRouter, Link } from "react-router-dom"
 import './../scss/single.scss'
 import Splash from "../components/splash";
 import PopUP from "../components/popup";
@@ -253,14 +253,6 @@ class Single extends Component {
                 const dates = getDates(checkIn, checkOut);
                 this.setState({ loading: false, days: dates.length, price: crib.amount, property: crib })
             })
-        // this.context.getPropertyById(id)
-        // .then((property)=>{
-        //     const checkOut = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-        //     const checkIn = this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-        //     const dates = getDates(checkIn,checkOut);
-        //     this.context.storeActivity(property)
-        // this.setState({loading:false, days:dates.length, price:property.amount, property:property})
-        // })
         const favourite = getFav(id, this.props.user)
         this.setState({
             favourite: favourite,
@@ -270,11 +262,6 @@ class Single extends Component {
             checkOut: new Date()//this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
         })
     }
-    // useEffect(()=>{
-    // const id = location.pathname.split('crib')[1]
-    // getPropertyById(id)
-    // setProperty(state.property)
-    // }, [getPropertyById,location.pathname,state.property])
     componentWillUnmount() {
         this.propert = null
     }
@@ -329,24 +316,6 @@ class Single extends Component {
         let room = []
         let value = null
         let selected = ''
-        // if(item.target.value === '1000'){
-        //     this.state.property.rooms.forEach(room=>{
-        //         amount += Number(room.price)
-        //         books.push(...room.bookedDates)
-        //     })
-        //     rooms = {
-        //         price:amount,
-        //         bookedDates:books
-        //     }
-        //     room.push(...this.context.state.property.rooms)
-        // }
-        // else{
-        // amount = this.context.state.property.rooms[item.target.value].price
-        // rooms = this.context.state.property.rooms[item.target.value]
-        //     room.push(this.context.state.property.rooms[item.target.value])
-        // }
-
-        // this.setState({price:amount, rooms:rooms, room:room, change:true})
         if (item.target.value === '1000') {
             this.state.property.rooms.forEach(room => {
                 amount += Number(room.price)
@@ -434,7 +403,6 @@ class Single extends Component {
             this.state.rooms.bookedDates.forEach(date => dates.push(new Date(date)))
             dates.sort((a, b) => new Date(b) - new Date(a))
         }
-
         if (this.state.loading)
             return <Splash />
         return (
@@ -447,6 +415,31 @@ class Single extends Component {
                             <div id="singlepage" className={classes.container}>
                                 <Grid container justify="flex-start"  spacing={3}>
                                     <Grid item xs={12} md={8} sm={12}>
+                                            <div className="breadcum">
+                                                <ul>
+                                                    <li>
+                                                        <Link to="/" >
+                                                            Home
+                                                            <svg width="8" height="15" viewBox="0 0 8 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M0.992512 13.3418C0.992055 13.1128 1.07343 12.8908 1.22251 12.7144L5.70251 7.45989L1.38251 2.19557C1.29945 2.09529 1.23741 1.97991 1.19998 1.85606C1.16255 1.73221 1.15046 1.60232 1.1644 1.47387C1.17834 1.34542 1.21803 1.22094 1.28121 1.10758C1.34438 0.99422 1.42979 0.894216 1.53251 0.813317C1.6348 0.731886 1.7525 0.671076 1.87884 0.634381C2.00517 0.597686 2.13767 0.58583 2.26869 0.599495C2.39972 0.613159 2.52671 0.652076 2.64234 0.714006C2.75798 0.775937 2.85999 0.859661 2.94251 0.960366L7.77251 6.84229C7.91959 7.0177 8 7.23772 8 7.46479C8 7.69185 7.91959 7.91188 7.77251 8.08729L2.77251 13.9692C2.68856 14.0685 2.58546 14.1505 2.46912 14.2107C2.35277 14.2708 2.22546 14.3079 2.09448 14.3197C1.96351 14.3316 1.83143 14.3179 1.70583 14.2797C1.58023 14.2414 1.46356 14.1792 1.36251 14.0967C1.2478 14.0054 1.15512 13.8904 1.09115 13.7599C1.02717 13.6294 0.993488 13.4866 0.992512 13.3418Z" fill="#005C9F"/>
+                                                            </svg>
+                                                        </Link>
+                                                    </li>
+                                                    {
+                                                        this.props.location.state !== undefined&&
+                                                        <li>
+                                                            <Link to={this.props.location.state}>
+                                                                Search results
+                                                                <svg width="8" height="15" viewBox="0 0 8 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M0.992512 13.3418C0.992055 13.1128 1.07343 12.8908 1.22251 12.7144L5.70251 7.45989L1.38251 2.19557C1.29945 2.09529 1.23741 1.97991 1.19998 1.85606C1.16255 1.73221 1.15046 1.60232 1.1644 1.47387C1.17834 1.34542 1.21803 1.22094 1.28121 1.10758C1.34438 0.99422 1.42979 0.894216 1.53251 0.813317C1.6348 0.731886 1.7525 0.671076 1.87884 0.634381C2.00517 0.597686 2.13767 0.58583 2.26869 0.599495C2.39972 0.613159 2.52671 0.652076 2.64234 0.714006C2.75798 0.775937 2.85999 0.859661 2.94251 0.960366L7.77251 6.84229C7.91959 7.0177 8 7.23772 8 7.46479C8 7.69185 7.91959 7.91188 7.77251 8.08729L2.77251 13.9692C2.68856 14.0685 2.58546 14.1505 2.46912 14.2107C2.35277 14.2708 2.22546 14.3079 2.09448 14.3197C1.96351 14.3316 1.83143 14.3179 1.70583 14.2797C1.58023 14.2414 1.46356 14.1792 1.36251 14.0967C1.2478 14.0054 1.15512 13.8904 1.09115 13.7599C1.02717 13.6294 0.993488 13.4866 0.992512 13.3418Z" fill="#005C9F"/>
+                                                                </svg>
+                                                            </Link>
+
+                                                        </li>
+                                                    }
+                                                    <li>{property.name}</li>
+                                                </ul>
+                                            </div>
                                         <Grid container>
                                             <Grid className="slide-sided" item md={4}>
                                                 <div className={classes.background} id="slideTop" style={{ backgroundImage: `url(${process.env.REACT_APP_BACKEND_URL}/${property.featuredImage})` }}>
@@ -488,57 +481,26 @@ class Single extends Component {
                                                     <div>
                                                         <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', columnGap: '1rem' }} >
                                                             <div className={classes.position} >
-                                                                <BusinessIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                <BusinessIcon htmlColor="#0066FF" fontSize="large" />
                                                                 <Typography className={classes.textTitle} style={{textTransform:'capitalize'}} variant="subtitle1" component="p">{property.type}</Typography>
                                                             </div>
                                                             <div className={classes.position}>
-                                                                <KingBedIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                <KingBedIcon htmlColor="#0066FF" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bedroom} Bedrooms</Typography>
                                                             </div>
                                                         </div>
 
                                                         <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', columnGap: '1rem' }}>
                                                             <div className={classes.position}>
-                                                                <PeopleOutlineIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                <PeopleOutlineIcon htmlColor="#0066FF" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.guest} Guests</Typography>
                                                             </div>
                                                             <div className={classes.position}>
-                                                                <BathtubIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                <BathtubIcon htmlColor="#0066FF" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bathroom} Bathroms</Typography>
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    {/* <Grid container xs={5}>
-                                            <Grid item sm={6}>
-                                                <div className={classes.position} > 
-                                                <BusinessIcon htmlColor="#00A8C8" fontSize="large"/>
-                                                <Typography className={classes.textTitle}  variant="subtitle1" component="p">{property.type}</Typography>
-                                                </div>
-                                            </Grid>
-                                        
-                                            <Grid item  sm={12}>
-                                                <div className={classes.position}>
-                                                    <KingBedIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bedroom} Bedrooms</Typography>
-                                                </div>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid item xs={7}>
-                                            <Grid item sm={6}>
-                                                <div className={classes.position}>
-                                                    <PeopleOutlineIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.guest} Guests</Typography>
-                                                </div>
-                                            </Grid>
-
-                                            <Grid item sm={6}>
-                                                <div className={classes.position}>
-                                                    <BathtubIcon htmlColor="#00A8C8" fontSize="large"/> 
-                                                    <Typography className={classes.textTitle} variant="subtitle1" component="p">{property.bathroom} Bathroms</Typography>
-                                                </div>
-                                            </Grid>
-                                        </Grid> */}
                                                 </Grid>
                                             </Box>
                                             <Box p={3}  className="sets1">
@@ -557,31 +519,31 @@ class Single extends Component {
                                                     <div >
                                                         <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', columnGap: '1rem' }}>
                                                             <div className={classes.position} style={{ textDecoration: property.kitchen ? 'none' : 'line-through' }} >
-                                                                <KitchenIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                <KitchenIcon htmlColor="#0066FF" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Kitchen</Typography>
                                                             </div>
                                                             <div className={classes.position} style={{ textDecoration: property.parking ? 'none' : 'line-through' }}>
-                                                                <LocalParkingIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                <LocalParkingIcon htmlColor="#0066FF" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Free parking on premises</Typography>
                                                             </div>
                                                         </div>
                                                         <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', columnGap: '1rem' }}>
                                                             <div className={classes.position} style={{ textDecoration: property.wifi ? 'none' : 'line-through' }}>
-                                                                <WifiIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                <WifiIcon htmlColor="#0066FF" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">WiFi</Typography>
                                                             </div>
                                                             <div className={classes.position} style={{ textDecoration: property.cable ? 'none' : 'line-through' }}>
-                                                                <TvIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                <TvIcon htmlColor="#0066FF" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Cable TV</Typography>
                                                             </div>
                                                         </div>
                                                         <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', columnGap: '1rem' }} >
                                                             <div className={classes.position} style={{ textDecoration: property.smoke ? 'none' : 'line-through' }}>
-                                                                <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                <SmokeFreeIcon htmlColor="#0066FF" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Smoke Alarm</Typography>
                                                             </div>
                                                             <div className={classes.position} style={{ textDecoration: property.smoke ? 'none' : 'line-through' }}>
-                                                                <SmokeFreeIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                <SmokeFreeIcon htmlColor="#0066FF" fontSize="large" />
                                                                 <Typography className={classes.textTitle} variant="subtitle1" component="p">Carbon Monoxide alarm</Typography>
                                                             </div>
                                                         </div>
@@ -597,7 +559,7 @@ class Single extends Component {
                                                             property.rooms.map((room, i) => (
                                                                 <div key={i}>
                                                                     <div className={classes.position} style={{ marginBottom: 5 }}>
-                                                                        <KingBedIcon htmlColor="#00A8C8" fontSize="large" />
+                                                                        <KingBedIcon htmlColor="#0066FF" fontSize="large" />
                                                                         <Typography style={{textTransform:'capitalize'}} className={classes.textTitle} variant="subtitle1" component="p">{room.room}</Typography>
                                                                     </div>
                                                                     <Typography style={{ marginLeft: 32 }} variant="caption" component="p">{room.bed ? (room.bed === 1 ? '1 Bed' : room.bed + ' Beds') : 'No Bed'}</Typography>
@@ -606,22 +568,25 @@ class Single extends Component {
                                                         }
                                                     </div>
                                                 </Grid>
-
+                                                
                                                 <Typography className={classes.subTitle}>Bathroom</Typography>
                                                 <Grid id="bathroom">
                                                     <div style={{ display: 'grid', gridTemplateColumns: '2fr 2fr', columnGap: '1rem' }}>
                                                         {
                                                             property.rooms.map((room, i) => (
-                                                                <>
+                                                                <div key={i} >
+                                                                    <div key={i} className={classes.position} style={{ marginBottom: 5 }}>
+                                                                        <BathtubIcon htmlColor="#0066FF" fontSize="large" />
+                                                                        <Typography className={classes.textTitle} style={{textTransform:'capitalize'}} variant="subtitle1" component="p">{room.room}</Typography>
+                                                                    </div>
                                                                     {
-                                                                        room.bathroom > 0 ?
-                                                                            <div key={i} className={classes.position} style={{ marginBottom: 5 }}>
-                                                                                <BathtubIcon htmlColor="#00A8C8" fontSize="large" />
-                                                                                <Typography className={classes.textTitle} style={{textTransform:'capitalize'}} variant="subtitle1" component="p">{room.room}</Typography>
-                                                                            </div>
-                                                                            : null
+
+                                                                    room.bathroom > 0 ?
+                                                                    <Typography style={{ marginLeft: 32 }} variant="caption" component="p">{ room.bathroom === 1 ? '1 Bath' : room.bathroom + ' Baths' }</Typography>
+                                                                    : 
+                                                                    <Typography style={{ marginLeft: 32 }} variant="caption" component="p">{'No Bath'}</Typography>
                                                                     }
-                                                                </>
+                                                                </div>
                                                             ))
                                                         }
                                                     </div>
@@ -662,7 +627,7 @@ class Single extends Component {
                                                     <Grid style={{ marginTop: 10 }} container>
                                                         <Grid item xs={9}>
                                                             <div>
-                                                                <Typography style={{ color: '#00A8C8', fontWeight: 'bold', display: 'inline-flex' }} variant="h5">‎₦{property.amount}</Typography> avg/night
+                                                                <Typography style={{ color: '#0066FF', fontWeight: 'bold', display: 'inline-flex' }} variant="h5">‎₦{property.amount}</Typography> avg/night
                                                     </div>
                                                             <Typography variant="subtitle2" style={{ fontSize: 12, marginTop: 15 }} component="p">
                                                                 {property.guest} Guests | {property.bedroom} Bedrooms | {property.bedroom} beds | {property.bathroom} Baths
@@ -720,7 +685,7 @@ class Single extends Component {
                                                             <Grid item xs={6}>
                                                                 <div  className="checkinss">
                                                                     <label htmlFor="check-in">
-                                                                        <Calendar htmlColor="#00A8C8" fontSize="small" />
+                                                                        <Calendar htmlColor="#0066FF" fontSize="small" />
                                                                     </label>
                                                                     <DatePicker
                                                                         right="-12.5vw"
@@ -743,7 +708,7 @@ class Single extends Component {
                                                             <Grid item xs={6}>
                                                                 <div className="checkinss" >
                                                                     <label htmlFor="check-out">
-                                                                        <Calendar htmlColor="#00A8C8" fontSize="small" />
+                                                                        <Calendar htmlColor="#0066FF" fontSize="small" />
                                                                     </label>
                                                                     <DatePicker
                                                                         right="0"
@@ -761,7 +726,7 @@ class Single extends Component {
                                                         <div className={classes.guest}>
                                                             <div className="checkinss">
                                                                 <label htmlFor="check-out">
-                                                                    <Calendar htmlColor="#00A8C8"  fontSize="small" />
+                                                                    <Calendar htmlColor="#0066FF"  fontSize="small" />
                                                                 </label>
                                                                 <Guest
                                                                     label="Guests"
@@ -782,7 +747,7 @@ class Single extends Component {
                                                             <div className={classes.guest}>
                                                                 <div className="checkinss">
                                                                     <label htmlFor="check-out">
-                                                                        <KingBedIcon htmlColor="#00A8C8" fontSize="small" />
+                                                                        <KingBedIcon htmlColor="#0066FF" fontSize="small" />
                                                                     </label>
                                                                     <NativeSelect disabled={this.state.room.length===property.rooms.length?true:false} multiple={true} style={{ width: '90%', marginLeft: '10%' }} onChange={this.onChangeRoom} value={this.state.values}>
                                                                         {

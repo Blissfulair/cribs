@@ -9,6 +9,9 @@
     height: 100%;
     z-index: 3
 }
+.breadcum{
+    display: none;
+}
 #accessibility{
    &> div{
         display: grid;
@@ -265,6 +268,54 @@
                      }
                  }
              }
+         }
+         #bedrooms >div>div,#bathroom >div>div{
+            background: #FFFFFF;
+            border: 1px solid #0066FF;
+            box-sizing: border-box;
+            box-shadow: 0px 0px 4px rgba(0, 102, 255, 0.25);
+            border-radius: 7px;
+            padding: 10px;
+            min-height: 73px;
+         }
+         .breadcum{
+             display: block;
+             margin-bottom: 21px;
+             ul{
+                 list-style: none;
+                 display: flex;
+                 li{
+                   
+                   font-weight: 500;
+                   font-size: 12px;
+                   line-height: 15px;
+
+                   /* identical to box height */
+
+                   color: #2E2E2E;
+                   &:nth-child(2){
+                       margin: 0 10px;
+                   }
+                    &:last-child{
+                        color: #0066FF;
+                    }
+                     a{
+                        padding: 0;
+                        font-weight: 500;
+                        font-size: 12px;
+                        line-height: 15px;
+                        display: flex;
+     
+                        /* identical to box height */
+     
+                        color: #2E2E2E;
+                        svg{
+                            margin-left: 8px;
+                        }
+                     }
+                 }
+             }
+
          }
          .payment{
             border-radius: 14px !important;

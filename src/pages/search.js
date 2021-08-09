@@ -171,7 +171,6 @@ class Search extends Component{
     };
 
     onNext = (e)=>{
-        console.log(e,'time')
         searchProperties({search:this.state.location, page:e})
         .then((res)=>{
             this.props.search(res.properties)

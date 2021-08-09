@@ -225,7 +225,7 @@ class EditProperty extends React.Component{
     }
     onSubmit=(event)=>{
         event.preventDefault();
-        const id = this.props.location.pathname.split('edit-property')[1].replace('/','')
+        const id = this.props.location.pathname.split('edit-crib')[1].replace('/','')
         if(!this.state.title)
            {
             this.setState({message:'Crib title is required'})

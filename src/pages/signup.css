@@ -155,7 +155,7 @@ input[type=checkbox]{
     outline: 0;
     border: none;
     text-align: center;
-    background: #00A8C8;
+    background: #0066FF;
     padding: 14px 0;
     /* font-family: 'Montserrat-Medium'; */
     font-size: 15px;
@@ -192,7 +192,7 @@ input[type=checkbox]{
     color: var(--dark-border)
 }
 .form p a{
-    color: #00ADCB;
+    color: #0066FF;
 }
 .signup .icon-checkmar{
     display: none;

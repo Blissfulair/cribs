@@ -280,40 +280,7 @@ class Index extends Component {
                                     </Grid>
                                     </>
                                 }
-                            
 
-                            {/* {
-                                this.context.state.properties.length > 0 ?
-                                    <>
-                                        <Typography classes={{ root: classes.title }} variant="h3">Trending Cribs</Typography>
-                                        <div style={{ marginBottom: 10 }}>
-                                            <Grid container spacing={2}>
-                                                {
-                                                    this.context.state.properties.map((property, i) => {
-                                                        return (
-                                                            <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                                <Link to={`/crib/${property.id}`}>
-                                                                    <Trending favourite={this.state.favourites.includes(property.id)} details={property} name={i === 0 ? 'one' : i === 1 ? 'two' : i === 2 ? 'three' : 'four'} color={i === 0 ? '#00C1C8' : i === 1 ? '#08191A' : i === 2 ? '#EE2B72' : '#C8BB00'} />
-                                                                </Link>
-                                                            </Grid>
-                                                        )
-                                                    })
-                                                }
-                                            </Grid>
-                                        </div>
-                                        <Link className={classes.link} to={{ pathname: '/more-cribs', search: 'trending' }}>See more</Link>
-
-
-                                        <div style={{ marginTop: 50 }}>
-                                            <Typography variant="h4" classes={{ root: classes.title }}>Best Cribs Recommended For you</Typography>
-                                            <Grid style={{ position: 'relative' }} container >
-                                                <Slide favourites={this.state.favourites} content={this.context.state.latestProperties} />
-                                            </Grid>
-                                        </div>
-                                        <Link className={classes.link} to={{ pathname: '/more-cribs', search: 'recommended' }}>See more</Link>
-                                    </>
-                                    : ''
-                            } */}
                             <Typography classes={{root:classes.title}} className="head-title" variant="h3">Trending Cribs</Typography>
                             <div style={{marginBottom:10}}>
                                 <Grid  container spacing={2}>
@@ -341,26 +308,7 @@ class Index extends Component {
                                             ))
                                         }
                                     </Slide>
-                                    {/* {
-                                        trendingCribs.length>0?
-                                        [1,1,1,1].map((property, i)=>{
-                                            return(
-                                                <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                    <Link  to={`/crib/${property._id}`}>
-                                                        <Trending favourite={this.state.favourites.includes(property._id)} details={property} name={i===0?'one':i===1?'two':i===2?'three':'four'} color={i===0?'#00C1C8':i===1?'#08191A':i===2?'#EE2B72':'#C8BB00'}/>
-                                                    </Link>
-                                                </Grid>
-                                            )
-                                        })
-                                        :
-                                        [1,2,3.4,5].map((value,i)=>(
-                                            <Grid item xs={12} sm={6} md={3} lg={3} >
-                                                    <Skeleton key={i} />
-                                            </Grid>
-                                        ))
-
-
-                                    } */}
+                                   
                                 </Grid>
                             </div>
                             {/* {

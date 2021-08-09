@@ -8,7 +8,7 @@ import {withStyles} from "@material-ui/core/styles"
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import Rating from '@material-ui/lab/Rating';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import {Link} from "react-router-dom"
+import {Link, withRouter} from "react-router-dom"
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import { connect } from "react-redux";
 import "./search.scss"
@@ -37,7 +37,7 @@ const styles = ()=>({
         left: 0
     }
 })
-const Search = ({classes, content, rating,name, favourite, user})=>{
+const Search = ({classes, content, rating,name, favourite, user, location})=>{
     const [stars, setStars] = React.useState(0)
     const [labels,] = useState({
         1: ['Mediocre','Not bad at all'],
@@ -57,7 +57,7 @@ const Search = ({classes, content, rating,name, favourite, user})=>{
         }
     },[rating])
     return(
-    <Link className="s-nav-link" to={user?`/app/crib/${content._id}`:`/crib/${content._id}`}>
+    <Link className="s-nav-link" to={{pathname:user?`/app/crib/${content._id}`:`/crib/${content._id}`, state:location.pathname+location.search}}>
         <Card className="fav-search" elevation={3} style={{margin:'15px 0'}} classes={{root:classes.root}}>
             <CardActionArea classes={{root:classes.root}}>
                 <div className={classes.media}>
@@ -121,4 +121,4 @@ const Search = ({classes, content, rating,name, favourite, user})=>{
 const mapStateToProps=state=>({
     user:state.user
 })
-export default connect(mapStateToProps)(withStyles(styles)(Search))
+export default connect(mapStateToProps)(withRouter(withStyles(styles)(Search)))

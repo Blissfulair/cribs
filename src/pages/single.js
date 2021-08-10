@@ -130,7 +130,7 @@ const styles = theme => ({
         margin: '23px 0'
     },
     progressBarTitle: {
-        color: '#00B2CE',
+        color: '#0066FF',
         marginTop: 20,
         fontSize: 13,
         marginBottom: 2
@@ -146,7 +146,7 @@ const BorderLinearProgress = withStyles((theme) => ({
     },
     bar: {
         borderRadius: 8,
-        backgroundColor: '#00B2CE',
+        backgroundColor: '#0066FF',
     },
 }))(LinearProgress);
 

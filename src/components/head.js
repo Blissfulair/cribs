@@ -80,13 +80,6 @@ class Head extends Component{
         this.setState({openModal:e})
     }
 
-    // useEffect(()=>{
-    //     if(quickSearch && openQuickSearch){
-    //         setWidth(47)
-    //         setOpen(true)
-    //         setHeaderColor('#fff')
-    //     }
-    // }, [openQuickSearch,quickSearch])
 handleClick=(e)=>{
     // console.log(this.form.current.contains(e.target), e.target, this.form.current)
     //     if(!isDescendant(this.form.current, e.target) && this.state.width>0){
@@ -104,13 +97,6 @@ handleScroll = () => {
     const position = window.pageYOffset;
 
     if(position >=this.props.top){
-        // this.refs.style.position='fixed'
-        
-        // this.refs.style.top='0'
-        // this.refs.style.opacity='1'
-        // this.refs.style.backgroundColor='#CCE0FF'
-        // this.refs.style.backdropFilter='blur(20px)'
-        // this.refs.style.width='100%'
         if(position > this.props.top)
         this.refs.classList.replace('close', 'open')
         else
@@ -124,11 +110,6 @@ handleScroll = () => {
         }
       
     }
-    // else if(position ===0){
-    //     this.refs.style.top='-45px'
-    //     this.refs.style.opacity='0'
-
-    // }
     else{
         // this.refs.style.backgroundColor='transparent'
         this.refs.classList.replace('open', 'close')
@@ -221,7 +202,13 @@ onLogout = ()=>{
                             user.emailVerify?
                                 <div className="avatar-pro">
                                         <IconButton  onClick={this.onOpenModal}>
-                                            <Avatar className="avatar-img"  src={process.env.REACT_APP_BACKEND_URL+'/'+user.image}/>
+                                            {
+                                                user.image?
+                                                <Avatar className="avatar-img"  src={process.env.REACT_APP_BACKEND_URL+'/'+user.image}/>
+                                                :
+                                                <Avatar className="avatar-img" />
+                                            }
+                                           
                                         </IconButton>
                                     <Dmodal
                                         open={this.state.openModal}

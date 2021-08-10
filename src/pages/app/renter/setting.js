@@ -166,7 +166,7 @@ class Setting extends React.Component{
             )
         return (
             <>
-                                <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
+                                <AppHeader sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
                     <Grid container justify="center">
                         <Grid item md={11}>
                             <Grid container>

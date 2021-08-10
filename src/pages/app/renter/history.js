@@ -272,7 +272,7 @@ class History extends React.Component{
         )
         return (
             <>
-            <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
+            <AppHeader sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
             <Grid container justify ="center">
                 { this.state.history&&
                 <WithdrawPopUp open={this.state.open} title="" handleClose={this.handleClose} className="history-modal">
@@ -409,7 +409,7 @@ class History extends React.Component{
                                         inputProps={{ 'aria-label': 'search' }}
                                         />
                                          <IconButton onClick={()=>this.search.current.focus()}>
-                                            <SearchIcon  htmlColor="#00A8C8"/>
+                                            <SearchIcon  htmlColor="#0066FF"/>
                                         </IconButton>
                                     </li>
                                     {/* <li style={{marginRight:20}}>
@@ -418,10 +418,10 @@ class History extends React.Component{
                                     <li>
                                         {
                                             this.state.deleteStatus?
-                                                <PanToolIcon htmlColor="#00A8C8" />
+                                                <PanToolIcon htmlColor="#0066FF" />
                                             :
                                             <IconButton onClick={this.onDelete}>
-                                                <DeleteIcon htmlColor="#00A8C8"/>
+                                                <DeleteIcon htmlColor="#0066FF"/>
                                             </IconButton>
                                         }
                                     </li>

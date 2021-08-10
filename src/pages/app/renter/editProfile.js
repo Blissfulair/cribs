@@ -3,25 +3,26 @@ import "./../inbox.css"
 import "./../properties.css"
 // import "./../add-property.css"
 import "./../profile.css"
+import "../host/edit-profile.scss"
 import AppHeader from "../../../components/head";
-import { NativeSelect, Button,Snackbar, Slide, Grid } from "@material-ui/core";
+import { Button,Snackbar, Slide, Grid } from "@material-ui/core";
 import Activity from "../../../components/activity"
 import {Alert} from "@material-ui/lab"
 import {withRouter} from "react-router-dom"
 import { connect } from "react-redux";
 import Footer from "../../../components/footer";
+import DropDown, { DropDownItem } from "../../../components/dropDown";
 
 const EditProfileDom = ({state, handleCloseSnackBar, user, env, changeHandler,onSubmit,handleClick})=>{
+    const years = []
+    const thisYear = new Date().getFullYear() 
+    for(let year = thisYear; year >= thisYear - 60; year --)
+        years.push(year)
     return(
         <>
             <Activity loading={state.loading} />
 
-            <div style={{paddingTop:80}} className="inbox">
-                <div className="inbox-head dashboard-mt">
-                    <div className="inbox-title">
-                        <h4>Profile</h4>
-                    </div>
-                </div>
+            <div className="profiles renting">
 
                 <div className="profile-edit">
                     <div className="profile-details">
@@ -43,53 +44,92 @@ const EditProfileDom = ({state, handleCloseSnackBar, user, env, changeHandler,on
                                 <tbody>
                                     <tr>
                                     <td>Address: <span style={{color:'red'}}>*</span></td>
-                                        <td><input onChange={(e)=>changeHandler(e)} name="address" defaultValue={user.address?user.address:''} /></td>
+                                        <td>
+                                            <label>
+                                                <input onChange={(e)=>changeHandler(e)} name="address" defaultValue={user.address?user.address:''} />
+                                            </label>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>Phone: <span style={{color:'red'}}>*</span></td>
                                         <td>
+                                            <label>
                                             <img alt="flag" src={`https://www.countryflags.io/${env?env.country_code.toLowerCase():'us'}/shiny/32.png`}/>
-                                            <input type="text" onChange={(e)=>changeHandler(e)} name="phone" defaultValue={user.phone?user.phone: env&&env.country_calling_code} />
+                                            <input type="text" onChange={(e)=>changeHandler(e)} name="phone" defaultValue={user.phone?user.phone:env?env.country_calling_code:''} />
+                                            </label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Facebook:</td>
                                         <td>
+                                            <label>
                                             <input type="text" onChange={(e)=>changeHandler(e)} name="facebook" defaultValue={user.facebook?user.facebook:''} />
+                                            </label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>LinkedIn:</td>
                                         <td>
+                                            <label>
                                             <input type="text" onChange={(e)=>changeHandler(e)} name="linkedin" defaultValue={user.linkedin?user.linkedin:''} />
+                                            </label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Date of Birth: <span style={{color:'red'}}>*</span></td>
                                         <td>
-                                            <input type="text" onChange={(e)=>changeHandler(e)} name="dob" defaultValue={user.dob?user.dob:''} />
+                                            <label>
+                                                <DropDown value={user.dob?parseInt(user.dob.split('-')[0]):''} onChange={(e)=>changeHandler(e)} name="dobd">
+                                                    <DropDownItem value="">DD</DropDownItem>
+                                                    {
+                                                        [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31].map(i=>(
+                                                            <DropDownItem  key={i} value={i}>{i<10?'0'+i:i}</DropDownItem>
+                                                        ))
+                                                    }
+                                                </DropDown>
+                                                <DropDown value={user.dob?parseInt(user.dob.split('-')[1]):''} onChange={(e)=>changeHandler(e)} name="dobm">
+                                                    <DropDownItem>MM</DropDownItem>
+                                                    {
+                                                        [1,2,3,4,5,6,7,8,9,10,11,12].map(i=>(
+                                                            <DropDownItem key={i} value={i}>{i<10?'0'+i:i}</DropDownItem>
+                                                        ))
+                                                    }
+                                                </DropDown>
+                                                <DropDown value={user.dob?parseInt(user.dob.split('-')[2]):''} onChange={(e)=>changeHandler(e)} name="doby">
+                                                    <DropDownItem>YYYY</DropDownItem>
+                                                    {
+                                                        years.map((year,i)=>(
+                                                            <DropDownItem key={i} value={year}>{year}</DropDownItem>
+                                                        ))
+                                                    }
+                                                </DropDown>
+                                            </label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Gender: <span style={{color:'red'}}>*</span></td>
                                         <td>
-                                            <NativeSelect defaultValue={user.gender?user.gender:''} onBlur={changeHandler} name="gender" id="">
-                                                <option value="">Choose</option>
-                                                <option value="Male">Male</option>
-                                                <option value="Female">Female</option>
-                                            </NativeSelect>
+                                            <label>
+                                            <DropDown onChange={(e)=>changeHandler(e)} name="gender" value={user.gender?user.gender:''}>
+                                                    <DropDownItem value="">Choose</DropDownItem>
+                                                    <DropDownItem value="Male">Male</DropDownItem>
+                                                    <DropDownItem value="Female">Female</DropDownItem>
+                                            </DropDown>
+                                            </label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Bio: <span style={{color:'red'}}>*</span></td>
                                         <td>
-                                            <textarea onChange={(e)=>changeHandler(e)} defaultValue={user.bio?user.bio:''} name="bio"  />
+                                           <label>
+                                           <textarea onChange={(e)=>changeHandler(e)} defaultValue={user.bio?user.bio:''} name="bio"  />
+                                           </label>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                             <div className="edit-btn">
-                                <Button onClick={handleClick(TransitionUp)} variant="contained" type="submit" style={{background:'#00A8C8', color:'#fff', textTransform:'capitalize'}}>Save</Button>
+                                <Button onClick={handleClick(TransitionUp)} variant="contained" type="submit">Save</Button>
                             </div>
                         </form>
                     </div>
@@ -200,7 +240,7 @@ class EditProfile extends React.Component{
     render(){
         return (
             <>
-                           <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
+                           <AppHeader sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
                     <Grid container justify="center">
                         <Grid item md={11}>
                             <Grid container>

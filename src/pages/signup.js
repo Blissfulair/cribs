@@ -159,7 +159,7 @@ class SignUp extends React.Component{
     render(){
         return (
             <>
-                <Head top={30} color={'#046FA7'}/>
+                <Head top={30} color="#0066FF" />
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div className="signin">

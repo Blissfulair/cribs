@@ -110,7 +110,7 @@ class Home extends Component{
         const {classes}=this.props
     return(
         <>
-        <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
+        <AppHeader sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
         <Grid id="app-home-page" style={{paddingTop:90}} className="home" container justify="center">
             <Grid container justify="center" >
                 <Grid item xs={11} md={10} >

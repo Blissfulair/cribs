@@ -142,7 +142,7 @@ class Profile extends React.Component{
     render(){
         return (
             <>
-                    <AppHeader sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
+                    <AppHeader sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
                     <Activity loading={this.state.isLoading} />
                     <Grid container justify="center">
                         <Grid item md={11}>

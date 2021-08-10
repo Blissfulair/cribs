@@ -15,7 +15,6 @@ import focus from "../images/focus.svg"
 import Slide from "../components/slider";
 import Explore from "../components/explore";
 import cribs from "../images/cribs.svg"
-import SearchIcon from "../images/searchicon.svg"
 import CancelIcon from "../images/cancelicon.svg"
 import Splash from "../components/splash";
 import { getFavs, getDates, verified } from "../helpers/helpers";
@@ -181,7 +180,7 @@ class Index extends Component {
                     }
 
                     <div className="showcase">
-                        <Head color="#046FA7"  quickSearch={true}/>
+                        <Head color="#0066FF"  quickSearch={true}/>
 
                         <div className="showcase__bottom">
                             <img src={cribs} alt="cribs ng for everyone" />
@@ -191,14 +190,17 @@ class Index extends Component {
                                 <form onSubmit={(e)=>{this.onSubmit(e)}}>
                                     <div className="location">
                                         <input onKeyUp={this.onKeyPres} ref={this.location} value={this.state.location} className='location__input' type="text" name="location" onChange={this.changeHandler} id="" placeholder="Where do you want to lodge?" />
-                                        <img
-                                            onClick={()=>this.setState({location:''})}
+                                        {
+                                            this.state.location.length>0&&
+                                            <img
+                                            onClick={()=>this.setState({location:''}, ()=>{this.location.current.focus()})}
                                             src={CancelIcon}
                                             alt=""
                                             style={{
                                                 marginLeft: '5px',
                                                 cursor:'pointer'
                                             }} />
+                                        }
                                         <label className='location__text' htmlFor="">Location</label>
                                     </div>
 
@@ -249,7 +251,9 @@ class Index extends Component {
                                         </div>
                                     </Guests>
                                     <SearchButton  type="submit" >
-                                        <img src={SearchIcon} alt="" />
+                                        <svg style={{height:22, width:22}} width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 11C0 17.0751 4.92486 22 11 22C17.0751 22 22 17.0751 22 11C22 4.92487 17.0751 0 11 0C4.92486 0 0 4.92487 0 11ZM4.76685 10.2454C4.76685 7.30226 7.15323 4.91724 10.0963 4.91724C13.0394 4.91724 15.4244 7.30226 15.4244 10.2454C15.4244 11.136 15.2065 11.9754 14.8202 12.7134C14.8236 12.7126 14.8275 12.7114 14.8309 12.7107L17.2331 15.1143L15.2633 17.0828L12.9443 14.7651C12.9426 14.7613 12.942 14.7569 12.9403 14.7531C12.1173 15.2735 11.142 15.5748 10.0963 15.5748C7.15321 15.5748 4.76685 13.1885 4.76685 10.2454ZM7.13416 10.2454C7.13416 11.8809 8.46074 13.2075 10.0963 13.2075C11.7319 13.2075 13.0571 11.8809 13.0571 10.2454C13.0571 8.60977 11.7319 7.28455 10.0963 7.28455C8.46074 7.28455 7.13416 8.60977 7.13416 10.2454Z" fill="#FCFCFC"/>
+                                        </svg>
                                         <SearchButtonText>Search</SearchButtonText>
                                     </SearchButton>
                                 </form>

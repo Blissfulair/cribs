@@ -101,7 +101,7 @@ const Payment = ({location}) => {
     },[location])
     return (
         <>
-        <Header sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
+        <Header sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
         <div style={{position:'relative'}}>
 			<section>
 				<div className="house-payment-details">

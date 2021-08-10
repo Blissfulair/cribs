@@ -5,18 +5,19 @@ import Searchs from "../components/search"
 import Splash from "../components/splash"
 import Explore from "../components/explore";
 import  MapContainer  from "../components/map";
-import {withRouter} from "react-router-dom"
+import {withRouter,Link} from "react-router-dom"
 import Header from "../components/head"
 import benin from "../images/benin.jpeg"
 import abuja from "../images/abuja.jpg"
 import lagos from "../images/lagos.jpg"
 import kano from "../images/kano.jpeg"
-import { getFavs } from "../helpers/helpers";
+import { getFavs, getDates } from "../helpers/helpers";
 import { connect } from "react-redux";
 import { searchProperties } from "../apis/server";
 import { search, storeSearchData } from "../state/actions";
 import Footer from "../components/footer";
 import Pagination from "../components/pagination";
+import Calendar from "../components/calender";
 const styles = theme =>({
     container:{
         paddingTop:125
@@ -56,7 +57,8 @@ class Search extends Component{
             favourites:[],
             page:1,
             totalPages:1,
-            location:''
+            location:'',
+            days: 1,
         }
     }
     componentDidMount(){
@@ -165,10 +167,45 @@ class Search extends Component{
         }
     }
 
+    setDays = () => {
+        const dates = getDates(this.state.checkIn, this.state.checkOut)
+        this.setState({ days: dates.length })
+    }
+    onSubmit =(e)=>{
+        e.preventDefault()
+        if(!this.state.location || !this.state.checkOut || !this.state.checkIn)
+        return
+        this.setState({isLoading:true})
+        const data = {
+            location: this.state.location,
+            checkIn: this.state.checkIn,
+            checkOut: this.state.checkOut,
+            guest: this.state.guest,
+            children:this.state.children,
+            adult:this.state.adult,
+            infant:this.state.infant,
+            pet:this.state.pet,
+        }
+        this.props.storeSearchData(data)
+        searchProperties({search:this.state.location})
+        .then(()=>{
+            this.setState({isLoading:false})
+            this.props.history.push({
+                pathname: !this.props.user?'/search':'/app/search',
+                search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
+            })
+        })
+        .catch((er)=>{
+            this.setState({isLoading:false})
+        })
+    }
 
      handleChange = (event) => {
       this.setState({age:event.target.value});
     };
+    onChange = (event) => {
+        this.setState({[event.target.name]:event.target.value});
+      };
 
     onNext = (e)=>{
         searchProperties({search:this.state.location, page:e})
@@ -192,12 +229,60 @@ class Search extends Component{
      return <Splash />
     return(
         <>
-            <Header sticky={true} top={0} color={'#046FA7'} bgColor="#CCE0FF" quickSearch={true} openQuickSearch={true}/>
+            <Header sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF" quickSearch={true} openQuickSearch={true}/>
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>
                     <div id="search-page" className={classes.container}>
                         <Grid container justify="flex-start" style={{position:'relative'}} spacing={3}>
                             <Grid item xs={12} md={6}>
+                                <div className="breadcumb">
+                                    <ul>
+                                        <li>
+                                            <Link to="/app/home" >
+                                                Home
+                                                <svg width="8" height="15" viewBox="0 0 8 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M0.992512 13.3418C0.992055 13.1128 1.07343 12.8908 1.22251 12.7144L5.70251 7.45989L1.38251 2.19557C1.29945 2.09529 1.23741 1.97991 1.19998 1.85606C1.16255 1.73221 1.15046 1.60232 1.1644 1.47387C1.17834 1.34542 1.21803 1.22094 1.28121 1.10758C1.34438 0.99422 1.42979 0.894216 1.53251 0.813317C1.6348 0.731886 1.7525 0.671076 1.87884 0.634381C2.00517 0.597686 2.13767 0.58583 2.26869 0.599495C2.39972 0.613159 2.52671 0.652076 2.64234 0.714006C2.75798 0.775937 2.85999 0.859661 2.94251 0.960366L7.77251 6.84229C7.91959 7.0177 8 7.23772 8 7.46479C8 7.69185 7.91959 7.91188 7.77251 8.08729L2.77251 13.9692C2.68856 14.0685 2.58546 14.1505 2.46912 14.2107C2.35277 14.2708 2.22546 14.3079 2.09448 14.3197C1.96351 14.3316 1.83143 14.3179 1.70583 14.2797C1.58023 14.2414 1.46356 14.1792 1.36251 14.0967C1.2478 14.0054 1.15512 13.8904 1.09115 13.7599C1.02717 13.6294 0.993488 13.4866 0.992512 13.3418Z" fill="#005C9F"/>
+                                                </svg>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            Search results
+                                        </li>
+                                    </ul>
+                                    <form onSubmit={this.onSubmit}>
+                                        <label className="search-inputs">
+                                            <button>
+                                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M0 11C0 17.0751 4.92486 22 11 22C17.0751 22 22 17.0751 22 11C22 4.92487 17.0751 0 11 0C4.92486 0 0 4.92487 0 11ZM4.76685 10.2454C4.76685 7.30226 7.15323 4.91724 10.0963 4.91724C13.0394 4.91724 15.4244 7.30226 15.4244 10.2454C15.4244 11.136 15.2065 11.9754 14.8202 12.7134C14.8236 12.7126 14.8275 12.7114 14.8309 12.7107L17.2331 15.1143L15.2633 17.0828L12.9443 14.7651C12.9426 14.7613 12.942 14.7569 12.9403 14.7531C12.1173 15.2735 11.142 15.5748 10.0963 15.5748C7.15321 15.5748 4.76685 13.1885 4.76685 10.2454ZM7.13416 10.2454C7.13416 11.8809 8.46074 13.2075 10.0963 13.2075C11.7319 13.2075 13.0571 11.8809 13.0571 10.2454C13.0571 8.60977 11.7319 7.28455 10.0963 7.28455C8.46074 7.28455 7.13416 8.60977 7.13416 10.2454Z" fill="#FCFCFC"/>
+                                                </svg>
+                                            </button>
+                                            <input type="text" name="location" onChange={this.onChange} defaultValue={this.state.location} />
+                                        </label>
+                                        <div className="search-inputs-dates">
+                                            <div>
+                                                <Calendar 
+                                                label="Check In" 
+                                                placeholder="Pick Dates"
+                                                value={this.state.checkIn}
+                                                onChange={(e) => {
+                                                    if (Date.parse(e) > Date.parse(this.state.checkOut) ||  this.state.checkOut==='')
+                                                        this.setState({ checkIn: e, checkOut: e }, () => { this.setDays() })
+                                                    else
+                                                        this.setState({ checkIn: e }, () => { this.setDays() })
+                                                }}
+                                                />
+                                            </div>
+                                            <div>
+                                                <Calendar 
+                                                label="Check Out"
+                                                placeholder="Pick Dates"
+                                                value={this.state.checkOut}
+                                                onChange={(e) => { this.setState({ checkOut: e }, () => { this.setDays() }) }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
 
                                 {
                                     searches.length>0?

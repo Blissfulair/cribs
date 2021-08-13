@@ -24,6 +24,7 @@ import { connect } from 'react-redux';
 import AppHeader from '../../components/appHeader';
 import { bankWithdraw, getWallet, getWithdraw, paypalWithdraw } from '../../apis/server';
 import { SmallSkeleton, TableDataSkeleton } from '../../components/skeleton';
+import Seo from '../../components/seo';
 
 
 
@@ -175,67 +176,6 @@ class DashboardPayment extends Component {
 		})
 	}
 
-	statusFilter=(e)=> {
-		var input, filter, table, tr, td, i, txtValue;
-		input = e.target.value
-		filter = input.toUpperCase();
-		table = this.table.current;
-		tr = table.getElementsByTagName("tr");
-		this.setState({status:filter})
-		for (i = 0; i < tr.length; i++) {
-		  td = tr[i].getElementsByTagName("td")[4];
-		  if (td) {
-			txtValue = td.textContent || td.innerText;
-			if (txtValue.toUpperCase().indexOf(filter) > -1) {
-			  tr[i].style.display = "";
-			} else {
-			  tr[i].style.display = "none";
-			}
-		  }       
-		}
-	  }
-
-	  monthFilter=(e)=> {
-		var input, filter, table, tr, td, i, txtValue;
-		input = e.target.value
-		filter = input;
-		table = this.table.current;
-		tr = table.getElementsByTagName("tr");
-		
-		for (i = 0; i < tr.length; i++) {
-		  td = tr[i].getElementsByTagName("td")[0];
-		  if (td) {
-			txtValue = td.textContent.split('/') || td.innerText.split('/');
-			if(txtValue.length>2)
-			if (txtValue[1] === filter) {
-			  tr[i].style.display = "";
-			} else {
-			  tr[i].style.display = "none";
-			}
-		  }       
-		}
-	  }
-
-	  yearFilter=(e)=> {
-		var input, filter, table, tr, td, i, txtValue;
-		input = e.target.value
-		filter = input;
-		table = this.table.current;
-		tr = table.getElementsByTagName("tr");
-		
-		for (i = 0; i < tr.length; i++) {
-		  td = tr[i].getElementsByTagName("td")[0];
-		  if (td) {
-			txtValue = td.textContent.split('/') || td.innerText.split('/');
-			if(txtValue.length>2)
-			if (txtValue[2] === filter) {
-			  tr[i].style.display = "";
-			} else {
-			  tr[i].style.display = "none";
-			}
-		  }       
-		}
-	  }
 	onSearch=(e)=>{
 
 		const payments= this.state.allPayments.filter(props=>{
@@ -268,6 +208,7 @@ class DashboardPayment extends Component {
 			years.push(year)
 	return (
 		<>
+		 <Seo title="Payments" />
 		<AppHeader search={true} onSearch={this.onSearch}/>
 		<Layout>
 		

@@ -14,6 +14,7 @@ import AppHeader from "../../../components/appHeader"
 import { updateHost } from "../../../apis/server";
 import { setUser } from "../../../state/actions";
 import DropDown, { DropDownItem } from "../../../components/dropDown";
+import Seo from "../../../components/seo";
 
 const EditProfileDom = ({state, handleCloseSnackBar, user,env, changeHandler ,onChangeDate,onSubmit,handleClick})=>{
     //const [years, setYears]=React.useState([])
@@ -59,9 +60,12 @@ const EditProfileDom = ({state, handleCloseSnackBar, user,env, changeHandler ,on
                                     <tr>
                                         <td>Phone: <span style={{color:'red'}}>*</span></td>
                                         <td>
-                                            <label>
+                                        <label>
                                             <img alt="flag" src={`https://www.countryflags.io/${env?env.country_code.toLowerCase():'us'}/shiny/32.png`}/>
-                                            <input type="text" onChange={(e)=>changeHandler(e)} name="phone" defaultValue={user.phone?user.phone:env?env.country_calling_code:''} />
+                                            <div className="calling_code">
+                                                {env?env.country_calling_code:''}
+                                            </div>
+                                            <input type="text" maxLength={10} onChange={(e)=>changeHandler(e)} name="phone" defaultValue={user.phone?user.phone.split('-')[1]:''} />
                                             </label>
                                         </td>
                                     </tr>
@@ -178,9 +182,9 @@ class EditProfile extends React.Component{
             facebook:this.props.user.facebook === undefined?null:this.props.user.facebook,
             dob:this.props.user.dob,
             gender:this.props.user.gender,
-            dobd:'',
-            dobm:'',
-            doby:''
+            dobd:this.props.user.dob === undefined?'':this.props.user.dob.split('-')[0],
+            dobm:this.props.user.dob === undefined?'':this.props.user.dob.split('-')[1],
+            doby:this.props.user.dob === undefined?'':this.props.user.dob.split('-')[2]
         })
     }
 
@@ -227,8 +231,9 @@ class EditProfile extends React.Component{
             return
         }
         this.setState({loading:true})
+        const phone = this.props.env ? this.props.env.country_calling_code : '' 
         const data = {
-            phone:this.state.phone,
+            phone: phone+ '-' +this.state.phone,
             address:this.state.address,
             bio:this.state.bio,
             linkedin:this.state.linkedin,
@@ -255,6 +260,7 @@ class EditProfile extends React.Component{
     render(){
         return (
             <>
+             <Seo title="Edit Profile" />
                <AppHeader/>
                 <Backend>
                     

@@ -10,6 +10,7 @@ import { newPassword } from "../apis/server";
 import Footer from "../components/footer";
 import { connect } from "react-redux";
 import { setUser } from "../state/actions";
+import Seo from "../components/seo";
 
 const styles = ()=>({
     label:{
@@ -99,6 +100,7 @@ class ChangePassword extends React.Component{
     render(){
         return (
             <>
+                <Seo title="New Password" />
                 <Head top={30} color="#0066FF" />
                 <div className="header-wrap forget-password">
                     <div className="signin">

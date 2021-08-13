@@ -14,6 +14,7 @@ import { chooseDashboard, setUser } from "../state/actions";
 import {withRouter} from "react-router-dom"
 import { connect } from "react-redux";
 import Footer from "../components/footer";
+import Seo from "../components/seo";
 
 const styles = ()=>({
     label:{
@@ -136,6 +137,7 @@ class Login extends React.Component{
     render(){
         return (
             <>
+                <Seo title="Sign in" />
                 <Head top={30} color="#0066FF" />
                 <div className="label"></div>
                 <div className="header-wrap">

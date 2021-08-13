@@ -12,6 +12,7 @@ import Footer from "../../../components/footer";
 import { uploadProfileImage } from "../../../apis/server";
 import { setUser } from "../../../state/actions";
 import Activity from "../../../components/activity";
+import Seo from "../../../components/seo";
 
 const ProfileDetails = ({user,uploadImage})=>{
     return(
@@ -68,7 +69,7 @@ const ProfileDetails = ({user,uploadImage})=>{
                     <tbody>
                         <tr>
                             <td>Phone:</td>
-                            <td>{user.phone }</td>
+                            <td>{user.phone.replace('-','') }</td>
                         </tr>
                         <tr>
                             <td>Address:</td>
@@ -142,6 +143,7 @@ class Profile extends React.Component{
     render(){
         return (
             <>
+                 <Seo title="Profile" />
                     <AppHeader sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
                     <Activity loading={this.state.isLoading} />
                     <Grid container justify="center">

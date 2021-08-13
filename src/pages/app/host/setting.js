@@ -13,6 +13,7 @@ import Backend from "./../layout"
 import { IconButton } from "@material-ui/core";
 import AppHeader from "../../../components/appHeader";
 import { changePassword } from "../../../apis/server";
+import Seo from "../../../components/seo";
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
   }
@@ -164,6 +165,7 @@ class Setting extends React.Component{
             )
         return (
             <>
+                     <Seo title="Setting" />
                     <AppHeader/>
                
                     <Backend>

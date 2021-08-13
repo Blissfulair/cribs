@@ -8,6 +8,7 @@ import {Alert} from "@material-ui/lab"
 import Head from "../components/head";
 import { forgotPassword } from "../apis/server";
 import Footer from "../components/footer";
+import Seo from "../components/seo";
 
 const styles = ()=>({
     label:{
@@ -83,6 +84,7 @@ class ForgotPassword extends React.Component{
     render(){
         return (
             <>
+            <Seo title="Forgot Password" />
                 <Head top={30} color="#0066FF" />
                 <div className="header-wrap forget-password">
                     <div className="signin">

@@ -5,6 +5,7 @@ import { Button} from "@material-ui/core";
 import { connect } from "react-redux";
 import { setUser } from "../state/actions";
 import { resendEmail } from "../apis/server";
+import Seo from "../components/seo";
 
 
 
@@ -46,6 +47,7 @@ const  Activate = ({user,setUser})=>{
     }, [setTimer, timer])
         return (
             <>
+                <Seo title="Activate" />
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div style={{height:300,display:'grid', alignContent:'center'}}>

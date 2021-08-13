@@ -4,6 +4,7 @@ import {withRouter} from "react-router-dom"
 import PaymentCard from '../../components/payment';
 import Header from "../../components/head"
 import Footer from '../../components/footer';
+import Seo from '../../components/seo';
 
 const Payment = ({location}) => {
 
@@ -101,6 +102,7 @@ const Payment = ({location}) => {
     },[location])
     return (
         <>
+        <Seo title="Payment" />
         <Header sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
         <div style={{position:'relative'}}>
 			<section>

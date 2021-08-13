@@ -12,6 +12,7 @@ import { addProperty } from "../../apis/server";
 import { setPropertyTypes } from "../../state/actions";
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import Placeholder from "../../components/placeholder";
+import Seo from "../../components/seo";
 
 
 const TransitionUp=(props)=>{
@@ -339,6 +340,7 @@ addProperty(formData)
     render(){
         return (
             <>
+                <Seo title="Add Crib" />
                 <AppHeader/>
                 <Backend>
                 

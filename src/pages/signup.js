@@ -13,6 +13,7 @@ import { setUser } from "../state/actions";
 import Head from "../components/head";
 import { connect } from "react-redux";
 import Footer from "../components/footer";
+import Seo from "../components/seo";
 //import firebase from "../components/firebase"
 
 
@@ -159,6 +160,7 @@ class SignUp extends React.Component{
     render(){
         return (
             <>
+            <Seo title="Sign up" />
                 <Head top={30} color="#0066FF" />
                 <div className="label"></div>
                 <div className="header-wrap">

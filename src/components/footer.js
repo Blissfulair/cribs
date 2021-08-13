@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Paper, withStyles,Grid,Typography} from "@material-ui/core";
 import {Facebook, Instagram, Twitter} from "@material-ui/icons";
 import {Link} from "react-router-dom";
@@ -8,6 +8,7 @@ import play from "../images/playstore.svg";
 import apple from "../images/apple.svg";
 import SocialIcon from "./socialicon";
 import './../scss/footer.scss';
+import { subscriber } from "../apis/server";
 
 const styles = (theme)=>({
     container:{
@@ -29,12 +30,42 @@ const styles = (theme)=>({
     }
 })
 const Footer = ({classes})=>{
+    const [email, setEmail] = useState('')
+    const [message, setMessage] = useState({
+        text:'',
+        success:false
+    })
     const handleChange=value=>{
-        console.log(value)
+        setEmail(value)
     }
     const onSubmit =e=>{
         e.preventDefault()
-        console.log(e)
+        if(!email){
+            setMessage({text:'Email is required', success:false})
+            return
+        }
+        else if(!email.includes('@') || email.lastIndexOf('.') < email.indexOf('@'))
+       {
+        setMessage({text:'Incorret email format', success:false})
+        return
+       }
+        const data = {
+            email:email
+        }
+        subscriber(data)
+        .then(subsciber=>{
+            if(subsciber.code ===200)
+            {
+                setMessage({text:subsciber.message, success:true})
+                setEmail('')
+            }
+            else
+            setMessage({text:subsciber.message, success:false})
+        })
+        .catch(e=>{
+            console.log(e)
+            setMessage({text:'Something went wrong', success:false})
+        })
     }
     return(
         <Paper className="footer" classes={{root:classes.container}} square>
@@ -84,7 +115,13 @@ const Footer = ({classes})=>{
                                 <Typography className="subtitle newsletter" variant="body1" component="p">
                                     To get updates on discounts. Sign up to our Newsletter.
                                 </Typography>
-                                <Subscribe onChangeValue={handleChange} onSubmit={onSubmit}/>
+                                <div className="subscribers-main-contaniner">
+                                {
+                                    message.text&&
+                                    <small className={message.success?'fsuccess':'ffailed'}>{message.text}</small>
+                                }
+                                <Subscribe onChangeValue={handleChange} value={email} onSubmit={onSubmit}/>
+                                </div>
                                 <Grid container justify="center">
                                     <Grid item xs={6} md={8}>
                                     <ul className={classes.social}>

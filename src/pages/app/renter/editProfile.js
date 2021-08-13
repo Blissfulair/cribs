@@ -5,20 +5,23 @@ import "./../properties.css"
 import "./../profile.css"
 import "../host/edit-profile.scss"
 import AppHeader from "../../../components/head";
-import { Button,Snackbar, Slide, Grid } from "@material-ui/core";
+import { Button, Snackbar, Slide, Grid } from "@material-ui/core";
 import Activity from "../../../components/activity"
-import {Alert} from "@material-ui/lab"
-import {withRouter} from "react-router-dom"
+import { Alert } from "@material-ui/lab"
+import { withRouter } from "react-router-dom"
 import { connect } from "react-redux";
 import Footer from "../../../components/footer";
 import DropDown, { DropDownItem } from "../../../components/dropDown";
+import Seo from "../../../components/seo";
+import { updateHost } from "../../../apis/server";
+import { setUser } from "../../../state/actions";
 
-const EditProfileDom = ({state, handleCloseSnackBar, user, env, changeHandler,onSubmit,handleClick})=>{
+const EditProfileDom = ({ state, handleCloseSnackBar, user, env, changeHandler, onSubmit, handleClick }) => {
     const years = []
-    const thisYear = new Date().getFullYear() 
-    for(let year = thisYear; year >= thisYear - 60; year --)
+    const thisYear = new Date().getFullYear()
+    for (let year = thisYear; year >= thisYear - 60; year--)
         years.push(year)
-    return(
+    return (
         <>
             <Activity loading={state.loading} />
 
@@ -26,36 +29,39 @@ const EditProfileDom = ({state, handleCloseSnackBar, user, env, changeHandler,on
 
                 <div className="profile-edit">
                     <div className="profile-details">
-                        <form onSubmit={event=>{onSubmit(event)}}>
+                        <form onSubmit={event => { onSubmit(event) }}>
                             {
-                            state.message&&
-                            <Snackbar
-                            open={state.open}
-                            onClose={handleCloseSnackBar}
-                            TransitionComponent={state.transition}
-                            anchorOrigin={{vertical:'top',horizontal:'right'}}
-                            autoHideDuration={5000}
-                            key={state.transition ? state.transition.name : ''}
-                            >
-                                <Alert variant="filled" severity={state.success?"success":"error"}>{state.message}</Alert>
-                            </Snackbar>
-                        }
+                                state.message &&
+                                <Snackbar
+                                    open={state.open}
+                                    onClose={handleCloseSnackBar}
+                                    TransitionComponent={state.transition}
+                                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                    autoHideDuration={5000}
+                                    key={state.transition ? state.transition.name : ''}
+                                >
+                                    <Alert variant="filled" severity={state.success ? "success" : "error"}>{state.message}</Alert>
+                                </Snackbar>
+                            }
                             <table>
                                 <tbody>
                                     <tr>
-                                    <td>Address: <span style={{color:'red'}}>*</span></td>
+                                        <td>Address: <span style={{ color: 'red' }}>*</span></td>
                                         <td>
                                             <label>
-                                                <input onChange={(e)=>changeHandler(e)} name="address" defaultValue={user.address?user.address:''} />
+                                                <input onChange={(e) => changeHandler(e)} name="address" defaultValue={user.address ? user.address : ''} />
                                             </label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Phone: <span style={{color:'red'}}>*</span></td>
+                                        <td>Phone: <span style={{ color: 'red' }}>*</span></td>
                                         <td>
                                             <label>
-                                            <img alt="flag" src={`https://www.countryflags.io/${env?env.country_code.toLowerCase():'us'}/shiny/32.png`}/>
-                                            <input type="text" onChange={(e)=>changeHandler(e)} name="phone" defaultValue={user.phone?user.phone:env?env.country_calling_code:''} />
+                                                <img alt="flag" src={`https://www.countryflags.io/${env ? env.country_code.toLowerCase() : 'us'}/shiny/32.png`} />
+                                                <div className="calling_code">
+                                                    {env ? env.country_calling_code : ''}
+                                                </div>
+                                                <input type="text" maxLength={10} onChange={(e) => changeHandler(e)} name="phone" defaultValue={user.phone ? user.phone.split('-')[1] : ''} />
                                             </label>
                                         </td>
                                     </tr>
@@ -63,7 +69,7 @@ const EditProfileDom = ({state, handleCloseSnackBar, user, env, changeHandler,on
                                         <td>Facebook:</td>
                                         <td>
                                             <label>
-                                            <input type="text" onChange={(e)=>changeHandler(e)} name="facebook" defaultValue={user.facebook?user.facebook:''} />
+                                                <input type="text" onChange={(e) => changeHandler(e)} name="facebook" defaultValue={user.facebook ? user.facebook : ''} />
                                             </label>
                                         </td>
                                     </tr>
@@ -71,34 +77,34 @@ const EditProfileDom = ({state, handleCloseSnackBar, user, env, changeHandler,on
                                         <td>LinkedIn:</td>
                                         <td>
                                             <label>
-                                            <input type="text" onChange={(e)=>changeHandler(e)} name="linkedin" defaultValue={user.linkedin?user.linkedin:''} />
+                                                <input type="text" onChange={(e) => changeHandler(e)} name="linkedin" defaultValue={user.linkedin ? user.linkedin : ''} />
                                             </label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Date of Birth: <span style={{color:'red'}}>*</span></td>
+                                        <td>Date of Birth: <span style={{ color: 'red' }}>*</span></td>
                                         <td>
                                             <label>
-                                                <DropDown value={user.dob?parseInt(user.dob.split('-')[0]):''} onChange={(e)=>changeHandler(e)} name="dobd">
+                                                <DropDown value={user.dob ? parseInt(user.dob.split('-')[0]) : ''} onChange={(e) => changeHandler(e)} name="dobd">
                                                     <DropDownItem value="">DD</DropDownItem>
                                                     {
-                                                        [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31].map(i=>(
-                                                            <DropDownItem  key={i} value={i}>{i<10?'0'+i:i}</DropDownItem>
+                                                        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31].map(i => (
+                                                            <DropDownItem key={i} value={i}>{i < 10 ? '0' + i : i}</DropDownItem>
                                                         ))
                                                     }
                                                 </DropDown>
-                                                <DropDown value={user.dob?parseInt(user.dob.split('-')[1]):''} onChange={(e)=>changeHandler(e)} name="dobm">
+                                                <DropDown value={user.dob ? parseInt(user.dob.split('-')[1]) : ''} onChange={(e) => changeHandler(e)} name="dobm">
                                                     <DropDownItem>MM</DropDownItem>
                                                     {
-                                                        [1,2,3,4,5,6,7,8,9,10,11,12].map(i=>(
-                                                            <DropDownItem key={i} value={i}>{i<10?'0'+i:i}</DropDownItem>
+                                                        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(i => (
+                                                            <DropDownItem key={i} value={i}>{i < 10 ? '0' + i : i}</DropDownItem>
                                                         ))
                                                     }
                                                 </DropDown>
-                                                <DropDown value={user.dob?parseInt(user.dob.split('-')[2]):''} onChange={(e)=>changeHandler(e)} name="doby">
+                                                <DropDown value={user.dob ? parseInt(user.dob.split('-')[2]) : ''} onChange={(e) => changeHandler(e)} name="doby">
                                                     <DropDownItem>YYYY</DropDownItem>
                                                     {
-                                                        years.map((year,i)=>(
+                                                        years.map((year, i) => (
                                                             <DropDownItem key={i} value={year}>{year}</DropDownItem>
                                                         ))
                                                     }
@@ -107,23 +113,23 @@ const EditProfileDom = ({state, handleCloseSnackBar, user, env, changeHandler,on
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Gender: <span style={{color:'red'}}>*</span></td>
+                                        <td>Gender: <span style={{ color: 'red' }}>*</span></td>
                                         <td>
                                             <label>
-                                            <DropDown onChange={(e)=>changeHandler(e)} name="gender" value={user.gender?user.gender:''}>
+                                                <DropDown onChange={(e) => changeHandler(e)} name="gender" value={user.gender ? user.gender : ''}>
                                                     <DropDownItem value="">Choose</DropDownItem>
                                                     <DropDownItem value="Male">Male</DropDownItem>
                                                     <DropDownItem value="Female">Female</DropDownItem>
-                                            </DropDown>
+                                                </DropDown>
                                             </label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Bio: <span style={{color:'red'}}>*</span></td>
+                                        <td>Bio: <span style={{ color: 'red' }}>*</span></td>
                                         <td>
-                                           <label>
-                                           <textarea onChange={(e)=>changeHandler(e)} defaultValue={user.bio?user.bio:''} name="bio"  />
-                                           </label>
+                                            <label>
+                                                <textarea onChange={(e) => changeHandler(e)} defaultValue={user.bio ? user.bio : ''} name="bio" />
+                                            </label>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -138,123 +144,127 @@ const EditProfileDom = ({state, handleCloseSnackBar, user, env, changeHandler,on
         </>
     )
 }
-const TransitionUp=(props)=>{
+const TransitionUp = (props) => {
     return <Slide {...props} direction="down" />;
-  }
-class EditProfile extends React.Component{
-    constructor(props){
+}
+class EditProfile extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
-            phone:'',
-            address:'',
-            linkedin:null,
-            gender:'',
-            facebook:null,
-            dob:'',
-            bio:'',
-            loading:false,
-            message:'',
-            success:false,
-            transition:undefined,
-            open:false,
+            phone: '',
+            address: '',
+            linkedin: null,
+            gender: '',
+            facebook: null,
+            dob: '',
+            bio: '',
+            loading: false,
+            message: '',
+            success: false,
+            transition: undefined,
+            open: false,
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         const dom = document.querySelector('#profiles')
-        if(dom !== null)
-        dom.setAttribute('class', 'is-active')
+        if (dom !== null)
+            dom.setAttribute('class', 'is-active')
         this.setState({
-            phone:this.props.user.phone,
-            address:this.props.user.address,
-            bio:this.props.user.bio,
-            linkedin:this.props.user.linkedin === undefined?null:this.props.user.linkedin,
-            facebook:this.props.user.facebook === undefined?null:this.props.user.facebook,
-            dob:this.props.user.dob,
-            gender:this.props.user.gender
+            phone: this.props.user.phone,
+            address: this.props.user.address,
+            bio: this.props.user.bio,
+            linkedin: this.props.user.linkedin === undefined ? null : this.props.user.linkedin,
+            facebook: this.props.user.facebook === undefined ? null : this.props.user.facebook,
+            dob: this.props.user.dob,
+            gender: this.props.user.gender,
+            dobd: this.props.user.dob === undefined ? '' : this.props.user.dob.split('-')[0],
+            dobm: this.props.user.dob === undefined ? '' : this.props.user.dob.split('-')[1],
+            doby: this.props.user.dob === undefined ? '' : this.props.user.dob.split('-')[2]
         })
     }
 
     handleClick = (Transition) => () => {
-        this.setState({transition:Transition, open:true})
-        };
-    handleCloseSnackBar = (event,reason) => {
+        this.setState({ transition: Transition, open: true })
+    };
+    handleCloseSnackBar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
-          }
-        this.setState({open:false})
         }
-
-    changeHandler = e =>{
-        this.setState({[e.target.name]:e.target.value})
+        this.setState({ open: false })
     }
 
-    onSubmit = n =>{
+    changeHandler = e => {
+        this.setState({ [e.target.name]: e.target.value })
+    }
+
+    onSubmit = n => {
         n.preventDefault();
-        this.setState({message:'', success:false})
-        if(this.state.address === '' || this.state.address === undefined){
-            this.setState({message:'Address is required'})
+        this.setState({ message: '', success: false })
+        if (this.state.address === '' || this.state.address === undefined) {
+            this.setState({ message: 'Address is required' })
             return
         }
-       else if(this.state.phone === '' || this.state.phone === undefined){
-            this.setState({message:'Phone Number is required'})
+        else if (this.state.phone === '' || this.state.phone === undefined) {
+            this.setState({ message: 'Phone Number is required' })
             return
         }
-       else if( this.state.dob === '' || this.state.dob === undefined){
-            this.setState({ message:'Date of birth is required'})
+        else if (this.state.dob === '' || this.state.dob === undefined) {
+            this.setState({ message: 'Date of birth is required' })
             return
         }
-       else if( this.state.gender === '' || this.state.gender === undefined){
-            this.setState({ message:'Gender is required' })
+        else if (this.state.gender === '' || this.state.gender === undefined) {
+            this.setState({ message: 'Gender is required' })
             return
         }
-        else if( this.state.bio === '' || this.state.bio === undefined){
-            this.setState({ message:'Bio is required'})
+        else if (this.state.bio === '' || this.state.bio === undefined) {
+            this.setState({ message: 'Bio is required' })
             return
         }
-        this.setState({loading:true})
-        // const data = {
-        //     phone:this.state.phone,
-        //     address:this.state.address,
-        //     bio:this.state.bio,
-        //     linkedin:this.state.linkedin,
-        //     facebook:this.state.facebook,
-        //     dob:this.state.dob,
-        //     gender:this.state.gender
-        // }
-        // this.context.updateProfile(data)
-        // .then(()=>{
-        //     this.setState({loading:false,success:true, message:'Profile has been updated'})
-        //     this.props.history.push('/app/myprofile')
-        // })
-        // .catch((e)=>{
-        //     this.setState({loading:false,success:false, message:'Oops! failed to complete the operation. Please try again.'}) 
-        // })
-        // axios.post(`${api}/profile`,data,{headers:headers})
-        // .then(res=>{
-        //     document.querySelector('.hide').style.display ="block"
-        //     //this.setState({user:res.data.user})
-        // })
+        this.setState({ loading: true })
+        const phone = this.props.env ? this.props.env.country_calling_code : '' 
+        const data = {
+            phone: phone+ '-' +this.state.phone,
+            address: this.state.address,
+            bio: this.state.bio,
+            linkedin: this.state.linkedin,
+            facebook: this.state.facebook,
+            dob: this.state.dobd + '-' + this.state.dobm + '-' + this.state.doby,
+            gender: this.state.gender
+        }
+        updateHost(data, this.props.user.id)
+            .then((user) => {
+                this.setState({ loading: false, success: true, message: 'Profile has been updated' })
+                this.props.setUser(user)
+                this.props.history.push('/app/myprofile')
+            })
+            .catch((e) => {
+                this.setState({ loading: false, success: false, message: 'Oops! failed to complete the operation. Please try again.' })
+            })
     }
 
-    render(){
+    render() {
         return (
             <>
-                           <AppHeader sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
-                    <Grid container justify="center">
-                        <Grid item md={11}>
-                            <Grid container>
-                                <EditProfileDom state={this.state} onSubmit={this.onSubmit} user={this.props.user} env={this.props.env} handleClick={this.handleClick} changeHandler={this.changeHandler} handleCloseSnackBar={this.handleCloseSnackBar} />
-                            </Grid>
+                <Seo title="Edit Profile" />
+                <AppHeader sticky={true} top={0} color="#0066FF" bgColor="#CCE0FF" quickSearch={true} openQuickSearch={true} />
+                <Grid container justify="center">
+                    <Grid item md={11}>
+                        <Grid container>
+                            <EditProfileDom state={this.state} onSubmit={this.onSubmit} user={this.props.user} env={this.props.env} handleClick={this.handleClick} changeHandler={this.changeHandler} handleCloseSnackBar={this.handleCloseSnackBar} />
                         </Grid>
                     </Grid>
-                    <Footer/>
+                </Grid>
+                <Footer />
             </>
         )
     }
 }
-const mapStateToProps=state=>({
-    user:state.user,
-    env:state.env
+const mapStateToProps = state => ({
+    user: state.user,
+    env: state.env
 })
-export default connect(mapStateToProps)(withRouter(EditProfile));
+const mapDispatchToProps = dispatch => ({
+    setUser: (payload) => dispatch(setUser(payload))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EditProfile));

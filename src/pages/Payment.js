@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './../scss/payment.scss';
 import {withRouter} from "react-router-dom"
 import PaymentCard from '../components/payment';
+import Seo from '../components/seo';
 const Payment = ({location}) => {
     const [data, setData] =useState({
         amount:0,
@@ -93,6 +94,8 @@ const Payment = ({location}) => {
         }
     },[location])
     return (
+        <>
+            <Seo title="Payment" />
 			<section>
 				<div className="house-payment-details">
 					<div className="location">
@@ -148,6 +151,7 @@ const Payment = ({location}) => {
 					<PaymentCard data={data}/>
 				</aside>
 			</section>
+            </>
 		);
 }
 

@@ -7,6 +7,7 @@ import {
 
 import HostDashboard from "./host/dashboard"
 import AppHeader from "../../components/appHeader";
+import Seo from "../../components/seo";
 // import RenterDashboard from "./renter/dashboard";
 const styles = (theme)=>({
 
@@ -94,6 +95,7 @@ class Dashboard extends React.Component{
         const {classes} = this.props
         return (
             <>
+                 <Seo title="Dashboard" />
                 <AppHeader/>
                 <Layout>
                     <Grid container>

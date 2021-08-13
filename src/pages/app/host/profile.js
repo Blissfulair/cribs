@@ -14,6 +14,7 @@ import AppHeader from "../../../components/appHeader"
 import { setUser } from "../../../state/actions";
 import { uploadProfileImage } from "../../../apis/server";
 import Activity from "../../../components/activity";
+import Seo from "../../../components/seo";
 
 
 const ProfileDetails = ({user,uploadImage})=>{
@@ -82,7 +83,7 @@ const ProfileDetails = ({user,uploadImage})=>{
                     <tbody>
                         <tr>
                             <td>Phone:</td>
-                            <td>{user.phone }</td>
+                            <td>{user.phone.replace('-','') }</td>
                         </tr>
                         <tr>
                             <td>Address:</td>
@@ -164,6 +165,7 @@ class Profile extends React.Component{
     render(){
         return (
             <>
+                     <Seo title="Profile" />
                     <AppHeader/>
                     <Backend>
                         <Activity loading={this.state.isLoading} />

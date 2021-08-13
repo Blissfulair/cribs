@@ -18,7 +18,7 @@ import { getDashboard } from './helpers/helpers';
 
 const renderApp = (preloadedState, types, dashboard) => {
 
-  const store = configureStore({user:preloadedState, propertyTypes:types.types, topTypes:types.topTypes, topCities:types.topCities, dashboard:dashboard});
+  const store = configureStore({user:preloadedState.user, env:preloadedState.data, propertyTypes:types.types, topTypes:types.topTypes, topCities:types.topCities, dashboard:dashboard});
   ReactDOM.render(
     <Provider store={store}>
       <React.StrictMode>

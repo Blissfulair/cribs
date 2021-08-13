@@ -49,6 +49,7 @@ import Header from "../components/head";
 import Guest from "../components/guest";
 import Booking from "../components/booking";
 import Footer from "../components/footer";
+import Seo from "../components/seo";
 const styles = theme => ({
     container: {
         paddingTop: 140,
@@ -407,6 +408,7 @@ class Single extends Component {
             return <Splash />
         return (
             <>
+                <Seo title={property.name} description={`${property.name} ${property.description}`} />
                 <Header sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
                 <Grid container justify="center" className="page">
                     <Grid item xs={12} md={10} >

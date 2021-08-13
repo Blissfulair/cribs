@@ -11,6 +11,7 @@ import AppHeader from "../../components/appHeader"
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import "./add-crib.scss"
 import Placeholder from "../../components/placeholder/index"
+import Seo from "../../components/seo";
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
@@ -338,6 +339,7 @@ editProperty(formData,id)
     render(){
         return (
             <>
+                <Seo title={`Edit Crib`} />
                <AppHeader/>
                 <Backend>
                 

@@ -30,6 +30,7 @@ import { connect } from "react-redux";
 import { deleteHistory, getHistoriesByUserId, sendReview } from "../../../apis/server";
 import { setHistories } from "../../../state/actions";
 import Footer from "../../../components/footer";
+import Seo from "../../../components/seo";
 const styles = (theme)=>({
     inputRoot: {
         color: 'inherit',
@@ -272,6 +273,7 @@ class History extends React.Component{
         )
         return (
             <>
+             <Seo title="Histories" />
             <AppHeader sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
             <Grid container justify ="center">
                 { this.state.history&&

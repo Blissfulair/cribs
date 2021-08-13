@@ -56,7 +56,7 @@ const PayStack = withRouter(({changeHandler,state,data,history,user,location})=>
                     firstname:data.firstname,
                     lastname:data.lastname,
                     email:data.hostEmail,
-                    phone:data.phone,
+                    phone:data.phone.replace('-', ''),
                     image:data.photoURL
                 }
             }

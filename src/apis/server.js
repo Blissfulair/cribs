@@ -1,14 +1,18 @@
 
+
+
 export const checkLoggedIn = async () => {
-    const [response] = await Promise.all([
-                                        fetch('/api/user/auth')
+    const [response, address] = await Promise.all([
+                                        fetch('/api/user/auth'),
+                                        fetch('https://ipapi.co/json/')
                                         ])
 
     const { user } = await response.json();
+    const  {country_code, country_calling_code}  = await address.json();
     if(user === undefined)
     return null
     if (user)
-    return user;
+    return {user, data:{country_code, country_calling_code}};
     return null
   };
 
@@ -327,6 +331,18 @@ export const forgotPassword = async (data) => {
 };
 export const newPassword = async (data) => {
   const response = await fetch('/api/user/new-password',{
+    method:'POST',
+    body:JSON.stringify(data),
+    headers:{
+      'Content-Type':'application/json'
+    }
+  });
+  const res= await response.json();
+  return res;
+};
+
+export const subscriber = async (data) => {
+  const response = await fetch('/subscribe',{
     method:'POST',
     body:JSON.stringify(data),
     headers:{

@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { setFavourite } from "../../../state/actions";
 import { getFavourite } from "../../../apis/server";
 import Footer from "../../../components/footer";
+import Seo from "../../../components/seo";
 const styles = theme =>({
     container:{
         paddingTop:100
@@ -79,6 +80,7 @@ class Favourites extends Component{
                 this.state.isLoading&&
                     <Splash />
             }
+             <Seo title="Favourites" />
                         <AppHeader sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>

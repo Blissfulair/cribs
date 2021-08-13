@@ -157,6 +157,14 @@ export const maxStringLength = (text,leng = 80)=>{
   }
 
   export const humanDiff = (date)=>{
-    const prevDate = moment(date).toNow({withoutPrefix:true, seconds:true})
-    return prevDate+' ago'
+    const prevDate = moment(date).fromNow()
+    return prevDate
+  }
+
+  export function seo(data = {title:'', metaDescription:''}) {
+    data.title = `${data.title } | ${process.env.REACT_APP_NAME}` || process.env.REACT_APP_NAME;
+    data.metaDescription = data.metaDescription || 'CribNg is a stay and property booking system. Number one property site in Nigeria';
+  
+    document.title = data.title;
+    document.querySelector('meta[name="description"]').setAttribute('content', data.metaDescription);
   }

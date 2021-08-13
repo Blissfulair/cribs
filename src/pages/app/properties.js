@@ -34,6 +34,7 @@ import  Table, {
 } from "../../components/table/index"
 import ActionDialog from "../../components/action-dialog";
 import { TableDataSkeleton } from "../../components/skeleton";
+import Seo from "../../components/seo";
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
@@ -168,6 +169,7 @@ class Properties extends React.Component{
 
         return (
             <>
+                <Seo title="Cribs" />
                 <AppHeader search={true} onSearch={this.onSearch} />
                 <Layout>
                 

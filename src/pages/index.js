@@ -26,6 +26,7 @@ import Head from "../components/head";
 import { getTrendingAndBestCribs, searchProperties } from "../apis/server";
 import Calendar from "../components/calender";
 import Guest from "../components/guest";
+import Seo from "../components/seo";
 
 import Footer from "../components/footer";
 
@@ -171,7 +172,7 @@ class Index extends Component {
         
         return (
             <>
-
+                <Seo title="Home" />
 
                 <Grid className="home" container justify="center">
                     {

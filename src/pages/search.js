@@ -18,6 +18,7 @@ import { search, storeSearchData } from "../state/actions";
 import Footer from "../components/footer";
 import Pagination from "../components/pagination";
 import Calendar from "../components/calender";
+import Seo from "../components/seo";
 const styles = theme =>({
     container:{
         paddingTop:125
@@ -229,6 +230,7 @@ class Search extends Component{
      return <Splash />
     return(
         <>
+            <Seo title="Search"/>
             <Header sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF" quickSearch={true} openQuickSearch={true}/>
             <Grid container justify="center">
                 <Grid item xs={11} md={10}>

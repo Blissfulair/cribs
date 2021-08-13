@@ -7,7 +7,6 @@ import Chart from "../../../components/chart/index";
 import Detail from "../../../components/detail/index";
 import { currency, humanDiff, maxStringLength } from "../../../helpers/helpers";
 import { connect } from "react-redux";
-import AppHeader from "../../../components/appHeader"
 import "./dashboard.scss"
 import Table , {TableBody, TableRow, TableCell} from "../../../components/table";
 import { setDashboardData } from "../../../state/actions";
@@ -53,7 +52,6 @@ class HostDashboard extends Component{
         const data = this.state.data
         return (
             <>
-                <AppHeader/>
                 <Grid container className="dashboard-center" spacing={2} justify="space-between">
                     <div className="impression">
                         <div className="user">

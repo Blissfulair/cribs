@@ -164,9 +164,10 @@ class Setting extends React.Component{
             )
         return (
             <>
+                    <AppHeader/>
                
                     <Backend>
-                        <AppHeader/>
+                        
                         {settings}
                     </Backend>
             </>

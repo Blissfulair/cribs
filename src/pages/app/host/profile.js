@@ -164,10 +164,10 @@ class Profile extends React.Component{
     render(){
         return (
             <>
-                   
+                    <AppHeader/>
                     <Backend>
                         <Activity loading={this.state.isLoading} />
-                        <AppHeader/>
+                       
                         <ProfileDetails user={this.props.user} uploadImage={this.uploadImage}/>
                     </Backend>
             </>

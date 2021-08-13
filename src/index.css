@@ -591,9 +591,10 @@ font-size: 19px;
     align-items: center;
     width: 100%;
   }
-  *{
-    cursor: default
+  *,*:hover,*:active{
+    cursor: default !important
   }
+  
 }
 
 @tailwind base;

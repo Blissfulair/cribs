@@ -168,9 +168,9 @@ class Properties extends React.Component{
 
         return (
             <>
-                
-                <Layout>
                 <AppHeader search={true} onSearch={this.onSearch} />
+                <Layout>
+                
                     <Dialog
                         open={this.state.dialogOpen}
                         TransitionComponent={TransitionUp}

@@ -33,6 +33,9 @@ import RentRoute from "./privateRoute";
 import HostRoute from "./auth";
 // import More from "../pages/app/more";
 import VerifyRoute from "./verification";
+import ForgetPassword from "../pages/forget";
+import NotFound from "../pages/404";
+import ChangePassword from "../pages/change-password";
 // import AdminLogin from "../pages/admin/login";
 // import AdminRoute from "./adminRoute";
 // import AdminDashboard from "../pages/admin/dashboard";
@@ -84,10 +87,15 @@ class Root extends Component{
             <PublicRoute exact path="/search" component={Search}/>
             <PublicRoute exact path="/crib/:id" component={Single}/>
             <PublicRoute exact path="/login" component={Login} />
-            {/* <PublicRoute exact path='/more-cribs' component={More} /> */}
+            <PublicRoute exact path="/forgot-password" component={ForgetPassword} />
+            <PublicRoute exact path="/password/:token"  component={ChangePassword} />
+            
             
 
             <PublicRoute exact path="/" component={Index} />
+            <PublicRoute exact path='/*' component={NotFound} />
+            <RentRoute exact path='/app/*' component={NotFound} />
+            <HostRoute exact path='/app/*' component={NotFound} />
             
         </Switch>
     )

@@ -1,5 +1,4 @@
 import React from "react";
-import image from  "../../images/placeholder.jpg"
 import {Snackbar, Slide } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Backend from "./layout"
@@ -11,6 +10,7 @@ import { editProperty, getCribById } from "../../apis/server";
 import AppHeader from "../../components/appHeader"
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import "./add-crib.scss"
+import Placeholder from "../../components/placeholder/index"
 
 const TransitionUp=(props)=>{
     return <Slide {...props} direction="down" />;
@@ -338,9 +338,9 @@ editProperty(formData,id)
     render(){
         return (
             <>
-               
+               <AppHeader/>
                 <Backend>
-                <AppHeader/>
+                
                     <Activity loading={this.state.isLoading}/>
                     <div className="property-add-page">
                         <div className="dashboard-mt">
@@ -371,7 +371,13 @@ editProperty(formData,id)
                                 <div className="property-group">
                                     <div className="featured-image">
                                         <label>
-                                            <img id="img" src={this.state.featured_image === null? image: process.env.REACT_APP_BACKEND_URL+"/"+ this.state.featured_image} alt="" />  
+                                        {
+                                            this.state.featured_image === null?
+                                            <Placeholder/>
+                                            :
+                                            <img id="img" src={process.env.REACT_APP_BACKEND_URL+"/"+ this.state.featured_image} alt="" />  
+                                        }
+                                            {/* <img id="img" src={this.state.featured_image === null? image: process.env.REACT_APP_BACKEND_URL+"/"+ this.state.featured_image} alt="" />   */}
                                                 <input type="file" onChange={this.uploadImage} name="featured" id="image" />
                                         </label>
                                         <label htmlFor="image">Upload featured Image</label>

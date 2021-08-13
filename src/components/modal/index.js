@@ -14,7 +14,6 @@ class Modal extends Component{
     }
 
     componentDidMount(){
-        console.log(this.props.onOpen)
         document.addEventListener('click', this.closeModal)
     }
     componentWillUnmount(){

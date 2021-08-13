@@ -1,7 +1,5 @@
 import React from "react";
-// import "./add-property.css"
 import "./add-crib.scss"
-import image from  "../../images/placeholder.jpg"
 import {Snackbar, Slide } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Backend from "./layout"
@@ -13,6 +11,7 @@ import { connect } from "react-redux";
 import { addProperty } from "../../apis/server";
 import { setPropertyTypes } from "../../state/actions";
 import CancelIcon from '@material-ui/icons/CancelOutlined';
+import Placeholder from "../../components/placeholder";
 
 
 const TransitionUp=(props)=>{
@@ -340,9 +339,9 @@ addProperty(formData)
     render(){
         return (
             <>
-                
-                <Backend>
                 <AppHeader/>
+                <Backend>
+                
                     <Activity loading={this.state.isLoading}/>
                     <div className="property-add-page">
                         <div className="dashboard-mt">
@@ -381,7 +380,14 @@ addProperty(formData)
                             <div className="property-group">
                                 <div className="featured-image">
                                     <label>
-                                        <img id="img" src={this.state.featured_image === null? image: this.state.featured_image} alt="" />  
+                                        {
+                                            this.state.featured_image === null?
+                                            <Placeholder/>
+                                            :
+                                            <img id="img" src={this.state.featured_image} alt="" />  
+                                        }
+                                            
+
                                             <input type="file" onChange={this.uploadImage} name="featured" id="image" />
                                     </label>
                                     <label htmlFor="image">Upload featured image</label>

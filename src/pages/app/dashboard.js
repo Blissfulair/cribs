@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core'
 
 import HostDashboard from "./host/dashboard"
+import AppHeader from "../../components/appHeader";
 // import RenterDashboard from "./renter/dashboard";
 const styles = (theme)=>({
 
@@ -93,6 +94,7 @@ class Dashboard extends React.Component{
         const {classes} = this.props
         return (
             <>
+                <AppHeader/>
                 <Layout>
                     <Grid container>
                         <Grid item xs={12} md={11} >

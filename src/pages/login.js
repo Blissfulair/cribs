@@ -99,7 +99,6 @@ class Login extends React.Component{
                     }
                     else{
                         this.props.setUser(user)
-                        console.log(user.role)
                     this.props.chooseDashboard(user.role)
                     // this.props.history.push('/app/home')
                     }
@@ -107,13 +106,13 @@ class Login extends React.Component{
 
                 this.setState({loading:false})
             })
-            .catch((err)=>[
+            .catch((err)=>{
                 this.setState({
                     loading:false, 
                     err:err.code==='auth/network-request-failed'?'Please check your network connection and try again.':
                     err.code
                 })
-            ])
+            })
             
         }
 
@@ -132,22 +131,7 @@ class Login extends React.Component{
         //     this.setState({loading:false})
         // })
     }
-    moveLabel = (e)=>{
-        e.target.previousElementSibling.style.top = '20%'
-        e.target.previousElementSibling.style.fontSize = '12px'
-    }
 
-    moveLabelBk = (e)=>{
-        if(e.target.value === '')
-        {
-            e.target.previousElementSibling.style.top = '50%'
-            e.target.previousElementSibling.style.fontSize = '16px'
-        }
-    }
-
-    toggleLogin = ()=>{
-        this.setState({type: !this.state.type})
-    }
 
     render(){
         return (
@@ -210,7 +194,7 @@ class Login extends React.Component{
                                             control={<Checkbox id="remember" onChange={()=>this.setState({remember: !this.state.remember})} classes={{root:this.props.classes.check}} name="remember"/>}
                                             label="keep me logged me"
                                         />
-                                    <Link to="/forgot">Forgot Password?</Link>
+                                    <Link to="/forgot-password">Forgot Password?</Link>
                                 </div>
                                 <button onClick={this.handleClick(TransitionUp)} className="btn-signup">
                                     {

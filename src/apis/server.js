@@ -308,6 +308,31 @@ export const checkLoggedIn = async () => {
     });
    
     const res = await response.json();
-    console.log(res)
     return res
   };
+
+
+//forgot password
+
+export const forgotPassword = async (data) => {
+  const response = await fetch('/api/user/forgot-password',{
+    method:'POST',
+    body:JSON.stringify(data),
+    headers:{
+      'Content-Type':'application/json'
+    }
+  });
+  const res= await response.json();
+  return res;
+};
+export const newPassword = async (data) => {
+  const response = await fetch('/api/user/new-password',{
+    method:'POST',
+    body:JSON.stringify(data),
+    headers:{
+      'Content-Type':'application/json'
+    }
+  });
+  const res= await response.json();
+  return res;
+};

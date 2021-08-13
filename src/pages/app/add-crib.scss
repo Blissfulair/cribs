@@ -30,8 +30,13 @@
         margin-bottom: 16px;
     }
     .featured-image{
+        display: flex;
+        align-items: flex-end;
         label{
             cursor: pointer;
+            &:last-child{
+                    margin-left: 20px;
+            }
             input{
                 display: none;
             }

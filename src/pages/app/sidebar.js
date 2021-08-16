@@ -19,20 +19,28 @@ const Sidebar = ({dashboard,user,chooseDashboard,history, setUser})=>{
     const [loading, setLoading]=React.useState(false)
     const handClick = React.useCallback((e)=>{
         const dashboardDom = document.getElementsByClassName('dashboard');
+        const appbarheader = document.getElementsByClassName('appbarheader');
         const mobileBtn = document.getElementById('mobile-menu');
         if(dashboardDom.length>0 && mobileBtn){
             if(mobileBtn.contains(e.target)){
 
                 if(!open)
-                dashboardDom[0].classList.replace('close', 'open')
+                {
+                    dashboardDom[0].classList.replace('close', 'open')
+                    appbarheader[0].classList.replace('close', 'open')
+                }
                 else
-                dashboardDom[0].classList.replace('open', 'close')
+                {
+                    dashboardDom[0].classList.replace('open', 'close')
+                    appbarheader[0].classList.replace('open', 'close')
+                }
                 setOpen(!open)
             }
             
             else if(dashboardDom[0].contains(e.target))
             {
                 dashboardDom[0].classList.replace('open', 'close')
+                appbarheader[0].classList.replace('open', 'close')
                 setOpen(false)
             }
         }

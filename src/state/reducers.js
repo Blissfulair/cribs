@@ -10,11 +10,16 @@ export default (state, action) => {
           ...state,
           auth: action.payload
         };
-        case "DASHBOARD":
-          return {
-            ...state,
-            dashboard: action.payload
-          };
+      case "ENV":
+        return {
+          ...state,
+          env: action.payload
+        };
+      case "DASHBOARD":
+        return {
+          ...state,
+          dashboard: action.payload
+        };
       case "DASHBOARD_DATA":
         return {
           ...state,

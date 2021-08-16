@@ -2,20 +2,21 @@
 
 
 export const checkLoggedIn = async () => {
-    const [response, address] = await Promise.all([
-                                        fetch('/api/user/auth'),
-                                        fetch('https://ipapi.co/json/')
-                                        ])
+    const response = await fetch('/api/user/auth')
 
     const { user } = await response.json();
-    const  {country_code, country_calling_code}  = await address.json();
     if(user === undefined)
     return null
     if (user)
-    return {user, data:{country_code, country_calling_code}};
+    return user;
     return null
   };
 
+  export const getCountryCode = async () => {
+    const response= await fetch('https://ipapi.co/json/')
+    const  {country_code, country_calling_code}  = await response.json();
+    return {country_code, country_calling_code};
+  };
   export const registerUser = async (data) => {
     const response = await fetch('/api/user/register',{
       method:'POST',

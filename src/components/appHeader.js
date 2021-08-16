@@ -66,7 +66,7 @@ const AppHeader = ({user, search, onSearch})=>{
     //     prevOpen.current = logout;
     //   }, [logout]);
     return(
-        <div className="appbarheader">
+        <div className="appbarheader close">
             <Grid container justify="center" alignItems="center">
                 <Grid item xs={11} lg={10} >
                     <Grid container alignItems="center">

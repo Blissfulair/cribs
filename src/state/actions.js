@@ -12,6 +12,12 @@ export const setUser = (payload) => {
     payload
   }
 }
+export const setEnv = (payload) => {
+  return {
+    type: "ENV",
+    payload
+  }
+}
 export const setHistories = (payload) => {
   return {
     type: "HISTORY",

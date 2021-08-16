@@ -9,7 +9,11 @@ function configureStore(preload) {
   const state = { 
     auth: false,
     user:null,
-    env: null,
+    env: {
+      country_code:'ng',
+      country_calling_code:'+234'
+
+    },
     properties:[],
     histories:[],
     favourites:[],

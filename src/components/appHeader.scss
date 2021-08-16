@@ -10,6 +10,16 @@
     display: flex;
     align-items: center;
     box-shadow: 0px 1px 1px rgba(0,0,0,0.03);
+    &.open{
+        transform: translateX(200px);
+        transition: transform 300ms ease-in-out;
+       
+        overflow-x: hidden;
+    }
+    &.close{
+        transform: translateX(0);
+        transition: transform 300ms ease-in-out;
+    }
     .mobile-menu-app{
         display: none;
     }

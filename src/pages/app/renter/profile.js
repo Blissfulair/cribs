@@ -4,6 +4,7 @@ import "./../inbox.css"
 import "./../properties.css"
 // import "./../add-property.css"
 import "./../profile.css"
+import "./profile.scss"
 import { Grid, Typography, IconButton, Avatar } from "@material-ui/core";
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import AppHeader from "../../../components/head"
@@ -16,7 +17,7 @@ import Seo from "../../../components/seo";
 
 const ProfileDetails = ({user,uploadImage})=>{
     return(
-        <div style={{paddingTop:80}} className="inbox">
+        <div style={{paddingTop:80}} className="inbox renting-app-prof">
         <div className="inbox-head dashboard-mt">
             <div className="inbox-title">
                 <h4>Profile</h4>
@@ -147,7 +148,7 @@ class Profile extends React.Component{
                     <AppHeader sticky={true} top={0} color="#0066FF"  bgColor="#CCE0FF"  quickSearch={true} openQuickSearch={true}/>
                     <Activity loading={this.state.isLoading} />
                     <Grid container justify="center">
-                        <Grid item md={11}>
+                        <Grid item md={11} xs={12}>
                             <Grid container>
                                 <ProfileDetails user={this.props.user} uploadImage={this.uploadImage}/>
                             </Grid>

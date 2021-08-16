@@ -11,8 +11,8 @@ import {Alert} from "@material-ui/lab"
 import {withRouter} from "react-router-dom"
 import { connect } from "react-redux";
 import AppHeader from "../../../components/appHeader"
-import { updateHost } from "../../../apis/server";
-import { setUser } from "../../../state/actions";
+import { getCountryCode, updateHost } from "../../../apis/server";
+import { setEnv, setUser } from "../../../state/actions";
 import DropDown, { DropDownItem } from "../../../components/dropDown";
 import Seo from "../../../components/seo";
 
@@ -61,11 +61,11 @@ const EditProfileDom = ({state, handleCloseSnackBar, user,env, changeHandler ,on
                                         <td>Phone: <span style={{color:'red'}}>*</span></td>
                                         <td>
                                         <label>
-                                            <img alt="flag" src={`https://www.countryflags.io/${env?env.country_code.toLowerCase():'us'}/shiny/32.png`}/>
+                                            <img alt="flag" src={`https://www.countryflags.io/${env.country_code.toLowerCase()}/shiny/32.png`}/>
                                             <div className="calling_code">
-                                                {env?env.country_calling_code:''}
+                                                {env.country_calling_code}
                                             </div>
-                                            <input type="text" maxLength={10} onChange={(e)=>changeHandler(e)} name="phone" defaultValue={user.phone?user.phone.split('-')[1]:''} />
+                                            <input onInput={(e)=>e.target.value = e.target.value.replace(/[^0-9.-]/g, '')} type="text" maxLength={10} onChange={(e)=>changeHandler(e)} name="phone" defaultValue={user.phone?user.phone.split('-')[1]:''} />
                                             </label>
                                         </td>
                                     </tr>
@@ -186,8 +186,14 @@ class EditProfile extends React.Component{
             dobm:this.props.user.dob === undefined?'':this.props.user.dob.split('-')[1],
             doby:this.props.user.dob === undefined?'':this.props.user.dob.split('-')[2]
         })
+        this.onLoadEnv()
     }
-
+    onLoadEnv=()=>{
+        getCountryCode()
+        .then(data=>{
+            this.props.setEnv(data)
+        })
+    }
     handleClick = (Transition) => () => {
         this.setState({transition:Transition, open:true})
         };
@@ -199,7 +205,6 @@ class EditProfile extends React.Component{
         }
 
     changeHandler = e =>{
-        console.log(e.target.value)
         this.setState({[e.target.name]:e.target.value})
     }
     onChangeDate = e =>{
@@ -275,6 +280,7 @@ const mapStateToProps=state=>({
     env:state.env
 })
 const mapDispatchToProps=dispatch=>({
-    setUser:(payload)=>dispatch(setUser(payload))
+    setUser:(payload)=>dispatch(setUser(payload)),
+    setEnv:(payload)=>dispatch(setEnv(payload))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(EditProfile));

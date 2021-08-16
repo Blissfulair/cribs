@@ -388,7 +388,7 @@ class History extends React.Component{
                     </SwipeableViews>
                 </WithdrawPopUp>
                     }
-                <Grid item xs={11}>
+                <Grid item md={11} xs={12} >
                     <div style={{paddingTop:70}} className="inbox">
                         <div className="inbox-head dashboard-mt">
                             <div className="inbox-title">

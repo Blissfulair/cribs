@@ -177,7 +177,7 @@ onLogout = ()=>{
                             width='180'
                             borderWidth={2}
                             marginRight='3rem'
-                            href="/app/cribs"
+                            href="/host-login"
                         >
                             Host Accomodation
                         </NavButton>
@@ -192,7 +192,7 @@ onLogout = ()=>{
                         width='180'
                         borderWidth={2}
                         marginRight='3rem'
-                        href="/app/cribs"
+                        href="/host-login"
                         >
                             Host Accomodation
                         </NavButton>
@@ -307,7 +307,7 @@ onLogout = ()=>{
                             width='180'
                             borderWidth={2}
                             marginRight='3rem'
-                            href="/app/cribs"
+                            href="/host-login"
                         >
                             Host Accomodation
                         </NavButton>
@@ -322,7 +322,7 @@ onLogout = ()=>{
                         width='180'
                         borderWidth={2}
                         marginRight='3rem'
-                        href="/app/cribs"
+                        href="/host-login"
                         >
                             Host Accomodation
                         </NavButton>

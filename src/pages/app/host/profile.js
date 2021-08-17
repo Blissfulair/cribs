@@ -83,7 +83,7 @@ const ProfileDetails = ({user,uploadImage})=>{
                     <tbody>
                         <tr>
                             <td>Phone:</td>
-                            <td>{user.phone.replace('-','') }</td>
+                            <td>{user.phone?user.phone.replace('-',''):'' }</td>
                         </tr>
                         <tr>
                             <td>Address:</td>

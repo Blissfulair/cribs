@@ -1,19 +1,20 @@
 import React from "react";
-import "./signup.css"
-import "./login.css"
+import "./../../signup.css"
+import "./../../login.css"
 import {Link} from "react-router-dom"
 import FacebookIcon from '@material-ui/icons/Facebook';
+// import TwitterIcon from '@material-ui/icons/Twitter';
 import {  withStyles,Snackbar, Slide,CircularProgress } from "@material-ui/core";
 import {Alert} from "@material-ui/lab"
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Head from "../components/head";
-import { changeRole, loginUser } from "../apis/server";
-import { chooseDashboard, setUser } from "../state/actions";
+import Head from "../../../components/head";
+import { changeRole, loginUser } from "../../../apis/server";
+import { chooseDashboard, setUser } from "../../../state/actions";
 import {withRouter} from "react-router-dom"
 import { connect } from "react-redux";
-import Footer from "../components/footer";
-import Seo from "../components/seo";
+import Footer from "../../../components/footer";
+import Seo from "../../../components/seo";
 
 const styles = ()=>({
     label:{
@@ -77,32 +78,19 @@ class Login extends React.Component{
             loginUser(body)
             .then((user)=>{
                
-                if(this.props.location.state !== undefined){
-                    this.props.chooseDashboard(false)
-                    this.props.setUser(user)
-                    changeRole(user.id, {role:false})
-                    .then(()=>{
-                        this.props.history.push({
-                            pathname: this.props.location.state.referer.pathname,
-                            search: this.props.location.state.referer.search,
-                            state:this.props.location.state.referer.state
-                        })
-                    })
-                    .catch((e)=>{
-                        console.log(e)
-                    })
-
-                }
-                else{
                     if(user.code ===402){
                         this.setState({err:'Invalid email or password'})
                     }
                     else{
+                        this.props.chooseDashboard(true)
                         this.props.setUser(user)
-                    this.props.chooseDashboard(user.role)
-                    // this.props.history.push('/app/home')
+                        changeRole(user.id, {role:true})
+                        .then(()=>{
+                        })
+                        .catch((e)=>{
+                            console.log(e)
+                        })
                     }
-                }
 
                 this.setState({loading:false})
             })
@@ -141,7 +129,7 @@ class Login extends React.Component{
                 <div className="label"></div>
                 <div className="header-wrap">
                     <div className="signin">
-                        <p>Sign in to get started</p>
+                        <p>Sign in to get started as Host</p>
                         <ul>
                             {/* <li >
                                 <Button classes={{root:this.props.classes.label}} onClick={this.toggleLogin}>
@@ -220,7 +208,7 @@ class Login extends React.Component{
                                         <TwitterIcon/>
                                     </a> */}
                                 </div>
-                                <p>Don't have an account? <Link to="/register">Signup here</Link></p>
+                                <p>Don't have an account? <Link to="/host-register">Signup as Host here</Link></p>
                             </form>
                         </div>
                     </div>

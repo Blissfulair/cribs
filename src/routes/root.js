@@ -36,6 +36,8 @@ import VerifyRoute from "./verification";
 import ForgetPassword from "../pages/forget";
 import NotFound from "../pages/404";
 import ChangePassword from "../pages/change-password";
+import HostLogin from "../pages/app/host/login";
+import HostRegister from "../pages/app/host/register";
 // import AdminLogin from "../pages/admin/login";
 // import AdminRoute from "./adminRoute";
 // import AdminDashboard from "../pages/admin/dashboard";
@@ -87,6 +89,8 @@ class Root extends Component{
             <PublicRoute exact path="/search" component={Search}/>
             <PublicRoute exact path="/crib/:id" component={Single}/>
             <PublicRoute exact path="/login" component={Login} />
+            <PublicRoute exact path="/host-login" component={HostLogin} />
+            <PublicRoute exact path="/host-register" component={HostRegister} />
             <PublicRoute exact path="/forgot-password" component={ForgetPassword} />
             <PublicRoute exact path="/password/:token"  component={ChangePassword} />
             

@@ -360,7 +360,7 @@ addProperty(formData)
                             !this.props.user.phone&&
                             <div className="profile-info">
                                 Profile Information must be updated before you post a property.
-                                <Link to="/app/edit-profile">Click here</Link> to update profile.
+                                <Link to={{pathname:'/app/edit-profile'}}>Click here</Link> to update profile.
                             </div>
                         }
                         <form ref={(ref)=>this.form=ref}  onSubmit={event=>{this.onSubmit(event)}} method="post" encType="multipart/form-data">
@@ -631,7 +631,7 @@ addProperty(formData)
                                             Add Crib
                                         </button>
                                         :
-                                        <button className="add-crib-btn" style={{backgroundColor:"rgb(186, 186, 186)", cursor:'default'}}>
+                                        <button type="button" className="add-crib-btn" style={{backgroundColor:"rgb(186, 186, 186)", cursor:'default'}}>
                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M14 8H8V14H6V8H0V6H6V0H8V6H14V8Z" fill="white" fill-opacity="0.87"/>
                                             </svg>

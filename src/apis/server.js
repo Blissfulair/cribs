@@ -29,6 +29,18 @@ export const checkLoggedIn = async () => {
     return user;
   };
 
+  export const registerHost = async (data) => {
+    const response = await fetch('/api/user/host-register',{
+      method:'POST',
+      body:JSON.stringify(data),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+    const  user= await response.json();
+    return user;
+  };
+
 
 
   export const uploadProfileImage = async (id,data) => {

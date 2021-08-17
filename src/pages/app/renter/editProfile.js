@@ -174,13 +174,13 @@ class EditProfile extends React.Component {
             phone: this.props.user.phone,
             address: this.props.user.address,
             bio: this.props.user.bio,
-            linkedin: this.props.user.linkedin === undefined ? null : this.props.user.linkedin,
-            facebook: this.props.user.facebook === undefined ? null : this.props.user.facebook,
+            linkedin: this.props.user.linkedin === null ? null : this.props.user.linkedin,
+            facebook: this.props.user.facebook === null ? null : this.props.user.facebook,
             dob: this.props.user.dob,
             gender: this.props.user.gender,
-            dobd: this.props.user.dob === undefined ? '' : this.props.user.dob.split('-')[0],
-            dobm: this.props.user.dob === undefined ? '' : this.props.user.dob.split('-')[1],
-            doby: this.props.user.dob === undefined ? '' : this.props.user.dob.split('-')[2]
+            dobd: this.props.user.dob === null ? '' : this.props.user.dob.split('-')[0],
+            dobm: this.props.user.dob === null ? '' : this.props.user.dob.split('-')[1],
+            doby: this.props.user.dob === null ? '' : this.props.user.dob.split('-')[2]
         })
         this.onLoadEnv()
     }
@@ -206,24 +206,25 @@ class EditProfile extends React.Component {
 
     onSubmit = n => {
         n.preventDefault();
-        this.setState({ message: '', success: false })
-        if (this.state.address === '' || this.state.address === undefined) {
+        const dob = this.state.dobd+'-'+this.state.dobm+'-'+this.state.doby
+        this.setState({message:'', success:false, dob})
+        if (this.state.address === '' || this.state.address === null) {
             this.setState({ message: 'Address is required' })
             return
         }
-        else if (this.state.phone === '' || this.state.phone === undefined) {
+        else if (this.state.phone === '' || this.state.phone === null) {
             this.setState({ message: 'Phone Number is required' })
             return
         }
-        else if (this.state.dob === '' || this.state.dob === undefined) {
+        else if (dob === '' || dob === null) {
             this.setState({ message: 'Date of birth is required' })
             return
         }
-        else if (this.state.gender === '' || this.state.gender === undefined) {
+        else if (this.state.gender === '' || this.state.gender === null) {
             this.setState({ message: 'Gender is required' })
             return
         }
-        else if (this.state.bio === '' || this.state.bio === undefined) {
+        else if (this.state.bio === '' || this.state.bio === null) {
             this.setState({ message: 'Bio is required' })
             return
         }
@@ -235,7 +236,7 @@ class EditProfile extends React.Component {
             bio: this.state.bio,
             linkedin: this.state.linkedin,
             facebook: this.state.facebook,
-            dob: this.state.dobd + '-' + this.state.dobm + '-' + this.state.doby,
+            dob: dob,
             gender: this.state.gender
         }
         updateHost(data, this.props.user.id)

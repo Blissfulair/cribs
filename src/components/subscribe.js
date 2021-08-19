@@ -1,7 +1,7 @@
 import React from "react";
 import "../scss/footer.scss"
 import PropTypes from "prop-types"
-const Subscribe = ({onChangeValue, onSubmit, value})=>{
+const Subscribe = ({onChangeValue, onSubmit, value, loading})=>{
     const handleChange=(e)=>{
             if(onChangeValue)
                 onChangeValue(e.target.value)
@@ -15,7 +15,12 @@ const Subscribe = ({onChangeValue, onSubmit, value})=>{
             
             <input value={value} onChange={handleChange} placeholder="Email address" required/>
             <label className="sub-label">Email address</label>
-            <button>Subscribe</button>
+            {
+                loading?
+                <button type="button">Please wait</button>
+                :
+                <button>Subscribe</button>
+            }
         </form>
     )
 }
@@ -23,11 +28,13 @@ export default Subscribe;
 Subscribe.propTypes = {
     onChangeValue:PropTypes.func,
     onSubmit:PropTypes.func,
-    value:PropTypes.string
+    value:PropTypes.string,
+    loading:PropTypes.bool
 }
 
 Subscribe.defaultTypes={
     onChangeValue:null,
     onSubmit:null,
-    value:""
+    value:"",
+    loading:false
 }

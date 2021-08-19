@@ -35,6 +35,7 @@ const Footer = ({classes})=>{
         text:'',
         success:false
     })
+    const [loading, setLoading] = useState(false)
     const handleChange=value=>{
         setEmail(value)
     }
@@ -52,6 +53,7 @@ const Footer = ({classes})=>{
         const data = {
             email:email
         }
+        setLoading(true)
         subscriber(data)
         .then(subsciber=>{
             if(subsciber.code ===200)
@@ -61,10 +63,12 @@ const Footer = ({classes})=>{
             }
             else
             setMessage({text:subsciber.message, success:false})
+            setLoading(false)
         })
         .catch(e=>{
             console.log(e)
             setMessage({text:'Something went wrong', success:false})
+            setLoading(false)
         })
     }
     return(
@@ -120,7 +124,7 @@ const Footer = ({classes})=>{
                                     message.text&&
                                     <small className={message.success?'fsuccess':'ffailed'}>{message.text}</small>
                                 }
-                                <Subscribe onChangeValue={handleChange} value={email} onSubmit={onSubmit}/>
+                                <Subscribe loading={loading} onChangeValue={handleChange} value={email} onSubmit={onSubmit}/>
                                 </div>
                                 <Grid container justify="center">
                                     <Grid item xs={6} md={8}>

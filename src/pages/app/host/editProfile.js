@@ -175,7 +175,7 @@ class EditProfile extends React.Component{
         if(dom !== null)
         dom.setAttribute('class', 'is-active')
         this.setState({
-            phone:this.props.user.phone,
+            phone:this.props.user.phone === null?'':this.props.user.phone.split('-')[1],
             address:this.props.user.address,
             bio:this.props.user.bio,
             linkedin:this.props.user.linkedin === null?null:this.props.user.linkedin,
@@ -224,7 +224,7 @@ class EditProfile extends React.Component{
             this.setState({message:'Phone Number is required'})
             return
         }
-       else if( dob === '' || dob === null){
+       else if( this.state.dobd === '' || dob === null || this.state.dobm === '' || this.state.doby === ''){
             this.setState({ message:'Date of birth is required'})
             return
         }

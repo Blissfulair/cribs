@@ -80,13 +80,13 @@ const Footer = ({classes})=>{
                         <Grid item xs={12} md={7} className="first-box">
                              <Typography className="subtitle" variant="h4">Beach destinations</Typography>
                             <Typography className="paragraphy"   variant="body1" component="p">
-                                Orange Beach | Playa del Carmen Port | Aransas Mau I Bethany beach | rentals Folly beach | rentals Gulf Shores beach | rentals Holden beach rentals | Panama City Beach | Ocean Isle beach rentals | Rehoboth beach rentals | Rosemary beach.
+                                Coming Soon
                             </Typography>
                             <Typography className="subtitle" variant="h4">
                                 Resorts
                             </Typography>
                             <Typography className="paragraphy" variant="body1" component="p">
-                                Big Bear ski resorts | Colorado ski resorts | Massanutten resorts | Panama City Beach resorts | Paradise resorts | Purgatory resorts | Maui resorts Virginia resorts Welk resorts Westgate lakes resorts and spaWintergreen resorts | Disney resortsWisconsin
+                            Coming Soon
                             </Typography>
                             <Grid container>
                                 <Grid item md={10} xs={12}>
@@ -152,7 +152,7 @@ const Footer = ({classes})=>{
                         </Grid>
 
                     </Grid>
-                    <p className="paragraphy copy" >CribNg &copy; 2021, All rights Reserved. Designed By <a href="https://www.givitec.com">Givitec Ltd</a></p>
+                    <p className="paragraphy copy" >CribNg &copy; {new Date().getFullYear()}, All rights Reserved. Designed By <a href="https://www.givitec.com">Givitec Ltd</a></p>
                 </Grid>
                 <Grid item xs={false} md={1}/>
             </Grid>

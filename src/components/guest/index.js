@@ -100,11 +100,12 @@ class Guest extends Component{
 
     }
     render(){
+        console.log(this.props)
         return(
             <>
             <div onClick={this.onClick} ref={this.container} className="search-guest close">
                 <div>{this.props.label}</div>
-                <div>{this.state.value?this.state.value:this.props.placeholder}</div>
+                <div>{this.props.value?this.props.value:this.props.placeholder}</div>
                 <div ref={this.top} style={{bottom:this.props.caret}}   className="top"></div>
             </div>
             <Guests 

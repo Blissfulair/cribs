@@ -6,16 +6,16 @@ class Guests extends Component{
 
     state = {
         
-        guest: this.props.adult+this.props.childrens+this.props.infant,
+        guest: this.props.adult+this.props.childrens,
         adult:this.props.adult,
         children:this.props.childrens,
         infant:this.props.infant,
         pet:this.props.checked
     }
 
-    // componentDidMount(){
-    //     this.setState({pet:this.props.checked})
-    // }
+    componentDidMount(){
+        this.setState({pet:this.props.checked, guest: this.props.adult+this.props.childrens, adult:this.props.adult, children:this.props.childrens, infant:this.props.infant})
+    }
 
       renderHeader() {
        return (

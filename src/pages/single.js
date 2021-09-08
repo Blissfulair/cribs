@@ -181,7 +181,7 @@ class Single extends Component {
                 5: ['Excellent','Best for you and family'],
             },
             pet:false,
-            adult:0,
+            adult:1,
             children:0,
             infant:0
         }
@@ -249,8 +249,8 @@ class Single extends Component {
         getCribById(id)
             .then(crib => {
                 this.props.setCrib(crib)
-                const checkIn = new Date()
-                const checkOut = new Date()
+                const checkIn = new Date(this.props.searchData.checkIn)
+                const checkOut = new Date(this.props.searchData.checkOut)
                 const dates = getDates(checkIn, checkOut);
                 this.setState({ loading: false, days: dates.length, price: crib.amount, property: crib })
             })
@@ -258,9 +258,13 @@ class Single extends Component {
         this.setState({
             favourite: favourite,
             property: this.props.crib,
-            guest: 1,//this.context.state.searchQuery?this.context.state.searchQuery.guest:1,
-            checkIn: new Date(),//this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-            checkOut: new Date()//this.context.state.searchQuery?new Date(this.context.state.searchQuery.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
+            guest: this.props.searchData.guest?this.props.searchData.guest:1,
+            adult: this.props.searchData.adult?this.props.searchData.adult:1,
+            children: this.props.searchData.children?this.props.searchData.children:0,
+            infant: this.props.searchData.infant?this.props.searchData.infant:0,
+            pet: this.props.searchData.pet?this.props.searchData.pet:false,
+            checkIn: this.props.searchData.checkIn?new Date(this.props.searchData.checkIn):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+            checkOut: this.props.searchData.checkOut?new Date(this.props.searchData.checkOut):new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
         })
     }
     componentWillUnmount() {
@@ -346,6 +350,7 @@ class Single extends Component {
 
     }
     render() {
+        console.log(this.state.pet)
         const { classes } = this.props
         this.propert = this.state.property
         const property = this.propert
@@ -358,6 +363,10 @@ class Single extends Component {
             checkOut: this.state.checkOut,
             nights: this.state.days,
             guest: this.state.guest,
+            adult: this.state.adult,
+            children: this.state.children,
+            infant: this.state.infant,
+            pet: this.state.pet,
             amount: property ? Number(property.amount) : 0,
             id: property ? property._id : '',
             name: property ? property.name : '',
@@ -736,6 +745,7 @@ class Single extends Component {
                                                                     onChange={(e)=>{this.setState({guest:e.adult+e.children, adult:e.adult,children:e.children, infant:e.infant})}}
                                                                     onCheck={(e)=>this.setState({pet:e})}
                                                                     checked={this.state.pet}
+                                                                    value={this.state.guest}
                                                                     adult={this.state.adult}
                                                                     childrens={this.state.children}
                                                                     infant={this.state.infant}
@@ -930,7 +940,8 @@ class Single extends Component {
 }
 const mapStateToProps = state => ({
     crib: state.crib,
-    user: state.user
+    user: state.user,
+    searchData:state.searchData,
 })
 const mapDispatchToProps = dispatch => ({
     setCrib: (payload) => dispatch(setCrib(payload))

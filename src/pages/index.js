@@ -158,7 +158,7 @@ class Index extends Component {
         .then((res) => {
             this.props.history.push({
                 pathname: '/search',
-                search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
+                search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}&children=${this.state.children}&adult=${this.state.adult}&infant=${this.state.infant}&pet=${this.state.pet}`
             })
             this.setState({ loading: false })
         })
@@ -246,6 +246,7 @@ class Index extends Component {
                                             onCheck={(e)=>this.setState({pets:e})}
                                             checked={this.state.pets}
                                             adult={this.state.adult}
+                                            value={this.state.guest}
                                             childrens={this.state.children}
                                             infant={this.state.infant}
                                         />
@@ -372,10 +373,9 @@ class Index extends Component {
                                         <Grid className="reasons" container justify="center" spacing={6}>
                                             <Grid item xs={12} sm={4} md={4}>
                                                 <IconBox 
-                                                content="Pellentesque in ipsum id orci porta
-                                                dapibus. Mauris blandit aliquet elit,
-                                                eget tincidunt nibh pulvinar a.
-                                                Donec rutrum congue leo eget malesuada." 
+                                                content="Crib Ng is the most reliable way to guarantee accommodation for your trip. You have the option of
+                                                booking your reservation up to one year in advance or booking your reservation within 24 hours of your
+                                                trip. And you can rest assured you are getting real-time availability information at your fingertips." 
                                                 image={trust} 
                                                 name="Reliable" />
                                             </Grid>
@@ -383,20 +383,18 @@ class Index extends Component {
                                                 <IconBox 
                                                 image={focus} 
                                                 name="Fast"
-                                                content="Pellentesque in ipsum id orci porta
-                                                dapibus. Mauris blandit aliquet elit,
-                                                eget tincidunt nibh pulvinar a.
-                                                Donec rutrum congue leo eget malesuada." 
+                                                content="The Crib Ng platform is user-friendly, making booking fast and easy. We respond to our guests&#39;
+                                                complaints and concerns quickly and, in most cases, have all issues resolved the same day." 
                                                  />
                                             </Grid>
                                             <Grid item xs={12} sm={4} md={4}>
                                                 <IconBox 
                                                 image={jigsaw} 
                                                 name="Convenient"
-                                                content="Pellentesque in ipsum id orci porta
-                                                dapibus. Mauris blandit aliquet elit,
-                                                eget tincidunt nibh pulvinar a.
-                                                Donec rutrum congue leo eget malesuada." 
+                                                content="Crib Ng is the most convenient way to travel. Whether you are looking for an entire house with the
+                                                compound to rent for your ceremony and feel at home or just an apartment to lay your head on a quick
+                                                trip, Crib Ng is your go-to partner. And you have the convenience of booking your reservation from your
+                                                desktop computer or on your mobile phone." 
                                                  />
                                             </Grid>
                                         </Grid>

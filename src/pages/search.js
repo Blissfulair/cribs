@@ -60,6 +60,10 @@ class Search extends Component{
             totalPages:1,
             location:'',
             days: 1,
+            adult:0,
+            children:0,
+            infant:0,
+            pet:false
         }
     }
     componentDidMount(){
@@ -68,7 +72,11 @@ class Search extends Component{
         const address = params.filter(address=>address.includes('location')).toString().split('=')[1];
         const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
         const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
-        const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
+        const guest = parseInt(params.filter(guest=>guest.includes('guest')).toString().split('=')[1]);
+        const children = parseInt(params.filter(children=>children.includes('children')).toString().split('=')[1]);
+        const infant = parseInt(params.filter(infant=>infant.includes('infant')).toString().split('=')[1]);
+        const adult = parseInt(params.filter(adult=>adult.includes('adult')).toString().split('=')[1]);
+        const pet = Boolean(params.filter(pet=>pet.includes('pet')).toString().split('=')[1]);
         const page = params.filter(page=>page.includes('page')).toString().split('=')[1];
         const type = params.filter(type=>type.includes('type')).toString().split('=')[1]
         const city = params.filter(city=>city.includes('city')).toString().split('=')[1]
@@ -79,7 +87,11 @@ class Search extends Component{
                 location:search,
                 checkIn:checkin,
                 checkOut,
-                guest
+                guest,
+                infant,
+                pet,
+                children,
+                adult
             }
             
             this.props.storeSearchData(data)
@@ -93,7 +105,11 @@ class Search extends Component{
                         favourites:favourites,
                         page:Number(page),
                         totalPages:res.totalPages,
-                        location:address
+                        location:address,
+                        infant,
+                        pet,
+                        children,
+                        adult
                     })
                 })
                 .catch((er)=>{
@@ -101,7 +117,11 @@ class Search extends Component{
                         isLoading:false,
                         checkOut:checkOut,
                         checkIn:checkin,
-                        location:address
+                        location:address,
+                        infant,
+                        pet,
+                        children,
+                        adult
                     })
                 })
         }
@@ -133,7 +153,11 @@ class Search extends Component{
             const address = params.filter(address=>address.includes('location')).toString().split('=')[1];
             const checkin = params.filter(checkin=>checkin.includes('check-in')).toString().split('=')[1];
             const checkOut = params.filter(checkOut=>checkOut.includes('check-out')).toString().split('=')[1];
-            const guest = params.filter(guest=>guest.includes('guest')).toString().split('=')[1];
+            const guest = parseInt(params.filter(guest=>guest.includes('guest')).toString().split('=')[1]);
+            const children = parseInt(params.filter(children=>children.includes('children')).toString().split('=')[1]);
+            const infant = parseInt(params.filter(infant=>infant.includes('infant')).toString().split('=')[1]);
+            const adult = parseInt(params.filter(adult=>adult.includes('adult')).toString().split('=')[1]);
+            const pet = Boolean(params.filter(pet=>pet.includes('pet')).toString().split('=')[1]);
             const page = params.filter(page=>page.includes('page')).toString().split('=')[1];
             const type = params.filter(type=>type.includes('type')).toString().split('=')[1]
             const city = params.filter(city=>city.includes('city')).toString().split('=')[1]
@@ -142,7 +166,11 @@ class Search extends Component{
                     location:search,
                     checkIn:checkin,
                     checkOut,
-                    guest
+                    guest,
+                    infant,
+                    pet,
+                    children,
+                    adult
                 }
                 
                 this.props.storeSearchData(data)
@@ -154,7 +182,11 @@ class Search extends Component{
                         checkOut:checkOut,
                         checkIn:checkin,
                         page:Number(page),
-                        location:address
+                        location:address,
+                        infant,
+                        pet,
+                        children,
+                        adult
                     })
                 })
                 .catch((er)=>{
@@ -162,7 +194,11 @@ class Search extends Component{
                         isLoading:false,
                         checkOut:checkOut,
                         checkIn:checkin,
-                        location:address
+                        location:address,
+                        infant,
+                        pet,
+                        children,
+                        adult
                     })
                 })
         }
@@ -193,7 +229,7 @@ class Search extends Component{
             this.setState({isLoading:false})
             this.props.history.push({
                 pathname: !this.props.user?'/search':'/app/search',
-                search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
+                search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}&children=${this.state.children}&adult=${this.state.adult}&infant=${this.state.infant}&pet=${this.state.pet}`
             })
         })
         .catch((er)=>{

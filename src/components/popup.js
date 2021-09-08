@@ -50,7 +50,7 @@ const PopUP = ({open, handleClose, summary,onReserved})=>{
                     <tr>
                         <td colSpan="2">
                             <p>Guests</p>
-                            <p>{`${summary.guest} ${Number(summary.guest) === 1?'Guest':'Guests'}`} </p>
+                            <p>{`${summary.guest} ${Number(summary.guest) === 1?'Guest':'Guests'}(${summary.adult} ${Number(summary.adult) === 1?'Adult':'Adults'}, ${summary.children} ${Number(summary.children) === 1?'Child':'Children'}, ${summary.infant} ${Number(summary.infant) === 1?'Infant':'Infants'} and with ${summary.pet?'pet':'no pet'})`} </p>
                         </td>
                     </tr>
                 </tbody>

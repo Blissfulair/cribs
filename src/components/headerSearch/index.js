@@ -29,6 +29,14 @@ class Form extends Component {
     componentDidMount() {
         this.setState({ 
             open: this.props.open?this.props.open:this.state.open,
+            location: this.props.searchData.location,
+            checkIn: this.props.searchData.checkIn,
+            checkOut: this.props.searchData.checkOut,
+            guest: this.props.searchData.guest,
+            adult: this.props.searchData.adult,
+            children: this.props.searchData.children,
+            infant: this.props.searchData.infant,
+            pet: this.props.searchData.pet
          })
          this.handleResize()
          document.addEventListener('click', this.handleClick)
@@ -51,11 +59,16 @@ class Form extends Component {
     }
     componentDidUpdate(prevProps) {
         if(prevProps.searchData !== this.props.searchData){
+            
             this.setState({
                 location: this.props.searchData.location,
                 checkIn: this.props.searchData.checkIn,
                 checkOut: this.props.searchData.checkOut,
-                guest: this.props.searchData.guest
+                guest: this.props.searchData.guest,
+                adult: this.props.searchData.adult,
+                children: this.props.searchData.children,
+                infant: this.props.searchData.infant,
+                pet: this.props.searchData.pet
             })
         }
     }
@@ -84,6 +97,7 @@ class Form extends Component {
                    return
                 }
             }
+            
         const data = {
             location: this.state.location,
             checkIn: this.state.checkIn,
@@ -100,7 +114,7 @@ class Form extends Component {
             //setLoading(false)
             this.props.history.push({
                 pathname: !this.props.user?'/search':'/app/search',
-                search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}`
+                search: `?location=${this.state.location}&check-in=${this.state.checkIn}&check-out=${this.state.checkOut}&guest=${this.state.guest}&children=${this.state.children}&adult=${this.state.adult}&infant=${this.state.infant}&pet=${this.state.pet}`
             })
         })
         .catch((er)=>{
@@ -159,7 +173,7 @@ class Form extends Component {
                                             right="-9vw"
                                             label="Guests"
                                             placeholder="Select Guests"
-                                            onChange={(e)=>{this.setState({guest:e.guest, adult:e.adult, children:e.children, infant:e.infant})}}
+                                            onChange={(e)=>{this.setState({guest:(e.adult+e.children), adult:e.adult, children:e.children, infant:e.infant})}}
                                             adult={this.state.adult}
                                             childrens={this.state.children}
                                             infant={this.state.infant}

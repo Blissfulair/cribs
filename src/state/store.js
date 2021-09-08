@@ -25,8 +25,8 @@ function configureStore(preload) {
     notifications:[],
     searchData:{
       location: '',
-      checkIn: '',
-      checkOut: '',
+      checkIn: null,
+      checkOut: null,
       guest: 0,
       children:0,
       adult:0,

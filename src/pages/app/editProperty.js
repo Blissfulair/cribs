@@ -395,7 +395,10 @@ editProperty(formData,id)
                                                 </svg>
                                             </div>
                                         </label>
-
+                                        {
+                                        this.state.other_images.length<2&&
+                                            <p className="err-msg">Viewing images must be at least 2</p>
+                                        }
                                         <div className="images">
                                             {
                                                 this.state.other_images.map((image,i)=>{

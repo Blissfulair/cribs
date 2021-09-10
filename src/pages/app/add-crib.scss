@@ -57,6 +57,13 @@
     .other-images{
         min-height: 150px;
         margin:34px 0;
+        .err-msg{
+            color: #A60E0E;
+            font-size: 12px;
+            font-family: Mulish;
+            font-style: normal;
+            font-weight: 400;
+        }
         label{
             text-decoration-line: underline;
             cursor: pointer;

@@ -92,17 +92,20 @@ class AddProperty extends React.Component{
         let reader = new FileReader();
         let imaged = e.target.files[0]
         if(imaged.type === 'image/png' || imaged.type === 'image/jpeg' || imaged.type === 'image/jpg'){
-            if(imaged.size > 110000){
-                this.setState({message:'image must not be more than 100kb',open:true})
+            if(imaged.size > 160000){
+                this.setState({message:'image must not be more than 150kb',open:true})
                 return
             }
             let pic = document.createElement('img');
             let del = document.createElement('div');
             let newEl = document.createElement('div');
             newEl.setAttribute('class', 'viewing')
-            other_images.push(imaged);
+
             reader.readAsDataURL(imaged);
             reader.onload = (e)=>{
+                imaged.src=reader.result
+                other_images.push(imaged);
+                this.setState({other_images:other_images})
                 images.push(reader.result)
                 pic.setAttribute('src', reader.result);
                 newEl.appendChild(pic);
@@ -132,10 +135,16 @@ class AddProperty extends React.Component{
     deleteImage(e){
         let img = e.target.previousElementSibling.currentSrc;
         let index = images.findIndex((e)=> e === img);
+        let index2 = this.state.other_images.findIndex((e)=> e.src === img);
         if(index >= 0)
         {
             images.splice(index, 1);
             e.target.parentElement.remove();
+        }
+        if(index2 >= 0)
+        {
+            this.state.other_images.splice(index2, 1);
+            this.setState({other_images:this.state.other_images})
         }
     }
 
@@ -405,6 +414,10 @@ addProperty(formData)
                                             </svg>
                                         </div>
                                     </label>
+                                    {
+                                        this.state.other_images.length<2&&
+                                        <p className="err-msg">Viewing images must be at least 2</p>
+                                    }
 
                                     <div className="images"></div>
                                 </div>

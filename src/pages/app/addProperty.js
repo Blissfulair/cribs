@@ -70,8 +70,8 @@ class AddProperty extends React.Component{
     uploadImage = (e)=>{
         let image = e.target.files[0];
         if(image.type === 'image/png' || image.type === 'image/jpeg' || image.type === 'image/jpg'){
-             if(image.size > 110000){
-                this.setState({message:'image must not be more than 100kb',open:true})
+             if(image.size > 2100000){
+                this.setState({message:'image must not be more than 2MB',open:true})
                 return
             }
             this.setState({featured_image:image})
@@ -92,8 +92,8 @@ class AddProperty extends React.Component{
         let reader = new FileReader();
         let imaged = e.target.files[0]
         if(imaged.type === 'image/png' || imaged.type === 'image/jpeg' || imaged.type === 'image/jpg'){
-            if(imaged.size > 160000){
-                this.setState({message:'image must not be more than 150kb',open:true})
+            if(imaged.size > 2100000){
+                this.setState({message:'image must not be more than 2MB',open:true})
                 return
             }
             let pic = document.createElement('img');

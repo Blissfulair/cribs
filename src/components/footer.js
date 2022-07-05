@@ -111,7 +111,7 @@ const Footer = ({classes})=>{
                         </Grid>
 
                     </Grid>
-                    <p className="paragraphy copy" >CribNg &copy; 2021, All rights Reserved. Designed By <a href="https://www.givitec.com">Givitec Ltd</a></p>
+                    <p className="paragraphy copy" >CribNg &copy; 2021, All rights Reserved</p>
                 </Grid>
                 <Grid item xs={false} md={1}/>
             </Grid>
